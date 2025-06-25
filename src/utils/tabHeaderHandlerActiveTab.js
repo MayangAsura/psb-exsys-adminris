@@ -1,4 +1,4 @@
-function tabHeaderHandlerActiveTab(element) {
+export function tabHeaderHandlerActiveTab(element) {
     //  const activeTab = () => {
          let siblings = element.parentNode.querySelectorAll("button");
          for (let item of siblings) {
