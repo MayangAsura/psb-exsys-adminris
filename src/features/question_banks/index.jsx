@@ -1,0 +1,138 @@
+import moment from "moment"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import TitleCard from "../../components/Cards/TitleCard"
+import TrashIcon from '@heroicons/react/24/outline/TrashIcon'
+import PencilIcon from '@heroicons/react/24/outline/PencilIcon'
+import EyeIcon from '@heroicons/react/24/outline/EyeIcon'
+import { openModal } from "../common/modalSlice"
+import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../utils/globalConstantUtil'
+import { showNotification } from '../common/headerSlice'
+
+import supabase from "../../services/database-server"
+
+const TopSideButtons = () => {
+
+    const dispatch = useDispatch()
+
+    const addNewTeamMember = () => {
+        dispatch(showNotification({message : "Add New Member clicked", status : 1}))
+    }
+
+    return(
+        <div className="inline-block float-right">
+            <button className="btn px-6 btn-sm normal-case btn-primary" onClick={() => addNewTeamMember()}>Invite New</button>
+        </div>
+    )
+}
+
+
+const TEAM_MEMBERS = [
+    {name : "Alex", avatar : "https://reqres.in/img/faces/1-image.jpg", email : "alex@dashwind.com", role : "Owner", joinedOn : moment(new Date()).add(-5*1, 'days').format("DD MMM YYYY"), lastActive : "5 hr ago"},
+    {name : "Ereena", avatar : "https://reqres.in/img/faces/2-image.jpg", email : "ereena@dashwind.com", role : "Admin", joinedOn : moment(new Date()).add(-5*2, 'days').format("DD MMM YYYY"), lastActive : "15 min ago"},
+    {name : "John", avatar : "https://reqres.in/img/faces/3-image.jpg", email : "jhon@dashwind.com", role : "Admin", joinedOn : moment(new Date()).add(-5*3, 'days').format("DD MMM YYYY"), lastActive : "20 hr ago"},
+    {name : "Matrix", avatar : "https://reqres.in/img/faces/4-image.jpg", email : "matrix@dashwind.com", role : "Manager", joinedOn : moment(new Date()).add(-5*4, 'days').format("DD MMM YYYY"), lastActive : "1 hr ago"},
+    {name : "Virat", avatar : "https://reqres.in/img/faces/5-image.jpg", email : "virat@dashwind.com", role : "Support", joinedOn : moment(new Date()).add(-5*5, 'days').format("DD MMM YYYY"), lastActive : "40 min ago"},
+    {name : "Miya", avatar : "https://reqres.in/img/faces/6-image.jpg", email : "miya@dashwind.com", role : "Support", joinedOn : moment(new Date()).add(-5*7, 'days').format("DD MMM YYYY"), lastActive : "5 hr ago"},
+
+]
+
+function QuestionBanks(){
+
+
+    const [members, setMembers] = useState(TEAM_MEMBERS)
+    const [questionBanks, setQuestionBanks] = useState([])
+    const dispatch = useDispatch()
+
+    const getRoleComponent = (role) => {
+        if(role  === "Admin")return <div className="badge badge-secondary">{role}</div>
+        if(role  === "Manager")return <div className="badge">{role}</div>
+        if(role  === "Owner")return <div className="badge badge-primary">{role}</div>
+        if(role  === "Support")return <div className="badge badge-accent">{role}</div>
+        else return <div className="badge badge-ghost">{role}</div>
+    }
+
+    useEffect(() => {
+        getQuestionBanks()
+        console.log(questionBanks)
+    },[])
+
+    const getQuestionBanks = async () => {
+        let { data: questionBanks, error } = await supabase
+            .from('exam_question_banks')
+            .select('*')
+
+        if(!error){
+            setQuestionBanks(questionBanks)
+        }
+    }
+    
+    const deleteCurrentQuestion = (index) => {
+            dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+            extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_DELETE, index}}))
+    
+        }
+    const editCurrentQuestion = (index) => {
+        dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_EDIT}))
+        // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+        // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
+
+    }
+    const detailCurrentQuestion = (index) => {
+        // navigate(`/admin/exams/detail/${index}`)
+        dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_DETAIL}))
+        // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+        // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
+
+    }
+
+    return(
+        <>
+            
+            <TitleCard title="Bank Soal" topMargin="mt-2" TopSideButtons={<TopSideButtons />}>
+
+                {/* Team Member list in table format loaded constant */}
+            <div className="overflow-x-auto w-full">
+                <table className="table w-full">
+                    <thead>
+                    <tr>
+                        {/* <th>Icon</th> */}
+                        <th>Pertanyaan</th>
+                        <th>Tipe</th>
+                        <th>Kode Soal</th>
+                        <th>Skor</th>
+                        {/* <th>Tanggal Submit</th> */}
+                        {/* <th>Lokasi</th>
+                        <th>Update Terakhir</th> */}
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            questionBanks.map((l, k) => {
+                                return(
+                                    <tr key={k}>
+                                    <td><div className="font-bold">{l.question }</div></td>
+                                    <td><div className="font-bold">{l.question_type }</div></td>
+                                    <td><div className="font-bold">{l.bank_code }</div></td>
+                                    <td><div className="font-bold">{l.score }</div></td>
+                                    <td>
+                                        <button className="btn btn-square btn-ghost" onClick={() => detailCurrentQuestion(l.id)}><EyeIcon className="w-5"/></button>
+                                        <button className="btn btn-square btn-ghost" onClick={() => editCurrentQuestion(l.id)}><PencilIcon className="w-5"/></button>
+                                        <button className="btn btn-square btn-ghost" onClick={() => deleteCurrentQuestion(l.id)}><TrashIcon className="w-5"/></button>
+                                    </td>
+                                    {/* <td>{l.updated_at}</td> */}
+                                    {/* <td>{moment(l.date).format("D MMM")}</td> */}
+                                    </tr>
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
+            </TitleCard>
+        </>
+    )
+}
+
+
+export default QuestionBanks

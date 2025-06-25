@@ -32,6 +32,11 @@ function Leads(){
         dispatch(getLeadsContent())
     }, [])
 
+    const leadsSample = [
+        // {first_name: "Mayang Asura", last_name: "Asura", email: "mayang.asura123@gmail.com"},
+        // {first_name: "Nuggy Nugraha", last_name: "Nugraha", email: "nuggynuggraha@gmail.com"}
+    ]
+
     
 
     const getDummyStatus = (index) => {
@@ -67,7 +72,7 @@ function Leads(){
                     </thead>
                     <tbody>
                         {
-                            leads.map((l, k) => {
+                            leadsSample.map((l, k) => {
                                 return(
                                     <tr key={k}>
                                     <td>

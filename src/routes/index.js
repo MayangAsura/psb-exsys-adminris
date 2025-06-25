@@ -1,8 +1,30 @@
 // All components mapping with path for internal routes
 
 import { lazy } from 'react'
+import Accounts from '../features/accounts'
+// import ExamQuestions from '../features/exams/questions/questions'
+// import ExamCreate from '../features/exams/create'
 
 const Dashboard = lazy(() => import('../pages/protected/Dashboard'))
+const Exam = lazy(() => import('../pages/protected/Exams'))
+const ExamDetail = lazy(() => import('../pages/protected/ExamDetail'))
+const ExamCreate = lazy(() => import('../pages/protected/ExamCreate'))
+const ExamEdit = lazy(() => import('../pages/protected/ExamEdit'))
+const ExamParticipant = lazy(() => import('../pages/protected/ExamParticipant'))
+const ExamResponses = lazy(() => import('../pages/protected/ExamResponses'))
+const ExamQuestions = lazy(() => import('../pages/protected/ExamQuestions'))
+const Schedule = lazy(() => import('../pages/protected/Schedules'))
+const ScheduleCreate = lazy(() => import('../pages/protected/ScheduleCreate'))
+const ScheduleDetail = lazy(() => import('../pages/protected/ScheduleDetail'))
+const ScheduleEdit = lazy(() => import('../pages/protected/ScheduleEdit'))
+const ScheduleParticipants = lazy(() => import('../pages/protected/ScheduleParticipants'))
+const ScheduleExams = lazy(() => import('../pages/protected/ScheduleExams'))
+const QuestionBank = lazy(() => import('../pages/protected/QuestionBank'))
+const QuestionBankCreate = lazy(() => import('../pages/protected/QuestionBankCreate'))
+// const QuestionBankEdit = lazy(() => import('../pages/protected/QuestionBankEdit'))
+// const QuestionBankDetail = lazy(() => import('../pages/protected/QuestionBankDetail'))
+const Schools = lazy(() => import('../pages/protected/Schools'))
+const Account = lazy(() => import('../pages/protected/Account'))
 const Welcome = lazy(() => import('../pages/protected/Welcome'))
 const Page404 = lazy(() => import('../pages/protected/404'))
 const Blank = lazy(() => import('../pages/protected/Blank'))
@@ -23,6 +45,78 @@ const routes = [
   {
     path: '/dashboard', // the url
     component: Dashboard, // view rendered
+  },
+  {
+    path: '/exams', // the url
+    component: Exam, // view rendered
+  },
+  {
+    path: '/exams/create', // the url
+    component: ExamCreate, // view rendered
+  },
+  {
+    path: '/exams/edit/:exam_id', // the url
+    component: ExamEdit, // view rendered
+  },
+  {
+    path: '/exams/detail/:exam_id', // the url
+    component: ExamDetail, // view rendered
+  },
+  {
+    path: '/exams/:exam_id/participants', // the url
+    component: ExamParticipant, // view rendered
+  },
+  {
+    path: '/exams/:exam_id/questions', // the url
+    component: ExamQuestions, // view rendered
+  },
+  {
+    path: '/exams/:exam_id/responses', // the url
+    component: ExamResponses, // view rendered
+  },
+  {
+    path: '/schedules', // the url
+    component: Schedule, // view rendered
+  },
+  {
+    path: '/schedules/create', // the url
+    component: ScheduleCreate, // view rendered
+  },
+  {
+    path: '/schedules/edit/:schedule_id', // the url
+    component: ScheduleEdit, // view rendered
+  },
+  {
+    path: '/schedules/detail/:schedule_id', // the url
+    component: ScheduleDetail, // view rendered
+  },
+  {
+    path: '/schedules/:schedule_id/participants', // the url
+    component: ScheduleParticipants, // view rendered
+  },
+  {
+    path: '/schedules/:schedule_id/exams', // the url
+    component: ScheduleExams, // view rendered
+  },
+  {
+    path: '/question-banks', // the url
+    component: QuestionBank, // view rendered
+  },
+  {
+    path: '/question-banks/edit/:qbank_id', // the url
+    component: QuestionBank, // view rendered
+  },
+  {
+    path: '/question-banks/detail/:qbank_id', // the url
+    component: QuestionBank, // view rendered
+  },
+  {
+    path: '/schools', // the url
+    component: Schools, // view rendered
+  },
+  {
+    path: '/accounts', // the url
+    component: Account, // view rendered
   },
   {
     path: '/welcome', // the url

@@ -19,38 +19,100 @@ import UsersIcon from '@heroicons/react/24/outline/UsersIcon'
 import KeyIcon from '@heroicons/react/24/outline/KeyIcon'
 import DocumentDuplicateIcon from '@heroicons/react/24/outline/DocumentDuplicateIcon'
 
+import { MdOutlineTask, MdOutlineDateRange, MdOutlineSchool, MdOutlineAddTask } from "react-icons/md";
+import { TbUserSquareRounded } from "react-icons/tb";
+import { FaFileAlt } from "react-icons/fa";
+
 const iconClasses = `h-6 w-6`
 const submenuIconClasses = `h-5 w-5`
 
 const routes = [
-
   {
-    path: '/app/dashboard',
+    path: '/admin/dashboard',
     icon: <Squares2X2Icon className={iconClasses}/>, 
     name: 'Dashboard',
   },
   {
-    path: '/app/leads', // url
+    path: '/admin/schedules',
+    icon: <MdOutlineDateRange className={iconClasses}/>, 
+    name: 'Jadwal Ujian',
+    // submenu : [
+    //   {
+    //     path: '/admin/scheduled/detail/:schedule_id',
+    //     icon: <ArrowRightOnRectangleIcon className={submenuIconClasses}/>,
+    //     name: 'Login',
+    //   }
+    // ]
+  },
+  {
+    path: '/admin/exams',
+    icon: <FaFileAlt className={iconClasses}/>, 
+    name: 'Ujian',
+    // submenu : [
+    //   {
+    //     path: '/admin/exams/detail/:exam_id',
+    //     icon: <ArrowRightOnRectangleIcon className={submenuIconClasses}/>,
+    //     name: 'Login',
+    //   }
+    // ]
+  },
+  // {
+  //   path: `/app/exams/edit/:exam_id`,
+  //   icon: <Squares2X2Icon className={iconClasses}/>, 
+  //   name: 'Edit Ujian',
+  // },
+  // {
+  //   path: '/app/exams/detail/:exam_id',
+  //   icon: <Squares2X2Icon className={iconClasses}/>, 
+  //   name: 'Detail Ujian',
+  // },
+  {
+    path: '/admin/question-banks',
+    icon: <MdOutlineAddTask className={iconClasses}/>, 
+    name: 'Bank Soal',
+  },
+  // {
+  //   path: '/admin/question-banks/edit/:qbank_id',
+  //   icon: <Squares2X2Icon className={iconClasses}/>, 
+  //   name: 'Bank Soal',
+  // },
+  // {
+  //   path: '/admin/question-banks/detail/:qbank_id',
+  //   icon: <Squares2X2Icon className={iconClasses}/>, 
+  //   name: 'Bank Soal',
+  // },
+  {
+    path: '/admin/schools',
+    icon: <MdOutlineSchool className={iconClasses}/>, 
+    name: 'Jenjang',
+  },
+  {
+    path: '/admin/account',
+    icon: <TbUserSquareRounded className={iconClasses}/>, 
+    name: 'Akun',
+  },
+  {
+    path: '/admin/leads', // url
     icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
     name: 'Leads', // name that appear in Sidebar
   },
   {
-    path: '/app/transactions', // url
+    path: '/admin/transactions', // url
     icon: <CurrencyDollarIcon className={iconClasses}/>, // icon component
     name: 'Transactions', // name that appear in Sidebar
   },
   {
-    path: '/app/charts', // url
+    path: '/admin/charts', // url
     icon: <ChartBarIcon className={iconClasses}/>, // icon component
     name: 'Analytics', // name that appear in Sidebar
   },
   {
-    path: '/app/integration', // url
+    path: '/admin/integration', // url
     icon: <BoltIcon className={iconClasses}/>, // icon component
     name: 'Integration', // name that appear in Sidebar
   },
   {
-    path: '/app/calendar', // url
+    path: '/admin/calendar', // url
     icon: <CalendarDaysIcon className={iconClasses}/>, // icon component
     name: 'Calendar', // name that appear in Sidebar
   },
@@ -76,12 +138,12 @@ const routes = [
         name: 'Forgot Password',
       },
       {
-        path: '/app/blank',
+        path: '/admin/blank',
         icon: <DocumentIcon className={submenuIconClasses}/>,
         name: 'Blank Page',
       },
       {
-        path: '/app/404',
+        path: '/admin/404',
         icon: <ExclamationTriangleIcon className={submenuIconClasses}/>,
         name: '404',
       },
@@ -93,17 +155,17 @@ const routes = [
     name: 'Settings', // name that appear in Sidebar
     submenu : [
       {
-        path: '/app/settings-profile', //url
+        path: '/admin/settings-profile', //url
         icon: <UserIcon className={submenuIconClasses}/>, // icon component
         name: 'Profile', // name that appear in Sidebar
       },
       {
-        path: '/app/settings-billing',
+        path: '/admin/settings-billing',
         icon: <WalletIcon className={submenuIconClasses}/>,
         name: 'Billing',
       },
       {
-        path: '/app/settings-team', // url
+        path: '/admin/settings-team', // url
         icon: <UsersIcon className={submenuIconClasses}/>, // icon component
         name: 'Team Members', // name that appear in Sidebar
       },
@@ -115,17 +177,17 @@ const routes = [
     name: 'Documentation', // name that appear in Sidebar
     submenu : [
       {
-        path: '/app/getting-started', // url
+        path: '/admin/getting-started', // url
         icon: <DocumentTextIcon className={submenuIconClasses}/>, // icon component
         name: 'Getting Started', // name that appear in Sidebar
       },
       {
-        path: '/app/features',
+        path: '/admin/features',
         icon: <TableCellsIcon className={submenuIconClasses}/>, 
         name: 'Features',
       },
       {
-        path: '/app/components',
+        path: '/admin/components',
         icon: <CodeBracketSquareIcon className={submenuIconClasses}/>, 
         name: 'Components',
       }

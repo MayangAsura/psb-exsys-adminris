@@ -1,13 +1,18 @@
 import { useState } from "react"
+// importing styling datepicker
+// import ".. /css/react-datepicker/react-datepicker.css"
+// import { useForm } from "react-hook-form"
 
 
-function InputText({labelTitle, labelStyle, type, containerStyle, defaultValue, placeholder, updateFormValue, updateType}){
+function InputText({labelTitle, labelStyle, register, required, nameInput, type, checked, containerStyle, defaultValue, placeholder, updateFormValue, updateType}){
 
     const [value, setValue] = useState(defaultValue)
+    // const {register, handleSubmit} = useForm()
+    
 
     const updateInputValue = (val) => {
         setValue(val)
-        updateFormValue({updateType, value : val})
+        updateFormValue({updateType, nameInput, value})
     }
 
     return(
@@ -15,7 +20,8 @@ function InputText({labelTitle, labelStyle, type, containerStyle, defaultValue, 
             <label className="label">
                 <span className={"label-text text-base-content " + labelStyle}>{labelTitle}</span>
             </label>
-            <input type={type || "text"} value={value} placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)}className="input  input-bordered w-full " />
+            {/* {...register(nameInput, {required})}  */}
+            <input name={nameInput} type={type || "text"} value={value} checked placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)} className="input  input-bordered w-full " />
         </div>
     )
 }

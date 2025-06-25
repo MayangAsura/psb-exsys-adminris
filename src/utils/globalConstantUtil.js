@@ -3,6 +3,12 @@ module.exports = Object.freeze({
     MODAL_BODY_TYPES : {
         USER_DETAIL : "USER_DETAIL",
         LEAD_ADD_NEW : "LEAD_ADD_NEW",
+        QUESTION_ADD_NEW : "QUESTION_ADD_NEW",
+        QUESTION_EDIT : "QUESTION_EDIT",
+        EXAM_ADD_NEW : "EXAM_ADD_NEW",
+        EXAM_EDIT : "EXAM_EDIT",
+        SCHEDULE_ADD_NEW : "SCHEDULE_ADD_NEW",
+        SCHEDULE_EDIT : "SCHEDULE_EDIT",
         CONFIRMATION : "CONFIRMATION",
         DEFAULT : "",
     },
@@ -14,5 +20,8 @@ module.exports = Object.freeze({
 
     CONFIRMATION_MODAL_CLOSE_TYPES : {
         LEAD_DELETE : "LEAD_DELETE",
+        QUESTION_DELETE : "QUESTION_DELETE",
+        EXAM_DELETE : "EXAM_DELETE",
+        SCHEDULE_DELETE : "SCHEDULE_DELETE",
     },
 });

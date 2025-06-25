@@ -1,0 +1,4 @@
+.input-radio {
+    @apply ring-0;
+    border-radius: 30% !important;
+}
