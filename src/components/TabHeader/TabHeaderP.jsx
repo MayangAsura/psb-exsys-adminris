@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-// import tabHeaderHandlerActiveTab from '../../utils/tabHeaderHandlerActiveTab'
+import {tabHeaderHandlerActiveTab} from '../../utils/tabHeaderHandlerActiveTab'
 
 function TabHeaderP({styleClass, options}) {
 

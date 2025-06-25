@@ -5,7 +5,7 @@ import { themeChange } from 'theme-change'
 import checkAuth from './app/auth';
 import initializeApp from './app/init';
 import { HelmetProvider, Helmet } from 'react-helmet-async'
-import tabHeaderHandlerActiveTab from './utils/tabHeaderHandler'
+import {tabHeaderHandlerActiveTab} from './utils/tabHeaderHandlerActiveTab'
 
 // import "react-datepicker/dist/react-datepicker.css";
 
