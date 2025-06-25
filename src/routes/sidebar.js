@@ -90,109 +90,110 @@ const routes = [
     path: '/admin/account',
     icon: <TbUserSquareRounded className={iconClasses}/>, 
     name: 'Akun',
-  },
-  {
-    path: '/admin/leads', // url
-    icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
-    name: 'Leads', // name that appear in Sidebar
-  },
-  {
-    path: '/admin/transactions', // url
-    icon: <CurrencyDollarIcon className={iconClasses}/>, // icon component
-    name: 'Transactions', // name that appear in Sidebar
-  },
-  {
-    path: '/admin/charts', // url
-    icon: <ChartBarIcon className={iconClasses}/>, // icon component
-    name: 'Analytics', // name that appear in Sidebar
-  },
-  {
-    path: '/admin/integration', // url
-    icon: <BoltIcon className={iconClasses}/>, // icon component
-    name: 'Integration', // name that appear in Sidebar
-  },
-  {
-    path: '/admin/calendar', // url
-    icon: <CalendarDaysIcon className={iconClasses}/>, // icon component
-    name: 'Calendar', // name that appear in Sidebar
-  },
+  }
+  // ,
+  // {
+  //   path: '/admin/leads', // url
+  //   icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
+  //   name: 'Leads', // name that appear in Sidebar
+  // },
+  // {
+  //   path: '/admin/transactions', // url
+  //   icon: <CurrencyDollarIcon className={iconClasses}/>, // icon component
+  //   name: 'Transactions', // name that appear in Sidebar
+  // },
+  // {
+  //   path: '/admin/charts', // url
+  //   icon: <ChartBarIcon className={iconClasses}/>, // icon component
+  //   name: 'Analytics', // name that appear in Sidebar
+  // },
+  // {
+  //   path: '/admin/integration', // url
+  //   icon: <BoltIcon className={iconClasses}/>, // icon component
+  //   name: 'Integration', // name that appear in Sidebar
+  // },
+  // {
+  //   path: '/admin/calendar', // url
+  //   icon: <CalendarDaysIcon className={iconClasses}/>, // icon component
+  //   name: 'Calendar', // name that appear in Sidebar
+  // },
 
-  {
-    path: '', //no url needed as this has submenu
-    icon: <DocumentDuplicateIcon className={`${iconClasses} inline` }/>, // icon component
-    name: 'Pages', // name that appear in Sidebar
-    submenu : [
-      {
-        path: '/login',
-        icon: <ArrowRightOnRectangleIcon className={submenuIconClasses}/>,
-        name: 'Login',
-      },
-      {
-        path: '/register', //url
-        icon: <UserIcon className={submenuIconClasses}/>, // icon component
-        name: 'Register', // name that appear in Sidebar
-      },
-      {
-        path: '/forgot-password',
-        icon: <KeyIcon className={submenuIconClasses}/>,
-        name: 'Forgot Password',
-      },
-      {
-        path: '/admin/blank',
-        icon: <DocumentIcon className={submenuIconClasses}/>,
-        name: 'Blank Page',
-      },
-      {
-        path: '/admin/404',
-        icon: <ExclamationTriangleIcon className={submenuIconClasses}/>,
-        name: '404',
-      },
-    ]
-  },
-  {
-    path: '', //no url needed as this has submenu
-    icon: <Cog6ToothIcon className={`${iconClasses} inline` }/>, // icon component
-    name: 'Settings', // name that appear in Sidebar
-    submenu : [
-      {
-        path: '/admin/settings-profile', //url
-        icon: <UserIcon className={submenuIconClasses}/>, // icon component
-        name: 'Profile', // name that appear in Sidebar
-      },
-      {
-        path: '/admin/settings-billing',
-        icon: <WalletIcon className={submenuIconClasses}/>,
-        name: 'Billing',
-      },
-      {
-        path: '/admin/settings-team', // url
-        icon: <UsersIcon className={submenuIconClasses}/>, // icon component
-        name: 'Team Members', // name that appear in Sidebar
-      },
-    ]
-  },
-  {
-    path: '', //no url needed as this has submenu
-    icon: <DocumentTextIcon className={`${iconClasses} inline` }/>, // icon component
-    name: 'Documentation', // name that appear in Sidebar
-    submenu : [
-      {
-        path: '/admin/getting-started', // url
-        icon: <DocumentTextIcon className={submenuIconClasses}/>, // icon component
-        name: 'Getting Started', // name that appear in Sidebar
-      },
-      {
-        path: '/admin/features',
-        icon: <TableCellsIcon className={submenuIconClasses}/>, 
-        name: 'Features',
-      },
-      {
-        path: '/admin/components',
-        icon: <CodeBracketSquareIcon className={submenuIconClasses}/>, 
-        name: 'Components',
-      }
-    ]
-  },
+  // {
+  //   path: '', //no url needed as this has submenu
+  //   icon: <DocumentDuplicateIcon className={`${iconClasses} inline` }/>, // icon component
+  //   name: 'Pages', // name that appear in Sidebar
+  //   submenu : [
+  //     {
+  //       path: '/login',
+  //       icon: <ArrowRightOnRectangleIcon className={submenuIconClasses}/>,
+  //       name: 'Login',
+  //     },
+  //     {
+  //       path: '/register', //url
+  //       icon: <UserIcon className={submenuIconClasses}/>, // icon component
+  //       name: 'Register', // name that appear in Sidebar
+  //     },
+  //     {
+  //       path: '/forgot-password',
+  //       icon: <KeyIcon className={submenuIconClasses}/>,
+  //       name: 'Forgot Password',
+  //     },
+  //     {
+  //       path: '/admin/blank',
+  //       icon: <DocumentIcon className={submenuIconClasses}/>,
+  //       name: 'Blank Page',
+  //     },
+  //     {
+  //       path: '/admin/404',
+  //       icon: <ExclamationTriangleIcon className={submenuIconClasses}/>,
+  //       name: '404',
+  //     },
+  //   ]
+  // },
+  // {
+  //   path: '', //no url needed as this has submenu
+  //   icon: <Cog6ToothIcon className={`${iconClasses} inline` }/>, // icon component
+  //   name: 'Settings', // name that appear in Sidebar
+  //   submenu : [
+  //     {
+  //       path: '/admin/settings-profile', //url
+  //       icon: <UserIcon className={submenuIconClasses}/>, // icon component
+  //       name: 'Profile', // name that appear in Sidebar
+  //     },
+  //     {
+  //       path: '/admin/settings-billing',
+  //       icon: <WalletIcon className={submenuIconClasses}/>,
+  //       name: 'Billing',
+  //     },
+  //     {
+  //       path: '/admin/settings-team', // url
+  //       icon: <UsersIcon className={submenuIconClasses}/>, // icon component
+  //       name: 'Team Members', // name that appear in Sidebar
+  //     },
+  //   ]
+  // },
+  // {
+  //   path: '', //no url needed as this has submenu
+  //   icon: <DocumentTextIcon className={`${iconClasses} inline` }/>, // icon component
+  //   name: 'Documentation', // name that appear in Sidebar
+  //   submenu : [
+  //     {
+  //       path: '/admin/getting-started', // url
+  //       icon: <DocumentTextIcon className={submenuIconClasses}/>, // icon component
+  //       name: 'Getting Started', // name that appear in Sidebar
+  //     },
+  //     {
+  //       path: '/admin/features',
+  //       icon: <TableCellsIcon className={submenuIconClasses}/>, 
+  //       name: 'Features',
+  //     },
+  //     {
+  //       path: '/admin/components',
+  //       icon: <CodeBracketSquareIcon className={submenuIconClasses}/>, 
+  //       name: 'Components',
+  //     }
+  //   ]
+  // },
   
 ]
 
