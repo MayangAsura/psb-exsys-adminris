@@ -16,6 +16,12 @@ const ForgotPassword = lazy(() => import('./pages/ForgotPassword'))
 const Register = lazy(() => import('./pages/Register'))
 const Documentation = lazy(() => import('./pages/Documentation'))
 
+//Importing landing pages
+const LandingLogin = lazy(() => import('./landing/components/pages/Login/Login'))
+const LandingRegister = lazy(() => import('./landing/components/pages/Register/Register'))
+const Landing = lazy(() => import('./landing/main'))
+const LandingExam = lazy(() => import('./landing/components/pages/Login/Login'))
+
 // Initializing different libraries
 initializeApp()
 
@@ -38,15 +44,20 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/documentation" element={<Documentation />} />
+          <Route path="/ad/login" element={<Login />} />
+          <Route path="/ad/forgot-password" element={<ForgotPassword />} />
+          <Route path="/ad/register" element={<Register />} />
+          <Route path="/ad/documentation" element={<Documentation />} />
           
-          {/* Place new routes over this */}
-          <Route path="/admin/*" element={<Layout />} />
+          {/* Place new routes admin over this*/}
+          <Route path="/ad/*" element={<Layout />} />
+          {/* Place new routes user over this */}
+          <Route path="/login" element={<LandingLogin />} />
+          <Route path="/register" element={<LandingRegister />} />
+          <Route path="/landing" element={<Landing />} />
+          <Route path="/exam" element={<LandingExam />} />
 
-          <Route path="*" element={<Navigate to={token ? "/admin/welcome" : "/login"} replace />}/>
+          <Route path="*" element={<Navigate to={token ? "/ad/welcome" : "/ad/login"} replace />}/>
 
         </Routes>
       </Router>

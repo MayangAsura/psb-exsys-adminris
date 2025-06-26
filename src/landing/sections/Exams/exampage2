@@ -1,0 +1,196 @@
+<main id="main" data-aos="fade-up">
+  <!-- ======= Breadcrumbs ======= -->
+  <section class="breadcrumbs">
+    <div class="container">
+
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Halaman Asesmen</h2>
+        <ol>
+          <li><i class="icofont-tasks"></i></li>
+          <?php if($this->model->get_kelas_aktif()): ?>
+          <li><?= $this->model->get_kelas_aktif()['nama']?></li>
+          <?php endif;  ?>
+          <li><?= $this->model->get_pendaftar()['nama'] ?></li>
+          <li>Asesmen</li>
+        </ol>
+      </div>
+
+    </div>
+  </section><!-- End Breadcrumbs -->
+
+  <section class="inner-page">
+    <div class="section-title">
+      <h2>Asesmen Tersedia </h2>
+      <!-- <h2>Asesmen Tersedia (<?= count($this->model->get_all_asesmen()) ?>)</h2> -->
+    </div>
+    <div class="container">
+      <div class="row justify-content-center align-items-center mb-5">
+        <div class="col-md-12 col-sm-12 col-lg-12">
+          <?php if (isset($_SESSION['message'])) : ?>
+            <div class="alert alert-<?= $_SESSION['message']['style'] ?>"><?= $_SESSION['message']['content'] ?></div>
+            <?php unset($_SESSION['message']); ?>
+          <?php endif; ?>
+        </div>
+      </div>
+
+      <div class="row mb-3 justify-content-center">
+        <?php if ($this->model->get_current_nilai()) : ?>
+          <?php foreach ($data['data'] as $row) : ?>
+
+            <div class="col-md-8">
+              <div class="box_c">
+                <p> <u><i> Anda Sudah Mengerjakan <b><?= $row['nama'] ?></b> </i> </u> </p>
+              </div>
+            </div>
+
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </div>
+
+      <div class="row justify-content-between align-items-center">
+        <div class="col-lg-12">
+          <div class="service_part_iner">
+            <div class="row">
+              <?php // var_dump($this->model->get_all_asesmen());die(); 
+              if (!$this->model->get_all_asesmen()) :  
+                // $this->model->get_pendaftar()['nama']=='usernamexx'? var_dump($this->model->get_all_asesmen()):'';
+                // var_dump($this->model->get_pendaftar()['nama']);
+                ?>
+                <div class="col-12 pt-5 pb-5">
+                  <div class="blog_right_sidebar text-center">
+                    <h4>Belum ada asesmen untuk saat ini</h4>
+                  </div>
+                </div>
+              <?php endif; ?>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+            <div class="accordion" id="accordionExample">
+              <!-- <div class="card">
+                <div class="card-header" id="headingOne">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      Collapsible Group Item #1
+                    </button>
+                  </h2>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                  <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                  </div>
+                </div>
+              </div> -->
+              <div class="card">
+                <div class="card-header" id="headingTwo">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      Collapsible Group Item #2
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                  <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="card">
+                <div class="card-header" id="headingThree">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                      Collapsible Group Item #3
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                  <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            </div>
+            </div>
+
+            <div class="row">
+              <div class="section_c">
+                <div class="custom-container-large">
+                  <!-- <div class="section-title">
+                    <h4 class="large-heading section-title">Pertanyaan yang sering ditanyakan</h4>
+                  </div> -->
+                  <div class="accordion-container" id="accordionExample">
+                    <div class="accordion-item" >
+                      <div class="accordion-item-title" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        <h6 class="accordion-heading">Apakah ada pilihan materi yang harus saya pilih?</h6>
+                        <!-- <img src="https://global-uploads.webflow.com/5f0d53c042a9ed6288de7f8d/5f0d53c0f629075d600d5216_icon-chevron-down.svg" alt="" class="accordion-arrow"/> -->
+                      </div>
+                      <div class="accordion-item-content-wrapper" id="collapseOne" data-parent="#accordionExample">
+                        <div class="accordion-item-content">
+                          <div class="text-block-14">Tidak, Hacktiv8 memberikan materi full-stack JavaScript yang meliputi masalah yang umum terjadi di dunia kerja.</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <div class="accordion-item-title" id="headingThree">
+                        <h6 class="accordion-heading collapsed" data-toggle="collapse" data-target="#collapseThree" aria-controls="collapseThree">Apa yang harus saya persiapkan jika saya diterima?</h6>
+                        <img src="https://global-uploads.webflow.com/5f0d53c042a9ed6288de7f8d/5f0d53c0f629075d600d5216_icon-chevron-down.svg" alt="" class="accordion-arrow"/>
+                      </div>
+                      <div class="accordion-item-content-wrapper" id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="accordion-item-content">
+                          <div class="text-block-16">Kamu setidaknya harus meluangkan waktu kurang lebih 9 jam per hari selama 5-6 hari seminggu untuk mengikuti Full Stack Immersive, dan<br/>4 jam per hari selama 5-6 hari seminggu untuk mengikuti Full Stack Flex serta pastikan kamu <strong>memiliki laptop sendiri</strong>.</div>
+                        </div>
+                      </div>
+                    </div>
+                
+                  </div>
+                </div>
+              </div>
+                        
+            </div>
+
+
+            <div class="row">
+              <?php if($this->model->get_all_asesmen()): ?>
+                <?php for($i=0;$i<count($this->model->get_all_asesmen());$i++): ?>
+                <?php  foreach ($this->model->get_all_asesmen()[$i] as $row) : ?>
+                  <?php 
+                    $asesmen_susulan = $this->model->get_asesmen_susulan($this->model->get_pendaftar()['id'], $this->model->get_kelas_aktif()['id']);
+                    foreach($asesmen_susulan as $s):
+                      if($row['id'] ==  $s->asesmen_id): 
+                      if(date('Y-m-d H:i:s') >= $s->dimulai_pada && date('Y-m-d H:i:s') <=  $s->ditutup_pada ):
+                        ?>
+                      <h4 class="p-3">Asesmen Susulan</h4>
+                      <div class="col-12 pb-5">
+                        <aside class="single_sidebar_widget newsletter_widget">
+                          <h4>[<?= $row['tipe'] ?>] <?= $row['nama'] ?></h4>
+                          <p><?= nl2br($row['keterangan']) ?></p>
+                          <p><b>Batas Akhir : </b><?= date('Y-m-d', strtotime($s->ditutup_pada)) == date('Y-m-d') ? "Hari ini " . date('H:i', strtotime($s->ditutup_pada)) : date('d/m/Y H:i', strtotime($s->ditutup_pada)) ?></p>
+                          <hr>
+                          <a href="<?= site_url('asesmen/' . $row['kode']) ?>" class="btn btn-primary w-100" type="submit">LIHAT ASESMEN</a>
+                        </aside>
+                      </div>
+                  <?php endif; endif; endforeach;?>
+                  <?php if(date('Y-m-d H:i:s') >= $row['dimulai_pada'] && date('Y-m-d H:i:s') <=  $row['ditutup_pada'] ): ?>
+                  <h4 class="p-3">Asesmen Baru</h4>
+                  <div class="col-12 pb-5">
+                      <aside class="single_sidebar_widget newsletter_widget">
+                        <h4>[<?= $row['tipe'] ?>] <?= $row['nama'] ?></h4>
+                        <p><?= nl2br($row['keterangan']) ?></p>
+                        <p><b>Batas Akhir : </b><?= date('Y-m-d', strtotime($row['ditutup_pada'])) == date('Y-m-d') ? "Hari ini " . date('H:i', strtotime($row['ditutup_pada'])) : date('d/m/Y H:i', strtotime($row['ditutup_pada'])) ?></p>
+                        <hr>
+                        <a href="<?= site_url('asesmen/' . $row['kode']) ?>" class="btn btn-primary w-100" type="submit">LIHAT ASESMEN</a>
+                      </aside>
+                  </div>
+                  <?php endif;
+                  endforeach; endfor; endif;?>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+

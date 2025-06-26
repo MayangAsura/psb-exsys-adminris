@@ -68,7 +68,7 @@ function InternalPage(){
                                     <p className=" css-zuhd6s">Nama</p>
                                 </div>
                                 <div className="flex flex-wrap gap-1 -mt-2">{test.name} </div> */}
-                                <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2 "><div className="css-4o3x93"><p className=" css-zuhd6s">Skema</p></div><div className="css-4o3x93"><p className="font-semibold badge-primary rounded-2xl py-1 px-2 css-1pj8jfk">{test.test_scheme} </p></div></div></div>
+                                <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2 "><div className="css-4o3x93"><p className=" css-zuhd6s">Skema</p></div><div className="css-4o3x93"><p className="font-semibold badge-primary rounded-2xl py-1 px-2 css-1pj8jfk">{test.scheme} </p></div></div></div>
                                 <div className="w-full flex flex-col md:flex-row gap-y-4 md:gap-y-0">
                                     <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
                                         <p className=" css-zuhd6s">Waktu Mulai</p>
@@ -85,7 +85,7 @@ function InternalPage(){
                                     <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
                                         <p className=" css-zuhd6s">Tipe</p>
                                         </div>
-                                    <div className="css-4o3x93"><p className="w-fit h-fit font-semibold css-1bq9ewv">{test.test_type} </p></div>
+                                    <div className="css-4o3x93"><p className="w-fit h-fit font-semibold css-1bq9ewv">{test.question_type} </p></div>
                                     </div>
                                     {/* <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
                                         <p className=" css-zuhd6s">Lokasi</p>

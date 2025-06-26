@@ -72,7 +72,7 @@ function TabHeader({styleClass, options}) {
                     </svg>
                     <span className="ml-1 font-normal">Detail</span>
                     </div>
-                    <div className="w-full h-1 bg-indigo-700 rounded-t-md"></div>
+                    <div className="w-full h-1 bg-green-700 rounded-t-md"></div>
                 </button>
                 <button onclick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-indigo-700 text-sm border-indigo-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-indigo-700 cursor-pointer">
                     <div className="flex items-center mb-3">
@@ -84,7 +84,7 @@ function TabHeader({styleClass, options}) {
                     </svg> */}
                     <span className="ml-1 font-normal">Peserta</span>
                     </div>
-                    <div className="w-full h-1 bg-indigo-700 rounded-t-md hidden"></div>
+                    <div className="w-full h-1 bg-green-700 rounded-t-md hidden"></div>
                 </button>
                 <button onclick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-indigo-700 text-sm border-indigo-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-indigo-700 cursor-pointer">
                     <div className="flex items-center mb-3">
@@ -97,7 +97,7 @@ function TabHeader({styleClass, options}) {
                     </svg> */}
                     <span className="ml-1 font-normal">Jawaban</span>
                     </div>
-                    <div className="w-full h-1 bg-indigo-700 rounded-t-md hidden"></div>
+                    <div className="w-full h-1 bg-green-700 rounded-t-md hidden"></div>
                 </button>
                 </div>
             </div>

@@ -43,7 +43,7 @@ function ScheduleEdit(){
     const [selectedOption, setSelectedOption] = useState(null);
     const checked = false
     const {register, handleSubmit} = useForm()
-    const {id} = useParams()
+    const {id} = useParams().schedule_id
 
 
     useEffect( () => {
@@ -88,7 +88,7 @@ function ScheduleEdit(){
 
     const getExam = async (id) => {
         let { data: exam, error } = await supabase
-            .from('exam_tests')
+            .from('exam_schedules')
             .select('*')
             .eq('id', id)
             console.log(exam[0])

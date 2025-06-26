@@ -95,8 +95,9 @@ function ExamQuestions(){
     
         let { data: exam_test_contents, error } = await supabase
             .from('exam_test_contents')
-            .select('*, exam_tests(name), exam_schedule_tests(exam_schedule_schools(schools(school_name)))')
+            .select('* ')
             .eq('id', id)
+            // exam_tests(name, exam_schedule_tests(exam_schedules(exam_schedule_schools(schools(school_name)))))
 
         if(!error){
         setExamQuestions(exam_test_contents)

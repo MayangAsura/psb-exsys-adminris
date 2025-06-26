@@ -58,7 +58,7 @@ function TabHeaderE({styleClass, options}) {
             </div>
             <div className="xl:w-full xl:mx-0 h-12 hidden sm:block shadow rounded">
                 <div className="flex border-b px-5">
-                <button onclick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-indigo-700 text-sm border-indigo-700 pt-3 rounded-t text-indigo-700 mr-12 cursor-pointer">
+                <button onclick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t text-green-700 mr-12 cursor-pointer">
                     <div className="flex items-center mb-3">
                     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-home" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" />
@@ -68,9 +68,9 @@ function TabHeaderE({styleClass, options}) {
                     </svg>
                     <span className="ml-1 font-normal">Detail</span>
                     </div>
-                    <div className="w-full h-1 bg-indigo-700 rounded-t-md"></div>
+                    <div className="w-full h-1 bg-green-700 rounded-t-md"></div>
                 </button>
-                <button onclick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-indigo-700 text-sm border-indigo-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-indigo-700 cursor-pointer">
+                <button onclick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-green-700 cursor-pointer">
                     <div className="flex items-center mb-3">
                     {/* <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-eye" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" />
@@ -80,9 +80,9 @@ function TabHeaderE({styleClass, options}) {
                     </svg> */}
                     <span className="ml-1 font-normal">Ujian</span>
                     </div>
-                    <div className="w-full h-1 bg-indigo-700 rounded-t-md hidden"></div>
+                    <div className="w-full h-1 bg-green-700 rounded-t-md hidden"></div>
                 </button>
-                <button onclick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-indigo-700 text-sm border-indigo-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-indigo-700 cursor-pointer">
+                <button onclick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-green-700 cursor-pointer">
                     <div className="flex items-center mb-3">
                     {/* <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-eye" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" />
@@ -92,9 +92,9 @@ function TabHeaderE({styleClass, options}) {
                     </svg> */}
                     <span className="ml-1 font-normal">Peserta</span>
                     </div>
-                    <div className="w-full h-1 bg-indigo-700 rounded-t-md hidden"></div>
+                    <div className="w-full h-1 bg-green-700 rounded-t-md hidden"></div>
                 </button>
-                {/* <button onclick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-indigo-700 text-sm border-indigo-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-indigo-700 cursor-pointer">
+                {/* <button onclick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-green-700 cursor-pointer">
                     <div className="flex items-center mb-3">
                         <TbUsersGroup></TbUsersGroup>
                     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-eye" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -105,7 +105,7 @@ function TabHeaderE({styleClass, options}) {
                     </svg>
                     <span className="ml-1 font-normal">Kehadiran</span>
                     </div>
-                    <div className="w-full h-1 bg-indigo-700 rounded-t-md hidden"></div>
+                    <div className="w-full h-1 bg-green-700 rounded-t-md hidden"></div>
                 </button> */}
                 </div>
             </div>

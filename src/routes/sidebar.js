@@ -28,29 +28,29 @@ const submenuIconClasses = `h-5 w-5`
 
 const routes = [
   {
-    path: '/admin/dashboard',
+    path: '/ad/dashboard',
     icon: <Squares2X2Icon className={iconClasses}/>, 
     name: 'Dashboard',
   },
   {
-    path: '/admin/schedules',
+    path: '/ad/schedules',
     icon: <MdOutlineDateRange className={iconClasses}/>, 
     name: 'Jadwal Ujian',
     // submenu : [
     //   {
-    //     path: '/admin/scheduled/detail/:schedule_id',
+    //     path: '/ad/scheduled/detail/:schedule_id',
     //     icon: <ArrowRightOnRectangleIcon className={submenuIconClasses}/>,
     //     name: 'Login',
     //   }
     // ]
   },
   {
-    path: '/admin/exams',
+    path: '/ad/exams',
     icon: <FaFileAlt className={iconClasses}/>, 
     name: 'Ujian',
     // submenu : [
     //   {
-    //     path: '/admin/exams/detail/:exam_id',
+    //     path: '/ad/exams/detail/:exam_id',
     //     icon: <ArrowRightOnRectangleIcon className={submenuIconClasses}/>,
     //     name: 'Login',
     //   }
@@ -67,53 +67,53 @@ const routes = [
   //   name: 'Detail Ujian',
   // },
   {
-    path: '/admin/question-banks',
+    path: '/ad/question-banks',
     icon: <MdOutlineAddTask className={iconClasses}/>, 
     name: 'Bank Soal',
   },
   // {
-  //   path: '/admin/question-banks/edit/:qbank_id',
+  //   path: '/ad/question-banks/edit/:qbank_id',
   //   icon: <Squares2X2Icon className={iconClasses}/>, 
   //   name: 'Bank Soal',
   // },
   // {
-  //   path: '/admin/question-banks/detail/:qbank_id',
+  //   path: '/ad/question-banks/detail/:qbank_id',
   //   icon: <Squares2X2Icon className={iconClasses}/>, 
   //   name: 'Bank Soal',
   // },
   {
-    path: '/admin/schools',
+    path: '/ad/schools',
     icon: <MdOutlineSchool className={iconClasses}/>, 
     name: 'Jenjang',
   },
   {
-    path: '/admin/account',
+    path: '/ad/account',
     icon: <TbUserSquareRounded className={iconClasses}/>, 
     name: 'Akun',
   }
   // ,
   // {
-  //   path: '/admin/leads', // url
+  //   path: '/ad/leads', // url
   //   icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
   //   name: 'Leads', // name that appear in Sidebar
   // },
   // {
-  //   path: '/admin/transactions', // url
+  //   path: '/ad/transactions', // url
   //   icon: <CurrencyDollarIcon className={iconClasses}/>, // icon component
   //   name: 'Transactions', // name that appear in Sidebar
   // },
   // {
-  //   path: '/admin/charts', // url
+  //   path: '/ad/charts', // url
   //   icon: <ChartBarIcon className={iconClasses}/>, // icon component
   //   name: 'Analytics', // name that appear in Sidebar
   // },
   // {
-  //   path: '/admin/integration', // url
+  //   path: '/ad/integration', // url
   //   icon: <BoltIcon className={iconClasses}/>, // icon component
   //   name: 'Integration', // name that appear in Sidebar
   // },
   // {
-  //   path: '/admin/calendar', // url
+  //   path: '/ad/calendar', // url
   //   icon: <CalendarDaysIcon className={iconClasses}/>, // icon component
   //   name: 'Calendar', // name that appear in Sidebar
   // },
@@ -139,12 +139,12 @@ const routes = [
   //       name: 'Forgot Password',
   //     },
   //     {
-  //       path: '/admin/blank',
+  //       path: '/ad/blank',
   //       icon: <DocumentIcon className={submenuIconClasses}/>,
   //       name: 'Blank Page',
   //     },
   //     {
-  //       path: '/admin/404',
+  //       path: '/ad/404',
   //       icon: <ExclamationTriangleIcon className={submenuIconClasses}/>,
   //       name: '404',
   //     },
@@ -156,17 +156,17 @@ const routes = [
   //   name: 'Settings', // name that appear in Sidebar
   //   submenu : [
   //     {
-  //       path: '/admin/settings-profile', //url
+  //       path: '/ad/settings-profile', //url
   //       icon: <UserIcon className={submenuIconClasses}/>, // icon component
   //       name: 'Profile', // name that appear in Sidebar
   //     },
   //     {
-  //       path: '/admin/settings-billing',
+  //       path: '/ad/settings-billing',
   //       icon: <WalletIcon className={submenuIconClasses}/>,
   //       name: 'Billing',
   //     },
   //     {
-  //       path: '/admin/settings-team', // url
+  //       path: '/ad/settings-team', // url
   //       icon: <UsersIcon className={submenuIconClasses}/>, // icon component
   //       name: 'Team Members', // name that appear in Sidebar
   //     },
@@ -178,17 +178,17 @@ const routes = [
   //   name: 'Documentation', // name that appear in Sidebar
   //   submenu : [
   //     {
-  //       path: '/admin/getting-started', // url
+  //       path: '/ad/getting-started', // url
   //       icon: <DocumentTextIcon className={submenuIconClasses}/>, // icon component
   //       name: 'Getting Started', // name that appear in Sidebar
   //     },
   //     {
-  //       path: '/admin/features',
+  //       path: '/ad/features',
   //       icon: <TableCellsIcon className={submenuIconClasses}/>, 
   //       name: 'Features',
   //     },
   //     {
-  //       path: '/admin/components',
+  //       path: '/ad/components',
   //       icon: <CodeBracketSquareIcon className={submenuIconClasses}/>, 
   //       name: 'Components',
   //     }

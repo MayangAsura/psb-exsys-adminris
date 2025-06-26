@@ -1,0 +1,349 @@
+<link rel="stylesheet" href="<?= base_url('assets/backend/vendors/summernote/summernote-lite.css') ?>">
+<script src="<?= base_url('assets/backend/vendors/summernote/summernote-lite.min.js') ?>"></script>
+<style>
+  .custom-template .custom-toggle {
+    position: fixed;
+    width: 100px;
+    height: auto;
+    padding: 5px;
+    top: 35%;
+    z-index: 1000;
+    right: 0px;
+    background: #0c0c0c !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    font-size: 18px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .custom-template .custom-toggle {
+      font-size: 14px;
+      padding: 5px;
+      top: 27%;
+    }
+  }
+</style>
+<main id="main" data-aos="fade-up">
+  <!-- ======= Breadcrumbs ======= -->
+  <section class="breadcrumbs">
+    <div class="container">
+
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Halaman Asesmen</h2>
+        <ol>
+          <li><i class="icofont-tasks"></i></li>
+          <li>Asesmen</li>
+          <li><?= $data['kode'] ?></li>
+        </ol>
+      </div>
+
+    </div>
+  </section><!-- End Breadcrumbs -->
+
+  <section class="inner-page">
+    <div class="section-title">
+      <h2><?= $data['nama'] ?></h2>
+    </div>
+    <div class="container">
+      <div class="row justify-content-center align-items-center mb-5">
+        <div class="col-md-12 col-sm-12 col-lg-12">
+          <?php if (isset($_SESSION['message'])) : ?>
+            <div class="alert alert-<?= $_SESSION['message']['style'] ?>"><?= $_SESSION['message']['content'] ?></div>
+            <?php unset($_SESSION['message']); ?>
+          <?php endif; ?>
+        </div>
+      </div>
+      <div class="row justify-content-between align-items-center">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-12">
+              <div class="blog_right_sidebar">
+                <aside class="single_sidebar_widget newsletter_widget">
+                <?php $asesmen_susulan = $this->model->get_asesmen_susulan($this->model->get_pendaftar()['id'], $this->model->get_kelas_aktif()['id']); 
+                if($asesmen_susulan!=[]): 
+                  foreach ($asesmen_susulan as $row) : 
+                   if($row->asesmen_id == $data['id']) :
+                  ?>
+                  <p class="pt-2 pb-2"><b>Keterangan : </b><?= nl2br($data['keterangan']) ?></p>
+                  <p><b>Batas Akhir : </b><?= date('Y-m-d', strtotime($row->ditutup_pada)) == date('Y-m-d') ? "Hari ini " . date('H:i', strtotime($row->ditutup_pada)) : date('d/m/Y H:i', strtotime($row->ditutup_pada)) ?></p>
+                <?php endif;
+                  endforeach;  ?>
+                <?php else: ?>
+                  <p><?= MT::tanggal_indo($data['tanggal'], true) ?></p>
+                  <p class="pt-2 pb-2"><b>Keterangan : </b><?= nl2br($data['keterangan']) ?></p>
+                  <p><b>Batas Akhir : </b><?= date('Y-m-d', strtotime($data['ditutup_pada'])) == date('Y-m-d') ? "Hari ini " . date('H:i', strtotime($data['ditutup_pada'])) : date('d/m/Y H:i', strtotime($data['ditutup_pada'])) ?></p>
+                <?php endif;?>
+                  
+
+                  <hr>
+                  <!-- <form method="post" action="<?= site_url('frontend/submit_asesmen') ?>"> -->
+                  <form id="myForm">
+                    <input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>">
+                    <input type="hidden" name="asesmen_id" value="<?= $data['id'] ?>">
+                    
+                    <?php if ($data['tipe'] == 'ABSEN') : ?>
+                      <div>
+                        <!-- <input type="hidden" name="tipe" value="ABSEN">
+                        <input type="hidden" name="valid" value="1"> -->
+                        <button type="submit" id="_mySubmitAbsen" name="submit" class="btn btn-primary">Absen Kehadiran</button>
+                      </div>
+                    <?php endif; ?>
+
+                    <?php if ($data['tipe'] == 'TUGAS') : ?>
+                      <div>
+                        <input type="hidden" name="tipe" value="TUGAS">
+                        <div class="form-group">
+                          <p class="pt-2 pb-3"><?= $data['detail'] ?></p>
+                        </div>
+                        <div class="form-group">
+                          <textarea name="detail" rows="5" class="form-control summernote"></textarea>
+                        </div>
+                        <button type="submit" id="mySubmit" name="submit" class="btn btn-primary">Kirim Tugas</button>
+                      </div>
+                    <?php endif; ?>
+
+                    <?php if ($data['tipe'] == 'SOAL') : ?>
+                      <?php $soal = json_decode($data['detail'], true) ?>
+                      <?php if (!isset($_SESSION['asesmen']['dimulai_pada'])) : ?>
+                        <p class="pt-2 pb-3">Berikut ini tata tertib terkait asesmen soal</p>
+                        <ol>
+                          <li>Berdoa dan memohon taufik kepada Allah sebelum memulai</li>
+                          <li>Harap jujur dan tidak curang dalam mengerjakan soal-soal ini</li>
+                          <li>Jumlah soal adalah <?= count($soal) ?></li>
+                          <li>Waktu ujian adalah <?= $data['waktu'] ?> detik</li>
+                          <li>Sangat tidak dianjurkan untuk merefresh halaman karena akan memotong waktu</li>
+                          <li>Jika waktu habis maka akan otomatis submit</li>
+                        </ol>
+                        <div class="text-center">
+                          <button id="startUjian" type="button" class="btn btn-outline-primary">Mulai Ujian</button>
+                        </div>
+                      <?php endif; ?>
+                      
+                      <?php if (isset($_SESSION['asesmen']['dimulai_pada']) && $_SESSION['asesmen']['dimulai_pada']) : ?>
+                        <div>
+                          <input type="hidden" name="tipe" value="SOAL">
+                          <div class="form-group">
+                            <table class="table table-striped table-bordered table-head-bg-primary" style="width:100%;">
+                              <?php $i = 1; ?>
+                              <?php foreach ($soal as $key => $row) : ?>
+                                <tr>
+                                  <td style="width: 3%;text-align: center;"><?= $row['nomor'] ? $row['nomor'] : $i++ ?>.</td>
+                                  <td style="width: 97%;"><?= nl2br($row['soal']) ?></td>
+                                </tr>
+                                <tr>
+                                  <td></td>
+                                  <td>
+                                    <?php $j = "a"; ?>
+                                    <?php foreach ($row['notes'] as $selection) : ?>
+                                      <label class="mb-0 pr-5" style="white-space: normal!important;">
+                                        <input name="detail[<?= $key ?>][answer]" type="radio" value="<?= $selection['key'] ?>"> 
+                                        <?= $selection['id'] ? $selection['id'] : $j++ ?>. <?= $selection['text'] ?>
+                                      </label>
+                                    <?php endforeach; ?>
+                                  </td>
+                                </tr>
+                              <?php endforeach; ?>
+                            </table>
+                          </div>
+                          <button type="submit" name="submit" id="mySubmit" class="btn btn-primary">Kirim Hasil</button>
+                        </div>
+                      <?php endif; ?>
+                    <?php endif; ?>
+                  </form>
+                  <!-- <button type="submit" name="submit" id="mySubmit" class="btn btn-primary">Kirim Hasil</button> -->
+                </aside>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+      <div class="modal fade" id="modalForm" role="dialog" aria-labelledby="modalForm" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <h5 class="modal-title text-white" id="demoModalView">Masukkan Kode Presensi</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body pb-0">
+              <form id="myForm">
+                <div class="row">
+                  <input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>">
+                  <input type="hidden" name="asesmen_id" value="<?= $data['id'] ?>">
+                    
+                  <?php if ($data['tipe'] == 'ABSEN') : ?>
+                    <div>
+                      <input type="hidden" name="tipe" value="ABSEN">
+                      <input type="hidden" name="valid" value="1">
+                    </div>
+                  <?php endif; ?>
+                  <div class="col-sm-12 form-group">
+                    <input type="text" name="detail" id="detail" class="form-control form-control-sm" placeholder="" >
+                  </div>
+                
+              
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="_save" class="btn btn-primary btn-sm btn-block" type="button">Simpan</button>
+              <!-- <button type="button" class="btn btn-sm btn-primary btn-border" data-dismiss="modal">Keluar</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+<script>
+  var csrf_key = '<?= $this->security->get_csrf_token_name() ?>';
+  var csrf_token = $.cookie(csrf_key);
+  $('.summernote').summernote({
+    height: 400,
+    toolbar: [
+      ['style', ['style']],
+      ['font', ['bold', 'italic', 'underline', 'clear']],
+      ['fontname', ['fontname']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['height', ['height']],
+      ['table', ['table']],
+      ['insert', ['link', 'picture']],
+      ['view', ['fullscreen', 'codeview']],
+      ['help', ['help']]
+    ],
+  });
+  $('#startUjian').click(function() {
+    var query = {
+      start: 1
+    };
+    query[csrf_key] = csrf_token;
+    $.ajax({
+      url: "<?= site_url(['frontend/json_start_ujian']) ?>",
+      type: 'post',
+      dataType: 'json',
+      data: query,
+      success: function(data) {
+        if (data.title == 'BERHASIL') {
+          location.reload();
+        }
+      }
+    });
+  });
+</script>
+<?php if (isset($_SESSION['asesmen']['dimulai_pada']) && $_SESSION['asesmen']['dimulai_pada']) : 
+  ?>
+  <div class="custom-template">
+    <div class="custom-toggle"><span class="icofont-clock-time"></span><br><span id="timer" style="padding-bottom: 2px;"><?= ltrim(gmdate("i : s", $data['waktu']), 0) ?></span></div>
+  </div>
+  
+  <script>
+    $(document).ready(function(){
+      var countDownDate = <?= $data['waktu'] - (strtotime(date('Y-m-d H:i:s')) - strtotime($_SESSION['asesmen']['dimulai_pada'])) ?>;
+      // Update the count down every 1 second
+      var x = setInterval(function() {
+        countDownDate -= 1;
+        var distance = countDownDate;
+        // Time calculations for days, hours, minutes and seconds
+        var minutes = Math.floor(distance / (60));
+        var seconds = Math.floor((distance % (60)));
+        // Display the result in the element with id="demo"
+        document.getElementById("timer").innerHTML = minutes + " : " + seconds;
+        // If the count down is finished, write some text 
+        if (distance < 0) {
+          clearInterval(x);
+          document.getElementById("timer").innerHTML = "Waktu Habis";
+          document.getElementById("_mySubmit").click();
+        }
+      }, 1000);
+    });
+  </script>
+<?php endif; ?>
+<script>
+  var click = 0;
+  // $('#_mySubmitAbsen').click(function() {
+  //   click++;
+  //   if (click > 1) {
+  //     $('#_mySubmitAbsen').prop('disabled', true).html("Menyimpan...");
+  //   }
+  // });
+
+  //$(document).on('keydown', 'input.class_selector', function(ev) {
+  jQuery(document).on('keydown', 'input.class_selector', function(ev) {
+      if(ev.key === 'Enter') {
+        if($('#tipe').val()=='ABSEN'){
+          save_presensi()
+        }
+      }
+  });
+
+  $('#_mySubmitAbsen').click(function(e) {
+    e.preventDefault();
+    // $('#_mySubmitAbsen').prop("disabled", true).html('Menyimpan...');
+
+    $('#modalForm').modal('show');
+
+    $('#_save').click(function() {
+
+      save_presensi()
+
+    })
+
+  });
+
+  function save_presensi(){
+
+    var query = $('form#myForm').serializeObject();
+      console.log('DATA : ')
+      console.log(query)
+      query[csrf_key] = csrf_token;
+      $.ajax({
+        type: 'POST',
+        url: '<?= site_url('/submit') ?>',
+        data: query,
+        dataType: 'JSON',
+        cache: false,
+        success: function(data) {
+          console.log('success')
+          console.log(data)
+          if (data.title === 'BERHASIL') {
+  
+            $('#modalForm').modal('hide');
+            swal({
+              title: 'Presensi Terkirim',
+              text: '',
+              icon: "success",
+              buttons: {
+                confirm: {
+                  className: 'btn btn-primary btn-sm'
+                }
+              }
+            }).then((value) => {
+              // swal(`The returned value is: ${value}`);
+              // .$kelas_id.'/'.$silabus_id'
+              window.location.href="<?= site_url('kelas-silabus/') ?>";
+            });
+          
+          } else {
+            swal({
+              title: 'Gagal',
+              text: data.message,
+              icon: "error",
+              buttons: {
+                confirm: {
+                  className: 'btn btn-primary btn-sm'
+                }
+              }
+            });
+          }
+        }
+      });
+
+  }
+</script>

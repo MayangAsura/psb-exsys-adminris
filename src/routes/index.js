@@ -6,7 +6,7 @@ import Accounts from '../features/accounts'
 // import ExamCreate from '../features/exams/create'
 
 const Dashboard = lazy(() => import('../pages/protected/Dashboard'))
-const Exam = lazy(() => import('../pages/protected/Exams'))
+const Exams = lazy(() => import('../pages/protected/Exams'))
 const ExamDetail = lazy(() => import('../pages/protected/ExamDetail'))
 const ExamCreate = lazy(() => import('../pages/protected/ExamCreate'))
 const ExamEdit = lazy(() => import('../pages/protected/ExamEdit'))
@@ -25,6 +25,12 @@ const QuestionBankCreate = lazy(() => import('../pages/protected/QuestionBankCre
 // const QuestionBankDetail = lazy(() => import('../pages/protected/QuestionBankDetail'))
 const Schools = lazy(() => import('../pages/protected/Schools'))
 const Account = lazy(() => import('../pages/protected/Account'))
+
+const Landing = lazy(() => import('../landing/components/pages/Landing/main'))
+const Exam = lazy(() => import('../landing/components/pages/ExamPage/ExamPage'))
+const FrontLogin = lazy(() => import('../landing/components/pages/Login/Login'))
+const FrontRegister = lazy(() => import('../landing/components/pages/Register/Register'))
+
 const Welcome = lazy(() => import('../pages/protected/Welcome'))
 const Page404 = lazy(() => import('../pages/protected/404'))
 const Blank = lazy(() => import('../pages/protected/Blank'))
@@ -48,7 +54,7 @@ const routes = [
   },
   {
     path: '/exams', // the url
-    component: Exam, // view rendered
+    component: Exams, // view rendered
   },
   {
     path: '/exams/create', // the url
@@ -121,6 +127,26 @@ const routes = [
   {
     path: '/welcome', // the url
     component: Welcome, // view rendered
+  },
+  // {
+  //   path: '/lanfing', // the url
+  //   component: A, // view rendered
+  // },
+  {
+    path: '/exam', // the url
+    component: Exam, // view rendered
+  },
+  {
+    path: '/landing', // the url
+    component: Landing, // view rendered
+  },
+  {
+    path: '/login',
+    component: FrontLogin,
+  },
+  {
+    path: '/register',
+    component: FrontRegister,
   },
   {
     path: '/leads',

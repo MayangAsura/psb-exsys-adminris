@@ -13,7 +13,7 @@ import {
 import { TbUserSquareRounded } from "react-icons/tb";
 import profile from "../../../images/profile.jpg";
 
-import supabase from "../../../services/database/database";
+import supabase from "../../services/database/database";
 
 const socials = [
   {

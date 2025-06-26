@@ -10,6 +10,7 @@ import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../utils/gl
 
 import supabase from "../../services/database-server"
 import { useNavigate } from "react-router-dom"
+import EyeIcon from "@heroicons/react/24/outline/EyeIcon"
 
 const TopSideButtons = () => {
 
@@ -141,7 +142,7 @@ function Schedules(){
                             schedules.map((l, k) => {
                                 return(
                                     <tr key={k}>
-                                    <td className="font-bold"> {l.name}</td>    
+                                    <td className="font-bold text-white"> {l.name}</td>    
                                     {/* <td>
                                         <div className="flex items-center space-x-3">
                                             <div className="avatar">
@@ -156,14 +157,14 @@ function Schedules(){
                                     </td> */}
                                     <td>{formatDateNew(l.started_at)}</td>
                                     <td>{formatDateNew(l.ended_at)}</td>
-                                    <td>{l.numofparticipants}</td>
-                                    <td></td>
+                                    <td>{l.max_participants}</td>
+                                    <td>{l.max_participants}</td>
                                     {/* <td>{getRoleComponent(l.role)}</td> */}
                                     <td>{formatDateNew(l.updated_at)}</td>
                                     <td>
-                                        <button className="btn btn-square btn-ghost" onClick={() => detailCurrentSchedule(l.id)}><PencilIcon className="w-5"/></button>
-                                        <button className="btn btn-square btn-ghost" onClick={() => editCurrentSchedule(l.id)}><PencilIcon className="w-5"/></button>
-                                        <button className="btn btn-square btn-ghost" onClick={() => deleteCurrentSchedule(l.id)}><TrashIcon className="w-5"/></button>
+                                        <button className="btn btn-sm btn-square btn-ghost" onClick={() => detailCurrentSchedule(l.id)}><EyeIcon className="w-5"/></button>
+                                        <button className="btn btn-sm btn-square btn-ghost" onClick={() => editCurrentSchedule(l.id)}><PencilIcon className="w-5"/></button>
+                                        <button className="btn btn-sm btn-square btn-ghost" onClick={() => deleteCurrentSchedule(l.id)}><TrashIcon className="w-5"/></button>
                                     </td>
                                     </tr>
                                 )

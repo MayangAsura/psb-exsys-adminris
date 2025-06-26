@@ -6,7 +6,7 @@ import supabase from "../../services/database-server"
 
 import DocumentIcon  from '@heroicons/react/24/solid/DocumentIcon'
 
-import TabHeaderSP from '../../components/TabHeader/TabHeaderSP'
+import TabHeaderP from '../../components/TabHeader/TabHeaderP'
 import { useParams } from 'react-router-dom'
 
 function ExamParticipants(){
@@ -24,8 +24,8 @@ function ExamParticipants(){
     const getExamParticipants = async(id) => {
     
         let { data: exam_responses, error } = await supabase
-            .from('exam_test_responses')
-            .select('*, exam_tests(name), exam_profiles(full_name, regist_number), exam_schedule_tests(exam_schedule_schools(schools(school_name)))')
+            .from('exam_test_participants')
+            .select('*, exam_tests(name), exam_profiles(full_name, regist_number, phone_number)')
             .eq('id', id)
 
         if(!error){
@@ -73,7 +73,7 @@ function ExamParticipants(){
             <TitleCard title="Peserta" topMargin="mt-2" >
             {/* UJIAN */}
                 {/* Team Member list in table format loaded constant */}
-                <TabHeaderSP></TabHeaderSP>
+                <TabHeaderP></TabHeaderP>
             <div className="overflow-x-auto w-full">
                 <table className="table w-full">
                     <thead>
@@ -81,9 +81,9 @@ function ExamParticipants(){
                         {/* <th>Icon</th> */}
                         <th>No. Registrasi</th>
                         <th>Nama</th>
-                        <th>Jenjang</th>
-                        <th>Skor</th>
-                        <th>Tanggal Submit</th>
+                        <th>No. WhatsApp</th>
+                        {/* <th>Skor</th>
+                        <th>Tanggal Submit</th> */}
                         {/* <th>Lokasi</th>
                         <th>Update Terakhir</th> */}
                     </tr>

@@ -15,7 +15,7 @@ function ScheduleParticipants(){
     const [trans, setTrans] = useState("")
     const [ExamParticipants, setExamParticipants] = useState([])
 
-    const id = useParams().exam_id
+    const id = useParams().schedule_id
     useEffect(() => {
         getExamParticipants(id)
         console.log(ExamParticipants)
@@ -24,8 +24,8 @@ function ScheduleParticipants(){
     const getExamParticipants = async(id) => {
     
         let { data: exam_responses, error } = await supabase
-            .from('exam_test_responses')
-            .select('*, exam_tests(name), exam_profiles(full_name, regist_number), exam_schedule_tests(exam_schedule_schools(schools(school_name)))')
+            .from('exam_test_participants')
+            .select('*, exam_tests(name, exam_schedule_tests(exam_schedules(exam_schedule_schools(schools(school_name))))), exam_profiles(full_name, regist_number)')
             .eq('id', id)
 
         if(!error){

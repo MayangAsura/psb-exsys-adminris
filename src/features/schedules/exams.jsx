@@ -15,7 +15,7 @@ function ScheduleExams(){
     const [trans, setTrans] = useState("")
     const [scheduleExams, setScheduleExams] = useState([])
 
-    const id = useParams().exam_id
+    const id = useParams().schedule_id
     useEffect(() => {
         getScheduleExams(id)
         console.log(scheduleExams)
@@ -24,7 +24,7 @@ function ScheduleExams(){
     const getScheduleExams = async(id) => {
     
         let { data: exam_responses, error } = await supabase
-            .from('exam_schedule_test')
+            .from('exam_schedule_tests')
             .select('*, exam_tests(name, scheme, question_type))')
             .eq('exam_schedule_id', id)
 

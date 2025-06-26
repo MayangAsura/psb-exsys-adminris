@@ -8,12 +8,14 @@ import FunnelIcon from '@heroicons/react/24/outline/FunnelIcon'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 import TrashIcon from '@heroicons/react/24/outline/TrashIcon'
 import PencilIcon from '@heroicons/react/24/outline/PencilIcon'
+import { FaTasks } from "react-icons/fa";
 import { openModal } from "../common/modalSlice"
 import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../utils/globalConstantUtil'
 
 import SearchBar from "../../components/Input/SearchBar"
 import supabase from "../../services/database-server"
 import { useNavigate } from "react-router-dom"
+import EyeIcon from "@heroicons/react/24/outline/EyeIcon"
 
 const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
 
@@ -165,9 +167,10 @@ function Exams(){
                                     <td>
                                         <div className="flex items-center space-x-3">
                                             <div className="avatar">
-                                                <div className="mask mask-circle w-12 h-12">
-                                                    <img src={l.icon} alt="Avatar" />
-                                                </div>
+                                                {/* <div className="mask mask-circle w-12 h-12"> */}
+                                                    <FaTasks className="rounded-lg bg-green-100 p-2 font-bold w-8 h-8 text-green-300"></FaTasks>
+                                                    {/* <img src= alt="Avatar" /> */}
+                                                {/* </div> */}
                                             </div>
                                             {/* <div>
                                                 <div className="font-bold">{l.name}</div>
@@ -175,14 +178,14 @@ function Exams(){
                                         </div>
                                     </td>
                                     <td><div className="font-bold">{l.name}</div></td>
-                                    <td><div className="badge-primary font-semibold rounded-2xl w-16 py-1 px-2">{l.test_scheme}</div> </td>
+                                    <td><div className="badge-primary font-semibold rounded-2xl w-16 py-1 px-2">{l.scheme}</div> </td>
                                     {/* <td>{l.test_schedule}</td> */}
                                     <td>Ujian Seleksi Jenjang SDIT</td>
                                     {/* <td>{l.exam_schedules_test[0].exam_schedules.name}</td> */}
                                     <td>{l.room}</td>
                                     <td>{l.updated_at}</td>
                                     <td>
-                                        <button className="btn btn-square btn-ghost" onClick={() => detailCurrentExam(l.id)}><PencilIcon className="w-5"/></button>
+                                        <button className="btn btn-square btn-ghost" onClick={() => detailCurrentExam(l.id)}><EyeIcon className="w-5"/></button>
                                         <button className="btn btn-square btn-ghost" onClick={() => editCurrentData(l.id)}><PencilIcon className="w-5"/></button>
                                         <button className="btn btn-square btn-ghost" onClick={() => deleteCurrentData(l.id)}><TrashIcon className="w-5"/></button>
                                     </td>

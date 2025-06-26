@@ -6,7 +6,7 @@ import supabase from "../../services/database-server"
 
 import DocumentIcon  from '@heroicons/react/24/solid/DocumentIcon'
 
-import TabHeaderSP from '../../components/TabHeader/TabHeaderSP'
+import TabHeaderSR from '../../components/TabHeader/TabHeaderSR'
 import { useParams } from 'react-router-dom'
 
 function ExamResponses(){
@@ -73,7 +73,7 @@ function ExamResponses(){
             <TitleCard title="Peserta" topMargin="mt-2" >
             {/* UJIAN */}
                 {/* Team Member list in table format loaded constant */}
-                <TabHeaderSP></TabHeaderSP>
+                <TabHeaderSR></TabHeaderSR>
             <div className="overflow-x-auto w-full">
                 <table className="table w-full">
                     <thead>

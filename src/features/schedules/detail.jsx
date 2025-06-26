@@ -65,8 +65,8 @@ function InternalPage(){
                                 </div>
                                 <div className="flex flex-wrap gap-1 -mt-2">{test.name} </div>  */}
                                 <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2"><div className="css-4o3x93"><p className="w-full css-zuhd6s">Jumlah Peserta</p></div>
-                                <div className="css-4o3x93"><p className="">{test.numofparticipants} </p></div></div></div>
-                                <div className="w-full flex flex-col md:flex-row gap-y-24 md:gap-y-24">
+                                <div className="css-4o3x93"><p className="">{test.max_participants} </p></div></div></div>
+                                <div className="w-full flex flex-col md:flex-row gap-y-52 md:gap-y-64">
                                     <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
                                         <p className=" css-zuhd6s">Waktu Mulai</p>
                                         </div>
