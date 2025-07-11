@@ -2,8 +2,9 @@ import Header from "../../Header"
 import Footer from "../../sections/Footer/Footer"
 
 // import nl2br from
-const ExamPage = ({data}) =>{
+const ExamPage = (props) =>{
 
+return (
 
 <main className="min-w-lg min-h-screen relative bg-gray-50 pb-10">
       <Header />
@@ -19,7 +20,7 @@ const ExamPage = ({data}) =>{
                             <table className="table table-striped table-bordered table-head-bg-primary" style="width:100%;">
                               {/* <?php $i = 1; ?> */}
                               {/* <?php foreach ($soal as $key => $row) : ?> */}
-                              {data.map( (e, index) => (
+                              {props.data.map( (e, index) => (
                                 <>
                                 <tr>
                                   <td style="width: 3%;text-align: center;">{e.order? e.order : index}. </td>
@@ -102,5 +103,8 @@ const ExamPage = ({data}) =>{
       </div>
       <Footer />
     </main>
+)
 
 }
+
+export default ExamPage

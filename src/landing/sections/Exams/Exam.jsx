@@ -126,9 +126,7 @@ const Exam = () => {
     if(!error){
       setExamData(exam_tests)
     }
-
-    // console.log(exam_tests)
-          
+    // console.log(exam_tests)     
   }
 
   // const ExamList = examData.map((e) => (

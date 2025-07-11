@@ -11,10 +11,9 @@ import {
   FaUserCircle
 } from "react-icons/fa";
 import { TbUserSquareRounded } from "react-icons/tb";
-import { MdOutlineCoPresent } from 'react-icons/tb'
+import { MdOutlineCoPresent } from 'react-icons/md'
 import profile from "../../../images/profile.jpg";
 import supabase from "../../../services/database/database";
-import { application } from "express";
 
 
 const socials = [
@@ -60,7 +59,7 @@ const socials = [
   },
 ];
 
-const Presence = ({id}) => {
+const Presence = (props) => {
 
   const [applicantPresence, setApplicantPresence] = useState({})
 
@@ -70,16 +69,18 @@ const Presence = ({id}) => {
   //   },[])
 
     useEffect(() =>{
-      getPresenceData(id)
+      getPresenceData(props.id, props.sid)
       console.log(applicantPresence)
-    },[id])
+    },[props.id, props.sid])
 
-    const getPresenceData = async(id) => {
+    const getPresenceData = async(id, sid) => {
     
         let { data: exam_presences, error } = await supabase
             .from('exam_presences')
-            .eq('id', id)
-            .select('*')
+            .select('*, exam_schedules(started_at, ended_at)')
+            .eq('appl_id', id)
+            .eq('exam_schedule_id', sid)
+            // .eq('dele', sid)
 
         if(!error){
           setApplicantPresence(exam_presences[0])
@@ -134,40 +135,41 @@ const Presence = ({id}) => {
 
   // const []
   return (
-    <aside className=" bg-white group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md -mt-40">
-        <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-purple-100 text-purple-600 transition duration-200 group-hover:bg-purple-600 group-hover:text-white">
+    <aside className=" bg-white group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md mt-10">
+        <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-green-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
           <MdOutlineCoPresent/>
           {/* {icon} */}
         </div>
       <div className="flex justify-between items-center">
-        <div className="flex flex-none">
+        <div className="flex flex-col gap-2 my-10 mt-5">
           <p className="text-sm ">Jadwal Ujian</p>
-          <span className="badge mt-0 mb-0 badge-ghost">{`${formatDateNew(applicantPresence.started_at) - formatDateNew(applicantPresence.ended_at)}`} </span>
+          <span className="text-lg text-gray-100 badge border-none mt-0 mb-0 bg-green-80 py-3 px-5">{formatDateNew(new Date().toISOString()) }</span>
+          {/* {`${formatDateNew(applicantPresence.exam_schedules.started_at) - formatDateNew(applicantPresence.exam_schedules.ended_at)}`}  */}
         </div>
-        <div className="flex flex-1 justify-items-end">
+        <div className="flex flex-col justify-items-end">
           <p className="text-sm ">Kehadiran</p>
-          <span className="badge mt-0 mb-0 badge-ghost">{formatDateNew(applicantPresence.presence_at)}</span>
+          <span className="text-lg text-gray-100 badge border-none mt-0 mb-0 bg-green-80 py-3 px-5">{formatDateNew(applicantPresence.presence_at??new Date().toISOString())}</span>
           
         </div>
       </div>
       {/* <div className="w-24 h-24 rounded-md overflow-hidden mx-auto mb-5">
         <img src={profile} alt="shafiqhammad" className="w-full" />
       </div> */}
-      <div className="flex ">
-        <div className="flex-none flex-col ">
-          <p className="text-xl text-gray-800 w-52 font-bold mb-1">{applicantPresence.queue_number} </p>
+      <div className="flex justify-center items-center">
+        <div className="ml-5 flex-1 items-end mt-5">
+          <p className="text-4xl text-gray-800 w-52 font-bold mb-1">{applicantPresence.queue_number?? 123} </p>
           <p className="text-sm text-gray-400 mb-3"> 
             No. Urut
-            {/* <a href="#0" className="text-purple-600 pl-1">
+            {/* <a href="#0" className="text-green-600 pl-1">
               Abc Company
             </a> */}
           </p>
         </div>
-        <div className="flex-1 flex-col">
-          <h1 className="text-xl text-gray-800 font-bold mb-1">{getStatusText(applicantPresence.status)} </h1>
+        <div className="flex-1 items-start">
+          <h1 className="text-4xl text-gray-800 font-bold mb-1">{getStatusText(applicantPresence.status?? 'Belum Tuntas')} </h1>
           <p className="text-sm text-gray-400 mb-3"> 
             Status Tahapan Seleksi
-            {/* <a href="#0" className="text-purple-600 pl-1">
+            {/* <a href="#0" className="text-green-600 pl-1">
               Abc Company
             </a> */}
           </p>
@@ -176,13 +178,13 @@ const Presence = ({id}) => {
         {/* <h1 className="text-xl text-gray-800 font-bold mb-1">{applicantPresence.queue_number} </h1>
         <p className="text-sm text-gray-400 mb-3">
           Frontend Web Developer at
-          <a href="#0" className="text-purple-600 pl-1">
+          <a href="#0" className="text-green-600 pl-1">
             Abc Company
           </a>
         </p>
         <a
           href="#0"
-          className="inline-block mb-3 rounded bg-purple-600 text-center border-0 py-2 px-6 text-white leading-7 tracking-wide hover:bg-purple-800"
+          className="inline-block mb-3 rounded bg-green-600 text-center border-0 py-2 px-6 text-white leading-7 tracking-wide hover:bg-green-800"
           download="Resume"
         >
           Download Resume

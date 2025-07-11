@@ -7,20 +7,22 @@ import Exam from "../../sections/Exams/Exam";
 import Header from "../../Header";
 
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useState } from "react";
 
 function App() {
-  
+  const [applicant, setApplicant] = useState({id: "", sid: ""})
   return (
-    <main className="min-w-lg min-h-screen relative bg-gray-50 pb-10" style={{ maxWidth:390 }}>
+    // style={{ maxWidth:390 }}
+    <main className="min-w-lg min-h-screen relative bg-gray-50 pb-10" >
       <Header />
       {/* <ProfileCover /> */}
       <div className="container px-4">
         <div className="flex flex-wrap px-4">
           <div className="w-full lg:w-1/3 ">
-            <Profile />
+            <Profile id={applicant.id} sid={applicant.sid}/>
           </div>
           <div className="w-full lg:w-2/3 ">
-            <Exam />
+            <Exam id={applicant.id} sid={applicant.sid} />
             {/* <Navbar /> */}
           </div>
         </div>

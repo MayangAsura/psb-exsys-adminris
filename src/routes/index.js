@@ -2,6 +2,7 @@
 
 import { lazy } from 'react'
 import Accounts from '../features/accounts'
+// import MCExam from '../landing/components/sections/Exams/MCExam'
 // import ExamQuestions from '../features/exams/questions/questions'
 // import ExamCreate from '../features/exams/create'
 
@@ -30,6 +31,8 @@ const Landing = lazy(() => import('../landing/components/pages/Landing/main'))
 const Exam = lazy(() => import('../landing/components/pages/ExamPage/ExamPage'))
 const FrontLogin = lazy(() => import('../landing/components/pages/Login/Login'))
 const FrontRegister = lazy(() => import('../landing/components/pages/Register/Register'))
+const MCExam = lazy(() => import('../landing/components/sections/Exams/MCExam'))
+// const FrontRegister = lazy(() => import('../landing/components/pages/Register/Register'))
 
 const Welcome = lazy(() => import('../pages/protected/Welcome'))
 const Page404 = lazy(() => import('../pages/protected/404'))
@@ -147,6 +150,14 @@ const routes = [
   {
     path: '/register',
     component: FrontRegister,
+  },
+  {
+    path: 'u/exam/:id/show',
+    component: MCExam,
+  },
+  {
+    path: '/u/exam/:id/start',
+    component: MCExam,
   },
   {
     path: '/leads',

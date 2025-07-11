@@ -48,3 +48,28 @@ body {
     transform: rotate(360deg);
   }
 }
+
+  .custom-template .custom-toggle {
+    position: fixed;
+    max-width: 32rem;
+    height: auto;
+    padding: 5px;
+    top: 35%;
+    z-index: 1000;
+    right: 0px;
+    background: #0c0c0c !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    font-size: 18px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .custom-template .custom-toggle {
+      font-size: 14px;
+      padding: 5px;
+      top: 27%;
+    }
+  }

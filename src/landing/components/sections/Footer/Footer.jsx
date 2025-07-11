@@ -5,14 +5,14 @@ const Footer = () => {
     <footer className="bg-white p-4 absolute bottom-0 left-0 w-full">
       <div className="container px-4">
         <p className="text-sm text-gray-400 text-center">
-          Designed and Developed by
+          Copyright @
           <a
-            className="text-purple-600"
-            href="https://uideck.com/"
+            className="text-green-600"
+            href="https://rabbaanii.sch.id/"
             rel="nofollow"
           >
             {" "}
-            UIdeck
+            Rabbaanii Islamic School
           </a>
         </p>
       </div>

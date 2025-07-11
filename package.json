@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^9.5.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@heroicons/react": "^2.0.13",
+    "@mui/icons-material": "^7.1.2",
+    "@mui/material": "^7.1.2",
     "@reduxjs/toolkit": "^1.9.0",
     "@supabase/supabase-js": "^2.50.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -84,9 +88,19 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.8",
+    "assert": "^2.1.0",
     "autoprefixer": "^10.4.13",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.1",
     "daisyui": "^4.4.19",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
     "postcss": "^8.4.19",
-    "tailwindcss": "^3.3.6"
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "tailwindcss": "^3.3.6",
+    "url": "^0.11.4"
   }
 }

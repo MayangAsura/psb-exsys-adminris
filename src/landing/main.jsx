@@ -10,25 +10,34 @@ import '../index-user.css'
 
 
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useEffect, useState } from "react";
 
 function App() {
-  
+
+  const [applicant, setApplicant] = useState({id: "133c032c-6903-4e25-a2db-579d431fe6b4", sid: "d17ff676-85d2-4f9e-88f1-0fdfb37517b9"})
+  useEffect(()=> {
+    // getApplicant()
+  }, [])
+  // const getApplicant = () =>{
+    
+  // }
   return (
     <main className="min-h-screen relative bg-gray-50 pb-10" >
-      {/* style={{ maxWidth:390 }} */}
       <Header />
-      {/* <ProfileCover /> */}
+      {/* style={{ maxWidth:390 }} */}
+      <ProfileCover />
       <div className="container px-4">
         <div className="flex flex-wrap px-4">
-          <div className="w-full lg:w-1/3 mb-">
-            <Profile />
+          <div className="w-full lg:w-1/3 mb-5 my">
+            <Profile id={applicant.id} sid={applicant.sid} />
           </div>
           <div className="w-full lg:w-2/3 ">
-            <Presence />
+            <Presence id={applicant.id} sid={applicant.sid} />
+            <Exam id={applicant.id} sid={applicant.sid} />
             {/* <Navbar /> */}
           </div>
           {/* <div className="w-full lg:w-2/3 ">
-            <Exam />
+            
             <Navbar />
           </div> */}
         </div>

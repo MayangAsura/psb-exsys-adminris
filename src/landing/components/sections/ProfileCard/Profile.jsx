@@ -58,20 +58,21 @@ const socials = [
   },
 ];
 
-const Profile = () => {
+const Profile = (props) => {
 
   const [applicant, setApplicant] = useState({})
 
   useEffect(() => {
-        getExamData()
+        getExamData(props.id, props.sid)
         console.log(applicant)
-    },[])
+    },[props.id, props.sid])
 
-    const getExamData = async() => {
+    const getExamData = async(id, sid) => {
     
         let { data: exam_profiles, error } = await supabase
-            .from('exam_profiles')
-            .select('*')
+                      .from('exam_profiles')
+                      .select('*')
+                      .eq('appl_id', id)
 
         if(!error){
         setApplicant(exam_profiles[0])
@@ -82,7 +83,7 @@ const Profile = () => {
 
   // const []
   return (
-    <aside className=" bg-white group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md mt-40">
+    <aside className=" bg-white group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md mt-10">
         <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-purple-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
           <TbUserSquareRounded/>
           {/* {icon} */}
@@ -131,27 +132,27 @@ const Profile = () => {
                         <dl className="text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                             <div className="flex flex-col pb-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Nama Calon Santri</dt>
-                                <dd className="text-lg font-semibold">{applicant.full_name} </dd>
+                                <dd className="text-lg text-gray-500 md:text-lg dark:text-gray-400 font-semibold">{applicant.full_name?? 'Andi'} </dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Lahir di</dt>
-                                <dd className="text-lg font-semibold">{applicant.pob}</dd>
+                                <dd className="text-lg text-gray-500 md:text-lg dark:text-gray-400 font-semibold">{applicant.pob?? "Lampung"}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Alamat</dt>
-                                <dd className="text-lg font-semibold">{applicant.address}</dd>
+                                <dd className="text-lg text-gray-500 md:text-lg dark:text-gray-400 font-semibold">{applicant.address?? "Lampung Selatan"}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Nama Ayah</dt>
-                                <dd className="text-lg font-semibold">{applicant.father_name}</dd>
+                                <dd className="text-lg text-gray-500 md:text-lg dark:text-gray-400 font-semibold">{applicant.father_name?? "Father Name"}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">No. WA</dt>
-                                <dd className="text-lg font-semibold">{applicant.phone_number}</dd>
+                                <dd className="text-lg text-gray-500 md:text-lg dark:text-gray-400 font-semibold">{applicant.phone_number?? "-"}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">IP Address</dt>
-                                <dd className="text-lg font-semibold">{applicant.ip}</dd>
+                                <dd className="text-lg text-gray-500 md:text-lg dark:text-gray-400 font-semibold">{applicant.ip?? "123.123.123.123"}</dd>
                             </div>
                         </dl>
                     </div>

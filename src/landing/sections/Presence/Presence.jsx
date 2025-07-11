@@ -59,7 +59,7 @@ const socials = [
   },
 ];
 
-const Presence = () => {
+const Presence = (props) => {
 
   const [applicantPresence, setApplicantPresence] = useState({})
 
@@ -69,16 +69,16 @@ const Presence = () => {
   //   },[])
 
     useEffect(() =>{
-      getPresenceData()
+      getPresenceData(props.id)
       console.log(applicantPresence)
-    },[])
+    },[props.id])
 
-    const getPresenceData = async() => {
+    const getPresenceData = async(id) => {
     
         let { data: exam_presences, error } = await supabase
             .from('exam_presences')
-            .eq('id', '')
-            .select('*')
+            .select('*, exam_schedule_tests(started_at, ended_at)')
+            .eq('id', id)
 
         if(!error){
           setApplicantPresence(exam_presences[0])
@@ -133,7 +133,7 @@ const Presence = () => {
 
   // const []
   return (
-    <aside className="sticky top-0 bg-white group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md -mt-40">
+    <aside className=" bg-white group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md mt-20">
         <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-purple-100 text-purple-600 transition duration-200 group-hover:bg-purple-600 group-hover:text-white">
           <MdCoPresent/>
           {/* {icon} */}
@@ -141,7 +141,7 @@ const Presence = () => {
       <div className="flex justify-between items-center">
         <div className="flex flex-none">
           <p className="text-sm ">Jadwal Ujian</p>
-          <span className="badge mt-0 mb-0 badge-ghost">{`${formatDateNew(applicantPresence.started_at) - formatDateNew(applicantPresence.ended_at)}`} </span>
+          <span className="badge mt-0 mb-0 badge-ghost">{`${formatDateNew(applicantPresence.exam_schedule_tests[0].started_at) - formatDateNew(applicantPresence[0].ended_at)}`} </span>
         </div>
         <div className="flex flex-1 justify-items-end">
           <p className="text-sm ">Kehadiran</p>

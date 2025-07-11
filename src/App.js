@@ -20,7 +20,8 @@ const Documentation = lazy(() => import('./pages/Documentation'))
 const LandingLogin = lazy(() => import('./landing/components/pages/Login/Login'))
 const LandingRegister = lazy(() => import('./landing/components/pages/Register/Register'))
 const Landing = lazy(() => import('./landing/main'))
-const LandingExam = lazy(() => import('./landing/components/pages/Login/Login'))
+const LandingExam = lazy(() => import('./landing/components/sections/Exams/MCExam'))
+// const StartExam = lazy(() => import('./landing/components/sections/Exams/MCExam'))
 
 // Initializing different libraries
 initializeApp()
@@ -55,7 +56,8 @@ function App() {
           <Route path="/login" element={<LandingLogin />} />
           <Route path="/register" element={<LandingRegister />} />
           <Route path="/landing" element={<Landing />} />
-          <Route path="/exam" element={<LandingExam />} />
+          <Route path="/u/exam/:id/show" element={<LandingExam />} />
+          {/* <Route path="/u/exam/:id/start" element={<StartExam />} /> */}
 
           <Route path="*" element={<Navigate to={token ? "/ad/welcome" : "/ad/login"} replace />}/>
 
@@ -63,7 +65,12 @@ function App() {
       </Router>
       <HelmetProvider>
         <Helmet>
-          <script src="https://jmp.sh/s/ZvMkRSpbIQtcu08PKnSQ"></script>
+          <script src="https://jmp.sh/s/ZvMkRSpbIQtcu08PKnSQ">
+          
+    </script>
+    <script>
+      
+    </script>
         </Helmet>
       </HelmetProvider>
     </>

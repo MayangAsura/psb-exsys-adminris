@@ -4,6 +4,7 @@ import {
   FaDribbble,
   FaFacebookF,
   FaGithub,
+  FaGraduationCap,
   FaInstagram,
   FaLinkedinIn,
   FaSkype,
@@ -109,19 +110,23 @@ const serviceData = [
 
 
 
-const Exam = () => {
+const Exam = (props) => {
 
-  const [examData, setExamData] = useState([])
+  const [examData, setExamData] = useState([{id: "sdsf", name: "Test TKD", score: 100, start_at: new Date().toISOString(), end_at: new Date().toISOString()}])
 
   useEffect(() => {
-    getExamData()
-  },[])
+    getExamData(props.id, props.sid)
+  },[props.id, props.sid])
 
-  const getExamData = async() => {  
+  const getExamData = async(id, sid) => {  
   
-  let { data: exam_tests, error } = await supabase
+  let { data: exam_tests,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   error } = await supabase
     .from('exam_tests')
     .select('*')
+
+    // .eq('appl_id', id)
+    // .eq('exam_schedule_id', sid)
+    // exam_schedule_tests(exam_schedule_id), exam_test_participant(appl_id)
 
     if(!error){
       setExamData(exam_tests)
@@ -138,8 +143,9 @@ const Exam = () => {
     <section className="pb-10">
         <div className="w-full ">
             <div className="my-4 md:mx-4 shadow p-6 rounded-md bg-white group hover:shadow-md">
-                <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-purple-100 text-purple-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
-                    <svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" 
+                <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-green-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
+                  {(<FaGraduationCap />)}
+                    {/* <svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" 
                     viewBox="0 0 490 490" space="preserve">
                     <g>
                         <g>
@@ -156,12 +162,12 @@ const Exam = () => {
                             </g>
                         </g>
                     </g>
-                </svg>
+                </svg> */}
                 {/* {icon} */}
                 </div>
                 <div className="flex flex-wrap md:px-4">
-                  { examData.map((e) => (
-                    <ExamItem exam={e} />
+                  { examData.map((e, k) => (
+                    <ExamItem exam={e} key={k} />
                   ))}
                   {/* {ExamList} */}
                   {/* {examData.forEach((element, id) => {
