@@ -126,14 +126,14 @@ function Exams(){
     
         }
     const editCurrentData = (index) => {
-        navigate(`/admin/exams/edit/${index}`)
+        navigate(`/ad/exams/edit/${index}`)
         // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_EDIT}))
         // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
         // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
 
     }
     const detailCurrentExam = (index) => {
-        navigate(`/admin/exams/detail/${index}`)
+        navigate(`/ad/exams/detail/${index}`)
         // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_DETAIL}))
         // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
         // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))

@@ -102,14 +102,14 @@ function Schedules(){
     }
 
     const editCurrentSchedule = (index) => {
-        navigate(`/admin/schedules/edit/${index}`)
+        navigate(`/ad/schedules/edit/${index}`)
         // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.SCHEDULE_EDIT}))
         // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
         // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
 
     }
     const detailCurrentSchedule = (index) => {
-        navigate(`/admin/schedules/detail/${index}`)
+        navigate(`/ad/schedules/detail/${index}`)
         // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_DETAIL}))
         // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
         // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
