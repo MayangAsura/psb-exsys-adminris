@@ -19,7 +19,7 @@ const TopSideButtons = () => {
     // const []
 
     const addNewSchedule = () => {
-        navigate('/admin/schedules/create')
+        navigate('/ad/schedules/create')
         // const index= 2
         // dispatch(openModal({title : "Test Modal Title", bodyType : MODAL_BODY_TYPES.TEST_MODAL, 
         //     extraObject : { message : `Are you sure you want to delete this lead?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.TEST_MODAL_DELETE, index}}))

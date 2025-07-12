@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { setPageTitle } from '../../features/common/headerSlice'
 import TitleCard from '../../components/Cards/TitleCard'
 import supabase from "../../services/database-server"
+import { tabHeaderHandlerActiveTab } from '../../utils/tabHeaderHandlerActiveTab'
 
 import DocumentIcon  from '@heroicons/react/24/solid/DocumentIcon'
 
