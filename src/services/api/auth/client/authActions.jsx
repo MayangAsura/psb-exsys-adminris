@@ -1,6 +1,7 @@
 // import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import axios from '../../services/api/local-server'
+import axios from '../../../../services/api/server/local-server'
+// import axios from '../../services/api/server/prod-server'
 // import axios from '../../service/api/prod-server'
 
 // const backendURL = import.meta.env.VITE_SERVER_URL? import.meta.env.VITE_SERVER_URL : 'http://localhost:3000'
@@ -38,7 +39,7 @@ export const userLogin = createAsyncThunk(
   }
 )
 export const userLogout = createAsyncThunk(
-  'auth/logout',
+  'api/auth/logout',
   async () => {
     try {
 
@@ -52,7 +53,7 @@ export const userLogout = createAsyncThunk(
       }
 
       const { data } = await axios.get(
-        `${backendURL}/auth/logout`,
+        `api/auth/logout`,
         // { username, password },
         config
       )
@@ -88,7 +89,7 @@ export const registerUser = createAsyncThunk(
       }
 
       await axios.post(
-        `${backendURL}/api/user/register`,
+        `/api/user/register`,
         { firstName, email, password },
         config
       )

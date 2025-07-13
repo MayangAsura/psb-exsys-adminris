@@ -4,6 +4,8 @@ module.exports = Object.freeze({
         USER_DETAIL : "USER_DETAIL",
         LEAD_ADD_NEW : "LEAD_ADD_NEW",
         QUESTION_ADD_NEW : "QUESTION_ADD_NEW",
+        MODAL_SUCCESS : "MODAL_SUCCESS",
+        MODAL_ERROR : "MODAL_ERROR",
         QUESTION_EDIT : "QUESTION_EDIT",
         EXAM_ADD_NEW : "EXAM_ADD_NEW",
         EXAM_EDIT : "EXAM_EDIT",

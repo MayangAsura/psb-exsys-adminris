@@ -1,10 +1,148 @@
 
+import React, {useState, useEffect} from "react"
+import { useNavigate } from "react-router-dom"
 import ModalLayout from "../../../../containers/ModalLayout"
 import Header from "../../Header"
 import Footer from "../../sections/Footer/Footer"
+import { useDispatch, useSelector } from "react-redux"
+import { userLogin } from "../../../../services/api/auth/client/authActions"
+import { openModal } from "../../../../features/common/modalSlice"
+import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../../../utils/globalConstantUtil'
+import '../../../../index-user.css'
+import axios from '../../../../services/api/local-server'
+
+import { TbEye, TbEyeOff } from "react-icons/tb";
 
 const Login = () =>{
-  // const 
+  
+  // const {userInfo, userToken, errorMsg, userPayment, userSchool, userFormComplete, error } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  // const {setAuth} = useContext(AuthContext)
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+
+  const handledVisible = () => {
+    setIsVisible(prevState => !prevState)
+  }
+
+  const handledSubmit = async (e) => {
+
+    e.preventDefault()
+    console.log("Data submit >", username)
+    console.log("Data submit >", password)
+    // setErrorMessage("")
+
+    //     if(loginObj.emailId.trim() === "")return setErrorMessage("Email Id is required! (use any value)")
+    //     if(loginObj.password.trim() === "")return setErrorMessage("Password is required! (use any value)")
+        // else{
+            // setLoading(true)
+            // Call API to check user credentials and save token in localstorage
+            // localStorage.setItem("token", "DumyTokenHere")
+            // setLoading(false)
+            // window.location.href = '/admin/welcome'
+        // }
+    const data = {
+      username: username,
+      password: password
+    }
+    
+    try {
+
+      setTimeout(() => {
+        // dispatch(userLogin(data))
+
+      }, 2000);
+      // const handledLogout = async () => {
+      // try {
+      const response = await axios.post("/api/auth/login", {username, password},
+      {
+        headers: {'Content-Type': 'application/json' }, withCredentials: true
+      }
+      );
+      // 
+      console.log(JSON.stringify(response)); //console.log(JSON.stringify(response));
+      if(response.status==200){
+        // dispatch(logout())
+        // Cookies.remove("jwt")
+        localStorage.setItem("token-user", response.data.token)
+        navigate('/landing')
+      }
+      
+      //   } catch (error) {
+          
+      //   }
+      // }
+      
+
+      // if(userInfo){
+
+      // }
+      // const response = await axios.post(LOGIN_URL,
+      //   JSON.stringify({ username, password }),
+      //   {
+      //     headers: {'Content-Type': 'application/json' }, withCredentials: false
+      //   }
+      // );
+      // // 
+      // console.log(JSON.stringify(response)); //console.log(JSON.stringify(response));
+      // const token = response?.token
+      // // const roles = response?.data?.roles 
+      // setAuth({username, password, token})
+      // setUsername('');
+      // setPassword('');
+      // // success(true);
+      // navigate('/pay')
+      // const response = await axios.post("http://localhost:3000/auth/login", data)
+      // login({                     
+      //   auth: {
+      //     token: response.data.token, 
+      //     type: "Bearer"
+      //   },
+      //   expiresIn: 86400,
+      //   // tokenType: "Bearer",
+      //   userState: {username: username}
+      // })
+    } catch (error) {
+      console.log("Error >", error )
+      // modal_data.title = "Login Gagal"
+      // modal_data.message = errorMsg
+
+      openErrorModal()
+      // if (error && error instanceof AxiosError){
+  
+      // }
+    }
+
+    // if(error){
+    //       // modal_data.title = "Login Gagal"
+    //       // modal_data.message = "Mohon Periksa kembali data yang dimasukkan."
+    //       // modal_data.text = "OK"
+    //       // modal_data.url = ""
+    //       openErrorModal()
+          
+    //       // navigate('/home')
+    //     }else{
+    //       // modal_data.title = ""
+    //       // modal_data.message = "Mohon Periksa kembali data yang dimasukkan."
+    //       // modal_data.text = "OK"
+    //       // modal_data.url = ""
+          
+    //       openSuccessModal()
+    //     }
+
+}
+
+const openSuccessModal = () => {
+  dispatch(openModal({title : "Login Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS}))
+}
+const openErrorModal = () => {
+  dispatch(openModal({title : "Login Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_ERROR}))
+}
+
+
 
   
 return (
@@ -17,21 +155,37 @@ return (
                 <ModalLayout dataModal={modal_data}  />
                 // setDestroy={setDestroy}
               )} */}
-        <section className="bg-green-300 rounded-lg">
+        <section >
+          {/* style={{'background':'url("./images/pattern.jpg")', 'opacity': '50%'}} */}
+          {/* className="bg-gray-300 rounded-lg" */}
             <div className="px-8 py-20 mx-auto sm:px-4">
                {/* sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12 */}
                 <div className="w-full px-4 pt-5 pb-6 mx-auto mt-8 mb-6 bg-white rounded-none shadow-xl sm:rounded-lg sm:px-6">
-                <h1 className="mb-4 text-lg font-semibold text-left text-gray-900">Masuk Aplikasi</h1>
-                <form className="mb-8 space-y-4" o>
+                  <img src="./public/logo.png" alt="" />
+                <h1 className="mb-4 text-lg font-semibold text-gray-900 text-center">Masuk Aplikasi</h1>
+                <p className="text-gray-400 text-center my-5">Aplikasi Ujian Penerimaan Santri Baru Rabbaanii Islamic School </p>
+                <form className="mb-8 space-y-4" >
                     <label className="block">
                     <span className="block mb-1 text-xs font-medium text-gray-700">No. WhatsApp / No. Registrasi</span>
-                    <input className="form-input" type="username" placeholder="" inputmode="email" required />
+                    <input className="form-input w-full text-gray-800 shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)}  placeholder="" inputmode="" required />
                     </label>
-                    <label className="block">
                     <span className="block mb-1 text-xs font-medium text-gray-700">Password</span>
-                    <input className="form-input" type="password" placeholder="••••••••" required />
+                    <label className=" flex mb-4">
+                    <input className="form-input w-full text-gray-800 shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type={isVisible? "text" : "password"} name="password" value={password} onChange={(e)=> setPassword(e.target.value)} placeholder="••••••••" required />
+                    <button type="button" onClick={handledVisible} 
+                        className="flex justify-around items-center">
+                          {isVisible? (
+                            <TbEyeOff size={20} className='absolute mr-10'></TbEyeOff>
+                          ):(
+                            <TbEye size={20} className='absolute mr-10'></TbEye>
+                          ) }
+                          
+                        </button>
                     </label>
-                    <input type="submit" className="w-full py-3 mt-1 btn btn-green-800" value="Masuk" />
+                    <button className={"btn text-white bg-green-600 hover:bg-green-700 w-full" + + (loading ? " loading" : "")}
+                              onClick={handledSubmit}
+                      >MASUK</button>
+                    {/* <input type="submit" className="w-full py-3 mt-1 btn btn-green-800" value="Masuk" /> */}
                 </form>
                 {/* <div className="space-y-8">
                     <div className="text-center border-b border-gray-200" style="line-height: 0px">

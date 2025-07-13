@@ -51,8 +51,9 @@ function Header(){
 
                 {/* Menu toogle for mobile view or small screen */}
                 <div className="flex-1">
-                    <label htmlFor="left-sidebar-drawer" className="btn btn-primary drawer-button lg:hidden">
-                    <Bars3Icon className="h-5 inline-block w-5"/></label>
+                    {/* <label htmlFor="left-sidebar-drawer" className="btn btn-primary drawer-button lg:hidden">
+                    <Bars3Icon className="h-5 inline-block w-5"/>
+                    </label> */}
                     <h1 className="text-2xl font-semibold ml-2">PSB-RIS Exam</h1>
                 </div>
 
@@ -81,12 +82,12 @@ function Header(){
 
 
                 {/* Notification icon */}
-                <button className="btn btn-ghost ml-4  btn-circle" onClick={() => openNotification()}>
+                {/* <button className="btn btn-ghost ml-4  btn-circle" onClick={() => openNotification()}>
                     <div className="indicator">
                         <BellIcon className="h-6 w-6"/>
                         {noOfNotifications > 0 ? <span className="indicator-item badge badge-secondary badge-sm">{noOfNotifications}</span> : null }
                     </div>
-                </button>
+                </button> */}
 
 
                 {/* Profile icon, opening menu on click */}
@@ -103,8 +104,8 @@ function Header(){
                             <span className="badge">New</span>
                             </Link> */}
                         </li>
-                        <li className=''><Link to={'/app/settings-billing'}>Bill History</Link></li>
-                        <div className="divider mt-0 mb-0"></div>
+                        {/* <li className=''><Link to={'/app/settings-billing'}>Bill History</Link></li> */}
+                        {/* <div className="divider mt-0 mb-0"></div> */}
                         <li><a onClick={logoutUser}>Logout</a></li>
                     </ul>
                 </div>

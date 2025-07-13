@@ -3,9 +3,11 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { themeChange } from 'theme-change'
 import checkAuth from './app/auth';
+import checkAuthUser from './app/auth-user';
 import initializeApp from './app/init';
 import { HelmetProvider, Helmet } from 'react-helmet-async'
 import {tabHeaderHandlerActiveTab} from './utils/tabHeaderHandlerActiveTab'
+import ProtectedRoute from './landing/components/pages/Routing/ProtectedRoute';
 
 // import "react-datepicker/dist/react-datepicker.css";
 
@@ -29,6 +31,7 @@ initializeApp()
 
 // Check for login and initialize axios
 const token = checkAuth()
+const token_user = checkAuthUser()
 
 
 function App() {
@@ -54,12 +57,15 @@ function App() {
           <Route path="/ad/*" element={<Layout />} />
           {/* Place new routes user over this */}
           <Route path="/login" element={<LandingLogin />} />
+          <Route element={<ProtectedRoute/>}>
+            <Route path="/landing" element={<Landing />} />
+            <Route path="/u/exam/:id/show" element={<LandingExam />} />
+          </Route>
           <Route path="/register" element={<LandingRegister />} />
-          <Route path="/landing" element={<Landing />} />
-          <Route path="/u/exam/:id/show" element={<LandingExam />} />
+          
           {/* <Route path="/u/exam/:id/start" element={<StartExam />} /> */}
 
-          <Route path="*" element={<Navigate to={token ? "/ad/welcome" : "/ad/login"} replace />}/>
+          <Route path="*" element={<Navigate to={token ? "/ad/welcome" : "/login"} replace />}/>
 
         </Routes>
       </Router>
