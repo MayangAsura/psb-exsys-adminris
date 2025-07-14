@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../Header"
 import Footer from "../Footer/Footer"
 import { openModal } from "../../../../features/common/modalSlice"
@@ -36,15 +36,17 @@ const MCExam = () =>{
   // {id: "", order : "", option: "", exam_test_id: "", type: "", exam_test_content_id: ""}
   // {order: "", option : "", point : "", exam_test_id: "", id : "", type: ""}
   const [ti, setti] = useState("")
+  const [duration, setDuration] = useState("")
   const dispatch = useDispatch()
-  const appl_id = ''
+  const [appl_id, setApplId] = useState("")
   let j = "A";
 
   const id = useParams().id
 
   useEffect(() => {
     getExam(id)
-    
+    getDuration()
+    getUser()
 
 //     if (window.performance) {
 //   if (performance.navigation.type == 1) {
@@ -56,10 +58,10 @@ const MCExam = () =>{
 //   }
 // }
 
-    // if(started_at) {
-    // getquedata(id)
-      // getOptions(id)
-    // }
+    if(started_at) {
+    getquedata(id)
+      getOptions(id)
+    }
     if(started_at){
       getti()
       startCount(exam.started_at, exam.ended_at, ti, started_at)
@@ -68,6 +70,33 @@ const MCExam = () =>{
       console.log(shuffleData(options)) 
     }
   },[id, quedata, options])
+
+  const getUser = async () => {
+    const TOKEN = localStorage.getItem("token-user")
+    if(!TOKEN){
+      openErrorModal("Data Peserta Tidak Ditemukan")
+    }
+    const {data, error} = await supabase.from('exam_profiles')
+                        .select('*')
+                        .eq('refresh_token', TOKEN)
+    if(data.length > 0){
+      console.log('pro', data)
+      setApplId(data[0].appl_id)
+    }else{
+      
+      openErrorModal("Token Tidak Valid")
+      
+    }
+    
+  }
+  const openSuccessModal = () => {
+    console.log('s')
+    dispatch(openModal({title : "Login Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS}))
+  }
+  const openErrorModal = (message) => {
+    console.log('e')
+    dispatch(openModal({title : message, bodyType : MODAL_BODY_TYPES.MODAL_ERROR}))
+  }
 
   const getti = async () =>{
     let { data, error } = await supabase
@@ -91,6 +120,7 @@ const MCExam = () =>{
           // getOptions(e.id)
           // shuffleData(options)
           // console.log(options)
+          // setQueData([...quedata, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }])
           setQueData((value, key) => ([...value, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }]))
           // setOptions([])
         }, 2000)
@@ -171,19 +201,19 @@ const MCExam = () =>{
     console.log("masuk")
 
     quedata.forEach(element => {
-      values.map((e) => ( element.answer == e.a? setScores(scores + e.scores)&&{...e, point: element.score}: {...e, point: 0}))
+      values.map((e) => ( element.answer == e.a? setScores(scores + e.scores)&&{...e, score: element.score}: {...e, score: 0}))
     });
     // setAnswers(values)
-
-    const responseValues = { exam_test_id: quedata.exam_test_id, appl_id: appl_id, point: scores, start_at: started_at, submit_at: new Date().toISOString(), created_by: quedata.appl_id }
+    console.log(appl_id)
+    const responseValues = { exam_test_id: id, appl_id: appl_id, score: scores, start_at: started_at, submit_at: new Date().toISOString(), created_by: appl_id }
     const { data, error } = await supabase
     .from('exam_test_responses')
     .insert([
       responseValues
     ])
     .select()
-
-    values.map((value) => (setResponseDetailValues((res) => [...res, {exam_test_response_id: data.id, exam_test_content_id: value.name, answer:value.answer, point: value.point}])))
+    
+    values.map((value) => (setResponseDetailValues([...responseDetailValues, {exam_test_response_id: data.id, exam_test_content_id: value.name, answer:value.answer, point: value.point}])))
 
     
     if(!error){
@@ -214,6 +244,31 @@ const MCExam = () =>{
           
   }
 
+  const getDuration = () => {
+    const dayNames = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  
+
+      const date = new Date(new Date(exam.ended_at).getTime() - new Date(exam.start_at).getTime());
+      console.log( 'getitme',new Date(exam.ended_at).getTime())
+      // const s = new Date(exam.start_at).getTime()
+      // const e = new Date(exam.ended_at).getTime()
+
+      const dayName = dayNames[date.getDay()];
+      const day = date.getDate();
+      const monthName = monthNames[date.getMonth()];
+      const year = date.getFullYear();
+      const hour = date.getHours();
+      const minute = date.getMinutes();
+      const second = date.getSeconds();
+  
+      const indonesianFormat = `${hour}:${minute}:${second}`;
+      console.log('indo > ', indonesianFormat)
+      setDuration(indonesianFormat)
+      // const indonesianFormat = `${dayName}, ${day} ${monthName} ${year} ${hour}:${minute} WIB`;
+      return indonesianFormat
+  }
+
   // const calculateScore = 
 return (
 <>
@@ -224,7 +279,7 @@ return (
         <div className="flex flex-wrap gap-3 px-4 ">
           {!started_at && (
             <div>
-              <p className="pt-2 pb-3 text-base-300 text-lg">Berikut ini tata tertib terkait ujian</p>
+              <p className="pt-2 pb-3 text-lg text-gray-700">Berikut ini tata tertib terkait ujian</p>
                           <ol className=" text-base text-gray-600">
                             <li>1. Berdoa dan memohon taufik kepada Allah sebelum memulai</li>
                             <li>2. Harap jujur dan tidak curang dalam mengerjakan ujian</li>
@@ -378,8 +433,9 @@ return (
       <div className="flex flex-col justify-center items-center custom-toggle px-3 py-2">
       <FaClock />
       <span id="timer" >
-        23:50:00
+        {/* 23:50:00 */}
         {/* {gmdate("h : i : s", strtotime(exam.end_at)- strtotime(exam.start_at))} */}
+        {duration}
         {/* <?= ltrim(gmdate("i : s", $data['waktu']), 0) ?> */}
         </span></div>
       </div>

@@ -9,7 +9,10 @@ import { userLogin } from "../../../../services/api/auth/client/authActions"
 import { openModal } from "../../../../features/common/modalSlice"
 import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../../../utils/globalConstantUtil'
 import '../../../../index-user.css'
+
 import axios from '../../../../services/api/local-server'
+import supabase from "../../../../services/database-server"
+// import logo from './logo.png'
 
 import { TbEye, TbEyeOff } from "react-icons/tb";
 
@@ -68,7 +71,26 @@ const Login = () =>{
         // dispatch(logout())
         // Cookies.remove("jwt")
         localStorage.setItem("token-user", response.data.token)
+        const { applicant, error_app } = await supabase
+          .from('exam_profiles')
+          // .select('id')
+          .eq('refresh_token', response.data.token)
+          .single()
+
+        const { data, error } = await supabase
+          .from('exam_profiles')
+          .update({ refresh_token: response.data.token })
+          .eq('appl_id', applicant.id)
+          .select()
+          
+        openSuccessModal()
         navigate('/landing')
+
+      }
+
+      if(response.status!=200){
+        // setUsername()
+        openErrorModal()
       }
       
       //   } catch (error) {
@@ -136,10 +158,12 @@ const Login = () =>{
 }
 
 const openSuccessModal = () => {
+  console.log('masuk')
   dispatch(openModal({title : "Login Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS}))
 }
 const openErrorModal = () => {
-  dispatch(openModal({title : "Login Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_ERROR}))
+  console.log('masuk')
+  dispatch(openModal({title : "Login Gagal", bodyType : MODAL_BODY_TYPES.MODAL_ERROR}))
 }
 
 
@@ -158,12 +182,12 @@ return (
         <section >
           {/* style={{'background':'url("./images/pattern.jpg")', 'opacity': '50%'}} */}
           {/* className="bg-gray-300 rounded-lg" */}
-            <div className="px-8 py-20 mx-auto sm:px-4">
+            <div className="px-8 py-20 mx-auto sm:px-4 flex flex-col justify-center items-center">
                {/* sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12 */}
-                <div className="w-full px-4 pt-5 pb-6 mx-auto mt-8 mb-6 bg-white rounded-none shadow-xl sm:rounded-lg sm:px-6">
-                  <img src="./public/logo.png" alt="" />
-                <h1 className="mb-4 text-lg font-semibold text-gray-900 text-center">Masuk Aplikasi</h1>
-                <p className="text-gray-400 text-center my-5">Aplikasi Ujian Penerimaan Santri Baru Rabbaanii Islamic School </p>
+                <div className="flex flex-col justify-center items-center w-full px-4 pt-5 pb-6 mx-auto mt-8 mb-6 bg-white rounded-none shadow-xl sm:rounded-lg sm:px-6">
+                  <img src="/logo.png" alt="" width={30} className=" w-24 h-24 object-center my-3"/>
+                <h1 className="text-lg font-semibold text-gray-900 text-center">Masuk Aplikasi</h1>
+                <p className="text-gray-400 text-center mb-4">Aplikasi Ujian Penerimaan Santri Baru Rabbaanii Islamic School </p>
                 <form className="mb-8 space-y-4" >
                     <label className="block">
                     <span className="block mb-1 text-xs font-medium text-gray-700">No. WhatsApp / No. Registrasi</span>
@@ -182,7 +206,7 @@ return (
                           
                         </button>
                     </label>
-                    <button className={"btn text-white bg-green-600 hover:bg-green-700 w-full" + + (loading ? " loading" : "")}
+                    <button className={"btn text-white bg-green-600 hover:bg-green-700 w-full my-4 " + + (loading ? " loading" : "")}
                               onClick={handledSubmit}
                       >MASUK</button>
                     {/* <input type="submit" className="w-full py-3 mt-1 btn btn-green-800" value="Masuk" /> */}
@@ -211,13 +235,15 @@ return (
                     </div>
                 </div> */}
                 </div>
-                <p className="flex flex-col justify-center items-center mb-4 text-xs text-center text-gray-400">
-                <a href="#" className="text-green-200 underline hover:text-white">Create an account</a>
-                ·
-                <a href="#" className="text-green-200 underline hover:text-white">Forgot password</a>
-                ·
-                <a href="#" className="text-green-200 underline hover:text-white">Privacy & Terms</a>
-                </p>
+                <div className="flex-none justify-center items-center">
+                  <p className="flex flex-row mb-4 text-xs text-center text-gray-400">
+                  <a href="#" className="text-green-200 underline hover:text-white">Create an account</a>
+                  ·
+                  <a href="#" className="text-green-200 underline hover:text-white">Forgot password</a>
+                  ·
+                  <a href="#" className="text-green-200 underline hover:text-white">Privacy & Terms</a>
+                  </p>
+                </div>
             </div>
         </section>
           {/* <div className="w-full lg:w-1/3 ">
