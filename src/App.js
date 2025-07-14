@@ -65,7 +65,7 @@ function App() {
           
           {/* <Route path="/u/exam/:id/start" element={<StartExam />} /> */}
 
-          <Route path="*" element={<Navigate to={token ? "/ad/welcome" : "/login"} replace />}/>
+          <Route path="*" element={<Navigate to={!token_user? "/login" : !token ? "/ad/login" : "/landing"} replace />}/>
 
         </Routes>
       </Router>

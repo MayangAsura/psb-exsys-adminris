@@ -140,14 +140,14 @@ const routes = [
     path: '/exam', // the url
     component: Exam, // view rendered
   },
-  // {
-  //   path: '/landing', // the url
-  //   component: Landing, // view rendered
-  // },
-  // {
-  //   path: '/login',
-  //   component: FrontLogin,
-  // },
+  {
+    path: '/landing', // the url
+    component: Landing, // view rendered
+  },
+  {
+    path: '/login',
+    component: FrontLogin,
+  },
   {
     path: '/register',
     component: FrontRegister,

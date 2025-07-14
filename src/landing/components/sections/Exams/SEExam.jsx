@@ -18,7 +18,7 @@ import { useParams } from 'react-router-dom';
 
 
 
-function SEExam() {
+const SEExam = () => {
   const [questions, setQuestions] = useState([])
   const dispatch = useDispatch()
   const id = useParams().id
@@ -39,16 +39,19 @@ function SEExam() {
 ];
 
 useEffect(() => {
+  console.log('id', id)
   getQuestions(id)
+  
 }, [id])
 
   const getQuestions = async (id) => {
-
+    console.log(id)
   let { data: exam_test_contents, error } = await supabase
     .from('exam_test_contents')
     .select('*')
     .eq('exam_test_id', id)
 
+    console.log('getq', exam_test_contents, error);
     if(error){
       openErrorModal()
     }else{
@@ -77,8 +80,8 @@ useEffect(() => {
   // }
 
 
- const theme = useTheme();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const theme = useTheme();
+  const [activeStep, setActiveStep] = useState(0);
   const maxSteps = questions.length;
 
   const handleNext = () => {
@@ -121,7 +124,7 @@ useEffect(() => {
             onClick={handleNext}
             disabled={activeStep === maxSteps - 1}
           >
-            Next
+            Selanjutnya
             {theme.direction === 'rtl' ? (
               <KeyboardArrowLeft />
             ) : (
@@ -136,7 +139,7 @@ useEffect(() => {
             ) : (
               <KeyboardArrowLeft />
             )}
-            Back
+            Sebelumnya
           </Button>
         }
       />

@@ -17,7 +17,8 @@ import ExamItem from "./items/ExamItem";
 // import ServiceItem from "../..pages/Service/ServiceItem";
 import profile from "../../../images/profile.jpg";
 
-import supabase from "../../../services/database/database";
+// import supabase from "../../../services/database/database";
+import supabase from "../../../../services/database-server";
 
 
 const socials = [

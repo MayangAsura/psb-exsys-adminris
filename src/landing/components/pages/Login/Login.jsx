@@ -26,6 +26,17 @@ const Login = () =>{
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [currentTheme, setCurrentTheme] = useState(localStorage.getItem("theme"))
+
+  useEffect(() => {
+    if(currentTheme === null){
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ) {
+                setCurrentTheme("dark")
+            }else{
+                setCurrentTheme("light")
+            }
+    }
+  })
 
   const handledVisible = () => {
     setIsVisible(prevState => !prevState)
@@ -70,16 +81,17 @@ const Login = () =>{
       if(response.status==200){
         // dispatch(logout())
         // Cookies.remove("jwt")
-        localStorage.setItem("token-user", response.data.token)
-        const { applicant, error_app } = await supabase
-          .from('exam_profiles')
-          // .select('id')
-          .eq('refresh_token', response.data.token)
+        localStorage.setItem("token-user", response.data.token_refresh)
+        console.log(response.data.token_refresh)
+        const { data: applicant, error_app } = await supabase
+          .from('applicants')
+          .select('*')
+          .eq('refresh_token', response.data.token_refresh)
           .single()
-
+          console.log(applicant)
         const { data, error } = await supabase
           .from('exam_profiles')
-          .update({ refresh_token: response.data.token })
+          .update({ refresh_token: response.data.token_refresh })
           .eq('appl_id', applicant.id)
           .select()
           
@@ -159,43 +171,52 @@ const Login = () =>{
 
 const openSuccessModal = () => {
   console.log('masuk')
-  dispatch(openModal({title : "Login Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS}))
+  dispatch(openModal({title : "Login Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS,
+    extraObject : {message : "Redirecting..", type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_SUCCESS}
+  }))
 }
 const openErrorModal = () => {
-  console.log('masuk')
-  dispatch(openModal({title : "Login Gagal", bodyType : MODAL_BODY_TYPES.MODAL_ERROR}))
+  console.log('masuk er')
+  dispatch(openModal({title : "Login Gagal", bodyType : MODAL_BODY_TYPES.MODAL_ERROR,
+    extraObject : {message : "Mohon periksa kembali data Anda.", type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_ERROR}
+  }))
 }
 
 
 
   
 return (
-  <main className="min-w-lg min-h-screen bg-gray-50 pb-10 relative max-w-lg min-h-screen relative min-w-screen my-0 mx-auto bg-gray-50 pb-10">
+  <main className="min-w-lg min-h-screen bg-gray-50 background-pattern pb-10 relative max-w-lg min-w-screen my-0 mx-auto">
       <Header />
       {/* <ProfileCover /> */}
-      <div className="container px-4 m-10">
-        <div className="flex flex-wrap px-4">
+      <div className="container px-4">
+        <div className="flex flex-wrap px-4 " >
+          {/* style={{backgroundImage: `url('/logo.jpg')`}} */}
           {/* {modal_show && (
                 <ModalLayout dataModal={modal_data}  />
-                // setDestroy={setDestroy}
+                // setDestroy={setDestroy}  
               )} */}
         <section >
           {/* style={{'background':'url("./images/pattern.jpg")', 'opacity': '50%'}} */}
           {/* className="bg-gray-300 rounded-lg" */}
             <div className="px-8 py-20 mx-auto sm:px-4 flex flex-col justify-center items-center">
                {/* sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12 */}
-                <div className="flex flex-col justify-center items-center w-full px-4 pt-5 pb-6 mx-auto mt-8 mb-6 bg-white rounded-none shadow-xl sm:rounded-lg sm:px-6">
+                <div className="flex flex-col justify-center items-center w-full px-4 pt-5 pb-6 mx-auto mt-8 mb-6 rounded-none shadow-xl sm:rounded-lg sm:px-6">
+                  {/* bg-white  */}
                   <img src="/logo.png" alt="" width={30} className=" w-24 h-24 object-center my-3"/>
                 <h1 className="text-lg font-semibold text-gray-900 text-center">Masuk Aplikasi</h1>
-                <p className="text-gray-400 text-center mb-4">Aplikasi Ujian Penerimaan Santri Baru Rabbaanii Islamic School </p>
+                {/* <h1 className="text-lg font-semibold text-center">Masuk Aplikasi</h1> */}
+                <p className="text-gray-700 text-center mb-4">Aplikasi Ujian Penerimaan Santri Baru Rabbaanii Islamic School </p>
+                {/* text-gray-400 */}
                 <form className="mb-8 space-y-4" >
                     <label className="block">
                     <span className="block mb-1 text-xs font-medium text-gray-700">No. WhatsApp / No. Registrasi</span>
-                    <input className="form-input w-full text-gray-800 shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)}  placeholder="" inputmode="" required />
+                    <input className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" type="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)}  placeholder="" inputmode="" required />
+                    {/* text-gray-800 */}
                     </label>
                     <span className="block mb-1 text-xs font-medium text-gray-700">Password</span>
                     <label className=" flex mb-4">
-                    <input className="form-input w-full text-gray-800 shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type={isVisible? "text" : "password"} name="password" value={password} onChange={(e)=> setPassword(e.target.value)} placeholder="••••••••" required />
+                    <input className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" type={isVisible? "text" : "password"} name="password" value={password} onChange={(e)=> setPassword(e.target.value)} placeholder="••••••••" required />
                     <button type="button" onClick={handledVisible} 
                         className="flex justify-around items-center">
                           {isVisible? (
@@ -237,11 +258,11 @@ return (
                 </div>
                 <div className="flex-none justify-center items-center">
                   <p className="flex flex-row mb-4 text-xs text-center text-gray-400">
-                  <a href="#" className="text-green-200 underline hover:text-white">Create an account</a>
-                  ·
-                  <a href="#" className="text-green-200 underline hover:text-white">Forgot password</a>
-                  ·
-                  <a href="#" className="text-green-200 underline hover:text-white">Privacy & Terms</a>
+                  {/* <a href="#" className="text-green-200 underline hover:text-white">Buat Akun</a>
+                  · */}
+                  <a href="#" className="text-green-500 underline hover:text-white">Reset Password </a>
+                   · 
+                  <a href="#" className="text-green-500 underline hover:text-white"> Privacy & Terms</a>
                   </p>
                 </div>
             </div>

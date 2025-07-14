@@ -35,3 +35,13 @@ a {
   color: inherit !important;
     text-decoration: inherit !important;
 }
+
+.background-pattern {
+  background-image: url('/public/pattern.jpg');
+  background-repeat: repeat-y;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* opacity: 20%; */
+  /* z-index: -30; */
+}
