@@ -24,6 +24,7 @@ const Login = () =>{
   // const {setAuth} = useContext(AuthContext)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [ip, setIp] = useState("")
   const [loading, setLoading] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [currentTheme, setCurrentTheme] = useState(localStorage.getItem("theme"))
@@ -40,6 +41,11 @@ const Login = () =>{
 
   const handledVisible = () => {
     setIsVisible(prevState => !prevState)
+  }
+  const getApplIp = async () => {
+    const res = await axios.get("https://api.ipify.org/?format=json");
+    console.log(res.data)
+    setIp(res.data.ip)
   }
 
   const handledSubmit = async (e) => {
@@ -85,18 +91,28 @@ const Login = () =>{
         console.log(response.data.token_refresh)
         const { data: applicant, error_app } = await supabase
           .from('applicants')
-          .select('*')
+          .select('id, full_name, participants(participant_father_data(father_name), participant_mother_data(mother_name)), regist_number, phone_number ')
           .eq('refresh_token', response.data.token_refresh)
           .single()
           console.log(applicant)
-        const { data, error } = await supabase
-          .from('exam_profiles')
-          .update({ refresh_token: response.data.token_refresh })
-          .eq('appl_id', applicant.id)
-          .select()
+        if(applicant){
+
+          const { data, error } = await supabase
+            .from('exam_profiles')
+            .upsert({ appl_id:applicant.id, full_name: applicant.full_name, father_name: applicant.participants[0]. participant_father_data[0].father_name, mother_name: applicant.participants[0].participant_mother_data[0].mother_name, ip: ip, last_login: new Date().toISOString(), regist_number: applicant.regist_number, phone_number: applicant.phone_number, refresh_token: response.data.token_refresh })
+            // .eq('appl_id', applicant.id)
+            .select()
+            console.log(data)
+            if(!error){
+              openSuccessModal()
+              navigate('/landing')
+            }else{
+              openErrorModal()
+            }
+              
+              
+        }
           
-        openSuccessModal()
-        navigate('/landing')
 
       }
 
@@ -167,7 +183,7 @@ const Login = () =>{
     //       openSuccessModal()
     //     }
 
-}
+  } 
 
 const openSuccessModal = () => {
   console.log('masuk')

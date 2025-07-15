@@ -58,23 +58,27 @@ const socials = [
   },
 ];
 
-const Profile = () => {
+const Profile = ({id, sid, ip}) => {
 
   const [applicant, setApplicant] = useState({})
 
   useEffect(() => {
         getExamData()
-        console.log(applicant                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  )
-    },[])
+        console.log(applicant)
+        if(!applicant.ip){
+          applicant.ip = ip
+        }
+    },[applicant?.ip])
 
     const getExamData = async() => {
     
         let { data: exam_profiles, error } = await supabase
             .from('exam_profiles')
             .select('*')
+            .eq('appl_id', id)
 
         if(!error){
-        setApplicant(exam_profiles[0])
+          setApplicant(exam_profiles[0])
         }
             
     }
@@ -135,7 +139,7 @@ const Profile = () => {
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Lahir di</dt>
-                                <dd className="text-lg font-semibold">{applicant.full_name}</dd>
+                                <dd className="text-lg font-semibold">{applicant.bod}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Alamat</dt>

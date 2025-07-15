@@ -111,26 +111,33 @@ const serviceData = [
 
 
 
-const Exam = (props) => {
+const Exam = ({id, sid}) => {
 
   const [examData, setExamData] = useState([{id: "sdsf", name: "Test TKD", score: 100, start_at: new Date().toISOString(), end_at: new Date().toISOString()}])
 
   useEffect(() => {
-    getExamData(props.id, props.sid)
-  },[props.id, props.sid])
+    getExamData(id, sid)
+  },[id, sid])
 
   const getExamData = async(id, sid) => {  
   
-  let { data: exam_tests,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   error } = await supabase
-    .from('exam_tests')
-    .select('*')
+  // let { data: exam_tests, error } = await supabase
+  //   .from('exam_tests')
+  //   .select('*')
 
     // .eq('appl_id', id)
     // .eq('exam_schedule_id', sid)
     // exam_schedule_tests(exam_schedule_id), exam_test_participant(appl_id)
 
-    if(!error){
-      setExamData(exam_tests)
+  let { data: exam_test_participants, error2 } = await supabase
+    .from('exam_test_participants')
+    .select('appl_id, exam_tests(*, exam_schedule_tests(exam_schedule_id))')
+    .eq('exam_tests[0].exam_schedule_tests.exam_schedule_id', sid)
+    .eq('appl_id', id)
+  
+
+    if(!error2){
+      setExamData(exam_test_participants[0].exam_tests[0])
     }
 
     // console.log(exam_tests)

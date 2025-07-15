@@ -21,7 +21,7 @@ const Documentation = lazy(() => import('./pages/Documentation'))
 //Importing landing pages
 const LandingLogin = lazy(() => import('./landing/components/pages/Login/Login'))
 const LandingRegister = lazy(() => import('./landing/components/pages/Register/Register'))
-const Landing = lazy(() => import('./landing/main'))
+const Landing = lazy(() => import('./landing/Landing'))
 const LandingExam = lazy(() => import('./landing/components/sections/Exams/MCExam'))
 // const StartExam = lazy(() => import('./landing/components/sections/Exams/MCExam'))
 
@@ -39,8 +39,10 @@ function App() {
   useEffect(() => {
     // 👆 daisy UI themes initialization
     themeChange(false)
+    // console.log(token_user)
     // load tabHeaderHandler
     // tabHeaderHandlerActiveTab()
+    console.log(token_user)
   }, [])
 
 
@@ -48,6 +50,10 @@ function App() {
     <>
       <Router>
         <Routes>
+          <Route path="*" element={<Navigate to={token_user? "/landing" : "/login"} replace />}/>
+          {/* <Route path="*" element={<Navigate to={token_user? "/landing" : ()} replace />}/> */}
+          {/* <Route path="*" element={<Navigate to={token? "/ad/welcome" : (token_user? "/landing": (!token_user? "/login": !token? "/ad/login": "")} replace />}/> */}
+          <Route path="/login" element={<LandingLogin />} />
           <Route path="/ad/login" element={<Login />} />
           <Route path="/ad/forgot-password" element={<ForgotPassword />} />
           <Route path="/ad/register" element={<Register />} />
@@ -56,7 +62,6 @@ function App() {
           {/* Place new routes admin over this*/}
           <Route path="/ad/*" element={<Layout />} />
           {/* Place new routes user over this */}
-          <Route path="/login" element={<LandingLogin />} />
           <Route element={<ProtectedRoute/>}>
             <Route path="/landing" element={<Landing />} />
             <Route path="/u/exam/:id/show" element={<LandingExam />} />
@@ -65,7 +70,6 @@ function App() {
           
           {/* <Route path="/u/exam/:id/start" element={<StartExam />} /> */}
 
-          <Route path="*" element={<Navigate to={!token_user? "/login" : !token ? "/ad/login" : "/landing"} replace />}/>
 
         </Routes>
       </Router>

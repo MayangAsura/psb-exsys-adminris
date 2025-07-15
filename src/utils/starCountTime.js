@@ -9,12 +9,14 @@ export function startCount(start_at, end_at, time, started_at){
             countDownDate -= 1;
             var distance = countDownDate;
             // Time calculations for days, hours, minutes and seconds
-            var hours = Math.floor(distance / (60 * 60));
-            var minutes = Math.floor(distance / (60));
-            var seconds = Math.floor((distance % (60)));
+            // var hours = Math.floor(distance / (60 * 60));
+            // var minutes = Math.floor(distance / (60));
+            // var seconds = Math.floor((distance % (60)));
+            const hours = Math.floor(distance / 3600);
+            const minutes = Math.floor((distance % 3600) / 60);
+            const seconds = distance % 60;
             // Display the result in the element with id="demo"
             // return document.getElementById("timer").innerHTML = hours + " : " + minutes + " : " + seconds;
-            return hours + " : " + minutes + " : " + seconds;
             // If the count down is finished, write some text 
             if (distance < 0) {
               clearInterval(x);
@@ -22,6 +24,7 @@ export function startCount(start_at, end_at, time, started_at){
               // document.getElementById("timer").innerHTML = "Waktu Habis";
               // document.getElementById("_mySubmit").click();
             }
+            return hours + " : " + minutes + " : " + seconds;
           }, 1000);
         // });
 }

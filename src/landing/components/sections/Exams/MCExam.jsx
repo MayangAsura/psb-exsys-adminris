@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../../Header"
 import Footer from "../Footer/Footer"
 import { openModal } from "../../../../features/common/modalSlice"
 import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../../../utils/globalConstantUtil'
-import { showNotification } from '../../../../features/common/headerSlice'
-import supabase from "../../../services/database/database";
+// import { showNotification } from '../../../../features/common/headerSlice'
+// import supabase from "../../../services/database/database";
+import supabase from "../../../../services/database-server";
 import SEExam from "./SEExam"
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {startCount} from '../../../../utils/starCountTime'
 import {FaClock} from 'react-icons/fa'
 
@@ -21,23 +22,26 @@ const MCExam = () =>{
   const [responseDetailValues, setResponseDetailValues] = useState([])
   const [started_at, setStartedAt] = useState("")
   const [exam, setEx] = useState({})
+  const timeRef = useRef(null)
   // const [exam, setEx] = useState({id: "sdsf", name: "Test TKD", score: 100, start_at: new Date().toISOString(), end_at: new Date().toISOString(), question_type: 'MC'})
   // {id: "sdsf", name: "Test TKD", score: 100, start_at: new Date().toISOString(), end_at: new Date().toISOString()}
   // const [question, set] = useState([])
-  const [quedata, setQueData] = useState([{num: "1", qid: "sdfd", que: "Siapa nama ayah Nabi Muhammad?", an:"", bc: "",sc: "", qty: "", ir: "", or: "", options: [{option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}]},{num: "2", qid: "", que: "Dimana awal mula dakwah Nabi Muhammad?", an:"", bc: "",sc: "", qty: "", ir: "", or: "", options: [{option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}]}, {num: "3", qid: "", que: "Siapa sahabat terdekat Nabi Muhammad?", an:"", bc: "",sc: "", qty: "", ir: "", or: "", options: [{option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}]}])
+  // const [quedata, setQueData] = useState([{num: "1", qid: "sdfd", que: "Siapa nama ayah Nabi Muhammad?", an:"", bc: "",sc: "", qty: "", ir: "", or: "", options: [{option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}]},{num: "2", qid: "", que: "Dimana awal mula dakwah Nabi Muhammad?", an:"", bc: "",sc: "", qty: "", ir: "", or: "", options: [{option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}]}, {num: "3", qid: "", que: "Siapa sahabat terdekat Nabi Muhammad?", an:"", bc: "",sc: "", qty: "", ir: "", or: "", options: [{option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}]}])
+  const [quedata, setQueData] = useState([])
   // const [quedata2, setQueData2] = useState([{num: "2", qid: "", que: "Dimana awal mula dakwah Nabi Muhammad?", an:"", bc: "",sc: "", qty: "", ir: "", or: "", options: [{option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}]}, {num: "3", qid: "", que: "Siapa sahabat terdekat Nabi Muhammad?", an:"", bc: "",sc: "", qty: "", ir: "", or: "", options: [{option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}]}])
   const [quedata2, setQueData2] = useState([])
   // const [quedata, setQueData] = useState([{num: "", qid: "", que: "", an:"", bc: "",sc: "", qty: "", ir: false, or: "", options: []} ])
   // {option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}
   // {num: "2", qid: "", que: "Dimana awal mula dakwah Nabi Muhammad?", an:"", bc: "",sc: "", qty: "", ir: "", or: "", options: [{option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}]}, {num: "3", qid: "", que: "Siapa sahabat terdekat Nabi Muhammad?", an:"", bc: "",sc: "", qty: "", ir: "", or: "", options: [{option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}]}
-  const [options, setOptions2] = useState([{option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}])
-  // const [options, setOptions] = useState([])
-  const [options2, setOptions] = useState([{id: "sdsd", order : "", option: "Abdullah", exam_test_id: "sdsd", type: "MC", exam_test_content_id: "SDSDF"}, {id: "sdsdsdfsf2", order : "", option: "Abdullah bin Mas'ud", exam_test_id: "sdsd", type: "MC", exam_test_content_id: "SDSDF"}, {id: "sdfsdfsdf  ", order : "", option: "Abu Bakar", exam_test_id: "sdsd", type: "MC", exam_test_content_id: "SDSDF"}])
+  // const [options, setOptions2] = useState([{option: "Abdullah", order: "", point: 20}, {option: "Abu Bakr", order: "", point: 0}, {option: "Abdullah bin Mas'ud", order: "", point: 20}])
+  const [options, setOptions] = useState([])
+  // const [options2, setOptions] = useState([{id: "sdsd", order : "", option: "Abdullah", exam_test_id: "sdsd", type: "MC", exam_test_content_id: "SDSDF"}, {id: "sdsdsdfsf2", order : "", option: "Abdullah bin Mas'ud", exam_test_id: "sdsd", type: "MC", exam_test_content_id: "SDSDF"}, {id: "sdfsdfsdf  ", order : "", option: "Abu Bakar", exam_test_id: "sdsd", type: "MC", exam_test_content_id: "SDSDF"}])
   // {id: "", order : "", option: "", exam_test_id: "", type: "", exam_test_content_id: ""}
   // {order: "", option : "", point : "", exam_test_id: "", id : "", type: ""}
   const [ti, setti] = useState("")
-  const [duration, setDuration] = useState("")
+  const [duration, setDuration] = useState('00:00:00')
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [appl_id, setApplId] = useState("")
   let j = "A";
 
@@ -47,7 +51,7 @@ const MCExam = () =>{
     getExam(id)
     getDuration()
     getUser()
-
+    // (new Date(exam.ended_at).getTime() - new Date(exam.start_at).getTime()).getSeconds()
 //     if (window.performance) {
 //   if (performance.navigation.type == 1) {
 //     // alert( "This page is reloaded" );
@@ -59,33 +63,43 @@ const MCExam = () =>{
 // }
 
     if(started_at) {
-    getquedata(id)
+      getquedata(id)
       getOptions(id)
     }
     if(started_at){
       getti()
-      startCount(exam.started_at, exam.ended_at, ti, started_at)
       console.log(shuffleData(quedata)) 
 
       console.log(shuffleData(options)) 
+      const time = startCount(exam.started_at, exam.ended_at, ti, started_at)
+      if(time !==0 && timeRef.current){
+        timeRef.current.textContent = time
+        setDuration(time)
+      }
+      if(time == 0 && timeRef.current){
+        timeRef.current.textContent = 'Waktu Habis'
+        handleSubmit()
+      }
     }
-  },[id, quedata, options])
+  },[id, quedata, options, started_at])
 
   const getUser = async () => {
     const TOKEN = localStorage.getItem("token-user")
     if(!TOKEN){
       openErrorModal("Data Peserta Tidak Ditemukan")
+      navigate('/login')
     }
-    const {data, error} = await supabase.from('exam_profiles')
+    const {data: exam_profiles, error} = await supabase.from('exam_profiles')
                         .select('*')
                         .eq('refresh_token', TOKEN)
-    if(data.length > 0){
-      console.log('pro', data)
-      setApplId(data[0].appl_id)
+    console.log('data', exam_profiles)
+    if(exam_profiles || exam_profiles.length > 0){
+      console.log('pro', exam_profiles)
+      setApplId(exam_profiles[0].appl_id)
     }else{
       
       openErrorModal("Token Tidak Valid")
-      
+      navigate('/login')
     }
     
   }
@@ -201,7 +215,7 @@ const MCExam = () =>{
     console.log("masuk")
 
     quedata.forEach(element => {
-      values.map((e) => ( element.answer == e.a? setScores(scores + e.scores)&&{...e, score: element.score}: {...e, score: 0}))
+      values.map((e) => ( element.answer == e.a? setScores(scores + parseInt(e.scores))&&{...e, score: element.score}: {...e, score: 0}))
     });
     // setAnswers(values)
     console.log(appl_id)
@@ -237,7 +251,7 @@ const MCExam = () =>{
         dispatch(openModal({title : "Ujian Tersimpan", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
                 extraObject : { message : 'Anda telah menyelesaikan ujian'}}))
       }else{
-        dispatch(openModal({title : "Gagal", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+        dispatch(openModal({title : "Gagal Menyimpan Ujian", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
                 extraObject : { message : 'Data ujian gagal tersimpan'}}))
       }
           
@@ -245,30 +259,85 @@ const MCExam = () =>{
   }
 
   const getDuration = () => {
-    const dayNames = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-      const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    // const dayNames = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    //   const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
   
 
-      const date = new Date(new Date(exam.ended_at).getTime() - new Date(exam.start_at).getTime());
-      console.log( 'getitme',new Date(exam.ended_at).getTime())
-      // const s = new Date(exam.start_at).getTime()
-      // const e = new Date(exam.ended_at).getTime()
+    //   const date = new Date(new Date(exam.ended_at).getTime() - new Date(exam.start_at).getTime());
+    //   console.log( 'getitme',new Date(exam.ended_at).getTime())
+    //   // const s = new Date(exam.start_at).getTime()
+    //   // const e = new Date(exam.ended_at).getTime()
 
-      const dayName = dayNames[date.getDay()];
-      const day = date.getDate();
-      const monthName = monthNames[date.getMonth()];
-      const year = date.getFullYear();
-      const hour = date.getHours();
-      const minute = date.getMinutes();
-      const second = date.getSeconds();
+    //   const dayName = dayNames[date.getDay()];
+    //   const day = date.getDate();
+    //   const monthName = monthNames[date.getMonth()];
+    //   const year = date.getFullYear();
+    //   const hour = date.getHours();
+    //   const minute = date.getMinutes();
+    //   const second = date.getSeconds();
   
-      const indonesianFormat = `${hour}:${minute}:${second}`;
-      console.log('indo > ', indonesianFormat)
-      setDuration(indonesianFormat)
-      // const indonesianFormat = `${dayName}, ${day} ${monthName} ${year} ${hour}:${minute} WIB`;
-      return indonesianFormat
+    //   const indonesianFormat = `${hour}:${minute}:${second}`;
+    //   console.log('indo > ', indonesianFormat)
+    //   setDuration(indonesianFormat)
+    //   // const indonesianFormat = `${dayName}, ${day} ${monthName} ${year} ${hour}:${minute} WIB`;
+    //   return indonesianFormat
+  
+    // const calculateDifference = () => {
+    // Convert timestamps to numbers
+    const start = parseInt(exam.started_at);
+    const end = parseInt(exam.ended_at);
+    
+    // Validate inputs
+    if (isNaN(start) || isNaN(end)) {
+      // alert('Please enter valid timestamps');
+      console.log('not valid')
+      return;
+    }
+    
+    if (end <= start) {
+
+      // alert('End time must be after start time');
+      return;
+    }
+
+    // Calculate difference in seconds
+    const diffInSeconds = Math.floor((end - start) / 1000);
+    
+    // Convert to hh:mm:ss
+    const hours = Math.floor(diffInSeconds / 3600);
+    const minutes = Math.floor((diffInSeconds % 3600) / 60);
+    const seconds = diffInSeconds % 60;
+    
+    // Format with leading zeros
+    const formattedTime = [
+      hours.toString().padStart(2, '0'),
+      minutes.toString().padStart(2, '0'),
+      seconds.toString().padStart(2, '0')
+    ].join(':');
+    
+    setDuration(formattedTime);
+  // };
+
   }
 
+  
+
+  const getFormatDate = (date) => {
+    const dayNames = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+    date = new Date(date);
+    const dayName = dayNames[date.getDay()];
+    const day = date.getDate();
+    const monthName = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    const second = date.getSeconds();
+
+    const indonesianFormat = `${dayName}, ${day} ${monthName} ${year} ${hour}:${minute} WIB`;
+    return indonesianFormat
+  }
   // const calculateScore = 
 return (
 <>
@@ -301,9 +370,9 @@ return (
                   <div className="px-0 py-10 mx-auto max-w-7xl sm:px-4">
             <div className="flex flex-col gap-1 justify-center items-center">
                       <p className="font-bold text-gray-900 text-4xl flex justify-center text-center items-center">{exam.name?? "Ujian TKD"}</p>
-                      <p className="text-gray-800 text-md mt-3">Senin, 23 Maret 2025 13:00 WIB</p>
-                      <p className="text-gray-800 text-md">Jumlah Soal : 3 Soal</p>
-                      <p className="text-gray-800 text-md">Durasi : 3600 detik</p>
+                      <p className="text-gray-800 text-md mt-3">{getFormatDate(exam.start_at)}</p>
+                      <p className="text-gray-800 text-md">Jumlah Soal : {exam.length} Soal</p>
+                      <p className="text-gray-800 text-md">Durasi : {duration} detik</p>
                     </div>
                     </div>
                     </section>
@@ -335,11 +404,12 @@ return (
                                           {/* <?php $j = "a"; ?>
                                           <?php foreach ($row['notes'] as $selection) : ?> */}
                                           {el.options.map((o, k) => (
-                                            <label className="mb-0 pr-5 flex gap-2 justify-start items-center mb-2" style={{ whiteSpace: 'normal !important' }}>
+                                            <label className=" pr-2 flex gap-2 justify-start items-center mb-2" style={{ whiteSpace: 'normal !important' }}>
                                               {/* "option[<?= $key ?>][answer]" */}
                                               {/* "<?= $selection['key'] ?>" */}
                                               {/* option[${e.order? e.order : o.id}][answer] */}
-                                              <input name={`option[${el.or? el.or : el.qid}][answer]`} className="form-input radio-md text-gray-800 rounded-lg " placeholder={o.order? o.order : '' } type="radio" value={o.option?o.option:o.id} onChange={(e) => setValue(el.or?el.or:el.qid, e.target.value)}/> 
+                                              <input className="form-input radio-md text-gray-800 rounded-lg " name={el.qid} placeholder={o.order? o.order : '' } type="radio" value={o.option?o.option:o.id} onChange={(e) => setValue(el.qid, e.target.value)}/> 
+                                              {/* name={`option[${el.or? el.or : el.qid}][answer]`}  */}
                                               <span className="text-gray-800 ">{o.order? o.order : "" } {o.option}</span>
                                                <br />
                                               {/* <?= $selection['id'] ? $selection['id'] : $j++ ?>. <?= $selection['text'] ?> */}
@@ -357,7 +427,7 @@ return (
                                 </div>
                                 <div className="flex justify-center items-center">
 
-                                <button type="submit" name="submit" id="mySubmit" className="btn block w-full bg-green-700 border-none " >Kirim Hasil</button>
+                                <button type="submit" name="submit" id="mySubmit" className="btn block w-full bg-green-700 border-none " >Kirim Jawaban</button>
                                 </div>
                         </form>
                               </div>
@@ -413,7 +483,7 @@ return (
           }
            {started_at && exam.question_type === 'SE' && (
 
-            <SEExam />
+            <SEExam id={id} appl_id={appl_id} started_at={started_at}/>
           )}
           {/* <div className="w-full lg:w-1/3 ">
             <Profile />
@@ -432,7 +502,7 @@ return (
       <div className="custom-template">
       <div className="flex flex-col justify-center items-center custom-toggle px-3 py-2">
       <FaClock />
-      <span id="timer" >
+      <span id="timer" ref={timeRef}>
         {/* 23:50:00 */}
         {/* {gmdate("h : i : s", strtotime(exam.end_at)- strtotime(exam.start_at))} */}
         {duration}

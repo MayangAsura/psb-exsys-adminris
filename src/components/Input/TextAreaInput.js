@@ -1,13 +1,13 @@
 import { useState } from "react"
 
 
-function TextAreaInput({labelTitle, labelStyle, type, containerStyle, defaultValue, placeholder, updateFormValue, updateType}){
+function TextAreaInput({labelTitle, labelStyle, required, nameInput, type, containerStyle, defaultValue, placeholder, updateFormValue, updateType}){
 
     const [value, setValue] = useState(defaultValue)
 
     const updateInputValue = (val) => {
         setValue(val)
-        updateFormValue({updateType, value : val})
+        updateFormValue({updateType, nameInput,  value})
     }
 
     return(

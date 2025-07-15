@@ -27,7 +27,7 @@ const QuestionBankCreate = lazy(() => import('../pages/protected/QuestionBankCre
 const Schools = lazy(() => import('../pages/protected/Schools'))
 const Account = lazy(() => import('../pages/protected/Account'))
 
-const Landing = lazy(() => import('../landing/main'))
+const Landing = lazy(() => import('../landing/Landing'))
 // const Landing = lazy(() => import('../landing/components/pages/Landing/main'))
 const Exam = lazy(() => import('../landing/components/pages/ExamPage/ExamPage'))
 const FrontLogin = lazy(() => import('../landing/components/pages/Login/Login'))
@@ -152,14 +152,14 @@ const routes = [
     path: '/register',
     component: FrontRegister,
   },
-  // {
-  //   path: 'u/exam/:id/show',
-  //   component: MCExam,
-  // },
-  // {
-  //   path: '/u/exam/:id/start',
-  //   component: MCExam,
-  // },
+  {
+    path: 'u/exam/:id/show',
+    component: MCExam,
+  },
+  {
+    path: '/u/exam/:id/start',
+    component: MCExam,
+  },
   {
     path: '/leads',
     component: Leads,

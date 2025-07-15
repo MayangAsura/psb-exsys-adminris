@@ -34,16 +34,16 @@ const ProtectedRoute = () => {
 
                       <h1 className="h3">Tidak Ada Akses</h1>
                       {/* <Link to='/login'>Masuk</Link> untuk mendapatkan akses */}
-                      <p className="text-xl text-gray-600 inline-grid"> 
+                      <p className="text-xl text-gray-600 inline-grid rounded-lg"> 
                         Silahkan masuk untuk mendapatkan akses. 
                         {/* <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 24 24">
                           <path d="M12 4v8.59l-3.29-3.29L7.41 11l5 5 5-5-1.29-1.29L12 12.59V4h-1.5z"/>
                         </svg> */}
                       </p>
-                       <Link to="/login" className="btn-sm block text-white bg-gray-900 hover:bg-gray-800 md:my-5">
-                          <span>MASUK
+                       <Link to="/login" className="btn-sm block rounded-lg bg-gray-900 hover:bg-gray-800 md:my-5">
+                          MASUK
                             
-                          </span>                 
+                          {/* <span className='text-base h5 text-white items-center'></span>                  */}
                         </Link>
                       {/* <Link to="/login" className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out">PENGISIAN FORMULIR</Link> */}
                     </div>
