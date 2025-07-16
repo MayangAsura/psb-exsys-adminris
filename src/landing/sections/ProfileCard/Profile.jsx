@@ -88,7 +88,7 @@ const Profile = ({id, sid, ip}) => {
   // const []
   return (
     <aside className="sticky top-0 bg-white group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md -mt-40">
-        <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-purple-100 text-purple-600 transition duration-200 group-hover:bg-purple-600 group-hover:text-white">
+        <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-purple-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
           <TbUserSquareRounded/>
           {/* {icon} */}
         </div>

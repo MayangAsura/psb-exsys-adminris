@@ -2,7 +2,7 @@ import Footer from "./components/sections/Footer/Footer";
 import Navbar from "./components/sections/Navbar/Navbar";
 import ProfileCover from "./components/sections/ProfileCover/ProfileCover";
 import Sidebar from "./components/sections/Sidebar/Sidebar";
-import Profile from "./components/sections/ProfileCard/Profile"; 
+import Profile from "./sections/ProfileCard/Profile"; 
 import Presence from "./components/sections/Presence/Presence"; 
 import Exam from "./components/sections/Exams/Exam";
 import Header from "./components/Header";

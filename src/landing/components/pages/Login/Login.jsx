@@ -140,10 +140,10 @@ const Login = () =>{
       // }
       
 
-      if(response.status!=200){
+      // if(response.status!=200){
         // setUsername()
-        openErrorModal()
-      }
+      //   openErrorModal()
+      // }
       
       //   } catch (error) {
           
