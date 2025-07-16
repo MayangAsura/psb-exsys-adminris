@@ -95,7 +95,7 @@ function Schedules(){
     }
 
     const deleteCurrentSchedule = (index) => {
-                dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+                dispatch(openModal({title : "Konfirmasi", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
                 extraObject : { message : `Apakah Anda yakin menghapus jadwal ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.SCHEDULE_DELETE, index}}))
                 
         

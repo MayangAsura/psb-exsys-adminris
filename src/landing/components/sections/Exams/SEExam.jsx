@@ -39,14 +39,14 @@ const SEExam = ({id, appl_id, started_at}) => {
   },
   {
     label: 'Soal 3',
-    description: `Bagaimana Ananda merokok?`,
+    description: `Apakah Ananda pernah merokok?`,
   },
 ];
 
 useEffect(() => {
   console.log('id', id)
   getQuestions(id)
-  
+  console.log('questions', questions)
 }, [id])
 
 
@@ -57,7 +57,7 @@ useEffect(() => {
     .from('exam_test_contents')
     .select('*, (exam_tests(exam_test_participants(appl_id))) ')
     .eq('exam_test_id', id)
-    .eq('exam_tests[0].exam_test_participants.appl_id', appl_id)
+    .eq('exam_tests.exam_test_participants.appl_id', appl_id)
 
     console.log('getq', exam_test_contents, error);
     if(error){
@@ -69,12 +69,13 @@ useEffect(() => {
         order: e.order,
         label: `Soal ${key + 1}`,
         description: e.question
-      }) 
+      })
+       
+      // setQuestions([...questions, {label: `Soal `+key+1, description: e.question }])
       // {
         // questions.push({label: `Soal `+key+1, description: e.question })
-        // setQuestions([...questions, {label: `Soal `+key+1, description: e.question }])
         // setQuestions((question) => ({label: `Soal `+ key+1, description: e.question }))
-      // }
+        // }
       )
       setQuestions(data_questions)
       Object.keys(exam_test_contents).map(function(key){
@@ -105,7 +106,7 @@ useEffect(() => {
 
   const handleNext = () => {
     if(questions[activeStep].id) {
-      handleSubmit() 
+      handleSubmit()
       addRes()
 
     }
@@ -218,13 +219,17 @@ useEffect(() => {
         // console.log(updateType)
   }
 
+  const setIr = (qid) => {
+    res.push()
+  }
+
   return (
     <div>
 
       <div className='bg-white grid grid-cols-4 flex-col justify-center items-center w-full px-4 pt-5 pb-6 mx-auto mt-8 mb-6 rounded-none shadow-xl sm:rounded-lg sm:px-6'>
         {questions.forEach((e, key) => (
 
-          <NumberItem no={key+1} qid={e.id} ir={res.includes(e.order?e.order:e.id)?true:false} or={e.order}></NumberItem>
+          <NumberItem no={key+1} qid={e.id} ir={res.includes(e.order?e.order:e.id)?true:false} setIr={setIr} or={e.order}></NumberItem>
         ))}
         {/* {questions.forEach(element => (
           <NumberItem no={}, qid, ir, or></NumberItem>

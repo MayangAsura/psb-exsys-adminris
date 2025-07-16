@@ -7,17 +7,25 @@ import MoonIcon from '@heroicons/react/24/outline/MoonIcon'
 import SunIcon from '@heroicons/react/24/outline/SunIcon'
 // import { openRightDrawer } from '../features/common/rightDrawerSlice';
 // import { RIGHT_DRAWER_TYPES } from '../utils/globalConstantUtil'
-
+import { openModal } from '../../features/common/modalSlice'
+// import ConfirmationModalBody from '../../features/common/components/ConfirmationModalBody'
+import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../utils/globalConstantUtil'
 import { NavLink,  Routes, Link , useLocation} from 'react-router-dom'
+import ModalLayout from '../../containers/ModalLayout'
+import { useDispatch } from 'react-redux'
 
 
-function Header(){
+function Header({appl_id}){
 
     // const dispatch = useDispatch()
     // const {noOfNotifications, pageTitle} = useSelector(state => state.header)
     const [noOfNotifications] = useState(1)
     const [currentTheme, setCurrentTheme] = useState(localStorage.getItem("theme"))
-
+    const dispatch = useDispatch()
+    
+    const location = useLocation()
+    const { hash, pathname, search } = location
+    // const login = false
     useEffect(() => {
         // themeChange(false)
         if(currentTheme === null){
@@ -27,8 +35,13 @@ function Header(){
                 setCurrentTheme("light")
             }
         }
+        // pathname
+        if(!appl_id && pathname!=='/login'){
+            openAuthValidationModal()
+        }
+
         // 👆 false parameter is required for react project
-      }, [])
+      }, [appl_id])
 
 
     // Opening right sidebar for notification
@@ -40,6 +53,13 @@ function Header(){
     function logoutUser(){
         localStorage.clear();
         window.location.href = '/'
+    }
+
+    const openAuthValidationModal = () => {
+        console.log('auth')
+        dispatch(openModal({title : "Error Akses", bodyType : MODAL_BODY_TYPES.MODAL_ERROR,
+            extraObject : {message : "Halaman ini dibatasi. Mohon periksa hak akses Anda", type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_ERROR}
+        }))
     }
 
     return(
@@ -91,7 +111,8 @@ function Header(){
 
 
                 {/* Profile icon, opening menu on click */}
-                <div className="dropdown dropdown-end ml-4">
+                {appl_id? (
+                    <div className="dropdown dropdown-end ml-4">
                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
                         <img src="https://placeimg.com/80/80/people" alt="profile" />
@@ -99,19 +120,21 @@ function Header(){
                     </label>
                     <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                         <li className="justify-between">
-                        {/* <Link to={'/app/settings-profile'}>
+                        <Link to={'/app/settings-profile'}>
                             Profile Settings
                             <span className="badge">New</span>
-                            </Link> */}
+                            </Link>
                         </li>
-                        {/* <li className=''><Link to={'/app/settings-billing'}>Bill History</Link></li> */}
-                        {/* <div className="divider mt-0 mb-0"></div> */}
+                        <li className=''><Link to={'/app/settings-billing'}>Bill History</Link></li>
+                        <div className="divider mt-0 mb-0"></div>
                         <li><a onClick={logoutUser}>Logout</a></li>
                     </ul>
                 </div>
+                ): ""}
+                
             </div>
             </div>
-
+            <ModalLayout/>
         </>
     )
 }

@@ -73,13 +73,14 @@ const Presence = (props) => {
       console.log(applicantPresence)
     },[props.id, props.sid])
 
+    
     const getPresenceData = async(id, sid) => {
     
         let { data: exam_presences, error } = await supabase
             .from('exam_presences')
             .select('*, exam_schedules(started_at, ended_at)')
             .eq('appl_id', id)
-            .eq('exam_schedule_id', sid)
+            // .eq('exam_schedule_id', sid)
             // .eq('dele', sid)
 
         if(!error){

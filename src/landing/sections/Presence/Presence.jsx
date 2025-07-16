@@ -141,7 +141,7 @@ const Presence = (props) => {
       <div className="flex justify-between items-center">
         <div className="flex flex-none">
           <p className="text-sm ">Jadwal Ujian</p>
-          <span className="badge mt-0 mb-0 badge-ghost">{`${formatDateNew(applicantPresence.exam_schedule_tests[0].started_at) - formatDateNew(applicantPresence[0].ended_at)}`} </span>
+          <span className="badge text-gray-800 mt-0 mb-0 badge-ghost text-base">{`${formatDateNew(applicantPresence.exam_schedule_tests[0].started_at) - formatDateNew(applicantPresence[0].ended_at)}`} </span>
         </div>
         <div className="flex flex-1 justify-items-end">
           <p className="text-sm ">Kehadiran</p>

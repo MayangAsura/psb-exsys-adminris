@@ -14,6 +14,7 @@ import {
 import { FaBootstrap, FaCode, FaHtml5, FaReact } from "react-icons/fa";
 import { TbUserSquareRounded } from "react-icons/tb";
 import ExamItem from "./items/ExamItem";
+import ProfileCover from "../ProfileCover/ProfileCover";
 // import ServiceItem from "../..pages/Service/ServiceItem";
 import profile from "../../../images/profile.jpg";
 
@@ -113,7 +114,8 @@ const serviceData = [
 
 const Exam = ({id, sid}) => {
 
-  const [examData, setExamData] = useState([{id: "sdsf", name: "Test TKD", score: 100, start_at: new Date().toISOString(), end_at: new Date().toISOString()}])
+  const [examData, setExamData] = useState([])
+  // const [examData, setExamData] = useState([{id: "sdsf", name: "Test TKD", score: 100, start_at: new Date().toISOString(), end_at: new Date().toISOString()}])
 
   useEffect(() => {
     getExamData(id, sid)
@@ -129,15 +131,24 @@ const Exam = ({id, sid}) => {
     // .eq('exam_schedule_id', sid)
     // exam_schedule_tests(exam_schedule_id), exam_test_participant(appl_id)
 
+  // let { data: exam_test_participants, error2 } = await supabase
+  //   .from('exam_test_participants')
+  //   .select('appl_id, exam_tests(*, exam_schedule_tests(exam_schedule_id))')
+  //   // .eq('exam_tests[0].exam_schedule_tests.exam_schedule_id', sid)
+  //   .eq('appl_id', id)
   let { data: exam_test_participants, error2 } = await supabase
-    .from('exam_test_participants')
-    .select('appl_id, exam_tests(*, exam_schedule_tests(exam_schedule_id))')
-    .eq('exam_tests[0].exam_schedule_tests.exam_schedule_id', sid)
-    .eq('appl_id', id)
+    .from('exam_tests')
+    .select('*, exam_test_participants(appl_id), exam_schedule_tests(exam_schedule_id)')
+    // .eq('exam_tests[0].exam_schedule_tests.exam_schedule_id', sid)
+    .eq('exam_test_participants.appl_id', id)
+    .eq('exam_schedule_tests.exam_schedule_id', sid)
   
 
     if(!error2){
-      setExamData(exam_test_participants[0].exam_tests[0])
+      console.log(exam_test_participants)
+      const {exam_schedule_test, ...data} = exam_test_participants[0]
+      setExamData(exam_test_participants)
+      console.log(examData)
     }
 
     // console.log(exam_tests)
@@ -149,7 +160,8 @@ const Exam = ({id, sid}) => {
   // ))
   return (
     <section className="pb-10">
-        <div className="w-full ">
+      
+        <div className="w-full container px-4">
             <div className="my-4 md:mx-4 shadow p-6 rounded-md bg-white group hover:shadow-md">
                 <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-green-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
                   {(<FaGraduationCap />)}

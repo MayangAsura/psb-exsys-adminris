@@ -37,15 +37,25 @@ const Login = () =>{
                 setCurrentTheme("light")
             }
     }
-  })
+    getApplIp()
+  },[])
 
   const handledVisible = () => {
     setIsVisible(prevState => !prevState)
   }
   const getApplIp = async () => {
-    const res = await axios.get("https://api.ipify.org/?format=json");
-    console.log(res.data)
-    setIp(res.data.ip)
+    fetch('https://geolocation-db.com/json/')
+      .then(response => response.json())
+      .then(data => {
+        setIp(data.IPv4)
+        // setCountry(data.country_name)
+        // setLatitude(data.latitude)
+        // setLongitude(data.longitude)
+      })
+      .catch(error => console.log(error))
+    // const res = await axios.get("https://api.ipify.org/?format=json");
+    // console.log(res.data)
+    // setIp(res.data.ip)
   }
 
   const handledSubmit = async (e) => {
@@ -193,8 +203,14 @@ const openSuccessModal = () => {
 }
 const openErrorModal = () => {
   console.log('masuk er')
+  // const deleteCurrentSchedule = (index) => {
+                // dispatch(openModal({title : "Login Gagal", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+                // extraObject : { message : `Mohon periksa kembali data Anda.`, type : CONFIRMATION_MODAL_CLOSE_TYPES.SCHEDULE_DELETE}}))
+                
+        
+    // }
   dispatch(openModal({title : "Login Gagal", bodyType : MODAL_BODY_TYPES.MODAL_ERROR,
-    extraObject : {message : "Mohon periksa kembali data Anda.", type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_ERROR}
+    extraObject : {message : "Mohon periksa kembali username atau password Anda.", type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_ERROR}
   }))
 }
 
@@ -292,6 +308,7 @@ return (
           </div> */}
         </div>
       </div>
+      <ModalLayout />
       <Footer />
     </main>
 )

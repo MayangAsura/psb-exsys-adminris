@@ -23,7 +23,7 @@ function Landing() {
   // const [applicant, setApplicant] = useState({id: "133c032c-6903-4e25-a2db-579d431fe6b4", sid: "d17ff676-85d2-4f9e-88f1-0fdfb37517b9"})
   useEffect(()=> {
     getApplicant()
-    getIp()
+    // getIp()
   }, [])
   const getIp = async () => {
     const res = await axios.get("https://api.ipify.org/?format=json");
@@ -38,16 +38,26 @@ function Landing() {
         .from('applicants')
         .select('id')
         .eq('refresh_token', token_user)
+        console.log(applicants)
       if(applicants){
 
-        setApplicant(applicants)
-      let { data: exam_test_participants, errorpart } = await supabase
-        .from('exam_test_participants')
-        .select('*, exam_tests(exam_schedule_tests(exam_schedule_id))')
-        .eq('appl_id', applicants.id)
+        setApplicant(applicants[0])
+      // let { data: exam_test_participants, errorpart } = await supabase
+      //   .from('exam_schedule_tests')
+      //   .select('*, exam_tests(exam_test_participants(appl_id))')
+        // .eq('appl_id', applicants[0].id)
+
+        let { data: exam_test_participants, error2 } = await supabase
+    .from('exam_tests')
+    .select('*, exam_test_participants(appl_id), exam_schedule_tests(exam_schedule_id)')
+    // .eq('exam_tests[0].exam_schedule_tests.exam_schedule_id', sid)
+    .eq('exam_test_participants.appl_id', applicants[0].id)
+    // .eq('exam_schedule_tests.exam_schedule_id', sid)
 
         if(exam_test_participants){
-          setScheduleId(exam_test_participants.exam_tests[0].exam_schedule_tests.exam_schedule_id)
+          setScheduleId(exam_test_participants[0].exam_schedule_tests[0].exam_schedule_id)
+          // sid = exam_test_participants[0].exam_tests.exam_schedule_tests[0].exam_schedule_id
+          console.log('sid', sid)
         }
       }
       
@@ -56,11 +66,12 @@ function Landing() {
     }
       
   }
+  const page = 'Beranda'
   return (
     <main className="min-h-screen relative bg-gray-50 pb-10" >
       <Header />
       {/* style={{ maxWidth:390 }} */}
-      <ProfileCover />
+      <ProfileCover page={page} />
       <div className="container px-4">
         <div className="flex flex-wrap px-4">
           <div className="w-full lg:w-1/3 mb-5 my">
@@ -68,7 +79,7 @@ function Landing() {
           </div>
           <div className="w-full lg:w-2/3 ">
             <Presence id={applicant.id} sid={sid} />
-            <Exam id={applicant.id} sid={applicant.sid} />
+            <Exam id={applicant.id} sid={sid} />
             {/* <Navbar /> */}
           </div>
           {/* <div className="w-full lg:w-2/3 ">

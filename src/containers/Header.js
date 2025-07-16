@@ -41,6 +41,13 @@ function Header(){
         window.location.href = '/'
     }
 
+    // const openAuthValidationModal = () => {
+    //     console.log('masuk')
+    //     dispatch(openModal({title : "Login Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS,
+    //         extraObject : {message : "Redirecting..", type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_SUCCESS}
+    //     }))
+    // }
+
     return(
         // navbar fixed  flex-none justify-between bg-base-300  z-10 shadow-md
         
@@ -110,6 +117,7 @@ function Header(){
                 </div>
             </div>
             </div>
+            {/* <ModalLayout /> */}
 
         </>
     )

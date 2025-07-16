@@ -7,6 +7,7 @@ import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../../../ut
 // import supabase from "../../../services/database/database";
 import supabase from "../../../../services/database-server";
 import SEExam from "./SEExam"
+import ProfileCover from "../ProfileCover/ProfileCover";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {startCount} from '../../../../utils/starCountTime'
@@ -49,7 +50,8 @@ const MCExam = () =>{
 
   useEffect(() => {
     getExam(id)
-    getDuration()
+    getDuration(exam.started_at, exam.ended_at)
+    console.log(duration)
     getUser()
     // (new Date(exam.ended_at).getTime() - new Date(exam.start_at).getTime()).getSeconds()
 //     if (window.performance) {
@@ -62,26 +64,27 @@ const MCExam = () =>{
 //   }
 // }
 
+    getquedata(id)
     if(started_at) {
-      getquedata(id)
-      getOptions(id)
+      // getOptions(id)
     }
     if(started_at){
       getti()
-      console.log(shuffleData(quedata)) 
+      // console.log(shuffleData(quedata)) 
 
-      console.log(shuffleData(options)) 
+      // console.log(shuffleData(options)) 
       const time = startCount(exam.started_at, exam.ended_at, ti, started_at)
       if(time !==0 && timeRef.current){
         timeRef.current.textContent = time
         setDuration(time)
+        console.log(duration)
       }
       if(time == 0 && timeRef.current){
         timeRef.current.textContent = 'Waktu Habis'
         handleSubmit()
       }
     }
-  },[id, quedata, options, started_at])
+  },[id, started_at, exam])
 
   const getUser = async () => {
     const TOKEN = localStorage.getItem("token-user")
@@ -127,24 +130,27 @@ const MCExam = () =>{
       .select('*')
       .eq('exam_test_id', id)
     if(!error) {
+      console.log(exam_test_contents)
       exam_test_contents.map((e, k) => (
 
-        setTimeout(() => {
+        // setTimeout(() => {
           
-          // getOptions(e.id)
+          getOptions(e.id),
           // shuffleData(options)
-          // console.log(options)
+          console.log(options),
           // setQueData([...quedata, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }])
-          setQueData((value, key) => ([...value, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }]))
+          setQueData((value, key) => ([...value, {qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order, options: options }]))
           // setOptions([])
-        }, 2000)
+        // }, 1000)
 
         
         
       ))
 
       shuffleData(quedata)
-      // console.log(quedata)
+      setQueData((value, k) => ([{...value, num: k+1}])) 
+      // setQueData([...quedata, ])
+      console.log(quedata)
     }
   }
   const shuffleData = (data) => {
@@ -170,6 +176,8 @@ const MCExam = () =>{
   }
 
   const getOptions = async (id) => {
+    setOptions(null)
+    // options = []
     let { data: exam_test_content_options, error } = await supabase
       .from('exam_test_content_options')
       .select('*')
@@ -177,17 +185,17 @@ const MCExam = () =>{
 
       if(!error){
         console.log(exam_test_content_options)
-        setOptions(exam_test_content_options)
-        // exam_test_content_options.map((e, k) => (
-        // // // //   // setOptions([{ id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, point: e.point, type: e.type}])
-        // // // //   // options.push({ id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, point: e.point, type: e.type})
-        // // // //   // setQueData((value) => ([...value, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }]))
-        //           setOptions((value) => ([...value, { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}]))
-        // ))
+        // setOptions(exam_test_content_options)
+        exam_test_content_options.map((e, k) => (
+          // setOptions([...options, { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, point: e.point, type: e.type}])
+          // options.push({ id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, point: e.point, type: e.type})
+          // setOptions((value) => ([...value, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }]))
+                  setOptions((value) => ([...value, { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}]))
+        ))
         // setOptions
+        console.log(options)
         shuffleData(options)
       }
-      console.log(options)
 
   }
 
@@ -203,7 +211,7 @@ const MCExam = () =>{
 
   const setValue = (name, e)=>{
     setValues((value) => 
-      value.filter((obj) =>(obj.exam_test_content_id?obj.exam_test_content_id:obj.order != name? values.push({exam_test_content_id: name, answer: e}): "")))
+      value.filter((obj) =>(values.push({exam_test_content_id: name, answer: e}))))
     // [...values{...values,}]
   }
   
@@ -213,7 +221,7 @@ const MCExam = () =>{
   const handleSubmit = async (e) => {
     e.preventDefault()
     console.log("masuk")
-
+    console.log(values)
     quedata.forEach(element => {
       values.map((e) => ( element.answer == e.a? setScores(scores + parseInt(e.scores))&&{...e, score: element.score}: {...e, score: 0}))
     });
@@ -227,7 +235,7 @@ const MCExam = () =>{
     ])
     .select()
     
-    values.map((value) => (setResponseDetailValues([...responseDetailValues, {exam_test_response_id: data.id, exam_test_content_id: value.name, answer:value.answer, point: value.point}])))
+    values.map((value) => (setResponseDetailValues([...responseDetailValues, {exam_test_response_id: data[0].id, exam_test_content_id: value.name, answer:value.answer, point: value.point}])))
 
     
     if(!error){
@@ -284,9 +292,11 @@ const MCExam = () =>{
   
     // const calculateDifference = () => {
     // Convert timestamps to numbers
-    const start = parseInt(exam.started_at);
-    const end = parseInt(exam.ended_at);
+    // console.log(new Date(exam.started_at).getTime())
     
+    const start = new Date(exam.started_at).getTime()
+    const end = new Date(exam.ended_at).getTime()
+    console.log(exam.started_at, end)
     // Validate inputs
     if (isNaN(start) || isNaN(end)) {
       // alert('Please enter valid timestamps');
@@ -316,6 +326,7 @@ const MCExam = () =>{
     ].join(':');
     
     setDuration(formattedTime);
+    console.log(duration)
   // };
 
   }
@@ -338,22 +349,25 @@ const MCExam = () =>{
     const indonesianFormat = `${dayName}, ${day} ${monthName} ${year} ${hour}:${minute} WIB`;
     return indonesianFormat
   }
+
+  const page = 'Ujian'
   // const calculateScore = 
 return (
 <>
 <main className="flex flex-col max-w-lg min-h-screen relative min-w-screen my-0 mx-auto bg-gray-50 pb-10" >
       <Header />
-      {/* <ProfileCover /> */}
+      <ProfileCover page={page} />
       <div className="container px-4">
         <div className="flex flex-wrap gap-3 px-4 ">
           {!started_at && (
             <div>
-              <p className="pt-2 pb-3 text-lg text-gray-700">Berikut ini tata tertib terkait ujian</p>
+              <p className="text-xl font-semibold my-5">Ujian {exam.name}</p>
+              <p className="mt-4 pb-3 text-lg text-gray-700">Tata tertib Ujian</p>
                           <ol className=" text-base text-gray-600">
                             <li>1. Berdoa dan memohon taufik kepada Allah sebelum memulai</li>
                             <li>2. Harap jujur dan tidak curang dalam mengerjakan ujian</li>
                             <li>3. Jumlah soal adalah {quedata.length} </li>
-                            <li>4. Waktu ujian adalah   detik</li>
+                            <li>4. Waktu ujian adalah {duration}  detik</li>
                             <li>5. Sangat tidak dianjurkan untuk merefresh halaman karena akan memotong waktu</li>
                             <li>6. Jika waktu habis maka akan otomatis submit</li>
                           </ol>
@@ -370,7 +384,7 @@ return (
                   <div className="px-0 py-10 mx-auto max-w-7xl sm:px-4">
             <div className="flex flex-col gap-1 justify-center items-center">
                       <p className="font-bold text-gray-900 text-4xl flex justify-center text-center items-center">{exam.name?? "Ujian TKD"}</p>
-                      <p className="text-gray-800 text-md mt-3">{getFormatDate(exam.start_at)}</p>
+                      <p className="text-gray-800 text-md mt-3">{getFormatDate(exam.started_at)}</p>
                       <p className="text-gray-800 text-md">Jumlah Soal : {exam.length} Soal</p>
                       <p className="text-gray-800 text-md">Durasi : {duration} detik</p>
                     </div>

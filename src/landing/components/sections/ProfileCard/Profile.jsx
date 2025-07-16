@@ -65,7 +65,7 @@ const Profile = (props) => {
   useEffect(() => {
         getExamData(props.id, props.sid)
         console.log(applicant)
-    },[props.id, props.sid])
+    },[])
 
     const getExamData = async(id, sid) => {
     

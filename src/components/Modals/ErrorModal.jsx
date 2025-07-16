@@ -26,7 +26,7 @@ function ErrorModal({ extraObject, closeModal}){
             {message}
         </p>
 
-        <div className="modal-action mt-12">
+        <div className="modal-action mt-3">
                 
                 <button className="btn btn-outline   " onClick={() => closeModal()}>OK</button>
 

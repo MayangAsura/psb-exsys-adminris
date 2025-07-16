@@ -23,7 +23,7 @@ const TopSideButtons = () => {
     )
 }
 
-function Leads(){
+function    Leads(){
 
     const {leads } = useSelector(state => state.lead)
     const dispatch = useDispatch()

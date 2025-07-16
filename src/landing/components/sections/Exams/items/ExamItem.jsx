@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 const ExamItem = (props) => {
   const { icon, name, status, location, schedule_name, started_at, id } = props.exam;
   const navigate = useNavigate()
+  const handleS = () =>{
+    navigate(`/u/exam/${id}/show`)
+  }
   const formatDate = (date) => {
       const dayNames = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
       const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -45,7 +48,7 @@ const ExamItem = (props) => {
             <p className="text-lg text-gray-400">{location?? 'SDIT RABBAANII'}</p>
           </div>
           {status!=='done' && (
-          <button className="flex flex-1 justify-center items-center bg-green-600 rounded-md py-5 px-2 mt-10 hover:bg-black-200" onClick={navigate(`/u/exam/${id}/show`)}>
+          <button className="flex flex-1 justify-center items-center bg-green-600 rounded-md py-5 px-2 mt-10 hover:bg-black-200" onClick={handleS}>
               <FaPencilAlt className="mr-1 text-center text-base" /> Mulai
           </button>
           )}

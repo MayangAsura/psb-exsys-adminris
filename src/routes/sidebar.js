@@ -21,6 +21,7 @@ import DocumentDuplicateIcon from '@heroicons/react/24/outline/DocumentDuplicate
 
 import { MdOutlineTask, MdOutlineDateRange, MdOutlineSchool, MdOutlineAddTask } from "react-icons/md";
 import { TbUserSquareRounded } from "react-icons/tb";
+import { BiTask} from "react-icons/bi";
 import { FaFileAlt } from "react-icons/fa";
 
 const iconClasses = `h-6 w-6`
@@ -46,7 +47,7 @@ const routes = [
   },
   {
     path: '/ad/exams',
-    icon: <FaFileAlt className={iconClasses}/>, 
+    icon: <BiTask className={iconClasses}/>, 
     name: 'Ujian',
     // submenu : [
     //   {

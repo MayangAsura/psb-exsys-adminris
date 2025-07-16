@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function NumberItem({no, qid, ir, or}) {
+function NumberItem({no, qid, ir, setIr, or}) {
     // const [no, setNo] =  useState(0) 
     // const [question_id, setQid] = useState(props.qid) 
     // const [is_responded, setIr] = useState(props.ir)
@@ -20,7 +20,8 @@ function NumberItem({no, qid, ir, or}) {
     }, [no, qid, ir, or])
 
     const openQuestion = () => {
-      navigate(`${qid}/order/${no}`)
+      setIr(qid)
+      // navigate(`${qid}/order/${no}`)
     }
   return (
     <div>
