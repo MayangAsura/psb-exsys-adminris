@@ -99,8 +99,8 @@ const Login = () =>{
         // Cookies.remove("jwt")
         
         
-        localStorage.setItem("token-user", response.data.token_refresh)
-        console.log(response.data.token_refresh)
+        localStorage.setItem("token-user", "LOGINTOKEN")
+        // console.log(response.data.token_refresh)
 
         const token = localStorage.getItem("token-user")
         console.log(token)
