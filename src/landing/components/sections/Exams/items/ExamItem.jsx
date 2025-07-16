@@ -49,9 +49,16 @@ const ExamItem = (props) => {
           </div>
           {status!=='done' && (
           <button className="flex flex-1 justify-center items-center bg-green-600 rounded-md py-5 px-2 mt-10 hover:bg-black-200" onClick={handleS}>
-              <FaPencilAlt className="mr-1 text-center text-base" /> Mulai
+              <FaPencilAlt className="mr-1 text-center text-base text-gray-900" /> 
+              <span className="text-gray-900">Mulai</span>
           </button>
           )}
+          {/* {status=='done' && (
+          <button className="flex flex-1 justify-center disabled items-center bg-green-600 rounded-md py-5 px-2 mt-10 hover:bg-black-200" onClick={handleS}>
+              <FaPencilAlt className="mr-1 text-center text-base text-gray-900" /> 
+              <span className="text-gray-900">Selesai</span>
+          </button>
+          )} */}
 
         </div>
       </div>

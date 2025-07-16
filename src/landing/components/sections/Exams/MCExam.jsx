@@ -65,8 +65,14 @@ const MCExam = () =>{
 // }
 
     getquedata(id)
-    if(started_at) {
-      // getOptions(id)
+    if(quedata) {
+      quedata.map((que, k) => (
+        console.log(que),
+        getOptions(que.qid),
+        shuffleData(options),
+        setQueData({...que, num: k+1, options: options}),
+        console.log(options)
+      ))
     }
     if(started_at){
       getti()
@@ -135,11 +141,11 @@ const MCExam = () =>{
 
         // setTimeout(() => {
           
-          getOptions(e.id),
+          // getOptions(e.id),
           // shuffleData(options)
-          console.log(options),
+          // console.log(options),
           // setQueData([...quedata, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }])
-          setQueData((value, key) => ([...value, {qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order, options: options }]))
+          setQueData((value, key) => ([...value, {qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order }]))
           // setOptions([])
         // }, 1000)
 
@@ -148,7 +154,7 @@ const MCExam = () =>{
       ))
 
       shuffleData(quedata)
-      setQueData((value, k) => ([{...value, num: k+1}])) 
+      // setQueData((v)=> [{...quedata, num: key+1}]) 
       // setQueData([...quedata, ])
       console.log(quedata)
     }
@@ -176,7 +182,7 @@ const MCExam = () =>{
   }
 
   const getOptions = async (id) => {
-    setOptions(null)
+    setOptions([])
     // options = []
     let { data: exam_test_content_options, error } = await supabase
       .from('exam_test_content_options')
@@ -186,15 +192,22 @@ const MCExam = () =>{
       if(!error){
         console.log(exam_test_content_options)
         // setOptions(exam_test_content_options)
-        exam_test_content_options.map((e, k) => (
-          // setOptions([...options, { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, point: e.point, type: e.type}])
+        const opt = exam_test_content_options.map(e => ( {
+          id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id
+        }
+          // setOptions([...options, { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, point: e.point, type: e.type, exam_test_content_id: e.exam_test_content_id}])
           // options.push({ id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, point: e.point, type: e.type})
           // setOptions((value) => ([...value, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }]))
-                  setOptions((value) => ([...value, { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}]))
+          // setOptions([...Q])
+                  // setOptions((value) => ([...value, { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}]))
         ))
-        // setOptions
+        shuffleData(opt)
+        console.log(opt)
+        opt.map((e) => (
+          setOptions()
+        ))
+        setOptions()
         console.log(options)
-        shuffleData(options)
       }
 
   }
