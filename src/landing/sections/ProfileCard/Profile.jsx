@@ -79,6 +79,7 @@ const Profile = ({id, sid, ip}) => {
 
         if(!error){
           setApplicant(exam_profiles[0])
+          console.log('applicant', applicant)
         }
             
     }

@@ -279,7 +279,7 @@ const MCExam = () =>{
           
   }
 
-  const getDuration = () => {
+  const getDuration = (s, e) => {
     // const dayNames = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
     //   const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
   
@@ -307,8 +307,8 @@ const MCExam = () =>{
     // Convert timestamps to numbers
     // console.log(new Date(exam.started_at).getTime())
     
-    const start = new Date(exam.started_at).getTime()
-    const end = new Date(exam.ended_at).getTime()
+    const start = new Date(s).getTime()
+    const end = new Date(e).getTime()
     console.log(exam.started_at, end)
     // Validate inputs
     if (isNaN(start) || isNaN(end)) {
@@ -339,7 +339,7 @@ const MCExam = () =>{
     ].join(':');
     
     setDuration(formattedTime);
-    console.log(duration)
+    console.log('duration', duration)
   // };
 
   }

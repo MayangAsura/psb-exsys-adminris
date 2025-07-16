@@ -12,8 +12,11 @@ import {
 } from "react-icons/fa";
 import { TbUserSquareRounded } from "react-icons/tb";
 import { MdOutlineCoPresent } from 'react-icons/md'
+import { openModal } from "../../../../features/common/modalSlice";
+import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from "../../../../utils/globalConstantUtil";
 import profile from "../../../images/profile.jpg";
 import supabase from "../../../services/database/database";
+import { useDispatch } from "react-redux";
 
 
 const socials = [
@@ -62,6 +65,8 @@ const socials = [
 const Presence = (props) => {
 
   const [applicantPresence, setApplicantPresence] = useState({})
+  const dispatch = useDispatch()
+
 
   // useEffect(() => {
   //       getPresenceData()
@@ -132,6 +137,58 @@ const Presence = (props) => {
       return 'Tuntas'
      }
   }
+
+  const handlePresence = async () => {
+
+    // const presence_at
+    const { data, error } = await supabase
+      .from('exam_presences')
+      .insert([
+        { exam_schedule_id: props.sid, appl_id: props.id, queue_number: getQueNum(), presence_at: new Date().toISOString(), status: 'ongoing', created_by: props.id },
+      ])
+      .select()
+    if(error){
+      openErrorModal()
+    }else{
+      openSuccessModal()
+    }
+              
+  }
+  const getQueNum = () => {
+  //   min = Math.ceil(min);
+  // max = Math.floor(max);
+  return Math.floor(Math.random() * (100 - 1 + 1)) + 1;
+    // return num
+  }
+  const openSuccessModal = () => {
+  console.log('masuk')
+  dispatch(openModal({title : "Presensi Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS,
+    extraObject : {message : "Waktu Presensi "+  getFormatDate(applicantPresence.presence_at), type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_SUCCESS}
+  }))
+}
+  const openErrorModal = () => {
+  console.log('masuk')
+  dispatch(openModal({title : "Presensi Gagal", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS,
+    extraObject : {message : "Data Tidak Ditemukan", type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_SUCCESS}
+  }))
+}
+
+const getFormatDate = (date) => {
+    const dayNames = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+    date = new Date(date);
+    const dayName = dayNames[date.getDay()];
+    const day = date.getDate();
+    const monthName = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    const second = date.getSeconds();
+
+    const indonesianFormat = `${dayName}, ${day} ${monthName} ${year} ${hour}:${minute} WIB`;
+    return indonesianFormat
+  }
   
 
   // const []
@@ -149,14 +206,16 @@ const Presence = (props) => {
         </div>
         <div className="flex flex-col justify-items-end">
           <p className="text-sm ">Kehadiran</p>
-          <span className="text-lg text-gray-100 badge border-none mt-0 mb-0 bg-green-80 py-3 px-5">{formatDateNew(applicantPresence.presence_at??new Date().toISOString())}</span>
+          <span className="text-lg text-gray-100 badge border-none mt-0 mb-0 bg-green-80 py-3 px-5">{applicantPresence? formatDateNew(applicantPresence.presence_at??new Date().toISOString()): "-"}</span>
           
         </div>
       </div>
       {/* <div className="w-24 h-24 rounded-md overflow-hidden mx-auto mb-5">
         <img src={profile} alt="shafiqhammad" className="w-full" />
       </div> */}
-      <div className="flex justify-center items-center">
+      {applicantPresence? (
+        <>
+        <div className="flex justify-center items-center">
         <div className="ml-5 flex-1 items-end mt-5">
           <p className="text-4xl text-gray-800 w-52 font-bold mb-1">{applicantPresence.queue_number?? 123} </p>
           <p className="text-sm text-gray-400 mb-3"> 
@@ -176,6 +235,13 @@ const Presence = (props) => {
           </p>
 
         </div>
+        </div>
+        </>
+      ):(
+        <>
+        <button className="btn btn-sm text-lg bg-orange-500" onClick={handlePresence}>Presensi</button>
+        </>
+      )}
         {/* <h1 className="text-xl text-gray-800 font-bold mb-1">{applicantPresence.queue_number} </h1>
         <p className="text-sm text-gray-400 mb-3">
           Frontend Web Developer at
@@ -195,7 +261,8 @@ const Presence = (props) => {
             <SocialIcon social={social} key={id} />
           ))}
         </ul> */}
-      </div>
+        
+        
       {/* <div
             className="xl:w-[80%] lg:w-[90%] md:w-[90%] sm:w-[92%] w-[90%] mx-auto flex flex-col gap-4 items-center relative lg:-top-8 md:-top-6 -top-4">
             <!-- Description -->

@@ -97,19 +97,34 @@ const Login = () =>{
       if(response.status==200){
         // dispatch(logout())
         // Cookies.remove("jwt")
+        
+        
         localStorage.setItem("token-user", response.data.token_refresh)
         console.log(response.data.token_refresh)
-        const { data: applicant, error_app } = await supabase
+
+        // if(!error){
+              openSuccessModal()
+              // navigate('/landing')
+            // }else{
+            //   openErrorModal()
+            // }
+          
+
+      }
+      const token = localStorage.getItem("token-user")
+      console.log(token)
+      const { data: applicant, error_app } = await supabase
           .from('applicants')
-          .select('id, full_name, participants(participant_father_data(father_name), participant_mother_data(mother_name)), regist_number, phone_number ')
-          .eq('refresh_token', response.data.token_refresh)
-          .single()
-          console.log(applicant)
-        if(applicant){
+          .select('id, full_name')
+          .eq('refresh_token', token)
+          // .single()
+          // , participants(participant_father_data(father_name), participant_mother_data(mother_name)), regist_number, phone_number 
+          console.log('applicant', applicant)
+      if(applicant){
 
           const { data, error } = await supabase
             .from('exam_profiles')
-            .upsert({ appl_id:applicant.id, full_name: applicant.full_name, father_name: applicant.participants[0]. participant_father_data[0].father_name, mother_name: applicant.participants[0].participant_mother_data[0].mother_name, ip: ip, last_login: new Date().toISOString(), regist_number: applicant.regist_number, phone_number: applicant.phone_number, refresh_token: response.data.token_refresh })
+            .insert({ appl_id:applicant.id, full_name: applicant.full_name, father_name: applicant.participants[0].participant_father_data[0].father_name, mother_name: applicant.participants[0].participant_mother_data[0].mother_name, ip: ip, last_login: new Date().toISOString(), regist_number: applicant.regist_number, phone_number: applicant.phone_number, refresh_token: response.data.token_refresh })
             // .eq('appl_id', applicant.id)
             .select()
             console.log(data)
@@ -122,9 +137,6 @@ const Login = () =>{
               
               
         }
-          
-
-      }
 
       if(response.status!=200){
         // setUsername()
@@ -243,7 +255,7 @@ return (
                 <form className="mb-8 space-y-4" >
                     <label className="block">
                     <span className="block mb-1 text-xs font-medium text-gray-700">No. WhatsApp / No. Registrasi</span>
-                    <input className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" type="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)}  placeholder="" inputmode="" required />
+                    <input className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" type="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)}  placeholder="" inputMode="" required />
                     {/* text-gray-800 */}
                     </label>
                     <span className="block mb-1 text-xs font-medium text-gray-700">Password</span>
