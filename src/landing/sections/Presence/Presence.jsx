@@ -10,10 +10,12 @@ import {
   FaTwitter,
   FaUserCircle
 } from "react-icons/fa";
+import { MdOutlineCoPresent, MdCoPresent } from "react-icons/md";
 import { TbUserSquareRounded } from "react-icons/tb";
-import profile from "../../../images/profile.jpg";
-import supabase from "../../../services/database/database";
-import { application } from "express";
+// import profile from "../../../images/profile.jpg";
+// import supabase from "../../../services/database/database";
+import supabase from "../../../services/database-server";
+// import { application } from "express";
 
 
 const socials = [
@@ -135,7 +137,7 @@ const Presence = (props) => {
   return (
     <aside className=" bg-white group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md mt-20">
         <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-purple-100 text-purple-600 transition duration-200 group-hover:bg-purple-600 group-hover:text-white">
-          <MdCoPresent/>
+          <MdOutlineCoPresent/>
           {/* {icon} */}
         </div>
       <div className="flex justify-between items-center">

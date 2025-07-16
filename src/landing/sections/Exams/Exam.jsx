@@ -12,9 +12,11 @@ import {
 } from "react-icons/fa";
 import { FaBootstrap, FaCode, FaHtml5, FaReact } from "react-icons/fa";
 import { TbUserSquareRounded } from "react-icons/tb";
+// import { MdCoPresent } from "react-icons/md";
 import ExamItem from "./items/ExamItem";
 // import ServiceItem from "../..pages/Service/ServiceItem";
-import profile from "../../../images/profile.jpg";
+// import profile from "../../../images/profile.jpg";
+import supabase from "../../../services/database-server";
 // import supabase from "../../services/database/database";
 // import supabase from "../../services/database/database";
 
@@ -120,8 +122,8 @@ const Exam = () => {
   const getExamData = async() => {  
   
   let { data: exam_tests, error } = await supabase
-    .from('exam_tests')
-    .select('*')
+  .from('exam_tests')
+  .select('*')
 
     if(!error){
       setExamData(exam_tests)

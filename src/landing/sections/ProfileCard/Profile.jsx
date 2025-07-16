@@ -11,9 +11,9 @@ import {
   FaUserCircle
 } from "react-icons/fa";
 import { TbUserSquareRounded } from "react-icons/tb";
-import profile from "../../../images/profile.jpg";
+// import profile from "../../../images/profile.jpg";
 
-import supabase from "../../../services/database";
+import supabase from "../../../services/database-server";
 
 const socials = [
   {
