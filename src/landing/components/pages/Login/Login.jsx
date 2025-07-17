@@ -86,44 +86,44 @@ const Login = () =>{
 
       }, 2000);
       // const handledLogout = async () => {
-      // try {
-      // const response = await axios.post("/api/auth/login", {username, password},
-      // {
-      //   headers: {'Content-Type': 'application/json' }, withCredentials: true
-      // }
-      // );
-      // // 
-      // console.log(JSON.stringify(response)); //console.log(JSON.stringify(response));
-      // if(response.status==200){
+      try {
+      const response = await axios.post("/api/auth/login", {username, password},
+      {
+        headers: {'Content-Type': 'application/json' }, withCredentials: true
+      }
+      );
+      // 
+      console.log(JSON.stringify(response)); //console.log(JSON.stringify(response));
+      if(response.status==200){
         // dispatch(logout())
         // Cookies.remove("jwt")
         
         
-        localStorage.setItem("token-user", "LOGINTOKEN")
-        // console.log(response.data.token_refresh)
+        localStorage.setItem("token-user", response.data.token_refresh)
+        console.log(response.data.token_refresh)
 
         const token = localStorage.getItem("token-user")
         console.log(token)
-      //   const { data: applicant, error_app } = await supabase
-      //     .from('applicants')
-      //     .select('id, full_name')
-      //     .eq('refresh_token', token)
-      //     // .single()
-      //     // , participants(participant_father_data(father_name), participant_mother_data(mother_name)), regist_number, phone_number 
-      //     console.log('applicant', applicant)
+        // const { data: applicant, error_app } = await supabase
+        //   .from('applicants')
+        //   .select('id, full_name')
+        //   .eq('refresh_token', token)
+        //   // .single()
+        //   // , participants(participant_father_data(father_name), participant_mother_data(mother_name)), regist_number, phone_number 
+        //   console.log('applicant', applicant)
       // if(applicant){
 
-      //     const { data, error } = await supabase
-      //       .from('exam_profiles')
-      //       .insert({ appl_id:applicant.id, full_name: applicant.full_name, father_name: applicant.participants[0].participant_father_data[0].father_name, mother_name: applicant.participants[0].participant_mother_data[0].mother_name, ip: ip, last_login: new Date().toISOString(), regist_number: applicant.regist_number, phone_number: applicant.phone_number, refresh_token: response.data.token_refresh })
-      //       // .eq('appl_id', applicant.id)
-      //       .select()
-      //       console.log(data)
+          // const { data, error } = await supabase
+          //   .from('exam_profiles')
+          //   .insert({ appl_id:applicant.id, full_name: applicant.full_name, father_name: applicant.participants[0].participant_father_data[0].father_name, mother_name: applicant.participants[0].participant_mother_data[0].mother_name, ip: ip, last_login: new Date().toISOString(), regist_number: applicant.regist_number, phone_number: applicant.phone_number, refresh_token: response.data.token_refresh })
+          //   // .eq('appl_id', applicant.id)
+          //   .select()
+          //   console.log(data)
             // if(!error){
               openSuccessModal()
-              navigate('/landing')
+              // navigate('/landing')
             // }else{
-              // openErrorModal()
+            //   openErrorModal()
             // }
               
               
@@ -137,18 +137,18 @@ const Login = () =>{
         //     }
           
 
-      // }
+      }
       
 
-      // if(response.status!=200){
-        // setUsername()
-      //   openErrorModal()
-      // }
+      if(response.status!=200){
+        setUsername()
+        openErrorModal()
+      }
       
-      //   } catch (error) {
+        } catch (error) {
           
-      //   }
-      // }
+        }
+      
       
 
       // if(userInfo){
@@ -210,8 +210,8 @@ const Login = () =>{
   } 
 
 const openSuccessModal = () => {
-  console.log('masuk')
-  dispatch(openModal({title : "Login Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS,
+  console.log('suc')
+  dispatch(openModal({title : "Login Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, size: 'sm',
     extraObject : {message : "Redirecting..", type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_SUCCESS}
   }))
 }

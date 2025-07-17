@@ -1,7 +1,9 @@
 export function startCount(start_at, end_at, time, started_at){
+  console.log('startCount', start_at, end_at, time, started_at)
 
     // $(document).ready(function(){
           var countDownDate = new Date(end_at).getTime() - new Date(start_at).getTime() - (new Date(time).getTime() - new Date(started_at).getTime());
+          console.log(countDownDate)
           // strtotime(ended_at) - strtotime(started_at) - strtotime(time) - strtotime(start_at);
         //    <?= $data['waktu'] - (strtotime(date('Y-m-d H:i:s')) - strtotime($_SESSION['asesmen']['dimulai_pada'])) ?>
           // Update the count down every 1 second

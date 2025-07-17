@@ -49,9 +49,18 @@ const MCExam = () =>{
   const id = useParams().id
 
   useEffect(() => {
-    getExam(id)
-    getDuration(exam.started_at, exam.ended_at)
-    console.log(duration)
+    if(id){
+      getExam(id)
+      getquedata(id)
+      getDuration(exam.started_at, exam.ended_at)
+
+    }
+    
+    // if(exam.length > 0){
+
+    // }
+    // getDuration_()
+    console.log('duration', duration)
     getUser()
     // (new Date(exam.ended_at).getTime() - new Date(exam.start_at).getTime()).getSeconds()
 //     if (window.performance) {
@@ -64,14 +73,17 @@ const MCExam = () =>{
 //   }
 // }
 
-    getquedata(id)
-    if(quedata) {
+    // if(quedata.length < 1)
+      
+    
+    if(quedata.length > 0) {
+      
       quedata.map((que, k) => (
         console.log(que),
         getOptions(que.qid),
         shuffleData(options),
         setQueData({...que, num: k+1, options: options}),
-        console.log(options)
+        console.log('options>', options)
       ))
     }
     if(started_at){
@@ -83,14 +95,40 @@ const MCExam = () =>{
       if(time !==0 && timeRef.current){
         timeRef.current.textContent = time
         setDuration(time)
-        console.log(duration)
+        console.log('durationti', duration)
       }
       if(time == 0 && timeRef.current){
         timeRef.current.textContent = 'Waktu Habis'
         handleSubmit()
       }
     }
-  },[id, started_at, exam])
+  },[id, started_at])
+
+  const getDuration_ = () => {
+    // const seconds = Math.max(0, getSecondsFromHHMMSS(value));
+    console.log(exam.started_at)
+    const seconds_inp = new Date(exam?.ended_at).getTime() - new Date(exam?.started_at_at).getTime()  
+
+    console.log('secinp', seconds_inp)
+  // const toHHMMSS = (secs) => {
+    // id, started_at, exam
+    const secNum = parseInt(seconds_inp.toString(), 10);
+    const hours = Math.floor(secNum / 3600);
+    const minutes = Math.floor(secNum / 60) % 60;
+    const seconds = secNum % 60;
+
+    const time = [hours, minutes, seconds]
+      .map((val) => (val < 10 ? `0${val}` : val))
+      .filter((val, index) => val !== "00" || index > 0)
+      .join(":")
+      .replace(/^0/, "");
+  // };
+
+    // const time = toHHMMSS(seconds);
+    setDuration(time);
+  }
+
+
 
   const getUser = async () => {
     const TOKEN = localStorage.getItem("token-user")
@@ -145,7 +183,8 @@ const MCExam = () =>{
           // shuffleData(options)
           // console.log(options),
           // setQueData([...quedata, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }])
-          setQueData((value, key) => ([...value, {qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order }]))
+          setQueData((value, key) => ([...(Array.isArray(value)? value : []), {qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order }]))
+
           // setOptions([])
         // }, 1000)
 
@@ -203,10 +242,11 @@ const MCExam = () =>{
         ))
         shuffleData(opt)
         console.log(opt)
+        setOptions([])
         opt.map((e) => (
-          setOptions()
+          setOptions([...options, {e}])
         ))
-        setOptions()
+        // setOptions()
         console.log(options)
       }
 
@@ -306,7 +346,7 @@ const MCExam = () =>{
     // const calculateDifference = () => {
     // Convert timestamps to numbers
     // console.log(new Date(exam.started_at).getTime())
-    
+    console.log(s, e)
     const start = new Date(s).getTime()
     const end = new Date(e).getTime()
     console.log(exam.started_at, end)
@@ -325,7 +365,7 @@ const MCExam = () =>{
 
     // Calculate difference in seconds
     const diffInSeconds = Math.floor((end - start) / 1000);
-    
+    console.log('diffInSeconds', diffInSeconds)
     // Convert to hh:mm:ss
     const hours = Math.floor(diffInSeconds / 3600);
     const minutes = Math.floor((diffInSeconds % 3600) / 60);
@@ -338,8 +378,8 @@ const MCExam = () =>{
       seconds.toString().padStart(2, '0')
     ].join(':');
     
+    
     setDuration(formattedTime);
-    console.log('duration', duration)
   // };
 
   }
@@ -380,7 +420,7 @@ return (
                             <li>1. Berdoa dan memohon taufik kepada Allah sebelum memulai</li>
                             <li>2. Harap jujur dan tidak curang dalam mengerjakan ujian</li>
                             <li>3. Jumlah soal adalah {quedata.length} </li>
-                            <li>4. Waktu ujian adalah {duration}  detik</li>
+                            <li>4. Waktu ujian adalah {duration} </li>
                             <li>5. Sangat tidak dianjurkan untuk merefresh halaman karena akan memotong waktu</li>
                             <li>6. Jika waktu habis maka akan otomatis submit</li>
                           </ol>
@@ -395,7 +435,7 @@ return (
             <>
             <section className="bg-gray-300 rounded-3xl my-3 w-screen">
                   <div className="px-0 py-10 mx-auto max-w-7xl sm:px-4">
-            <div className="flex flex-col gap-1 justify-center items-center">
+            <div className="flex flex-col gap-1">
                       <p className="font-bold text-gray-900 text-4xl flex justify-center text-center items-center">{exam.name?? "Ujian TKD"}</p>
                       <p className="text-gray-800 text-md mt-3">{getFormatDate(exam.started_at)}</p>
                       <p className="text-gray-800 text-md">Jumlah Soal : {exam.length} Soal</p>
@@ -416,7 +456,7 @@ return (
 
                                     <tbody>
                                       <th className="text-lg text-gray-800">Soal:</th>
-                                    {quedata.map( (el, index) => (
+                                    {quedata.map((el, index) => (
                                       // return (
                                         <>
                                         {/* {el.que} */}

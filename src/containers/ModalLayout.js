@@ -28,7 +28,7 @@ function ModalLayout(){
 
             {/* Put this part before </body> tag */}
             <div className={`modal ${isOpen ? "modal-open" : ""}`}>
-            <div className={`modal-box  ${size === 'lg' ? 'max-w-5xl' : ''}`}>
+            <div className={`modal-box  ${size === 'lg' ? 'max-w-5xl' : (size === 'sm' ? 'max-w-sm' : '')}`}>
                 <button className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => close()}>✕</button>
                 <h3 className="font-semibold text-2xl text-center">{title}</h3>
 

@@ -6,6 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 const ExamItem = (props) => {
   const { icon, name, status, location, schedule_name, started_at, id } = props.exam;
+  const navigate = useNavigate()
+    const handleS = () =>{
+      navigate(`/u/exam/${id}/show`)
+    }
   return (
     <div className="w-full lg:w-1/2">
       <div className="my-4 md:mx-4 shadow p-6 rounded-md bg-white group hover:shadow-md">
@@ -25,8 +29,9 @@ const ExamItem = (props) => {
             <p className="text-gray-400">{'SDIT Rabbaanii'}</p>
           </div>
           {status!=='done' && (
-          <button className="flex flex-1 bg-green-600 rounded-md py-5 px-2 mt-20 hover:bg-green-200">
-              <FaPencilAlt className="mr-1 text-white" /> Mulai
+          <button className="flex flex-1 bg-green-600 justify-center items-center rounded-md w-full py-5 px-2 mt-20 hover:bg-green-200" onClick={handleS}>
+              <FaPencilAlt className="mr-1 text-white text-center" /> 
+              <span className="text-gray-900">Mulai</span>
           </button>
           )}
 

@@ -4,7 +4,6 @@ import {
   FaDribbble,
   FaFacebookF,
   FaGithub,
-  FaGraduationCap,
   FaInstagram,
   FaLinkedinIn,
   FaSkype,
@@ -13,13 +12,13 @@ import {
 } from "react-icons/fa";
 import { FaBootstrap, FaCode, FaHtml5, FaReact } from "react-icons/fa";
 import { TbUserSquareRounded } from "react-icons/tb";
+// import { MdCoPresent } from "react-icons/md";
 import ExamItem from "./items/ExamItem";
-import ProfileCover from "../ProfileCover/ProfileCover";
 // import ServiceItem from "../..pages/Service/ServiceItem";
-import profile from "../../../images/profile.jpg";
-
-// import supabase from "../../../services/database/database";
-import supabase from "../../../../services/database-server";
+// import profile from "../../../images/profile.jpg";
+import supabase from "../../../services/database-server";
+// import supabase from "../../services/database/database";
+// import supabase from "../../services/database/database";
 
 
 const socials = [
@@ -112,47 +111,24 @@ const serviceData = [
 
 
 
-const Exam = ({id, sid}) => {
+const Exam = () => {
 
   const [examData, setExamData] = useState([])
-  // const [examData, setExamData] = useState([{id: "sdsf", name: "Test TKD", score: 100, start_at: new Date().toISOString(), end_at: new Date().toISOString()}])
 
   useEffect(() => {
-    getExamData(id, sid)
-  },[id, sid])
+    getExamData()
+  },[])
 
-  const getExamData = async(id, sid) => {  
+  const getExamData = async() => {  
   
-  // let { data: exam_tests, error } = await supabase
-  //   .from('exam_tests')
-  //   .select('*')
+  let { data: exam_tests, error } = await supabase
+  .from('exam_tests')
+  .select('*')
 
-    // .eq('appl_id', id)
-    // .eq('exam_schedule_id', sid)
-    // exam_schedule_tests(exam_schedule_id), exam_test_participant(appl_id)
-
-  // let { data: exam_test_participants, error2 } = await supabase
-  //   .from('exam_test_participants')
-  //   .select('appl_id, exam_tests(*, exam_schedule_tests(exam_schedule_id))')
-  //   // .eq('exam_tests[0].exam_schedule_tests.exam_schedule_id', sid)
-  //   .eq('appl_id', id)
-  let { data: exam_test_participants, error2 } = await supabase
-    .from('exam_tests')
-    .select('*, exam_test_participants(appl_id), exam_schedule_tests(exam_schedule_id)')
-    // .eq('exam_tests[0].exam_schedule_tests.exam_schedule_id', sid)
-    .eq('exam_test_participants.appl_id', id)
-    .eq('exam_schedule_tests.exam_schedule_id', sid)
-  
-
-    if(!error2){
-      console.log(exam_test_participants)
-      const {exam_schedule_test, ...data} = exam_test_participants[0]
-      setExamData(exam_test_participants)
-      console.log(examData)
+    if(!error){
+      setExamData(exam_tests)
     }
-
-    // console.log(exam_tests)
-          
+    // console.log(exam_tests)     
   }
 
   // const ExamList = examData.map((e) => (
@@ -160,12 +136,10 @@ const Exam = ({id, sid}) => {
   // ))
   return (
     <section className="pb-10">
-      
-        <div className="w-full container px-4">
-            <div className="my-4 md:mx-4 shadow p-6 rounded-md bg-white group hover:shadow-md">
+        <div className="w-full ">
+            <div className="my-4 md:mx-4 shadow p-6 rounded-md bg-white group-hover:shadow-md">
                 <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-green-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
-                  {(<FaGraduationCap />)}
-                    {/* <svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" 
+                    <svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" 
                     viewBox="0 0 490 490" space="preserve">
                     <g>
                         <g>
@@ -182,12 +156,12 @@ const Exam = ({id, sid}) => {
                             </g>
                         </g>
                     </g>
-                </svg> */}
+                </svg>
                 {/* {icon} */}
                 </div>
                 <div className="flex flex-wrap md:px-4">
-                  { examData.map((e, k) => (
-                    <ExamItem exam={e} key={k} />
+                  { examData.map((e) => (
+                    <ExamItem exam={e} />
                   ))}
                   {/* {ExamList} */}
                   {/* {examData.forEach((element, id) => {
@@ -210,5 +184,3 @@ const Exam = ({id, sid}) => {
 };
 
 export default Exam;
-
-

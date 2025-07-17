@@ -17,6 +17,7 @@ function NumberItem({no, qid, ir, setIr, or}) {
       //   setIr(ir)
       // if(or)
       //   setOrder(or)
+      console.log(no)
     }, [no, qid, ir, or])
 
     const openQuestion = () => {

@@ -4,7 +4,7 @@ import ProfileCover from "./components/sections/ProfileCover/ProfileCover";
 import Sidebar from "./components/sections/Sidebar/Sidebar";
 import Profile from "./sections/ProfileCard/Profile"; 
 import Presence from "./components/sections/Presence/Presence"; 
-import Exam from "./components/sections/Exams/Exam";
+import Exam from "./sections/Exams/Exam";
 import Header from "./components/Header";
 import '../index-user.css'
 
@@ -23,7 +23,7 @@ function Landing() {
   // const [applicant, setApplicant] = useState({id: "133c032c-6903-4e25-a2db-579d431fe6b4", sid: "d17ff676-85d2-4f9e-88f1-0fdfb37517b9"})
   useEffect(()=> {
     getApplicant()
-    // getIp()
+    getIp()
   }, [])
   const getIp = async () => {
     const res = await axios.get("https://api.ipify.org/?format=json");
@@ -40,7 +40,7 @@ function Landing() {
         .eq('refresh_token', token_user)
         console.log(applicants)
       if(applicants){
-
+        // full_name, phone_number, regist_number, participants(dob, home_address, participant_father_data(father_name), participant_mother_data(mother_name))π
         setApplicant(applicants[0])
       // let { data: exam_test_participants, errorpart } = await supabase
       //   .from('exam_schedule_tests')
@@ -49,13 +49,16 @@ function Landing() {
 
         let { data: exam_test_participants, error2 } = await supabase
     .from('exam_tests')
-    .select('*, exam_test_participants(appl_id), exam_schedule_tests(exam_schedule_id)')
+    .select('id, exam_test_participants(appl_id), exam_schedule_tests(exam_schedule_id)')
     // .eq('exam_tests[0].exam_schedule_tests.exam_schedule_id', sid)
     .eq('exam_test_participants.appl_id', applicants[0].id)
-    // .eq('exam_schedule_tests.exam_schedule_id', sid)
+    // .neq('exam_schedule_tests.exam_schedule_id', null)
+    // .neq('exam_test_participants.appl_id', null)
 
         if(exam_test_participants){
+          // console.log(exam_test_participants[0])
           setScheduleId(exam_test_participants[0].exam_schedule_tests[0].exam_schedule_id)
+          sid = exam_test_participants[0].exam_schedule_tests[0].exam_schedule_id
           // sid = exam_test_participants[0].exam_tests.exam_schedule_tests[0].exam_schedule_id
           console.log('sid', sid)
         }

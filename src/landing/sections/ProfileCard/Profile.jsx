@@ -65,15 +65,16 @@ const Profile = ({id, sid, ip}) => {
   useEffect(() => {
         getExamData()
         console.log(applicant)
-        if(!applicant.ip){
+        if(!applicant.ip || applicant?.ip !== ip){
           applicant.ip = ip
+          updateIp()
         }
     },[applicant?.ip])
 
     const getExamData = async() => {
     
         let { data: exam_profiles, error } = await supabase
-            .from('exam_profiles')
+            .from('exam_profiles, ')
             .select('*')
             .eq('appl_id', id)
 
@@ -83,11 +84,24 @@ const Profile = ({id, sid, ip}) => {
         }
             
     }
+    const updateIp = async () => {
+      let { data: exam_profiles, error } = await supabase
+            .from('exam_profiles')
+            .update({ip: ip})
+            .eq('appl_id', id)
+            .select()
+
+        if(!error){
+          setApplicant(exam_profiles[0])
+          console.log('applicant', applicant)
+        }
+    }
   
 
   // const []
   return (
-    <aside className="sticky top-0 bg-white group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md -mt-40">
+    <aside className="  bg-white group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md -mt-40">
+      {/* top-0 */}
         <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-purple-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
           <TbUserSquareRounded/>
           {/* {icon} */}
@@ -144,7 +158,7 @@ const Profile = ({id, sid, ip}) => {
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Alamat</dt>
-                                <dd className="text-lg font-semibold">{applicant.address}</dd>
+                                <dd className="text-lg font-semibold">{applicant.home_address}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Nama Ayah</dt>

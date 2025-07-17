@@ -54,30 +54,32 @@ useEffect(() => {
   const getQuestions = async (id) => {
     console.log(id)
   let { data: exam_test_contents, error } = await supabase
-    .from('exam_test_contents')
-    .select('*, (exam_tests(exam_test_participants(appl_id))) ')
-    .eq('exam_test_id', id)
-    .eq('exam_tests.exam_test_participants.appl_id', appl_id)
+    .from('exam_tests')
+    .select('id, exam_test_contents(*),exam_test_participants(appl_id)')
+    .eq('id', id)
+    .eq('exam_test_participants.appl_id', appl_id)
 
     console.log('getq', exam_test_contents, error);
     if(error){
       openErrorModal()
     }else{
       console.log(exam_test_contents);
-      const data_questions = exam_test_contents.map((e, key) => ({
-        id: e.id,
-        order: e.order,
-        label: `Soal ${key + 1}`,
-        description: e.question
-      })
-       
+      exam_test_contents[0].exam_test_contents.map((e, key) => (
+
+        setQuestions((question) => ([...Array.isArray(question)? question:[], {label: `Soal `+ key+1, description: e.question, id: e.id, order: e.order }]))
+      )
+      //  {
+      //   id: e.id,
+      //   order: e.order,
+      //   label: `Soal ${key + 1}`,
+      //   description: e.question
+      // }
       // setQuestions([...questions, {label: `Soal `+key+1, description: e.question }])
       // {
         // questions.push({label: `Soal `+key+1, description: e.question })
-        // setQuestions((question) => ({label: `Soal `+ key+1, description: e.question }))
         // }
       )
-      setQuestions(data_questions)
+      // setQuestions(data_questions)
       Object.keys(exam_test_contents).map(function(key){
         // obj = [key, {labe}];
       });
@@ -134,14 +136,9 @@ useEffect(() => {
 
     if(!error){
       
-      dispatch(openModal({title : "Ujian Tersimpan", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-        extraObject : { message : 'Anda telah menyelesaikan ujian'}}))
-      }else{
-        dispatch(openModal({title : "Gagal", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-          extraObject : { message : 'Data ujian gagal tersimpan'}}))
-        }
+      
         
-    answers.map((value) => (setResponseDetailValues([...responseDetailValues, {exam_test_response_id: data.id, exam_test_content_id: value.name, answer:value.answer}])))
+    answers.map((value) => (setResponseDetailValues([...responseDetailValues, {exam_test_response_id: data.id, exam_test_content_id: value.name, answer:value.answer, created_by: appl_id}])))
     
     const { data2, error2 } = await supabase
       .from('exam_test_response_details')
@@ -161,23 +158,15 @@ useEffect(() => {
     }
     if(!qid){
       const { data, error } = await supabase
-    .from('exam_test_responses')
-    .insert([
-      responseValues
-    ])
-    
-    if(!error){
-      
-      dispatch(openModal({title : "Ujian Tersimpan", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-        extraObject : { message : 'Anda telah menyelesaikan ujian'}}))
-      }else{
-        dispatch(openModal({title : "Gagal", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-          extraObject : { message : 'Data ujian gagal tersimpan'}}))
-        }
-        
-    answers.map((value) => (setResponseDetailValues([...responseDetailValues, {exam_test_response_id: data.id, exam_test_content_id: value.name, answer:value.answer}])))
-    
-    const { data2, error2 } = await supabase
+      .from('exam_test_responses')
+      .insert([
+        responseValues
+      ])
+      .select()
+      if(!error){
+        answers.map((value) => (setResponseDetailValues([...Array.isArray(responseDetailValues)?responseDetailValues:[], {exam_test_response_id: data.id, exam_test_content_id: value.name, answer:value.answer}])))
+
+      const { data2, error2 } = await supabase
       .from('exam_test_response_details')
       .upsert([
         responseDetailValues
@@ -186,12 +175,25 @@ useEffect(() => {
 
       if(!error2){
         
-        dispatch(openModal({title : "Ujian Tersimpan", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-                extraObject : { message : 'Anda telah menyelesaikan ujian'}}))
+        dispatch(openModal({title : "Ujian Tersimpan", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, 
+                extraObject : { message : 'Anda telah menyelesaikan ujian', type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_SUCCESS}}))
       }else{
-        dispatch(openModal({title : "Gagal Menyimpan Ujian", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-                extraObject : { message : 'Data ujian gagal tersimpan'}}))
+        dispatch(openModal({title : "Gagal Menyimpan Ujian", bodyType : MODAL_BODY_TYPES.MODAL_ERROR, 
+                extraObject : { message : 'Data ujian gagal tersimpan', type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_ERROR}}))
       }
+      
+      // dispatch(openModal({title : "Ujian Tersimpan", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, size:'sm',
+      //   extraObject : { message : 'Anda telah menyelesaikan ujian'}, type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_SUCCESS}))
+    }else{
+      dispatch(openModal({title : "Ujian Gagal Tersimpan", bodyType : MODAL_BODY_TYPES.CONFIRMATION.MODAL_ERROR, 
+        extraObject : { message : 'Data ujian gagal tersimpan', type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_ERROR
+
+        }}))
+    }
+        
+    
+    
+    
     }
     
     // if(qid) {
@@ -220,13 +222,14 @@ useEffect(() => {
   }
 
   const setIr = (qid) => {
-    res.push()
+    res.push(qid)
   }
 
   return (
     <div>
 
       <div className='bg-white grid grid-cols-4 flex-col justify-center items-center w-full px-4 pt-5 pb-6 mx-auto mt-8 mb-6 rounded-none shadow-xl sm:rounded-lg sm:px-6'>
+
         {questions.forEach((e, key) => (
 
           <NumberItem no={key+1} qid={e.id} ir={res.includes(e.order?e.order:e.id)?true:false} setIr={setIr} or={e.order}></NumberItem>
@@ -249,14 +252,14 @@ useEffect(() => {
           bgcolor: 'background.default',
         }}
       >
-        <Typography>{questions[activeStep].label}</Typography>
+        <Typography>{questions[activeStep]?.label}</Typography>
       </Paper>
       <Box sx={{ height: 255, maxWidth: 400, width: '100%', p: 2 }}>
-        {questions[activeStep].description}
+        {questions[activeStep]?.description}
         <form onSubmit={handleSubmit}>
         <div className='flex flex-col gap-5'>
           <TextAreaInput
-            nameInput={questions[activeStep].id}
+            nameInput={questions[activeStep]?.id}
             required
             placeholder=""
             rows="6"
@@ -281,7 +284,7 @@ useEffect(() => {
             onClick={handleNext}
             disabled={activeStep === maxSteps - 1}
           >
-            {!maxSteps? 'Selanjutnya': 'Akhiri Ujian'}
+            {activeStep !== maxSteps - 1? 'Selanjutnya': 'Akhiri Ujian'}
             {theme.direction === 'rtl' ? (
               <KeyboardArrowLeft />
             ) : (

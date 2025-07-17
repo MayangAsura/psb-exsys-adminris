@@ -27,5 +27,7 @@ module.exports = Object.freeze({
         SCHEDULE_DELETE : "SCHEDULE_DELETE",
         LOGIN_SUCCESS : "LOGIN_SUCCESS",
         LOGIN_ERROR : "LOGIN_ERROR",
+        EXAM_SUCCESS : "EXAM_SUCCESS",
+        EXAM_ERROR : "EXAM_ERROR",
     },
 });

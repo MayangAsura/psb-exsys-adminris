@@ -17,6 +17,11 @@ function ErrorModal({ extraObject, closeModal}){
             // dispatch(deleteLead({index}))
             // dispatch(showNotification({message : "Lead Deleted!", status : 1}))
         }
+        if(type === CONFIRMATION_MODAL_CLOSE_TYPES.MODAL_ERROR){
+            // positive response, call api or dispatch redux function
+            // dispatch(deleteLead({index}))
+            // dispatch(showNotification({message : "Lead Deleted!", status : 1}))
+        }
         closeModal()
     }
 

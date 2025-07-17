@@ -61,6 +61,12 @@ function Header({appl_id}){
             extraObject : {message : "Halaman ini dibatasi. Mohon periksa hak akses Anda", type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_ERROR}
         }))
     }
+    // const openSuccessModal = () => {
+    //   console.log('suc')
+    //   dispatch(openModal({title : "Login Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS,
+    //     extraObject : {message : "Redirecting..", type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_SUCCESS}
+    //   }))
+    // }
 
     return(
         // navbar fixed  flex-none justify-between bg-base-300  z-10 shadow-md

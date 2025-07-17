@@ -4,6 +4,7 @@ import {
   FaDribbble,
   FaFacebookF,
   FaGithub,
+  FaGraduationCap,
   FaInstagram,
   FaLinkedinIn,
   FaSkype,
@@ -12,13 +13,15 @@ import {
 } from "react-icons/fa";
 import { FaBootstrap, FaCode, FaHtml5, FaReact } from "react-icons/fa";
 import { TbUserSquareRounded } from "react-icons/tb";
-// import { MdCoPresent } from "react-icons/md";
 import ExamItem from "./items/ExamItem";
+// import ProfileCover from "../../components/ProfileCover/ProfileCover";
+import ProfileCover from "../../components/sections/ProfileCover/ProfileCover";
 // import ServiceItem from "../..pages/Service/ServiceItem";
 // import profile from "../../../images/profile.jpg";
+
+// import supabase from "../../../services/database/database";
+// import supabase from "../../../../services/database-server";
 import supabase from "../../../services/database-server";
-// import supabase from "../../services/database/database";
-// import supabase from "../../services/database/database";
 
 
 const socials = [
@@ -111,24 +114,63 @@ const serviceData = [
 
 
 
-const Exam = () => {
+const Exam = ({id, sid}) => {
 
   const [examData, setExamData] = useState([])
+  const [nsid, setNsid] = useState("")
+  const [nid, setNid] = useState("")
+  // let nsid = ''
+  // let nid = ''
+  // const [examData, setExamData] = useState([{id: "sdsf", name: "Test TKD", score: 100, start_at: new Date().toISOString(), end_at: new Date().toISOString()}])
 
   useEffect(() => {
-    getExamData()
-  },[])
+    console.log('id', id)
+    
+    getExamData(id, sid)
+  },[id, sid])
 
-  const getExamData = async() => {  
+  const getExamData = async(id, sid) => {  
+    console.log('sid', sid)
   
-  let { data: exam_tests, error } = await supabase
-  .from('exam_tests')
-  .select('*')
+  // let { data: exam_tests, error } = await supabase
+  //   .from('exam_tests')
+  //   .select('*')
 
-    if(!error){
-      setExamData(exam_tests)
+    // .eq('appl_id', id)
+    // .eq('exam_schedule_id', sid)
+    // exam_schedule_tests(exam_schedule_id), exam_test_participant(appl_id)
+
+  // let { data: exam_test_participants, error2 } = await supabase
+  //   .from('exam_test_participants')
+  //   .select('appl_id, exam_tests(*, exam_schedule_tests(exam_schedule_id))')
+  //   // .eq('exam_tests[0].exam_schedule_tests.exam_schedule_id', sid)
+  //   .eq('appl_id', id)
+  setNsid(sid)
+  setNid(id)
+  if(!sid || sid == null){
+      
+      setNsid('d17ff676-85d2-4f9e-88f1-0fdfb37517b9')
     }
-    // console.log(exam_tests)     
+    if(!id || id == null){
+      setNid('e91f0c82-6a57-4b76-a4bb-6d7fc59c51a5')
+    }
+  let { data: exam_test_participants, error2 } = await supabase
+    .from('exam_tests')
+    .select('*, exam_test_participants(appl_id), exam_schedule_tests(exam_schedule_id)')
+    // .eq('exam_tests[0].exam_schedule_tests.exam_schedule_id', sid)
+    .eq('exam_test_participants.appl_id', 'd17ff676-85d2-4f9e-88f1-0fdfb37517b9')
+    .eq('exam_schedule_tests.exam_schedule_id', 'e91f0c82-6a57-4b76-a4bb-6d7fc59c51a5')
+  
+
+    if(!error2){
+      console.log('exam', exam_test_participants)
+      // const {exam_schedule_test, ...data} = exam_test_participants[0]
+      setExamData(exam_test_participants)
+      console.log('examData', examData)
+    }
+
+    // console.log(exam_tests)
+          
   }
 
   // const ExamList = examData.map((e) => (
@@ -136,10 +178,12 @@ const Exam = () => {
   // ))
   return (
     <section className="pb-10">
-        <div className="w-full ">
+      
+        <div className="w-full container px-4">
             <div className="my-4 md:mx-4 shadow p-6 rounded-md bg-white group hover:shadow-md">
-                <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-purple-100 text-purple-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
-                    <svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" 
+                <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-green-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
+                  {(<FaGraduationCap />)}
+                    {/* <svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" 
                     viewBox="0 0 490 490" space="preserve">
                     <g>
                         <g>
@@ -156,12 +200,12 @@ const Exam = () => {
                             </g>
                         </g>
                     </g>
-                </svg>
+                </svg> */}
                 {/* {icon} */}
                 </div>
                 <div className="flex flex-wrap md:px-4">
-                  { examData.map((e) => (
-                    <ExamItem exam={e} />
+                  { examData.map((e, k) => (
+                    <ExamItem exam={e} key={k} />
                   ))}
                   {/* {ExamList} */}
                   {/* {examData.forEach((element, id) => {
@@ -184,5 +228,3 @@ const Exam = () => {
 };
 
 export default Exam;
-
-
