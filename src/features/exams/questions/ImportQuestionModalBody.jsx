@@ -15,11 +15,14 @@ const INITIAL_QUESTION_OBJ = {
     bank_code : ""
 }
 
-function ImportQuestionModalBody({closeModal}){
+
+
+function ImportQuestionModalBody({closeModal, extraObject}){
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
     const [questionObj, setQuestionObj] = useState(INITIAL_QUESTION_OBJ)
+    const { type, index } = extraObject
 
 
     const saveNewQuestion = async () => {
@@ -60,6 +63,9 @@ function ImportQuestionModalBody({closeModal}){
             // dispatch(showNotification({message : "New Lead Added!", status : 1}))
         }
     }
+    const handleImport = ( ) => {
+
+    }
     // const saveNewLead = () => {
     //     if(leadObj.first_name.trim() === "")return setErrorMessage("First Name is required!")
     //     else if(leadObj.email.trim() === "")return setErrorMessage("Email id is required!")
@@ -84,8 +90,7 @@ function ImportQuestionModalBody({closeModal}){
 
     return(
         <>
-
-            <FileUploads save={saveNewQuestion}></FileUploads>
+            <FileUploads save={saveNewQuestion} setStatus={handleImport} id={index}></FileUploads>
 {/* 
             <InputText type="text" defaultValue={leadObj.first_name} updateType="first_name" containerStyle="mt-4" labelTitle="First Name" updateFormValue={updateFormValue}/>
 

@@ -63,22 +63,26 @@ const Profile = ({id, sid, ip}) => {
   const [applicant, setApplicant] = useState({})
 
   useEffect(() => {
-        getExamData()
+    if(id){
+
+      getExamData(id)
+    }
         console.log(applicant)
         if(!applicant.ip || applicant?.ip !== ip){
           applicant.ip = ip
           updateIp()
         }
-    },[applicant?.ip])
+    },[applicant?.ip, id])
 
-    const getExamData = async() => {
+    const getExamData = async(id) => {
     
         let { data: exam_profiles, error } = await supabase
-            .from('exam_profiles, ')
-            .select('*')
+            .from('exam_profiles')
+            .select('full_name, phone_number, regist_number, bod, home_address, father_name, mother_name)')
             .eq('appl_id', id)
-
+// participants(dob, home_address, participant_father_data(father_name), participant_mother_data(mother_name)
         if(!error){
+          console.log(exam_profiles)
           setApplicant(exam_profiles[0])
           console.log('applicant', applicant)
         }
@@ -100,7 +104,7 @@ const Profile = ({id, sid, ip}) => {
 
   // const []
   return (
-    <aside className="  bg-white group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md -mt-40">
+    <aside className="   group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md mt-10">
       {/* top-0 */}
         <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-purple-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
           <TbUserSquareRounded/>
@@ -150,27 +154,27 @@ const Profile = ({id, sid, ip}) => {
                         <dl className="text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                             <div className="flex flex-col pb-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Nama Calon Santri</dt>
-                                <dd className="text-lg font-semibold">{applicant.full_name} </dd>
+                                <dd className="text-lg text-gray-900 dark:text-gray-600 font-semibold">{applicant.full_name? applicant.full_name : ''} </dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Lahir di</dt>
-                                <dd className="text-lg font-semibold">{applicant.bod}</dd>
+                                <dd className="text-lg text-gray-900 dark:text-gray-600 font-semibold">{applicant.bod? applicant.bod : ''}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Alamat</dt>
-                                <dd className="text-lg font-semibold">{applicant.home_address}</dd>
+                                <dd className="text-lg text-gray-900 dark:text-gray-600 font-semibold">{applicant.home_address? applicant.home_address : ''}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Nama Ayah</dt>
-                                <dd className="text-lg font-semibold">{applicant.father_name}</dd>
+                                <dd className="text-lg text-gray-900 dark:text-gray-600 font-semibold">{applicant.father_name? applicant.father_name : ''}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">No. WA</dt>
-                                <dd className="text-lg font-semibold">{applicant.phone_number}</dd>
+                                <dd className="text-lg ftext-gray-900 dark:text-gray-600 ont-semibold">{applicant.phone_number? applicant.phone_number : ''}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">IP Address</dt>
-                                <dd className="text-lg font-semibold">{applicant.ip}</dd>
+                                <dd className="text-lg text-gray-900 dark:text-gray-600 font-semibold">{applicant.ip? applicant.id : ip}</dd>
                             </div>
                         </dl>
                     </div>

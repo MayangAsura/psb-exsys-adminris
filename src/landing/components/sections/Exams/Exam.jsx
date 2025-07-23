@@ -136,7 +136,7 @@ const Exam = () => {
   // ))
   return (
     <section className="pb-10">
-        <div className="w-full ">
+        <div className="w-full container px-4">
             <div className="my-4 md:mx-4 shadow p-6 rounded-md bg-white group-hover:shadow-md">
                 <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-green-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
                     <svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" 

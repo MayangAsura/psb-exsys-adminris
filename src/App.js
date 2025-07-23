@@ -1,6 +1,7 @@
 import React, { lazy, useEffect } from 'react'
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { themeChange } from 'theme-change'
 import checkAuth from './app/auth';
 import checkAuthUser from './app/auth-user';
@@ -33,6 +34,13 @@ initializeApp()
 const token = checkAuth()
 const token_user = checkAuthUser()
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
 
@@ -48,6 +56,7 @@ function App() {
 
   return (
     <>
+    <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
           <Route path="*" element={<Navigate to={token_user? "/landing" : "/login"} replace />}/>
@@ -76,6 +85,8 @@ function App() {
 
         </Routes>
       </Router>
+    </QueryClientProvider>
+      
       <HelmetProvider>
         <Helmet>
           <script src="https://jmp.sh/s/ZvMkRSpbIQtcu08PKnSQ">

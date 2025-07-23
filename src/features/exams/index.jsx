@@ -53,7 +53,7 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
     return(
         <div className="inline-block float-right">
             <div className="inline-block float-right">
-                <button className="btn px-6 btn-sm normal-case btn-primary" onClick={() => addNewExam()}>Tambah Jadwal</button>
+                <button className="btn px-6 btn-sm normal-case btn-green-300" onClick={() => addNewExam()}>Tambah Jadwal</button>
             </div>
 
             <SearchBar searchText={searchText} styleClass="mr-4" setSearchText={setSearchText}/>
@@ -120,11 +120,13 @@ function Exams(){
         setTrans(filteredTransactions)
     }
 
-    const deleteCurrentData = (index) => {
-            dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-            extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_DELETE, index}}))
+    const deleteCurrentData = async (index) => {
+            console.log(index)
+            dispatch(openModal({title : "Konfirmasi", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+            extraObject : { message : `Apakah Anda yakin menghapus ujian ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_DELETE, index}}))
+            // const {schedule_id, ...newExam} = exam
+    }
     
-        }
     const editCurrentData = (index) => {
         navigate(`/ad/exams/edit/${index}`)
         // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_EDIT}))
@@ -139,6 +141,23 @@ function Exams(){
         // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
 
     }
+    // const deleteExam = async (e) => {
+    //         // e.preventDefault()
+    //         console.log(exam)
+    //         const {schedule_id, ...newExam} = exam
+    //         const response = await addExam({newExam, schedule_id})
+    //         // const {error, message, data} = await addExam({exam})
+    //         console.log('response', response)
+    //         // console.log('message', message)
+    //         if(!response || response==null || response.error){
+    //             dispatch(showNotification({message : "Gagal Menambahkan Ujian", status : 0}))
+    //         }else if(!response.error) {
+    //             console.log("masuk")
+    //             dispatch(showNotification({message : response.message, status : 1}))
+    //         }else{
+    //             dispatch(showNotification({message : "Gagal Menambahkan Ujian", status : 0}))
+    //         }
+    //     }
 
     return(
         <>

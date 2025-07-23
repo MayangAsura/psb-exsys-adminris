@@ -180,8 +180,8 @@ const Exam = ({id, sid}) => {
     <section className="pb-10">
       
         <div className="w-full container px-4">
-            <div className="my-4 md:mx-4 shadow p-6 rounded-md bg-white group hover:shadow-md">
-                <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-green-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
+            <div className="my-4 md:mx-4 shadow p-6 rounded-md bg-white grouphover:shadow-md">
+                <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-green-100 text-green-600 transition duration-200 ">
                   {(<FaGraduationCap />)}
                     {/* <svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" 
                     viewBox="0 0 490 490" space="preserve">
@@ -202,7 +202,6 @@ const Exam = ({id, sid}) => {
                     </g>
                 </svg> */}
                 {/* {icon} */}
-                </div>
                 <div className="flex flex-wrap md:px-4">
                   { examData.map((e, k) => (
                     <ExamItem exam={e} key={k} />
@@ -221,6 +220,8 @@ const Exam = ({id, sid}) => {
                 {/* // ((exam, id) => (
                 // ))} */}
                 </div>
+                </div>
+                
             </div>
         </div>
     </section>

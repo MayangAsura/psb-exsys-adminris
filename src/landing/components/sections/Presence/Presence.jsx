@@ -141,12 +141,15 @@ const Presence = (props) => {
   const handlePresence = async () => {
 
     // const presence_at
+    const sid = props.sid? props.sid : 'd17ff676-85d2-4f9e-88f1-0fdfb37517b9'
+    const id = props.id? props.id : '5a49e038-9f25-4e37-a2b8-f4ed6fc7a923'
     const { data, error } = await supabase
       .from('exam_presences')
       .insert([
-        { exam_schedule_id: props.sid, appl_id: props.id, queue_number: getQueNum(), presence_at: new Date().toISOString(), status: 'ongoing', created_by: props.id },
+        { exam_schedule_id: sid, appl_id: id, queue_number: getQueNum(), presence_at: new Date().toISOString(), status: 'ongoing', created_by: id },
       ])
       .select()
+      console.log()
     if(error){
       openErrorModal()
     }else{
@@ -239,7 +242,7 @@ const getFormatDate = (date) => {
         </>
       ):(
         <>
-        <button className="btn btn-sm text-lg bg-orange-500" onClick={handlePresence}>Presensi</button>
+        <button className="flex flex-row justify-center items-center btn btn-md text-lg bg-orange-500 " onClick={handlePresence}>Presensi</button>
         </>
       )}
         {/* <h1 className="text-xl text-gray-800 font-bold mb-1">{applicantPresence.queue_number} </h1>

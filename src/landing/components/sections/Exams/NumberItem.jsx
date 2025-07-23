@@ -7,6 +7,8 @@ function NumberItem({no, qid, ir, setIr, or}) {
     // const [is_responded, setIr] = useState(props.ir)
     // const [order, setOrder] = useState(props.or)
     const navigate = useNavigate()
+    const [ac, setA] = useState(false)
+    // const [cno, setCurNo] = useState(1)
 
     useEffect(() => {
       // if(no)
@@ -20,16 +22,23 @@ function NumberItem({no, qid, ir, setIr, or}) {
       console.log(no)
     }, [no, qid, ir, or])
 
-    const openQuestion = () => {
-      setIr(qid)
+    const handleResponse = () => {
+      setA(!ac)
+      console.log(ac)
+      setIr(qid, no)
+      // if(ir)
+      // if()
       // navigate(`${qid}/order/${no}`)
     }
   return (
+    <>
+      
     <div>
-        <button onClick={openQuestion} className={`btn w-5 btn-sm bg-green-900 hover:bg-gray-800 ml-3 ${ir?"bg-orange-900 hover:bg-orange-300":''}`}>
-            <span className='justify-center text-center text-lg'>{no}</span>
+        <button onClick={handleResponse} className={`flex flex-col justify-center items-center btn w-5 btn-sm p-5 m-2 ${ac? 'bg-green-800 hover:bg-gray-800': ir? "bg-orange-900 hover:bg-green-200":'bg-green-100 hover:bg-gray-800'}`}>
+            <span className='justify-center items-center text-center text-lg '>{no}</span>
         </button>
     </div>
+    </>
   )
 }
 

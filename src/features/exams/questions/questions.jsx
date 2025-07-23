@@ -47,7 +47,7 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
 
     const addNewQuestionModal = () => {
         
-        dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.QUESTION_ADD_NEW}))
+        dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.QUESTION_ADD_IMPORT}))
         // dispatch(showNotification({message : "Add New Member clicked", status : 1}))
     }
     const openAddNewLeadModal = () => {
@@ -56,7 +56,7 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
     return(
         <div className="inline-block float-right">
             <div className="inline-block float-right">
-                <button className="btn px-6 btn-sm normal-case btn-primary" onClick={() => addNewQuestionModal()}>Tambah Pertanyaan</button>
+                <button className="btn px-6 btn-sm normal-case btn-primary bg-green-800 hover:bg-green-600" onClick={() => addNewQuestionModal()}>Tambah Pertanyaan</button>
             </div>
 
             <SearchBar searchText={searchText} styleClass="mr-4" setSearchText={setSearchText}/>
@@ -83,6 +83,12 @@ function ExamQuestions(){
     const [trans, setTrans] = useState("")
     const [examQuestions, setExamQuestions] = useState([])
     const dispatch = useDispatch()
+    const options = [
+        {tab: 'Detail', selected: false },
+        {tab: 'Pertanyaan', selected: true },
+        {tab: 'Peserta', selected: false },
+        {tab: 'Respon Peserta', selected: false }
+    ]
 
     const id = useParams().exam_id
 
@@ -96,7 +102,7 @@ function ExamQuestions(){
         let { data: exam_test_contents, error } = await supabase
             .from('exam_test_contents')
             .select('* ')
-            .eq('id', id)
+            .eq('exam_test_id', id)
             // exam_tests(name, exam_schedule_tests(exam_schedules(exam_schedule_schools(schools(school_name)))))
 
         if(!error){
@@ -139,7 +145,7 @@ function ExamQuestions(){
     }
 
     const deleteCurrentQuestion = (index) => {
-        dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+        dispatch(openModal({title : "Konfirmasi", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
         extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
 
     }
@@ -160,10 +166,10 @@ function ExamQuestions(){
     return(
         <>
             
+                <TabHeaderP id={id} activeKey="Pertanyaan" options={options}></TabHeaderP>
             <TitleCard title="Pertanyaan" topMargin="mt-2" TopSideButtons={<TopSideButtons applySearch={applySearch} applyFilter={applyFilter} removeFilter={removeFilter}/>}>
             {/* UJIAN */}
                 {/* Team Member list in table format loaded constant */}
-                <TabHeaderP></TabHeaderP>
             <div className="overflow-x-auto w-full">
                 <table className="table w-full">
                     <thead>

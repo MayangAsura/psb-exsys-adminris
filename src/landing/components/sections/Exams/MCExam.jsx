@@ -41,6 +41,7 @@ const MCExam = () =>{
   // {order: "", option : "", point : "", exam_test_id: "", id : "", type: ""}
   const [ti, setti] = useState("")
   const [duration, setDuration] = useState('00:00:00')
+  let timer 
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [appl_id, setApplId] = useState("")
@@ -50,9 +51,12 @@ const MCExam = () =>{
 
   useEffect(() => {
     if(id){
+      console.log('id',id)
       getExam(id)
       getquedata(id)
-      getDuration(exam.started_at, exam.ended_at)
+      console.log('ql>',quedata.length)
+      // getDuration(exam.started_at, exam.ended_at)
+      
 
     }
     
@@ -77,42 +81,86 @@ const MCExam = () =>{
       
     
     if(quedata.length > 0) {
-      
+      console.log('masuk')
       quedata.map((que, k) => (
-        console.log(que),
-        getOptions(que.qid),
-        shuffleData(options),
-        setQueData({...que, num: k+1, options: options}),
-        console.log('options>', options)
+        console.log(que)
+        // getOptions(que.qid),
+        // shuffleData(options),
+        // setQueData({...que, num: k+1, }),
+        // console.log('options>', options)
       ))
     }
+    console.log('started_at', started_at)
     if(started_at){
-      getti()
+      
       // console.log(shuffleData(quedata)) 
 
       // console.log(shuffleData(options)) 
-      const time = startCount(exam.started_at, exam.ended_at, ti, started_at)
-      if(time !==0 && timeRef.current){
-        timeRef.current.textContent = time
-        setDuration(time)
-        console.log('durationti', duration)
-      }
-      if(time == 0 && timeRef.current){
-        timeRef.current.textContent = 'Waktu Habis'
-        handleSubmit()
-      }
+      startCount_()
+      
+      
     }
   },[id, started_at])
+  const getti = async () =>{
+        let { data, error } = await supabase
+            .rpc('get_current_ttmp')
+          if (error) console.error(error)
+          else{
+
+        setti(data)
+        console.log(data)
+        return data
+          } 
+        }
+  const startCount_ = () => {
+    console.log('started')
+    getti()
+    console.log('ti from startCount_', ti)
+    getDuration_()
+      
+      // if(time !==0 && timeRef.current){
+      //   timeRef.current.innerText = time
+      //   setDuration(time)
+      //   console.log('durationti', duration)
+      // }
+      // if(time == 0 && timeRef.current){
+      //   timeRef.current.innerText = 'Waktu Habis'
+      //   handleSubmit()
+      // }
+  }
 
   const getDuration_ = () => {
     // const seconds = Math.max(0, getSecondsFromHHMMSS(value));
     console.log(exam.started_at)
-    const seconds_inp = new Date(exam?.ended_at).getTime() - new Date(exam?.started_at_at).getTime()  
+    // const seconds_inp = new Date(exam?.ended_at).getTime() - new Date(exam?.started_at_at).getTime()  
+    var seconds_inp = new Date(exam.ended_at).getTime() - new Date(exam.start_at).getTime()
+    var end = new Date(exam.ended_at).getTime()
+    var start = new Date(exam.started_at).getTime()
+    var tser = new Date(ti).getTime()
+    var tstart = new Date(started_at).getTime()
+
+    seconds_inp = end - start - (tser - tstart)
+    // - (new Date().getTime() - new Date(started_at).getTime()));
+    // seconds_inp = new Date(exam.started_at).getTime()
+    // new Date().getTime() - 
 
     console.log('secinp', seconds_inp)
   // const toHHMMSS = (secs) => {
     // id, started_at, exam
-    const secNum = parseInt(seconds_inp.toString(), 10);
+    
+
+    console.log('time from set duration', seconds_inp)
+    var x = setInterval(function() {
+            seconds_inp -= 1;
+            var distance = seconds_inp;
+            // Time calculations for days, hours, minutes and seconds
+            // var hours = Math.floor(distance / (60 * 60));
+            // var minutes = Math.floor(distance / (60));
+            // var seconds = Math.floor((distance % (60)));
+            // const hours = Math.floor(distance / 3600);
+            // const minutes = Math.floor((distance % 3600) / 60);
+            // const seconds = distance % 60;
+    const secNum = parseInt(distance.toString(), 10);
     const hours = Math.floor(secNum / 3600);
     const minutes = Math.floor(secNum / 60) % 60;
     const seconds = secNum % 60;
@@ -123,9 +171,29 @@ const MCExam = () =>{
       .join(":")
       .replace(/^0/, "");
   // };
-
     // const time = toHHMMSS(seconds);
     setDuration(time);
+            // setDuration(hours + " : " + minutes + " : " + seconds)
+            // Display the result in the element with id="demo"
+            // return document.getElementById("timer").innerHTML = hours + " : " + minutes + " : " + seconds;
+            if(timeRef.current)
+              timeRef.current.innerText=duration
+            // If the count down is finished, write some text 
+            if (distance < 0) {
+              clearInterval(x);
+              // return 0
+              if(timeRef.current)
+                timeRef.current.innerText = "Waktu Habis"
+              handleSubmit()
+              // document.getElementById("timer").innerHTML = "Waktu Habis";
+              // document.getElementById("_mySubmit").click();
+            }
+            // else{
+            //   setDuration(time)
+
+            // }
+            // return hours + " : " + minutes + " : " + seconds;
+          }, 1000);
   }
 
 
@@ -140,9 +208,10 @@ const MCExam = () =>{
                         .select('*')
                         .eq('refresh_token', TOKEN)
     console.log('data', exam_profiles)
-    if(exam_profiles || exam_profiles.length > 0){
+    
+    if(!error){
       console.log('pro', exam_profiles)
-      setApplId(exam_profiles[0].appl_id)
+      setApplId(exam_profiles.appl_id)
     }else{
       
       openErrorModal("Token Tidak Valid")
@@ -159,31 +228,25 @@ const MCExam = () =>{
     dispatch(openModal({title : message, bodyType : MODAL_BODY_TYPES.MODAL_ERROR}))
   }
 
-  const getti = async () =>{
-    let { data, error } = await supabase
-      .rpc('get_current_ttmp')
-    if (error) console.error(error)
-    else{
-  setti(data)
-  console.log(data)
-    } 
-  }
+  
   const getquedata = async (id) => {
+    console.log('onql')
     let { data: exam_test_contents, error } = await supabase
       .from('exam_test_contents')
       .select('*')
       .eq('exam_test_id', id)
     if(!error) {
-      console.log(exam_test_contents)
-      exam_test_contents.map((e, k) => (
-
+      console.log('sd',exam_test_contents)
+      const newQuedata = exam_test_contents.map((e, k) => (
+        // getOptions(e.id), 
+        // console.log('options to update to que', options),
+        {qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order}
         // setTimeout(() => {
           
-          // getOptions(e.id),
           // shuffleData(options)
           // console.log(options),
           // setQueData([...quedata, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }])
-          setQueData((value, key) => ([...(Array.isArray(value)? value : []), {qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order }]))
+          // setQueData((value, key) => ([...(Array.isArray(value)? value : []), {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order }]))
 
           // setOptions([])
         // }, 1000)
@@ -191,11 +254,34 @@ const MCExam = () =>{
         
         
       ))
-
-      shuffleData(quedata)
+      shuffleData(newQuedata)
+      // newQuedata.map((e, k)=> (
+      //   getOptions(prev.qid)
+        
+      // ))
+      setQueData(prev => [])
+      setQueData((prev, k) => 
+         (
+      // [...newQuedata],
+    prev.map(item => (getOptions(item.id),
+    // console.log('options from set que', options, item.id)
+    {
+      ...item,          // Keep existing properties
+      num: k+1,     // Add new property
+      options: options
+              // Add another property (optional)
+    })))
+  );
+      // setQueData([...newQuedata])
       // setQueData((v)=> [{...quedata, num: key+1}]) 
       // setQueData([...quedata, ])
-      console.log(quedata)
+      // quedata.map((prev, k)=> (
+      //   getOptions(prev.qid),
+      //   cons
+      //   setQueData({...prev, num: k+1, options: options})
+      //   // [...prev, {options: options}]
+      // ))
+      console.log('quedata after add option:', quedata)
     }
   }
   const shuffleData = (data) => {
@@ -221,6 +307,7 @@ const MCExam = () =>{
   }
 
   const getOptions = async (id) => {
+    console.log(id)
     setOptions([])
     // options = []
     let { data: exam_test_content_options, error } = await supabase
@@ -231,23 +318,29 @@ const MCExam = () =>{
       if(!error){
         console.log(exam_test_content_options)
         // setOptions(exam_test_content_options)
-        const opt = exam_test_content_options.map(e => ( {
+        const opt = exam_test_content_options.map(e => (
+          // console.log(e),
+          {
           id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id
         }
-          // setOptions([...options, { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, point: e.point, type: e.type, exam_test_content_id: e.exam_test_content_id}])
-          // options.push({ id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, point: e.point, type: e.type})
+          // setOptions([...options, { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}])
+          // options.push({ id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type})
+          // point: e.point, 
           // setOptions((value) => ([...value, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }]))
           // setOptions([...Q])
-                  // setOptions((value) => ([...value, { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}]))
+                  // setOptions((value) => ([...(Array.isArray(value)? value : []), { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}]))
         ))
+        console.log(opt)
         shuffleData(opt)
         console.log(opt)
-        setOptions([])
-        opt.map((e) => (
-          setOptions([...options, {e}])
-        ))
+        setOptions([...opt])
+        console.log('options:', options)
         // setOptions()
-        console.log(options)
+        // opt.map((e) => (
+        //   setOptions([...options, {e}])
+        // ))
+        // // setOptions()
+        // console.log(options)
       }
 
   }
@@ -293,11 +386,11 @@ const MCExam = () =>{
     
     if(!error){
         
-        dispatch(openModal({title : "Ujian Tersimpan", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-                extraObject : { message : 'Anda telah menyelesaikan ujian'}}))
+        dispatch(openModal({title : "Ujian Tersimpan", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, size: 'sm',
+                extraObject : { message : 'Anda telah menyelesaikan ujian', type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_SUCCESS}}))
       }else{
-        dispatch(openModal({title : "Gagal", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-                extraObject : { message : 'Data ujian gagal tersimpan'}}))
+        dispatch(openModal({title : "Gagal", bodyType : MODAL_BODY_TYPES.CONFIRMATION, size: 'sm', 
+                extraObject : { message : 'Data ujian gagal tersimpan', type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_ERROR}}))
       }
 
     const { data2, error2 } = await supabase
@@ -370,7 +463,7 @@ const MCExam = () =>{
     const hours = Math.floor(diffInSeconds / 3600);
     const minutes = Math.floor((diffInSeconds % 3600) / 60);
     const seconds = diffInSeconds % 60;
-    
+    console.log(seconds)
     // Format with leading zeros
     const formattedTime = [
       hours.toString().padStart(2, '0'),
@@ -378,7 +471,7 @@ const MCExam = () =>{
       seconds.toString().padStart(2, '0')
     ].join(':');
     
-    
+    console.log()
     setDuration(formattedTime);
   // };
 
@@ -461,7 +554,7 @@ return (
                                         <>
                                         {/* {el.que} */}
                                       <tr>
-                                        <td style={{ width: '3%'}} className="items-start text-gray-800 text-lg">{el.or? el.or :el.num}. </td>
+                                        <td style={{ width: '3%'}} className="items-start text-gray-800 text-lg">{el.num}. </td>
                                         <td className="text-gray-800 text-lg" style={{ width:'97%' }}>{el.que} </td>
                                         {/* <?= $row['nomor'] ? $row['no                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  mor'] : $i++ ?>. */}
                                       </tr>
@@ -472,9 +565,9 @@ return (
                                           <?php foreach ($row['notes'] as $selection) : ?> */}
                                           {el.options.map((o, k) => (
                                             <label className=" pr-2 flex gap-2 justify-start items-center mb-2" style={{ whiteSpace: 'normal !important' }}>
-                                              {/* "option[<?= $key ?>][answer]" */}
-                                              {/* "<?= $selection['key'] ?>" */}
-                                              {/* option[${e.order? e.order : o.id}][answer] */}
+                                              {/* "optizon[<?= $key ?>][answer]"
+                                              "<?= $selection['key'] ?>"
+                                              option[${e.order? e.order : o.id}][answer] */}
                                               <input className="form-input radio-md text-gray-800 rounded-lg " name={el.qid} placeholder={o.order? o.order : '' } type="radio" value={o.option?o.option:o.id} onChange={(e) => setValue(el.qid, e.target.value)}/> 
                                               {/* name={`option[${el.or? el.or : el.qid}][answer]`}  */}
                                               <span className="text-gray-800 ">{o.order? o.order : "" } {o.option}</span>

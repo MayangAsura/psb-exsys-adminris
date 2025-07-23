@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState } from "react"
 import {tabHeaderHandlerActiveTab} from '../../utils/tabHeaderHandlerActiveTab'
+import { useNavigate } from "react-router-dom"
 
 function TabHeaderE({styleClass, options}) {
 
     const [optionValues, setOptionValues] = useState([])
     const tabRef = useRef(null)
-    const defaultOptions = [
+    const navigate = useNavigate()
+    let defaultOptions = [
         {tab: 'Detail', selected: true },
         {tab: 'Ujian', selected: false },
         {tab: 'Peserta', selected: false }
     ]
+
     useEffect(() => {
         // tabHeaderHandlerActiveTab()
         if(!options){
@@ -17,6 +20,39 @@ function TabHeaderE({styleClass, options}) {
             // options = defaultOptions
         }else{setOptionValues(options)}
     }, [options])
+
+    const handleActiveTab = (key, id) => {
+        const newValue = {selected: false}
+        // optionValues[key].selected = false
+        // optionValues[key].selected = true
+        // console.log
+        // optionValues[key].selected = false
+    //     setOptionValues((prev) => 
+    //   prev.map((o) => 
+    //     ({ ...o, ...newValue })  // Merge existing + new props
+          
+    //   )
+    // );
+        setOptionValues((prev,k) => 
+      prev.map((o, t) => 
+        t == key 
+          ? { ...o, selected: true }  // Merge existing + new props
+          : { ...o, selected: false}
+      )
+    );
+
+    navigate('/ad/schedules/'+id+ '/participants')
+        // const option = optionValues.find(opt => opt.id === key);
+        // if(option){
+        //     option.
+        // }
+        
+        // setOptionValues()
+        // setOptionValues((prev,k) => (k == key? prev.map(value => ({...value, selected: true})): prev.map(value => ({...value, selected: false})) ))
+        // if(tabRef.current){
+        //     tabRef.current.
+        // }
+    }
     
    return (
     <div className="py-10">
@@ -34,22 +70,22 @@ function TabHeaderE({styleClass, options}) {
                 </div> */}
                 {/* <select aria-label="Selected tab" className="form-select block w-full p-3 border border-gray-300 rounded text-gray-600 appearance-none bg-transparent relative z-10"> */}
                     {/* {Object.keys(options).forEach(fu)} */}
-                    <div className="xl:w-full xl:mx-0 h-12 hidden sm:block shadow rounded">
+                    <div className="xl:w-full xl:mx-0 h-12 hidden sm:block shadow rounded bg-white">
                 <div className="flex border-b px-5">
                     {
                         optionValues? (
                             (optionValues).map((e, key) => (
-                                <button ref={tabRef} onClick={tabHeaderHandlerActiveTab(this)} className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-green-700 cursor-pointer">
+                                <button ref={tabRef} onClick={() => handleActiveTab(key)} className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-green-700 cursor-pointer">
                     <div className="flex items-center mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-eye" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    {/* <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-eye" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" />
                         <circle cx="12" cy="12" r="2" />
                         <path d="M2 12l1.5 2a11 11 0 0 0 17 0l1.5 -2" />
                         <path d="M2 12l1.5 -2a11 11 0 0 1 17 0l1.5 2" />
-                    </svg>
+                    </svg> */}
                     <span className="ml-1 font-normal">{e.tab} </span>
                     </div>
-                    <div className={`w-full h-1 bg-green-700 rounded-t-md ` +  !e.selected? 'hidden':''}></div>
+                    <div className={`w-full h-1 bg-green-700 rounded-t-md ${e.selected != true? ' hidden': ''}`}></div>
                 </button>
                             // return (
                                 // {e.selected == true? (

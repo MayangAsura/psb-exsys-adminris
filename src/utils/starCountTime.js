@@ -1,9 +1,37 @@
-export function startCount(start_at, end_at, time, started_at){
-  console.log('startCount', start_at, end_at, time, started_at)
+import { da } from "date-fns/locale";
+import supabase from "../services/database-server";
+import { useState } from "react";
+
+
+const getti = async () =>{
+        let { data, error } = await supabase
+            .rpc('get_current_ttmp')
+          if (error) console.error(error)
+          else{
+
+        // setti(data)
+        console.log(data)
+        return data
+          } 
+        }
+        // getti()
+        
+export function startCount (start_at, end_at, time, started_at) {
+  // const ti = getti()
+  // let ti =
+  let { data, error } = supabase
+            .rpc('get_current_ttmp')
+          if (error) console.error(error)
+          else{
+        // setti(data)
+        console.log(data)
+          }
+  console.log('ti from startcount', data)
+  console.log('startCount', start_at, end_at, time, getti(),started_at)
 
     // $(document).ready(function(){
-          var countDownDate = new Date(end_at).getTime() - new Date(start_at).getTime() - (new Date(time).getTime() - new Date(started_at).getTime());
-          console.log(countDownDate)
+          var countDownDate = new Date(end_at).getTime() - new Date(start_at).getTime() - (new Date(data).getTime() - new Date(started_at).getTime());
+          console.log('countDownDate', countDownDate)
           // strtotime(ended_at) - strtotime(started_at) - strtotime(time) - strtotime(start_at);
         //    <?= $data['waktu'] - (strtotime(date('Y-m-d H:i:s')) - strtotime($_SESSION['asesmen']['dimulai_pada'])) ?>
           // Update the count down every 1 second
@@ -30,3 +58,5 @@ export function startCount(start_at, end_at, time, started_at){
           }, 1000);
         // });
 }
+
+// export default StartCount

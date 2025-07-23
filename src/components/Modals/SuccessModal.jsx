@@ -9,6 +9,7 @@ function SuccessModal({ extraObject, closeModal}){
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    // const
 
     const { message, type, _id, index} = extraObject || {}
 
@@ -30,6 +31,12 @@ function SuccessModal({ extraObject, closeModal}){
             // positive response, call api or dispatch redux function
             // dispatch(deleteLead({index}))
             navigate('/landing')
+            // dispatch(showNotification({message : "Redirecting..!", status : 1}))
+        }
+        if(type === CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_SUCCESS){
+            // positive response, call api or dispatch redux function
+            // dispatch(deleteLead({index}))
+            navigate('/ad/exams')
             // dispatch(showNotification({message : "Redirecting..!", status : 1}))
         }
         closeModal()

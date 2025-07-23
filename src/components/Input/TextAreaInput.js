@@ -15,7 +15,7 @@ function TextAreaInput({labelTitle, labelStyle, required, nameInput, type, conta
             <label className="label">
                 <span className={"label-text text-base-content " + labelStyle}>{labelTitle}</span>
             </label>
-            <textarea value={value} className="textarea textarea-bordered w-full" placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)}></textarea>
+            <textarea value={value} className="textarea textarea-bordered w-full" rows="8" cols="9" placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)}></textarea>
         </div>
     )
 }

@@ -28,7 +28,7 @@ const TopSideButtons = () => {
 
     return(
         <div className="inline-block float-right">
-            <button className="btn px-6 btn-sm normal-case btn-primary" onClick={() => addNewSchedule()}>Tambah Jadwal</button>
+            <button className="btn px-6 btn-sm normal-case bg-green-800 text-gray-300" onClick={() => addNewSchedule()}>Tambah Jadwal</button>
         </div>
     )
 }
@@ -142,7 +142,7 @@ function Schedules(){
                             schedules.map((l, k) => {
                                 return(
                                     <tr key={k}>
-                                    <td className="font-bold text-white"> {l.name}</td>    
+                                    <td className="font-bold text-gray-500 dark:text-gray-200"> {l.name}</td>    
                                     {/* <td>
                                         <div className="flex items-center space-x-3">
                                             <div className="avatar">
@@ -162,9 +162,9 @@ function Schedules(){
                                     {/* <td>{getRoleComponent(l.role)}</td> */}
                                     <td>{formatDateNew(l.updated_at)}</td>
                                     <td>
-                                        <button className="btn btn-sm btn-square btn-ghost" onClick={() => detailCurrentSchedule(l.id)}><EyeIcon className="w-5"/></button>
-                                        <button className="btn btn-sm btn-square btn-ghost" onClick={() => editCurrentSchedule(l.id)}><PencilIcon className="w-5"/></button>
-                                        <button className="btn btn-sm btn-square btn-ghost" onClick={() => deleteCurrentSchedule(l.id)}><TrashIcon className="w-5"/></button>
+                                        <button className="btn btn-sm btn-square btn-ghost hover:bg-green-200" onClick={() => detailCurrentSchedule(l.id)}><EyeIcon className="w-5"/></button>
+                                        <button className="btn btn-sm btn-square btn-ghost hover:bg-orange-200" onClick={() => editCurrentSchedule(l.id)}><PencilIcon className="w-5"/></button>
+                                        <button className="btn btn-sm btn-square btn-ghost hover:bg-red-200" onClick={() => deleteCurrentSchedule(l.id)}><TrashIcon className="w-5"/></button>
                                     </td>
                                     </tr>
                                 )

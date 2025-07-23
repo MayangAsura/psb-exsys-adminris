@@ -2,6 +2,7 @@ import moment from "moment"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import TitleCard from "../../components/Cards/TitleCard"
+import { setPageTitle } from "../common/headerSlice"
 import { showNotification } from '../common/headerSlice'
 import InputText from '../../components/Input/InputText'
 import InputTextRadio from '../../components/Input/InputTextRadio'
@@ -48,6 +49,7 @@ function ExamEdit(){
 
 
     useEffect( () => {
+        dispatch(setPageTitle({ title : "Edit"}))
         getScheduleOptions()
         // getSchedule()
         getExam(id)
@@ -183,7 +185,7 @@ function ExamEdit(){
                     <SelectBox
                         nameInput="schedule_id"
                         options={schedulesOptions}
-                        labelTitle="Jadwal Ujian"
+                        labelTitle="p"
                         placeholder="Pilih Jadwal"
                         containerStyle="w-72"
                         // labelStyle="hidden"

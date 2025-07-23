@@ -50,7 +50,7 @@ function ScheduleCreate(){
     },[])
 
     // Call API to update profile settings changes
-    const updateSchedules = async (e) => {
+    const saveSchedules = async (e) => {
 
         // e.preventDefault()
         console.log(schedule)
@@ -133,7 +133,7 @@ function ScheduleCreate(){
         <>
             
             <TitleCard title="Tambah Jadwal" topMargin="mt-2">
-                <form onSubmit={handleSubmit(updateSchedules)}>
+                <form onSubmit={handleSubmit(saveSchedules)}>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         

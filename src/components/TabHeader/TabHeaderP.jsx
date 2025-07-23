@@ -1,21 +1,69 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {tabHeaderHandlerActiveTab} from '../../utils/tabHeaderHandlerActiveTab'
+import { useNavigate } from "react-router-dom"
 
-function TabHeaderP({styleClass, options}) {
+function TabHeaderP({styleClass, options, id, activeKey}) {
 
     const [optionValues, setOptionValues] = useState([])
     const defaultOptions = [
         {tab: 'Detail', selected: true },
+        {tab: 'Pertanyaan', selected: false },
         {tab: 'Peserta', selected: false },
-        {tab: 'Response', selected: false }
+        {tab: 'Respon Peserta', selected: false }
     ]
+
+    const tabRef = useRef()
+    const navigate = useNavigate()
     useEffect(() => {
         // tabHeaderHandlerActiveTab()
-        if(!options){
-            setOptionValues(defaultOptions)
-            // options = defaultOptions
+        options?setOptionValues(options):setOptionValues(defaultOptions)
+        // if(!options){
+        //     setOptionValues(defaultOptions)
+        //     // options = defaultOptions
+        // }
+        if(activeKey){
+            // setOptionValues(prev => prev.(val => ))
         }
-    }, [options])
+        
+    }, [options, activeKey])
+
+    const handleActiveTab = (key, id) => {
+        const newValue = {selected: false}
+        // optionValues[key].selected = false
+        // optionValues[key].selected = true
+        // console.log
+        // optionValues[key].selected = false
+    //     setOptionValues((prev) => 
+    //   prev.map((o) => 
+    //     ({ ...o, ...newValue })  // Merge existing + new props
+          
+    //   )
+    // );
+        setOptionValues((prev,k) => 
+      (prev.map((o, t) => 
+        t == key 
+          ? { ...o, selected: true }  // Merge existing + new props
+          : { ...o, selected: false}
+      ))
+    );
+
+    if(key==0)
+        navigate('/ad/exams/detail/'+id)
+    if(key==1)
+        navigate('/ad/exams/'+id+ '/participants')
+    if(key==2)
+        navigate('/ad/exams/'+id+ '/response')
+        // const option = optionValues.find(opt => opt.id === key);
+        // if(option){
+        //     option.
+        // }
+        
+        // setOptionValues()
+        // setOptionValues((prev,k) => (k == key? prev.map(value => ({...value, selected: true})): prev.map(value => ({...value, selected: false})) ))
+        // if(tabRef.current){
+        //     tabRef.current.
+        // }
+    }
     
    return (
     <div className="py-10">
@@ -23,7 +71,37 @@ function TabHeaderP({styleClass, options}) {
            {/* <!--- more free and premium Tailwind CSS components at https://tailwinduikit.com/ --->
             <!--Code for navigation starts--> */}
             <dh-component>
-            <div className="sm:hidden relative w-11/12 mx-auto bg-white rounded">
+                <div className="xl:w-full xl:mx-0 h-12 hidden sm:block shadow rounded bg-white">
+                <div className="flex border-b px-5">
+                    {
+                        optionValues? (
+                            (optionValues).map((e, key) => (
+                                <button ref={tabRef} onClick={() => handleActiveTab(key, id)} className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-green-700 cursor-pointer">
+                    <div className="flex items-center mb-3">
+                    {/* <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-eye" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" />
+                        <circle cx="12" cy="12" r="2" />
+                        <path d="M2 12l1.5 2a11 11 0 0 0 17 0l1.5 -2" />
+                        <path d="M2 12l1.5 -2a11 11 0 0 1 17 0l1.5 2" />
+                    </svg> */}
+                    <span className="ml-1 font-normal">{e.tab} </span>
+                    </div>
+                    <div className={`w-full h-1 bg-green-700 rounded-t-md ${e.selected != true? ' hidden': ''}`}></div>
+                </button>
+                            // return (
+                                // {e.selected == true? (
+                                //     // <option selected={true} className="text-sm text-gray-600">{e.tab}</option>
+                                // ): (
+                                //     // <option className="text-sm text-gray-600">{e.tab}</option>
+                                // )}
+                            // )
+                            ))
+                        ) : (
+                            ""
+                        )
+                        }
+            </div></div>
+            {/* <div className="sm:hidden relative w-11/12 mx-auto bg-white rounded">
                 <div className="absolute inset-0 m-auto mr-4 z-0 w-6 h-6">
                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-selector" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#A0AEC0" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" />
@@ -32,8 +110,8 @@ function TabHeaderP({styleClass, options}) {
                 </svg>
                 </div>
                 <select aria-label="Selected tab" className="form-select block w-full p-3 border border-gray-300 rounded text-gray-600 appearance-none bg-transparent relative z-10">
-                    {/* {Object.keys(options).forEach(fu)} */}
-                    {/* {
+                    {Object.keys(options).forEach(fu)}
+                    {
                         optionValues? (
                             Object.keys(optionValues).forEach((key, e) => {
                             // return (
@@ -47,68 +125,16 @@ function TabHeaderP({styleClass, options}) {
                         ) : (
                             ""
                         )
-                        } */}
+                        }
 
-                {/* <option className="text-sm text-gray-600">inactive</option>
+                <option className="text-sm text-gray-600">inactive</option>
                 <option className="text-sm text-gray-600">inactive</option>
                 <option selected className="text-sm text-gray-600">Active</option>
                 <option className="text-sm text-gray-600">inactive</option>
-                <option className="text-sm text-gray-600">inactive</option> */}
+                <option className="text-sm text-gray-600">inactive</option>
                 </select>
-            </div>
-            <div className="xl:w-full xl:mx-0 h-12 hidden sm:block shadow rounded">
-                <div className="flex border-b px-5">
-                <button onClick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t text-gray-600 mr-12 cursor-pointer">
-                    <div className="flex items-center mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-home" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" />
-                        <polyline points="5 12 3 12 12 3 21 12 19 12" />
-                        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-                        <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-                    </svg>
-                    <span className="ml-1 font-normal">Detail</span>
-                    </div>
-                    <div className="w-full h-1 bg-green-700 rounded-t-md hidden"></div>
-                </button>
-                <button onClick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t mr-12 hover:text-green-700 cursor-pointer">
-                    <div className="flex items-center mb-3">
-                    {/* <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-eye" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" />
-                        <circle cx="12" cy="12" r="2" />
-                        <path d="M2 12l1.5 2a11 11 0 0 0 17 0l1.5 -2" />
-                        <path d="M2 12l1.5 -2a11 11 0 0 1 17 0l1.5 2" />
-                    </svg> */}
-                    <span className="ml-1 font-normal">Pertanyaan</span>
-                    </div>
-                    <div className="w-full h-1 bg-green-700 rounded-t-md" ></div>
-                </button>
-                <button onClick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t mr-12 hover:text-green-700 cursor-pointer">
-                    <div className="flex items-center mb-3">
-                    {/* <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-eye" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" />
-                        <circle cx="12" cy="12" r="2" />
-                        <path d="M2 12l1.5 2a11 11 0 0 0 17 0l1.5 -2" />
-                        <path d="M2 12l1.5 -2a11 11 0 0 1 17 0l1.5 2" />
-                    </svg> */}
-                    <span className="ml-1 font-normal">Peserta</span>
-                    </div>
-                    <div className="w-full h-1 bg-green-700 rounded-t-md hidden" ></div>
-                </button>
-                <button onClick="tabHeaderHandlerActiveTab(this)" className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-green-700 cursor-pointer">
-                    <div className="flex items-center mb-3">
-                        {/* <TbUsersGroup></TbUsersGroup> */}
-                    {/* <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-eye" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" />
-                        <circle cx="12" cy="12" r="2" />
-                        <path d="M2 12l1.5 2a11 11 0 0 0 17 0l1.5 -2" />
-                        <path d="M2 12l1.5 -2a11 11 0 0 1 17 0l1.5 2" />
-                    </svg> */}
-                    <span className="ml-1 font-normal">Jawaban</span>
-                    </div>
-                    <div className="w-full h-1 bg-green-700 rounded-t-md hidden"></div>
-                </button>
-                </div>
-            </div>
+            </div> */}
+            
             </dh-component>
             {/* <!--Code for navigation ends--> */}
         </div>

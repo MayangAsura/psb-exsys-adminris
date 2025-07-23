@@ -2,6 +2,7 @@ import moment from "moment"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import TitleCard from "../../components/Cards/TitleCard"
+import { setPageTitle } from "../common/headerSlice"
 import { showNotification } from '../common/headerSlice'
 import InputText from '../../components/Input/InputText'
 import InputTextRadio from '../../components/Input/InputTextRadio'
@@ -12,7 +13,7 @@ import InputDateTime from "../../components/Input/InputDateTime"
 import { useForm } from "react-hook-form"
 
 import supabase from "../../services/database-server"
-import {updateExam} from "../../services/api/exams"
+import {updateSchedule} from "../../services/api/schedule"
 
 import DateTimePicker from 'react-datetime-picker'
 import { useParams } from "react-router-dom"
@@ -35,43 +36,74 @@ function ScheduleEdit(){
     const dispatch = useDispatch()
     const [value, onChange] = useState(new Date())
     
-    const [exam, setExam] = useState({name: "", subtitle: "", icon: "", started_at: "", ended_at: "", scheme: "", question_type: "", location: "", room: "" })
-    // exam_category_id: "",
+    const [schedule, setSchedule] = useState({name: "", started_at: new Date(), ended_at: new Date(), max_participants: "", school_id: "" })
+    // schedule_category_id: "",
     // const [schedule, setSchedule] = useState({name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: "" })
     const [schemeOptions, setSchemeOptions] = useState([{name: "Online", value: "online"},{name: "Offline", value: "offline"}])
     const [typeOptions, setTypeOptions] = useState([{name: "Pilihan Ganda", value: "MC"},{name: "Benar Salah", value: "BS"},{name: "Essay Singkat", value: "ES"},{name: "Essay", value: "E"}])
     const [selectedOption, setSelectedOption] = useState(null);
+    const [schoolOptions, setSchoolOptions] = useState([])
+    // const [schedule, setSchedule] = useState({name: "", started_at: new Date(), ended_at: new Date(), max_participants: "", school_id: "" })
     const checked = false
     const {register, handleSubmit} = useForm()
-    const {id} = useParams().schedule_id
+    const id = useParams().schedule_id
 
 
     useEffect( () => {
-        // getSchoolsOptions()
+        dispatch(setPageTitle({ title : "Edit"}))
+        getSchoolsOptions()
         // getSchedule()
-        getExam(id)
+        if(id)
+            getSchedule(id)
         // console.log(id)
-        console.log(exam)
+        console.log(id)
     },[id])
 
     // Call API to update profile settings changes
-    const updateExam = async (e) => {
+    const saveSchedules = async (e) => {
         // e.preventDefault()
-        console.log(exam)
+        console.log(schedule)
         // const {school_id, ...newSchedule} = exa
-        const response = await updateExam({exam})
-        // const {error, message, data} = await addExam({exam})
+        const response = await updateSchedule({schedule})
+        // const {error, message, data} = await addschedule({schedule})
         console.log('response', response)
         // console.log('message', message)
         if(!response || response==null || response.error){
-            dispatch(showNotification({message : "Gagal Memperbarui Ujian", status : 0}))
+            dispatch(showNotification({message : "Gagal Memperbarui Jadwal", status : 0}))
         }else if(!response.error) {
             console.log("masuk")
             dispatch(showNotification({message : response.message, status : 1}))
         }else{
-            dispatch(showNotification({message : "Gagal Memperbarui Ujian", status : 0}))
+            dispatch(showNotification({message : "Gagal Memperbarui Jadwal", status : 0}))
         }
     }
+
+    // const updateSchedules = async (e) => {
+    
+    //         // e.preventDefault()
+    //         console.log(schedule)
+    //         // const {school_id, ...newSchedule} = exa
+    //         const response = await addSchedule({schedule})
+    //         // const {error, message, data} = await addschedule({schedule})
+    //         console.log('response', response)
+    //         // console.log('message', message)
+    //         if(!response || response==null || response.error){
+    //             dispatch(showNotification({message : "Gagal Menambahkan Ujian", status : 0}))
+    //         }else if(!response.error) {
+    //             console.log("masuk")
+    //             dispatch(showNotification({message : response.message, status : 1}))
+    //         }else{
+    //             dispatch(showNotification({message : "Gagal Menambahkan Ujian", status : 0}))
+    //         }
+    //         // e.preventDefault()
+    //         // console.log(schedule)
+    //         // const {school_id, ...newSchedule} = schedule
+    //         // const {error, message, data} = addSchedule({newSchedule, school_id: schedule.school_id})
+    //         // if(!error){
+            
+    //         //     dispatch(showNotification({message : message, status : 1}))    
+    //         // }
+    //     }
  
     // const updateSelectBoxValue = ({updateType, nameInput, value}) => {
     //     setSchedule((schedule) =>({...schedule, [nameInput]: value}))
@@ -79,46 +111,46 @@ function ScheduleEdit(){
     // }
     const updateFormValue = ({updateType, nameInput, value}) => {
         console.log('nameInput', nameInput, value)
-        exam[nameInput] = value
-        console.log('exam>', exam)
+        schedule[nameInput] = value
+        console.log('schedule>', schedule)
         // setSchedule( (data) =>  ({...data, [nameInput]: value}))
 
         // console.log(updateType)
     }
 
-    const getExam = async (id) => {
-        let { data: exam, error } = await supabase
-            .from('exam_schedules')
+    const getSchedule = async (id) => {
+        let { data: schedule, error } = await supabase
+            .from('schedule_schedules')
             .select('*')
             .eq('id', id)
-            console.log(exam[0])
+            console.log(schedule[0])
             if(!error){
                 // name: "", subtitle: "", icon: "", started_at: "", ended_at: "", scheme: "", question_type: "", location: "", room: "" 
-                setExam((prev) => ({...prev, name: exam[0].name, subtitle: exam[0].subtitle, icon: exam[0], started_at: exam[0].started_at, ended_at: exam[0].ended_at, scheme: exam[0].scheme, question_type: exam[0].question_type, location: exam[0].location, room: exam[0].room}))
-                console.log(exam)
+                setSchedule((prev) => ({...prev, name: schedule[0].name, subtitle: schedule[0].subtitle, icon: schedule[0], started_at: schedule[0].started_at, ended_at: schedule[0].ended_at, scheme: schedule[0].scheme, question_type: schedule[0].question_type, location: schedule[0].location, room: schedule[0].room}))
+                console.log('schedule', schedule)
             }
     } 
 
-    const getSchoolsOptions = async () => {
-        let { data: schools, error } = await supabase
-            .from('schools')
-            .select('*')
-            console.log(schools)
-            if(!error){
-                // setSchoolOptions(schools)
-                // schools.map((e)=>(
-                //         // setScheduleOptions( e => {
-                //         schoolOptions.push({ name:e.school_id, value: e.school_name})
+    // const getSchoolsOptions = async () => {
+    //     let { data: schools, error } = await supabase
+    //         .from('schools')
+    //         .select('*')
+    //         console.log(schools)
+    //         if(!error){
+    //             // setSchoolOptions(schools)
+    //             // schools.map((e)=>(
+    //             //         // setScheduleOptions( e => {
+    //             //         schoolOptions.push({ name:e.school_id, value: e.school_name})
                         
-                //     ))
-                    // console.log(schoolOptions)
-            // //     // schedulesOptions e.name
+    //             //     ))
+    //                 // console.log(schoolOptions)
+    //         // //     // schedulesOptions e.name
 
-            // }))
-            // name: schedule
-            // setScheduleOptions(schedule => {.})
-        }
-    }
+    //         // }))
+    //         // name: schedule
+    //         // setScheduleOptions(schedule => {.})
+    //     }
+    // }
 
     // const handledSubmit = (e) => {
     //     e.preventDefault()
@@ -137,50 +169,64 @@ function ScheduleEdit(){
         {name : "Last Month", value : "LAST_MONTH"},
     ]
 
+    const getSchoolsOptions = async () => {
+        let { data: schools, error } = await supabase
+            .from('schools')
+            .select('*')
+            console.log(schools)
+            if(!error){
+                setSchoolOptions(schools)
+                schools.map((e)=>(
+                        // setScheduleOptions( e => {
+                        schoolOptions.push({ name:e.school_id, value: e.school_name})
+                        
+                    ))
+                    console.log('schoolOptions', schoolOptions)
+            // //     // schedulesOptions e.name
+
+            // }))
+            // name: schedule
+            // setScheduleOptions(schedule => {.})
+        }
+    }
+
     return(
         <>
-            
-            <TitleCard title="Tambah Ujian" topMargin="mt-2">
-                <form onSubmit={handleSubmit(updateExam)}>
+            <TitleCard title="Edit Jadwal" topMargin="mt-2">
+                <form onSubmit={handleSubmit(saveSchedules)}>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         
-                    <InputText labelTitle="Nama" nameInput="name" defaultValue={exam.name} updateFormValue={updateFormValue}/>
-                    <InputText labelTitle="Deskripsi" nameInput="subtitle" defaultValue={exam.subtitle} updateFormValue={updateFormValue}/>
-                    {/* <InputText labelTitle="Skema Ujian" defaultValue={exam.scheme} updateFormValue={updateFormValue}/> */}
-                    {/* <SelectBox labelTitle="Jadwal" defaultValue="" updateFormValue={updateFormValue}/> */}
-                    <SelectBox
-                        nameInput="scheme"
-                        options={schemeOptions}
-                        labelTitle="Skema Ujian"
-                        placeholder="Pilih Skema"
-                        containerStyle="w-72"
-                        // labelStyle="hidden"
-                        // defaultValue="TODAY"
-                        updateFormValue={updateFormValue}
-                    />
-                    <InputTextRadio labelTitle="Tipe" nameInput="question_type" type="radio" options={typeOptions} defaultValue={exam.type?exam.type:'MC'} updateFormValue={updateFormValue}/>
-                    {/* <SelectBox 
-                    options={schedulesOptions}
-                    labelTitle="Period"
-                    placeholder="Select date range"
-                    containerStyle="w-72"
-                    labelStyle="hidden"
-                    // defaultValue="TODAY"
-                    updateFormValue={updateSelectBoxValue}
-                /> */}
-                    <InputDateTimePicker labelTitle="Waktu Mulai" nameInput="started_at" updateFormValue={updateFormValue}/>
-                    <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" updateFormValue={updateFormValue}/>
-                    
-                    {/* <InputText labelTitle="Waktu Mulai" type="date" defaultValue="alex@dashwind.com" updateFormValue={updateFormValue}/> */}
-                    {/* <InputText labelTitle="Waktu Selesai" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/> */}
-                    <InputText labelTitle="Lokasi" nameInput="location" defaultValue={exam.location} updateFormValue={updateFormValue}/>
-                    <InputText labelTitle="Ruangan" nameInput="room" defaultValue={exam.room} updateFormValue={updateFormValue}/>
-                    <ToogleInput updateType="randomQuestion" nameInput="is_random_question" labelTitle="Acak Soal" defaultValue={true} updateFormValue={updateFormValue}/>
-                    <ToogleInput updateType="randomAnswer" nameInput="is_random_answer" labelTitle="Acak Jawaban" defaultValue={true} updateFormValue={updateFormValue}/>
-                    {/* <InputText labelTitle="Acak Soal" type="radio" defaultValue={exam.is_random_question} updateFormValue={updateFormValue}/>
-                    <InputText labelTitle="Acak Jawaban" defaultValue={exam.is_random_answer} updateFormValue={updateFormValue}/> */}
-                    {/* <TextAreaInput labelTitle="About" defaultValue="Doing what I love, part time traveller" updateFormValue={updateFormValue}/> */}
+                        <InputText labelTitle="Nama" nameInput="name" register={register} value={schedule.name} required defaultValue={schedule.name} updateFormValue={updateFormValue}/>
+                        <InputDateTimePicker labelTitle="Waktu Mulai" register={register} nameInput="started_at"  updateFormValue={updateFormValue}/>
+                        {/* defaultValue={schedule.started_at?schedule.started_at:new Date()} */}
+                        <SelectBox 
+                            labelTitle="Jenjang"
+                            options={schoolOptions}
+                            placeholder="Pilih Jenjang"
+                            containerStyle="w-72"
+                            nameInput="school_id"
+                            // labelStyle="hidden"
+                            // defaultValue={schoolOptions.school_id}
+                            updateFormValue={updateFormValue}
+                        />
+                        
+                        {/* <InputText labelTitle="Maksimal Peserta" type="number" name="max_participants" defaultValue={schedule.description} updateFormValue={updateFormValue}/> */}
+                        <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" updateFormValue={updateFormValue}/>
+                        <InputText labelTitle="Maksimal Peserta"  type="number" nameInput="max_participants" defaultValue={schedule.max_participants} updateFormValue={updateFormValue} containerStyle="w-72"/>
+                        {/* <InputDateTime labelTitle="Waktu Mulai" name="started_at" defaultValue={schedule.started_at} updateFormValue={updateFormValue}/>
+                        <InputDateTime labelTitle="Waktu Selesai" name="ended_at" defaultValue={schedule.ended_at} updateFormValue={updateFormValue}/> */}
+                        {/* <InputText labelTitle="Skema" name="scheme" defaultValue={schedule.scheme} updateFormValue={updateFormValue}/>
+                        <InputText labelTitle="Tipe" name="type" defaultValue={schedule.type} updateFormValue={updateFormValue}/>
+                        <InputText labelTitle="Lokasi" name="location" defaultValue={schedule.location} updateFormValue={updateFormValue}/>
+                        <InputText labelTitle="Ruangan" name="room" defaultValue={schedule.room} updateFormValue={updateFormValue}/>
+                        <InputText labelTitle="Acak Soal" name="is_random_question" defaultValue={true} type="radio" updateFormValue={updateFormValue}/>
+                        <InputText labelTitle="Acak Jawaban" name="is_random_answer" defaultValue={true}  type="radio" updateFormValue={updateFormValue}/> */}
+
+                        {/* <SelectBox labelTitle="Jadwal" defaultValue="" updateFormValue={updateFormValue}/> */}
+                    {/* <InputText labelTitle="Waktu Mulai" defaultValue="alex@dashwind.com" updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Waktu Selesai" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/>
+                    <TextAreaInput labelTitle="About" defaultValue="Doing what I love, part time traveller" updateFormValue={updateFormValue}/> */}
                 </div>
                 <div className="divider" ></div>
 
@@ -194,6 +240,8 @@ function ScheduleEdit(){
                 </form>
                 {/* onClick={() => updateSchedules()} */}
             </TitleCard>
+            
+            
             
         </>
     )

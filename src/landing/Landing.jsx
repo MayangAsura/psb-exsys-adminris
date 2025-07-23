@@ -57,8 +57,8 @@ function Landing() {
 
         if(exam_test_participants){
           // console.log(exam_test_participants[0])
-          setScheduleId(exam_test_participants[0].exam_schedule_tests[0].exam_schedule_id)
-          sid = exam_test_participants[0].exam_schedule_tests[0].exam_schedule_id
+          setScheduleId(exam_test_participants[0]?.exam_schedule_tests[0]?.exam_schedule_id?? '')
+          // sid = exam_test_participants[0]?.exam_schedule_tests[0]?.exam_schedule_id??''
           // sid = exam_test_participants[0].exam_tests.exam_schedule_tests[0].exam_schedule_id
           console.log('sid', sid)
         }
