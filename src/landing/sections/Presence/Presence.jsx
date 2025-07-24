@@ -139,6 +139,7 @@ const Presence = (props) => {
         <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-purple-100 text-purple-600 transition duration-200 group-hover:bg-purple-600 group-hover:text-white">
           <MdOutlineCoPresent/>
           {/* {icon} */}
+          <span className="flex flex-row">Idetitas</span>
         </div>
       <div className="flex justify-between items-center">
         <div className="flex flex-none">

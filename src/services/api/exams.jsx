@@ -68,11 +68,23 @@ export const addParticipants = async (props) => {
 // };
 
     console.log('in addpar')
+        let inv = []
+        let imp = []
+        let curr = []
     // const [inv, setInv] = useState([])
-    let inv = []
-    let imp = []
-    let curr = []
-    const response = {error: true, message: 'Gagal menambahkan data Peserta', data: null }
+    if(props.lengthPart != 1){
+
+        inv = []
+        imp = []
+        curr = []
+    }
+    // if(props.lengthPart == props.index){
+
+    //     let inv = []
+    //     let imp = []
+    //     let curr = []
+    // }
+    const response = {error: true, message: "Gagal menambahkan data peserta.", data: {id: null, invalidData: inv.length>0? inv : [], alreadyImp: curr, importedData: imp}}
     // let ti = 0
     // name, description, started_at, ended_at, scheme, type, location, room, is_random_question, is_random_answer, max_participants 
     // name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: ""
@@ -86,19 +98,20 @@ export const addParticipants = async (props) => {
                             // .eq('exam_profiles.regist_number')
     // if(imp.includes(props.))
     if(currParts.length > 0){
-        // console.log('')
-        curr.push({parts: currParts[0].exam_profiles?.regist_number??currParts[0].exam_profiles?.phone_number})
-        if(props.index == props.lengthPart){
+        console.log('in current data')
+        curr.push({parts: props.participants.NO_REGISTRASI})
+        // if(props.index == props.lengthPart){
             response.error= true
             response.message= 'Gagal menambahkan data Peserta'
-            response.data= {id: null, invalidData: inv.length>0? inv : 0, alreadyImp: curr, importedData: imp}
-        }
+            response.data= {id: null, invalidData: inv.length>0? inv : [], alreadyImp: curr, importedData: imp}
+        // }
+        // return response
         // else {
         //     response.error= true
         //     response.message= 'Berhasil menambahkan data Peserta'
         //     response.data= exam[0].id
         // }
-        return response
+        
     }else{
         const { data: appl, e } = await supabase
                             .from('applicants')
@@ -109,17 +122,17 @@ export const addParticipants = async (props) => {
                                 //     props.participants
                                 // ])
                                 // .select()
-    if(e){
-
+    if(!appl || e){
+        console.log('in peserta not found')
         // setInv([...inv, {id: appl[0].id}])
-        inv.push({parts: appl[0].regist_number??appl[0].phone_number})
+        inv.push({parts: props.participants.NO_REGISTRASI})
         // setInv([...inv, {id: appl[0].id}])
-        if(props.index == props.lengthPart){
+        // if(props.index == props.lengthPart){
             response.error= true
-            response.message= 'Gagal menambahkan data Peserta'
-            response.data= {id: null, invalidData: inv.length>0? inv : 0, alreadyImp: curr, importedData: imp}
-        }
-        return response
+            response.message= 'Data Peserta tidak ditemukan'
+            response.data= {id: null, invalidData: inv.length>0? inv : [], alreadyImp: curr, importedData: imp}
+        // }
+        // return response
         
     }else{
         const { data: ext, e } = await supabase
@@ -127,19 +140,20 @@ export const addParticipants = async (props) => {
                             .select("*")
                             .like('test_code', `%${(props.participants.KODE_UJIAN)}`)
 
-        if(e) {
+        if(!ext || e) {
+            console.log('in exam not found')
             // {error: true, message: 'Gagal menambahkan data Ujian', data: null }
-            if(props.index == props.lengthPart){
+            inv.push({parts: props.participants.NO_REGISTRASI})
+            // if(props.index == props.lengthPart){
                 response.error= true
-                response.message= 'Ujian tidak ditemukan'
-                response.data= {id: null, invalidData: inv.length>0? inv : 0, alreadyImp: curr, importedData: imp}
-
-            }
+                response.message= 'Data Ujian tidak ditemukan'
+                response.data= {id: null, invalidData: inv.length>0? inv : [], alreadyImp: curr, importedData: imp}
             return response
+            // }
+            // return response
             // response.map(response => {...response, error: false, message: 'Berhasil menambahkan data Jadwal', data: exam_schedules}) 
-        }
-
-        const { data: app, errapp } = await supabase
+        }else{
+            const { data: app, errapp } = await supabase
                             .from('applicants')
                             .select('id, full_name, phone_number, regist_number, participants(pob, home_address, participant_father_data(father_name), participant_mother_data(mother_name)) ')
                             .eq('regist_number', props.participants.NO_REGISTRASI)
@@ -148,14 +162,16 @@ export const addParticipants = async (props) => {
                                 //     {exam_schedule_id: schedule.id, exam_test_id: exam.id }
                                 // ])
                                 // .select()
-        if(errapp) {
+        if(!app || e) {
+            console.log('in applicant not found')
+            inv.push({parts: props.participants.NO_REGISTRASI})
             // {error: true, message: 'Gagal menambahkan data Ujian', data: null }
-            if(props.index == props.lengthPart){
+            // if(props.index == props.lengthPart){
 
                 response.error= true
                 response.message= 'Data Peserta tidak ditemukan'
-                response.data= {id: null, invalidData: inv.length>0? inv : 0, alreadyImp: curr, importedData: imp}
-            }
+                response.data= {id: null, invalidData: inv.length>0? inv : [], alreadyImp: curr, importedData: imp}
+            // }
             return response
             // response.map(response => {...response, error: false, message: 'Berhasil menambahkan data Jadwal', data: exam_schedules}) 
         }
@@ -165,48 +181,133 @@ export const addParticipants = async (props) => {
         const { data: exProf, errprof } = await supabase
                         .from('exam_profiles')
                         .insert([
-                                {appl_id: app[0].id, full_name: app[0].full_name, phone_number: app[0].phone_number, regist_number: app[0].regist_number}
+                                {appl_id: app[0]?.id, full_name: app[0]?.full_name, phone_number: app[0]?.phone_number, regist_number: app[0]?.regist_number}
                                 // {exam_schedule_id: schedule.id, exam_test_id: exam.id }
                             ])
                             .select()
-        if(errprof){
-            if(props.index == props.lengthPart){
+        if(!exProf){
+            inv.push({parts: props.participants.NO_REGISTRASI})
+            console.log('in error add to profile error')
+            console.log(inv, props.participants.NO_REGISTRASI)
+            // if(props.index == props.lengthPart){
                 
+                response.error= true
+                response.message= 'Gagal menambahkan data Profil Peserta'
+                response.data= {id: null, invalidData: inv.length>0? inv : [], alreadyImp: curr, importedData: imp}
+                return response
+            // }
+        }else{
+
+            const newPar = {
+                appl_id: app[0]?.id,
+                exam_test_id: ext[0].id
             }
-            response.error= true
-            response.message= 'Gagal menambahkan data Profil Peserta'
-            response.data= {id: null, invalidData: inv.length>0? inv : 0, alreadyImp: curr, importedData: imp}
+    
+    
+            // const response = {error: true, message: 'Gagal menambahkan data Peserta', data: null }
+            const { data: exam, error } = await supabase
+                                .from('exam_test_participants')
+                                    .insert([
+                                        newPar
+                                    ])
+                                    .select()
+    
+    
+            console.log(exam)                                
+            if(!exam) {
+                imp.push({parts: props.participants.NO_REGISTRASI})
+                console.log('in error add to participant')
+                // {error: true, message: 'Gagal menambahkan data Ujian', data: null }
+                 response.error= true
+            response.message= 'Gagal menambahkan data Peserta'
+            response.data= {id: null, invalidData: inv.length>0? inv : [], alreadyImp: curr, importedData: imp}
+                return response
+                // response.map(response => {...response, error: false, message: 'Berhasil menambahkan data Jadwal', data: exam_schedules}) 
+            }else{
+                console.log('exam', exam)
+                imp.push({parts: props.participants.NO_REGISTRASI})
+                // exam.map(e => {
+    
+    
+                // })
+                
+                // const { school, e } = await supabase
+                // .from('exam_schedule_schools')
+                // .insert([
+                //     { exam_schedule_id: schedule[0].id, school_id: props.school_id },
+                // ])
+                // .select()
+    
+                // if(e){
+                //     return response
+                // }
+    
+            // ti++
+            // props.newSchedule.school_id = props.school_id
+    
+            if(props.index == props.lengthPart){
+                response.error= false
+                response.message= 'Berhasil menambahkan data Peserta'
+                response.data= {id: exam[0].id, invalidData: inv.length>0? inv : [], alreadyImp: curr, importedData: imp}
+            }else {
+                response.error= false
+                response.message= 'Berhasil menambahkan data Peserta'
+                response.data= {id: null, invalidData: inv.length>0? inv : [], alreadyImp: curr, importedData: imp}
+                // response.data= exam[0].id
+            }
             return response
+            
+        }
         }                       
-        const newPar = {
-            appl_id: exProf[0].appl_id,
-            exam_test_id: ext[0].id
+    }
         }
 
+        
+    }
+    console.log('final res', response)
+    
+    // return response
+}
 
-        const response = {error: true, message: 'Gagal menambahkan data Peserta', data: null }
-        const { data: exam, error } = await supabase
+export const deleteParticipant = async (props) => {
+    // name, description, started_at, ended_at, scheme, type, location, room, is_random_question, is_random_answer, max_participants 
+    // name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: ""
+    console.log(props)
+    const newData = {appl_id:props.pid, deleted_at: new Date().toISOString()}
+    const response = {error: true, message: 'Gagal menghapus data Peserta', data: null }
+    const { data: exam, error } = await supabase
                             .from('exam_test_participants')
-                                .insert([
-                                    newPar
-                                ])
+                                .delete()
+                                // .update(
+                                //     {appl_id:props.pid, deleted_at: new Date().toISOString()}
+                                // )
+                                .eq('appl_id', props.pid)
+                                .eq('exam_test_id', props.exam_id)
                                 .select()
-
-
         console.log(exam)                                
-        if(!exam) {
+        if(error) {
             // {error: true, message: 'Gagal menambahkan data Ujian', data: null }
-             response.error= true
-        response.message= 'Gagal menambahkan data Peserta'
-        response.data= {id: null, invalidData: inv.length>0? inv : 0, alreadyImp: curr, importedData: imp}
+            response.error= true
+            response.message= 'Gagal menghapus data Peserta'
+            response.data= null
             return response
             // response.map(response => {...response, error: false, message: 'Berhasil menambahkan data Jadwal', data: exam_schedules}) 
         }else{
-            console.log(exam)
-            // exam.map(e => {
-                
-            // })
-            
+        //     const { data: exam, error } = await supabase
+        //                     .from('exam_profiles')
+        //                         .update([
+        //                             newData
+        //                         ])
+        //                         .eq('appl_id', props.appl_id)
+        //                         .select()
+        // console.log(exam)      
+
+            // const { data: schedule, e } = await supabase
+            //                 .from('exam_schedule_test')
+            //                     .insert([
+            //                         {exam_schedule_id: props.schedule_id, exam_test_id: exam.id }
+            //                     ])
+            //                     .select()
             // const { school, e } = await supabase
             // .from('exam_schedule_schools')
             // .insert([
@@ -218,25 +319,13 @@ export const addParticipants = async (props) => {
             //     return response
             // }
 
-        // ti++
         // props.newSchedule.school_id = props.school_id
 
-        if(props.index == props.lengthPart){
-            response.error= false
-            response.message= 'Berhasil menambahkan data Peserta'
-            response.data= {id: exam[0].id, invalidData: inv.length>0? inv : 0, alreadyImp: curr}
-        }else {
-            response.error= false
-            response.message= 'Berhasil menambahkan data Peserta'
-            response.data= exam[0].id
-        }
+        response.error= false
+        response.message= 'Berhasil menghapus data Peserta'
+        response.data= null
         return response
-        
     }
-    }
-    }
-    
-    
 }
 
 export const updateExam = async (props) => {

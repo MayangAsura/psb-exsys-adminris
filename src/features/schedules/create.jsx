@@ -176,7 +176,7 @@ function ScheduleCreate(){
                     <ToogleInput updateType="syncData" labelTitle="Sync Data" defaultValue={true} updateFormValue={updateFormValue}/>
                     </div> */}
 
-                <div className="mt-16"><button className="btn btn-primary float-right" type="submit" >Simpan</button></div>
+                <div className="mt-16"><button className="btn btn-primary float-right bg-green-700 hover:bg-green-600 text-gray-50 dark:text-gray-100" type="submit" >Simpan</button></div>
                 </form>
                 {/* onClick={() => updateSchedules()} */}
             </TitleCard>

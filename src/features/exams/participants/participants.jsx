@@ -4,6 +4,7 @@ import { setPageTitle } from '../../common/headerSlice'
 import TitleCard from '../../../components/Cards/TitleCard'
 import FunnelIcon from '@heroicons/react/24/outline/FunnelIcon'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
+import TrashIcon from '@heroicons/react/24/outline/TrashIcon'
 import supabase from "../../../services/database-server"
 import { openModal } from "../../common/modalSlice"
 import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../../utils/globalConstantUtil'
@@ -121,7 +122,7 @@ function ExamParticipants(){
         {tab: 'Detail', selected: false },
         {tab: 'Pertanyaan', selected: false },
         {tab: 'Peserta', selected: true },
-        {tab: 'Respon Peserta', selected: false }
+        {tab: 'Jawaban Peserta', selected: false }
     ]
     
 
@@ -160,6 +161,7 @@ let { data: exam_schedule_tests, error } = await supabase
             .from('exam_test_participants')
             .select('*, exam_tests(id, name, exam_schedule_tests(exam_schedule_id)), exam_profiles(full_name, regist_number, phone_number)')
             .eq('exam_tests.id', id)
+            .is('deleted_at', null)
 
         if(!error){
         setExamParticipants(exam_responses)
@@ -213,6 +215,13 @@ let { data: exam_schedule_tests, error } = await supabase
         // dispatch(showNotification({message : "Add New Member clicked", status : 1}))
     }
 
+    const deleteCurrentData = async (index) => {
+            console.log(index)
+            dispatch(openModal({title : "Konfirmasi", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+            extraObject : { message : `Apakah Anda yakin menghapus data ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_DELETE, index: id, oid:id }}))
+            // const {schedule_id, ...newExam} = exam
+    }
+
     return(
         <>
             
@@ -224,7 +233,7 @@ let { data: exam_schedule_tests, error } = await supabase
             <div className="overflow-x-auto w-full">
                 <div className="inline-block float-right">
             <div className="inline-block float-right">
-                <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-300 hover:bg-green-500 dark:text-gray-600 " onClick={() => addNewPartModal()}  >Import Peserta </button>
+                <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600 " onClick={() => addNewPartModal()}  >Import Peserta </button>
             </div>
             {filterParam != "" && <button onClick={() => removeAppliedFilter()} className="btn btn-xs mr-2 btn-active btn-ghost normal-case">{filterParam}<XMarkIcon className="w-4 ml-2"/></button>}
             <div className="dropdown dropdown-bottom dropdown-end">
@@ -296,6 +305,8 @@ let { data: exam_schedule_tests, error } = await supabase
                                     {/* <td>{l.score}</td> */}
                                     {/* <td>{l.updated_at}</td> */}
                                     {/* <td>{moment(l.date).format("D MMM")}</td> */}
+                                    <tr>
+    <button className="btn btn-square btn-ghost" onClick={() => deleteCurrentData(l.appl_id)}><TrashIcon className="w-5"/></button></tr>
                                     </tr>
                                 )
                             })

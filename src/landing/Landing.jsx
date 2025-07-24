@@ -72,7 +72,7 @@ function Landing() {
   const page = 'Beranda'
   return (
     <main className="min-h-screen relative bg-gray-50 pb-10" >
-      <Header />
+      <Header appl_id={applicant.id}/>
       {/* style={{ maxWidth:390 }} */}
       <ProfileCover page={page} />
       <div className="container px-4">

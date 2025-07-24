@@ -119,14 +119,14 @@ function ScheduleEdit(){
     }
 
     const getSchedule = async (id) => {
-        let { data: schedule, error } = await supabase
-            .from('schedule_schedules')
+        let { data: exam_schedule, error } = await supabase
+            .from('exam_schedules')
             .select('*')
             .eq('id', id)
-            console.log(schedule[0])
+            console.log(exam_schedule[0])
             if(!error){
                 // name: "", subtitle: "", icon: "", started_at: "", ended_at: "", scheme: "", question_type: "", location: "", room: "" 
-                setSchedule((prev) => ({...prev, name: schedule[0].name, subtitle: schedule[0].subtitle, icon: schedule[0], started_at: schedule[0].started_at, ended_at: schedule[0].ended_at, scheme: schedule[0].scheme, question_type: schedule[0].question_type, location: schedule[0].location, room: schedule[0].room}))
+                setSchedule((prev) => ({...prev, name: exam_schedule[0].name, subtitle: exam_schedule[0].subtitle, icon: exam_schedule[0], started_at: exam_schedule[0].started_at, ended_at: exam_schedule[0].ended_at, scheme: exam_schedule[0].scheme, question_type: exam_schedule[0].question_type, location: exam_schedule[0].location, room: exam_schedule[0].room}))
                 console.log('schedule', schedule)
             }
     } 
@@ -197,8 +197,8 @@ function ScheduleEdit(){
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         
-                        <InputText labelTitle="Nama" nameInput="name" register={register} value={schedule.name} required defaultValue={schedule.name} updateFormValue={updateFormValue}/>
-                        <InputDateTimePicker labelTitle="Waktu Mulai" register={register} nameInput="started_at"  updateFormValue={updateFormValue}/>
+                        <InputText labelTitle="Nama" nameInput="name" register={register} required defaultValue={schedule.name} updateFormValue={updateFormValue}/>
+                        <InputDateTimePicker labelTitle="Waktu Mulai" register={register} nameInput="started_at" defaultValue={schedule.name}  updateFormValue={updateFormValue}/>
                         {/* defaultValue={schedule.started_at?schedule.started_at:new Date()} */}
                         <SelectBox 
                             labelTitle="Jenjang"
@@ -206,13 +206,14 @@ function ScheduleEdit(){
                             placeholder="Pilih Jenjang"
                             containerStyle="w-72"
                             nameInput="school_id"
+                            defaultValue={schedule.school_id}
                             // labelStyle="hidden"
                             // defaultValue={schoolOptions.school_id}
                             updateFormValue={updateFormValue}
                         />
                         
                         {/* <InputText labelTitle="Maksimal Peserta" type="number" name="max_participants" defaultValue={schedule.description} updateFormValue={updateFormValue}/> */}
-                        <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" updateFormValue={updateFormValue}/>
+                        <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" defaultValue={schedule.ended_at} updateFormValue={updateFormValue}/>
                         <InputText labelTitle="Maksimal Peserta"  type="number" nameInput="max_participants" defaultValue={schedule.max_participants} updateFormValue={updateFormValue} containerStyle="w-72"/>
                         {/* <InputDateTime labelTitle="Waktu Mulai" name="started_at" defaultValue={schedule.started_at} updateFormValue={updateFormValue}/>
                         <InputDateTime labelTitle="Waktu Selesai" name="ended_at" defaultValue={schedule.ended_at} updateFormValue={updateFormValue}/> */}
@@ -236,7 +237,7 @@ function ScheduleEdit(){
                     <ToogleInput updateType="syncData" labelTitle="Sync Data" defaultValue={true} updateFormValue={updateFormValue}/>
                     </div> */}
 
-                <div className="mt-16"><button className="btn btn-primary float-right" type="submit" >Simpan</button></div>
+                <div className="mt-16"><button className="btn btn-primary float-right bg-green-700 hover:bg-green-600 text-gray-50 dark:text-gray-100" type="submit" >Simpan</button></div>
                 </form>
                 {/* onClick={() => updateSchedules()} */}
             </TitleCard>

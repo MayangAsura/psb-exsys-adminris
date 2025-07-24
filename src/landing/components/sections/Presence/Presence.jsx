@@ -197,10 +197,16 @@ const getFormatDate = (date) => {
   // const []
   return (
     <aside className=" bg-white group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md mt-10">
+      <div className="flex flex-row gap-3 justify-start items-center">
+
         <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-green-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
           <MdOutlineCoPresent/>
           {/* {icon} */}
         </div>
+        <div className="flex justify-center items-start ">
+          <span className="flex flex-row text-2xl">Presensi</span>
+        </div>
+      </div>
       <div className="flex justify-between items-center">
         <div className="flex flex-col gap-2 my-10 mt-5">
           <p className="text-sm ">Jadwal Ujian</p>

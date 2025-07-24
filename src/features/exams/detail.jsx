@@ -6,18 +6,45 @@ import supabase from "../../services/database-server"
 
 import DocumentIcon  from '@heroicons/react/24/solid/DocumentIcon'
 
-import TabHeader from '../../components/TabHeader/TabHeader'
+import TabHeaderP from '../../components/TabHeader/TabHeaderP'
 import { useParams } from 'react-router-dom'
 
 function InternalPage(){
 
     const dispatch = useDispatch()
     const [test, setTest] = useState({})
+    const [examSch, setExamSch] = useState("")
     const id = useParams().exam_id
+    const options = [
+        {tab: 'Detail', selected: true },
+        {tab: 'Pertanyaan', selected: false },
+        {tab: 'Peserta', selected: false },
+        {tab: 'Jawaban Peserta', selected: false }
+    ]
     useEffect(() => {
         dispatch(setPageTitle({ title : "Detail"}))
         getTestData()
-      }, [])
+        getSchedule(id)
+        
+      }, [id])
+
+    const getSchedule = async () => {
+
+    let { data: exam_schedule_tests, error } = await supabase
+    .from('exam_schedule_tests')
+    .select(`
+        exam_test_id,
+        exam_schedule_id
+    `)
+    .eq('exam_test_id',id)
+    //   .eq('deleted_at', )
+
+    if(!error){
+        setExamSch(exam_schedule_tests[0].exam_schedule_id)
+    }
+          
+    }
+
       
     const getTestData = async () => {
         let { data: exam_tests, error } = await supabase
@@ -52,7 +79,7 @@ function InternalPage(){
     
     return(
         <div className="bg-base-200">
-            <TabHeader />
+            <TabHeaderP id = {id} sid={examSch} options={options} activeKey='Peserta'  />
             <TitleCard title="Informasi Detail" topMargin="mt-2">
                 <div className="overflow-x-auto w-full ">
                     <div className='flex flex-col justify-between items-start'>

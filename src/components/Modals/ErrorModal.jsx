@@ -1,12 +1,14 @@
 import {useDispatch, useSelector} from 'react-redux'
 import axios from 'axios'
 import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_CLOSE_TYPES } from '../../utils/globalConstantUtil'
+import { useNavigate } from 'react-router-dom'
 // import { deleteLead } from '../../leads/leadSlice'
 // import { showNotification } from '../headerSlice'
 
 function ErrorModal({ extraObject, closeModal}){
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const { message, type, _id, index} = extraObject
 
@@ -20,6 +22,13 @@ function ErrorModal({ extraObject, closeModal}){
         if(type === CONFIRMATION_MODAL_CLOSE_TYPES.MODAL_ERROR){
             // positive response, call api or dispatch redux function
             // dispatch(deleteLead({index}))
+            // dispatch(showNotification({message : "Lead Deleted!", status : 1}))
+        }
+        if(type === CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_ERROR){
+            console.log('ind',index)
+            navigate('/ad/exams/'+index+'/participants')
+            // positive response, call api or dispatch redux function
+        // dispatch(deleteLead({index}))
             // dispatch(showNotification({message : "Lead Deleted!", status : 1}))
         }
         closeModal()

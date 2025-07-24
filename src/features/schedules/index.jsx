@@ -28,7 +28,7 @@ const TopSideButtons = () => {
 
     return(
         <div className="inline-block float-right">
-            <button className="btn px-6 btn-sm normal-case bg-green-800 text-gray-300" onClick={() => addNewSchedule()}>Tambah Jadwal</button>
+            <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => addNewSchedule()}>Tambah Jadwal</button>
         </div>
     )
 }

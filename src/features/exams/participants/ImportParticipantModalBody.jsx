@@ -22,7 +22,7 @@ const INITIAL_PARTICIPANT_OBJ = {
     // bank_code : ""
 }
 
-function ManualParticipantModalBody({closeModal, extraObject}){
+function ImportParticipantModalBody({closeModal, extraObject}){
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState(false)
@@ -69,20 +69,7 @@ function ManualParticipantModalBody({closeModal, extraObject}){
         }
     }
 
-    const { data: participantsI, isLoading } = useQuery({
-    queryKey: ["participants", { search, participants, lengthPart, i }],
-    queryFn: () => addParticipants({search, participants: participantObj, lengthPart: participants.length , i: i}),
-    staleTime: Infinity,
-    cacheTime: 0,
-  });
-//   : participantObj, lengthPart: participants.length, i: index
-
-  const { mutateAsync: addTodoMutation } = useMutation({
-    mutationFn: addParticipants,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["participants"] });
-    },
-  });
+    
 
   const fetchTodos = async (query = "")=> {
   await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -98,16 +85,145 @@ function ManualParticipantModalBody({closeModal, extraObject}){
 
 //   return [...filteredTodos];
 };
-    const saveImport = async () => {
+
+const { data: participantsI, isLoading } = useQuery({
+                            queryKey: ["participants", { search, participants, lengthPart, i }],
+                            queryFn: () => addParticipants({search, participants: participantObj, lengthPart: participants.length , i: i}),
+                            staleTime: Infinity,
+                            cacheTime: 0,
+                        });
+                        //   : participantObj, lengthPart: participants.length, i: index
+
+                        const { mutateAsync: addTodoMutation } = useMutation({
+                            mutationFn: addParticipants,
+                            onSuccess: () => {
+                            queryClient.invalidateQueries({ queryKey: ["participants", { search, participants, lengthPart, i }] });
+                            },
+                        });
+    const saveImport = () => {
         console.log('in save')
         // setData(participants)
         // const saveNewParticipants = async (participants) => {
             // const max_participants = 
-            console.log('participants', dataImport)
-            // removeDuplicates(participants)
+            if(!dataImport || dataImport.length == 0){
+                dispatch(showNotification({message : "Gagal Import Data Peserta. Data tidak valid.", status : 0}))
+                closeModal()
+            }
+            // setParticipants(dataImport)
+
+            const newDataImport = removeDuplicates(dataImport)
+            setParticipants(newDataImport)
+            
+            console.log('participants', participants, dataImport)
+            if(participants.length > schedule.max_participants){
+                dispatch(showNotification({message : "Jumlah peserta melebihi batas maksimal. Mohon periksa batas maksimal peserta pada jadwal ini.", status : 0}))
+                closeModal()
+                setError(true)
+            }else{
+                // set
+                        let total_imported = 0
+                        let final_res = {}
+                        let invalidData = []
+                        let importedData = []
+                          if(!error){
+                              setTimeout(() => {
+                                participants.forEach((participantObj, index) => {
+                                    setParticipantObj(participantObj)
+                                    setIndex(index)
+                      // if(participantObj.participants.trim() === "")return '' 
+                    //   props.setErrorMessage("Pertanyaan is required!")
+                    //   else if(questionObj.answer.trim() === "")return setErrorMessage("Jawaban id is required!")
+                    //   else if(questionObj.score.trim() === "")return setErrorMessage("Email id is required!")
+                    //   else if(questionObj.bank_code.trim() === "")return setErrorMessage("Email id is required!")
+                      // else if(questionObj.email.trim() === "")return setErrorMessage("Email id is required!")
+                      // else if(questionObj.email.trim() === "")return setErrorMessage("Email id is required!")
+                      // else{
+                          // let newquestionObj = {
+                          //     "id": 7,
+                          //     "email": questionObj.email,
+                          //     "first_name": questionObj.first_name,
+                          //     "last_name": questionObj.last_name,
+                          //     "avatar": "https://reqres.in/img/faces/1-image.jpg"
+                          // }
+                              console.log(participantObj)
+                              // const options = participantObj.option+ '_'+ index
+                              const {NO_WA, NO_REGISTRASI, NAMA, JENJANG} = participantObj
+                              // const newparticipantObj = {
+                              //   phone_number: NO_WA,
+                                
+                              // }
+            
+                            //   const response = addParticipants({participants: participantObj, lengthPart: participants.length, i: index})
+                            // onClick={async () => {
+                            
+                try {
+                addTodoMutation({ participants: participantObj, lengthPart: participants.length, i: index});
+                  setDataImport("");
+                  console.log('participantsI', participantsI)
+                  if(participantsI.error!==true){
+                    console.log( 'inv',participantsI.data.invalidData[0].parts)
+                    console.log( 'imp', participantsI.data.importedData[0].parts)
+                    invalidData.push(participantsI.data.invalidData[0].parts)
+                    importedData.push(participantsI.data.importedData[0].parts)
+                    total_imported++
+                  }
+                            //   // console.log('message', message)
+                    final_res = participantsI
+                } catch (e) {
+                  console.log(e);
+                }
+            //   }}
+                            
+                                      // const {error, message, data} = await addExam({exam})
+                            //   console.log('response', participantsI)
+                              
+                              // dispatch(addNewLead({newquestionObj}))
+                              // dispatch(showNotification({message : "New Lead Added!", status : 1}))
+                            // }
+                            
+                        });
+                              }, 3000);
+
+                          }
+              
+                          if(participants.length > 0 && participantsI){
+            if(!participantsI || participantsI==null || participantsI.error===true){
+                console.log(participantsI)
+                              // dispatch(showNotification({message : "Gagal Import Data Peserta", status : 0}))
+                              setTimeout(() => {
+                                
+                                  dispatch(openModal({title : "Gagal", bodyType : MODAL_BODY_TYPES.MODAL_ERROR, size: 'sm',
+                                      extraObject : {message : "Pesan error: "+ participantsI.message + ", Total data : "+ (total_imported==0?importedData.length:total_imported) + (invalidData.length > 0? ", Data Peserta tidak valid: " + JSON.stringify(invalidData.map((val)=> val.parts).join(', ')) + (importedData.length > 0? ", Data Peserta tidak valid: " + JSON.stringify(importedData.map((val)=> val.parts).join(', ')) : ""): "")
+                                        ,
+                                        
+                                        type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_ERROR, index: index}
+                                    }))
+                                    setStatus(false)
+                                    setParticipants([])
+                                    setParticipantObj([])
+                              }, 3000);
+                          }else if(participantsI.error === false) {
+                              console.log("masuk")
+                              // total_imported++
+                              // dispatch(showNotification({message : response.message, status : 1}))
+                              dispatch(openModal({title : "Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, size: 'sm',
+                                  extraObject : {message : total_imported==0?importedData.length:total_imported+" total Data Peserta berhasil diimport", type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_SUCCESS, index: index}
+                                }))
+                              setStatus(true)
+                              setParticipants([])
+                              setParticipantObj([])
+                            //   closeModal()
+                          }else{
+                            console.log(participantsI)
+                              dispatch(showNotification({message : "Gagal Import Data Peserta.", status : 0}))
+                              closeModal()
+                          }
+        }
+            }
+        
             // getMax
             // const data = participants
-            console.log(schedule.max_participants)
+            console.log('max participant', schedule.max_participants)
         //     if(participants.length == 1){
         //       dispatch(openModal({title : "Import Gagal", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, size: 'sm',
         //     extraObject : {message : "Jumlah peserta melebihi batas maksimal. Mohon periksa batas maksimal peserta pada jadwal ini.", type: CONFIRMATION_MODAL_CLOSE_TYPES.PARTIC_ADD_SUCCESS}
@@ -127,78 +243,11 @@ function ManualParticipantModalBody({closeModal, extraObject}){
                           // }else{
                           //     dispatch(showNotification({message : "Gagal Menambahkan Pertanyaan", status : 0}))
                           // }
+                          
         
-                          let total_imported = 0
-                          let final_res = {}
-                          setTimeout(() => {
-                            dataImport.forEach((participantObj, index) => {
-                                setParticipantObj(participantObj)
-                                setIndex(index)
-                  // if(participantObj.participants.trim() === "")return '' 
-                //   props.setErrorMessage("Pertanyaan is required!")
-                //   else if(questionObj.answer.trim() === "")return setErrorMessage("Jawaban id is required!")
-                //   else if(questionObj.score.trim() === "")return setErrorMessage("Email id is required!")
-                //   else if(questionObj.bank_code.trim() === "")return setErrorMessage("Email id is required!")
-                  // else if(questionObj.email.trim() === "")return setErrorMessage("Email id is required!")
-                  // else if(questionObj.email.trim() === "")return setErrorMessage("Email id is required!")
-                  // else{
-                      // let newquestionObj = {
-                      //     "id": 7,
-                      //     "email": questionObj.email,
-                      //     "first_name": questionObj.first_name,
-                      //     "last_name": questionObj.last_name,
-                      //     "avatar": "https://reqres.in/img/faces/1-image.jpg"
-                      // }
-                          console.log(participantObj)
-                          // const options = participantObj.option+ '_'+ index
-                          const {NO_WA, NO_REGISTRASI, NAMA, JENJANG} = participantObj
-                          // const newparticipantObj = {
-                          //   phone_number: NO_WA,
-                            
-                          // }
+                          
         
-                        //   const response = addParticipants({participants: participantObj, lengthPart: participants.length, i: index})
-                        // onClick={async () => {
-            try {
-            addTodoMutation({ participants: participantObj, lengthPart: participants.length, i: index});
-              setDataImport("");
-              console.log('participantsI', participantsI)
-            } catch (e) {
-              console.log(e);
-            }
-        //   }}
-                        
-                                  // const {error, message, data} = await addExam({exam})
-                        //   console.log('response', participantsI)
-                          if(participantsI.error!==true)total_imported++
-                        //   // console.log('message', message)
-                          final_res = participantsI
-                          // dispatch(addNewLead({newquestionObj}))
-                          // dispatch(showNotification({message : "New Lead Added!", status : 1}))
-                        // }
-                        
-                    });
-                          }, 3000);
-              
-        
-        
-                    if(!final_res || final_res==null || final_res.error===true){
-                              // dispatch(showNotification({message : "Gagal Import Data Peserta", status : 0}))
-                              dispatch(openModal({title : "Gagal Import Data Peserta", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, size: 'sm',
-                                  extraObject : {message : "Pesan error: "+ final_res.message + (final_res.data.invalidData.length > 0? ", Data Peserta tidak valid: " + JSON.stringify(final_res.data.invalidData.inv.map((val)=> val.part).join(', ')) : ""), type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_ERROR}
-                                }))
-                          }else if(final_res.error === false) {
-                              console.log("masuk")
-                              // total_imported++
-                              // dispatch(showNotification({message : response.message, status : 1}))
-                              dispatch(openModal({title : "Import Data Peserta Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, size: 'sm',
-                                  extraObject : {message : total_imported +" total Data Peserta berhasil diimport", type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_SUCCESS, index: index}
-                                }))
-                              setStatus(true)
-                            //   closeModal()
-                          }else{
-                              dispatch(showNotification({message : "Gagal Import Data Peserta", status : 0}))
-                          }
+                    
             // }
           
             //   }
@@ -242,12 +291,26 @@ function ManualParticipantModalBody({closeModal, extraObject}){
     const removeDuplicates = (participants) => {
         const uniqueStrings = [...new Set(participants.map(obj => JSON.stringify(obj)))];
     const uniqueObjects = uniqueStrings.map(str => JSON.parse(str));
-    setParticipants(uniqueObjects)
-    // setData(prevData => {
+    return uniqueObjects
+//     console.log('uni',uniqueObjects)
+// //     const uniqueArray = participants.filter((obj, index, self) =>
+// //   index === self.findIndex((item) => (item.NO_WA === obj.NO_WA) || (item.NO_REGISTRASI === obj.NO_REGISTRASI))
+// // );
+// setParticipants(uniqueObjects)
+// if(uniqueObjects.length < uniqueArray.length){
+//     setParticipants(uniqueObjects)
+// }else{
+//     setParticipants(uniqueArray)
+// }
+// uniqueObjects.length<uniqueArray.length?console.log(uniqueObjects.length):setParticipants(uniqueArray)
+
+// console.log('uni',uniqueArray)
+    // setParticipants(uniqueObjects)
+    // setParticipants(prevData => {
     //   const wa = new Set();
     //   const reg = new Set();
       
-    //   return participants.filter(item => {
+    //   return prevData.filter(item => {
     //     // Check if either NO_WA or NO_REGIST is duplicated
     //     const isWADuplicate = wa.has(item.NO_WA);
     //     const isRegistDuplicate = reg.has(item.NO_REGISTRASI);
@@ -260,6 +323,7 @@ function ManualParticipantModalBody({closeModal, extraObject}){
     //     return !isWADuplicate && !isRegistDuplicate;
     //   });
     // });
+    console.log('after rem', participants)
   };
 
     
@@ -312,10 +376,10 @@ function ManualParticipantModalBody({closeModal, extraObject}){
             <ErrorText styleClass="mt-16">{errorMessage}</ErrorText>
             <div className="modal-action">
                 <button  className="btn btn-ghost" onClick={() => closeModal()}>Cancel</button>
-                <button  className="btn bg-green-700 text-gray-300 hover:bg-green-600 hover:text-gray-500 px-6" onClick={() => saveImport()}>Save</button>
+                <button  className={`btn bg-green-700 text-gray-300 hover:bg-green-600 hover:text-gray-500 px-6` } {...dataImport.length>0 && isLoading?"disabled": ""} onClick={() => saveImport()}> {dataImport.length>0 && isLoading?"Menyiapkan data...": "Simpan"} </button>
             </div>
         </>
     )
 }
 
-export default ManualParticipantModalBody
+export default ImportParticipantModalBody

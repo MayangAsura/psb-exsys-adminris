@@ -45,17 +45,17 @@ function ExamEdit(){
     const [schedulesOptions, setScheduleOptions] = useState([])
     const checked = false
     const {register, handleSubmit} = useForm()
-    const {id} = useParams()
+    const id = useParams().exam_id
 
 
     useEffect( () => {
         dispatch(setPageTitle({ title : "Edit"}))
         getScheduleOptions()
         // getSchedule()
-        getExam(id)
+        getExam()
         // console.log(id)
-        console.log(exam)
-    },[id])
+        console.log('exam', exam)
+    },[])
 
     // Call API to update profile settings changes
     const updateExam = async (e) => {
@@ -90,32 +90,33 @@ function ExamEdit(){
         // console.log(updateType)
     }
 
-    const getExam = async (id) => {
+    const getExam = async () => {
         let { data: exam, error } = await supabase
             .from('exam_tests')
-            .select('*')
+            .select('*, exam_schedule_tests(exam_schedules(id, name)) ')
             .eq('id', id)
             console.log(exam[0])
             if(!error){
                 // name: "", subtitle: "", icon: "", started_at: "", ended_at: "", scheme: "", question_type: "", location: "", room: "" 
-                setExam((prev) => ({...prev, name: exam[0].name, subtitle: exam[0].subtitle, icon: exam[0], started_at: exam[0].started_at, ended_at: exam[0].ended_at, scheme: exam[0].scheme, question_type: exam[0].question_type, location: exam[0].location, room: exam[0].room}))
-                console.log(exam)
+                setExam(exam[0])
+                // setExam((prev) => ({...prev, name: exam[0].name, subtitle: exam[0].subtitle, icon: exam[0], started_at: exam[0].started_at, ended_at: exam[0].ended_at, scheme: exam[0].scheme, question_type: exam[0].question_type, location: exam[0].location, room: exam[0].room}))
+                console.log('exam>', exam)
             }
     } 
 
     const getScheduleOptions = async () => {
         let { data: schools, error } = await supabase
-            .from('schools')
+            .from('exam_schedules')
             .select('*')
             console.log(schools)
             if(!error){
-                // setSchoolOptions(schools)
-                // schools.map((e)=>(
-                //         // setScheduleOptions( e => {
-                //         schoolOptions.push({ name:e.school_id, value: e.school_name})
+                setScheduleOptions(schools)
+                schools.map((e)=>(
+                        // setScheduleOptions( e => {
+                        schedulesOptions.push({ name:e.id, value: e.name})
                         
-                //     ))
-                    // console.log(schoolOptions)
+                    ))
+                    console.log(schedulesOptions)
             // //     // schedulesOptions e.name
 
             // }))
@@ -146,7 +147,7 @@ function ExamEdit(){
             
             <TitleCard title="Edit Ujian" topMargin="mt-2">
                 <form onSubmit={handleSubmit(updateExam)}>
-
+                    {/* {exam.name} */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         
                     <InputText labelTitle="Nama" nameInput="name" defaultValue={exam.name} updateFormValue={updateFormValue}/>
@@ -173,21 +174,23 @@ function ExamEdit(){
                     // defaultValue="TODAY"
                     updateFormValue={updateSelectBoxValue}
                 /> */}
-                    <InputDateTimePicker labelTitle="Waktu Mulai" nameInput="started_at" updateFormValue={updateFormValue}/>
-                    <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" updateFormValue={updateFormValue}/>
+                    <InputDateTimePicker labelTitle="Waktu Mulai" nameInput="started_at" defaultValue={exam.started_at} updateFormValue={updateFormValue}/>
+                    <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" defaultValue={exam.ended_at} updateFormValue={updateFormValue}/>
                     
                     {/* <InputText labelTitle="Waktu Mulai" type="date" defaultValue="alex@dashwind.com" updateFormValue={updateFormValue}/> */}
                     {/* <InputText labelTitle="Waktu Selesai" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/> */}
                     <InputText labelTitle="Lokasi" nameInput="location" defaultValue={exam.location} updateFormValue={updateFormValue}/>
                     <InputText labelTitle="Ruangan" nameInput="room" defaultValue={exam.room} updateFormValue={updateFormValue}/>
-                    <ToogleInput updateType="randomQuestion" nameInput="is_random_question" labelTitle="Acak Soal" defaultValue={true} updateFormValue={updateFormValue}/>
-                    <ToogleInput updateType="randomAnswer" nameInput="is_random_answer" labelTitle="Acak Jawaban" defaultValue={true} updateFormValue={updateFormValue}/>
+                    <ToogleInput updateType="randomQuestion" nameInput="is_random_question" labelTitle="Acak Soal" defaultValue={exam.is_random_question} updateFormValue={updateFormValue}/>
+                    <ToogleInput updateType="randomAnswer" nameInput="is_random_answer" labelTitle="Acak Jawaban" defaultValue={exam.is_random_answer} updateFormValue={updateFormValue}/>
+                    {/* {exam.exam_schedule_tests[0].exam_schedules?.id} */}
                     <SelectBox
                         nameInput="schedule_id"
                         options={schedulesOptions}
-                        labelTitle="p"
+                        labelTitle="Pilih Jadwal"
                         placeholder="Pilih Jadwal"
                         containerStyle="w-72"
+                        // defaultValue={exam.exam_schedule_tests[0].exam_schedules?.id}
                         // labelStyle="hidden"
                         // defaultValue="TODAY"
                         updateFormValue={updateFormValue}
@@ -204,7 +207,7 @@ function ExamEdit(){
                     <ToogleInput updateType="syncData" labelTitle="Sync Data" defaultValue={true} updateFormValue={updateFormValue}/>
                     </div> */}
 
-                <div className="mt-16"><button className="btn btn-primary float-right" type="submit" >Simpan</button></div>
+                <div className="mt-16"><button className="btn btn-primary float-right bg-green-700 hover:bg-green-600 text-gray-50 dark:text-gray-100" type="submit" >Simpan</button></div>
                 </form>
                 {/* onClick={() => updateSchedules()} */}
             </TitleCard>

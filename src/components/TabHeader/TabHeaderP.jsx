@@ -9,7 +9,7 @@ function TabHeaderP({styleClass, options, id, activeKey}) {
         {tab: 'Detail', selected: true },
         {tab: 'Pertanyaan', selected: false },
         {tab: 'Peserta', selected: false },
-        {tab: 'Respon Peserta', selected: false }
+        {tab: 'Jawaban Peserta', selected: false }
     ]
 
     const tabRef = useRef()
@@ -50,8 +50,10 @@ function TabHeaderP({styleClass, options, id, activeKey}) {
     if(key==0)
         navigate('/ad/exams/detail/'+id)
     if(key==1)
-        navigate('/ad/exams/'+id+ '/participants')
+        navigate('/ad/exams/'+id+ '/questions')
     if(key==2)
+        navigate('/ad/exams/'+id+ '/participants')
+    if(key==3)
         navigate('/ad/exams/'+id+ '/response')
         // const option = optionValues.find(opt => opt.id === key);
         // if(option){

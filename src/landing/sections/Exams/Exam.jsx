@@ -13,7 +13,8 @@ import {
 } from "react-icons/fa";
 import { FaBootstrap, FaCode, FaHtml5, FaReact } from "react-icons/fa";
 import { TbUserSquareRounded } from "react-icons/tb";
-import ExamItem from "./items/ExamItem";
+// import ExamItem from "./items/ExamItem";
+import ExamItem from "../../components/sections/Exams/items/ExamItem";
 // import ProfileCover from "../../components/ProfileCover/ProfileCover";
 import ProfileCover from "../../components/sections/ProfileCover/ProfileCover";
 // import ServiceItem from "../..pages/Service/ServiceItem";
@@ -180,9 +181,19 @@ const Exam = ({id, sid}) => {
     <section className="pb-10">
       
         <div className="w-full container px-4">
-            <div className="my-4 md:mx-4 shadow p-6 rounded-md bg-white grouphover:shadow-md">
-                <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-green-100 text-green-600 transition duration-200 ">
-                  {(<FaGraduationCap />)}
+            <div className="my-4 md:mx-4 shadow p-6 rounded-md bg-white group hover:shadow-md">
+              <div className="flex flex-row gap-3 justify-start items-center">
+              
+                      <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-green-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
+                        {(<FaGraduationCap />)}
+                        {/* {icon} */}
+                      </div>
+                      <div className="flex justify-center ">
+                        <span className="flex text-2xl items-center">Asesmen</span>
+                      </div>
+                    </div>
+                <div className=" flex items-center justify-center rounded-md text-3xl mb-5 text-green-600 transition duration-200 ">
+                  {/* {(<FaGraduationCap />)} */}
                     {/* <svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" 
                     viewBox="0 0 490 490" space="preserve">
                     <g>

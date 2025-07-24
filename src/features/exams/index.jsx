@@ -53,7 +53,7 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
     return(
         <div className="inline-block float-right">
             <div className="inline-block float-right">
-                <button className="btn px-6 btn-sm normal-case btn-green-300" onClick={() => addNewExam()}>Tambah Jadwal</button>
+                <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => addNewExam()}>Tambah Jadwal</button>
             </div>
 
             <SearchBar searchText={searchText} styleClass="mr-4" setSearchText={setSearchText}/>
@@ -97,8 +97,8 @@ function Exams(){
     const getExamData = async() => {
     
         let { data: exam_tests, error } = await supabase
-            .from('exam_tests')
-            .select('*, exam_schedules_test(exam_schedules(name))')
+            .from('exam_schedule_tests')
+            .select('exam_schedules(name), exam_tests(*)')
 
         if(!error){
         setExamData(exam_tests)
@@ -196,17 +196,17 @@ function Exams(){
                                             </div> */}
                                         </div>
                                     </td>
-                                    <td><div className="font-bold">{l.name}</div></td>
-                                    <td><div className="badge-primary font-semibold rounded-2xl w-16 py-1 px-2">{l.scheme}</div> </td>
+                                    <td><div className="font-bold">{l.exam_tests.name}</div></td>
+                                    <td><div className={`badge-primary ${l.exam_tests.scheme=='Online'? 'bg-green-400' : 'bg-orange-400'}  font-semibold text-gray-50 rounded-2xl w-16 py-1 px-2`}>{l.exam_tests.scheme}</div> </td>
                                     {/* <td>{l.test_schedule}</td> */}
                                     <td>Ujian Seleksi Jenjang SDIT</td>
                                     {/* <td>{l.exam_schedules_test[0].exam_schedules.name}</td> */}
-                                    <td>{l.room}</td>
-                                    <td>{l.updated_at}</td>
+                                    <td>{l.exam_tests.room}</td>
+                                    <td>{l.exam_tests.updated_at??'-'}</td>
                                     <td>
-                                        <button className="btn btn-square btn-ghost" onClick={() => detailCurrentExam(l.id)}><EyeIcon className="w-5"/></button>
-                                        <button className="btn btn-square btn-ghost" onClick={() => editCurrentData(l.id)}><PencilIcon className="w-5"/></button>
-                                        <button className="btn btn-square btn-ghost" onClick={() => deleteCurrentData(l.id)}><TrashIcon className="w-5"/></button>
+                                        <button className="btn btn-square btn-ghost" onClick={() => detailCurrentExam(l.exam_tests.id)}><EyeIcon className="w-5"/></button>
+                                        <button className="btn btn-square btn-ghost" onClick={() => editCurrentData(l.exam_tests.id)}><PencilIcon className="w-5"/></button>
+                                        <button className="btn btn-square btn-ghost" onClick={() => deleteCurrentData(l.exam_tests.id)}><TrashIcon className="w-5"/></button>
                                     </td>
                                     {/* <td>{moment(l.date).format("D MMM")}</td> */}
                                     </tr>

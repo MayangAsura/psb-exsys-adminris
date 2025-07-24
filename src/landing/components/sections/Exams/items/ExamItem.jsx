@@ -48,9 +48,9 @@ const ExamItem = (props) => {
             <p className="text-lg text-gray-400">{location?? 'SDIT RABBAANII'}</p>
           </div>
           {status!=='done' && (
-          <button className="flex flex-1 justify-center items-center bg-green-600 rounded-md py-5 px-2 mt-10 hover:bg-black-200" onClick={handleS}>
+          <button className="flex flex-1 justify-center items-center bg-green-600 hover:bg-green-500 hover:text-gray-500 rounded-md py-3 px-2 mt-10 hover:bg-black-200" onClick={handleS}>
               <FaPencilAlt className="mr-1 text-center text-base text-gray-900" /> 
-              <span className="text-gray-900">Mulai</span>
+              <span className="text-gray-800 text-lg  ">Mulai</span>
           </button>
           )}
           {/* {status=='done' && (
