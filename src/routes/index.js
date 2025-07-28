@@ -2,6 +2,7 @@
 
 import { lazy } from 'react'
 import Accounts from '../features/accounts'
+// import AdmissionCreate from '../features/admissions/create'
 // import MCExam from '../landing/components/sections/Exams/MCExam'
 // import ExamQuestions from '../features/exams/questions/questions'
 // import ExamCreate from '../features/exams/create'
@@ -14,17 +15,24 @@ const ExamEdit = lazy(() => import('../pages/protected/ExamEdit'))
 const ExamParticipant = lazy(() => import('../pages/protected/ExamParticipant'))
 const ExamResponses = lazy(() => import('../pages/protected/ExamResponses'))
 const ExamQuestions = lazy(() => import('../pages/protected/ExamQuestions'))
+const ExamQuestionsAdd = lazy(() => import('../pages/protected/ExamQuestionsAdd'))
 const Schedule = lazy(() => import('../pages/protected/Schedules'))
 const ScheduleCreate = lazy(() => import('../pages/protected/ScheduleCreate'))
 const ScheduleDetail = lazy(() => import('../pages/protected/ScheduleDetail'))
 const ScheduleEdit = lazy(() => import('../pages/protected/ScheduleEdit'))
 const ScheduleParticipants = lazy(() => import('../pages/protected/ScheduleParticipants'))
+const SchedulePresences = lazy(() => import('../pages/protected/SchedulePresences'))
 const ScheduleExams = lazy(() => import('../pages/protected/ScheduleExams'))
 const QuestionBank = lazy(() => import('../pages/protected/QuestionBank'))
 const QuestionBankCreate = lazy(() => import('../pages/protected/QuestionBankCreate'))
 // const QuestionBankEdit = lazy(() => import('../pages/protected/QuestionBankEdit'))
 // const QuestionBankDetail = lazy(() => import('../pages/protected/QuestionBankDetail'))
 const Schools = lazy(() => import('../pages/protected/Schools'))
+const Applicants = lazy(() => import('../pages/protected/Applicants'))
+const Participants = lazy(() => import('../pages/protected/Participants'))
+const Admissions = lazy(() => import('../pages/protected/Admissions'))
+const AdmissionCreate = lazy(() => import('../pages/protected/AdmissionCreate'))
+const AdmissionEdit = lazy(() => import('../pages/protected/AdmissionEdit'))
 const Account = lazy(() => import('../pages/protected/Account'))
 
 const Landing = lazy(() => import('../landing/Landing'))
@@ -81,6 +89,10 @@ const routes = [
     component: ExamQuestions, // view rendered
   },
   {
+    path: '/exams/:exam_id/questions/add', // the url
+    component: ExamQuestionsAdd, // view rendered
+  },
+  {
     path: '/exams/:exam_id/responses', // the url
     component: ExamResponses, // view rendered
   },
@@ -105,6 +117,10 @@ const routes = [
     component: ScheduleParticipants, // view rendered
   },
   {
+    path: '/schedules/:schedule_id/presences', // the url
+    component: SchedulePresences, // view rendered
+  },
+  {
     path: '/schedules/:schedule_id/exams', // the url
     component: ScheduleExams, // view rendered
   },
@@ -125,8 +141,24 @@ const routes = [
     component: Schools, // view rendered
   },
   {
-    path: '/accounts', // the url
-    component: Account, // view rendered
+    path: '/applicants', // the url
+    component: Applicants, // view rendered
+  },
+  {
+    path: '/participants', // the url
+    component: Participants, // view rendered
+  },
+  {
+    path: '/admissions', // the url
+    component: Admissions, // view rendered
+  },
+  {
+    path: '/admissions/create', // the url
+    component: AdmissionCreate, // view rendered
+  },
+  {
+    path: '/admissions/edit', // the url
+    component: AdmissionEdit, // view rendered
   },
   {
     path: '/welcome', // the url

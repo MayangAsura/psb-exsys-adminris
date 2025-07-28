@@ -184,11 +184,11 @@ const Exam = ({id, sid}) => {
             <div className="my-4 md:mx-4 shadow p-6 rounded-md bg-white group hover:shadow-md">
               <div className="flex flex-row gap-3 justify-start items-center">
               
-                      <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-green-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
+                      <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-orange-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
                         {(<FaGraduationCap />)}
                         {/* {icon} */}
                       </div>
-                      <div className="flex justify-center ">
+                      <div className="flex justify-center -mt-5">
                         <span className="flex text-2xl items-center">Asesmen</span>
                       </div>
                     </div>

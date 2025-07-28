@@ -40,6 +40,7 @@ const TEAM_MEMBERS = [
 function QuestionBanks(){
 
 
+    const {newNotificationStatus} = useSelector((state) => state.header)
     const [members, setMembers] = useState(TEAM_MEMBERS)
     const [questionBanks, setQuestionBanks] = useState([])
     const dispatch = useDispatch()
@@ -61,6 +62,7 @@ function QuestionBanks(){
         let { data: questionBanks, error } = await supabase
             .from('exam_question_banks')
             .select('*')
+            .is('deleted_at', null)
 
         if(!error){
             setQuestionBanks(questionBanks)
@@ -70,7 +72,10 @@ function QuestionBanks(){
     const deleteCurrentQuestion = (index) => {
             dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
             extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_DELETE, index}}))
-    
+
+            if(newNotificationStatus==1){
+                getQuestionBanks()
+            }
         }
     const editCurrentQuestion = (index) => {
         dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_EDIT}))
@@ -112,9 +117,9 @@ function QuestionBanks(){
                                 return(
                                     <tr key={k}>
                                     <td><div className="font-bold">{l.question }</div></td>
-                                    <td><div className="font-bold">{l.question_type }</div></td>
-                                    <td><div className="font-bold">{l.bank_code }</div></td>
-                                    <td><div className="font-bold">{l.score }</div></td>
+                                    <td><div className="font-semibold">{l.type }</div></td>
+                                    <td><div className="font-semibold">{l.bank_code }</div></td>
+                                    <td><div className="font-semibold q">{l.score }</div></td>
                                     <td>
                                         <button className="btn btn-square btn-ghost" onClick={() => detailCurrentQuestion(l.id)}><EyeIcon className="w-5"/></button>
                                         <button className="btn btn-square btn-ghost" onClick={() => editCurrentQuestion(l.id)}><PencilIcon className="w-5"/></button>

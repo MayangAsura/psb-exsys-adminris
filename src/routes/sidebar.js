@@ -19,10 +19,11 @@ import UsersIcon from '@heroicons/react/24/outline/UsersIcon'
 import KeyIcon from '@heroicons/react/24/outline/KeyIcon'
 import DocumentDuplicateIcon from '@heroicons/react/24/outline/DocumentDuplicateIcon'
 
-import { MdOutlineTask, MdOutlineDateRange, MdOutlineSchool, MdOutlineAddTask } from "react-icons/md";
+import { MdOutlineTask, MdOutlineDateRange, MdOutlineSchool, MdOutlineAddTask, MdAppRegistration} from "react-icons/md";
 import { TbUserSquareRounded } from "react-icons/tb";
 import { BiTask} from "react-icons/bi";
-import { FaFileAlt } from "react-icons/fa";
+import { RiUserFollowLine, RiUserReceivedLine} from "react-icons/ri";
+import { FaFileAlt, FaTasks} from "react-icons/fa";
 
 const iconClasses = `h-6 w-6`
 const submenuIconClasses = `h-5 w-5`
@@ -83,6 +84,33 @@ const routes = [
   //   name: 'Bank Soal',
   // },
   {
+    path: '',
+    icon: <MdAppRegistration className={iconClasses}/>, 
+    name: 'Pendaftaran',
+    submenu: [
+      {
+        path: '/ad/participants',
+        icon: <RiUserFollowLine className={submenuIconClasses}/>,
+        name: 'Peserta',
+      },
+      {
+        path: '/ad/applicants',
+        icon: <RiUserReceivedLine className={submenuIconClasses}/>,
+        name: 'Pendaftar',
+      },
+      {
+        path: '/ad/admissions',
+        icon: <FaTasks className={submenuIconClasses}/>,
+        name: 'PSB',
+      }
+      // {
+      //   path: '/ad/school-admissions',
+      //   icon: <TbUserSquareRounded className={submenuIconClasses}/>,
+      //   name: 'Pendaftar',
+      // },
+    ]
+  },
+  {
     path: '/ad/schools',
     icon: <MdOutlineSchool className={iconClasses}/>, 
     name: 'Jenjang',
@@ -91,7 +119,7 @@ const routes = [
     path: '/ad/account',
     icon: <TbUserSquareRounded className={iconClasses}/>, 
     name: 'Akun',
-  }
+  },
   // ,
   // {
   //   path: '/ad/leads', // url

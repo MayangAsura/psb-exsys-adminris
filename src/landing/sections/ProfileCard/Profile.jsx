@@ -78,7 +78,7 @@ const Profile = ({id, sid, ip}) => {
     
         let { data: exam_profiles, error } = await supabase
             .from('exam_profiles')
-            .select('full_name, phone_number, regist_number, bod, home_address, father_name, mother_name)')
+            .select('full_name, phone_number, regist_number, pob, home_address, father_name, mother_name)')
             .eq('appl_id', id)
 // participants(dob, home_address, participant_father_data(father_name), participant_mother_data(mother_name)
         if(!error){
@@ -106,9 +106,14 @@ const Profile = ({id, sid, ip}) => {
   return (
     <aside className="   group hover:shadow-md md:mx-8 lg:mx-4 mb-8 p-6 shadow-md rounded-md mt-10">
       {/* top-0 */}
+      <div className="flex flex-row gap-3 justify-start align-middle items-center">
         <div className="w-16 h-16 flex items-center justify-center rounded-md text-3xl mb-5 bg-purple-100 text-green-600 transition duration-200 group-hover:bg-green-600 group-hover:text-white">
           <TbUserSquareRounded/>
           {/* {icon} */}
+        </div>
+        <div className="flex justify-center align-middle items-start -mt-5">
+          <span className="flex flex-row text-2xl">Identitas</span>
+        </div>
         </div>
       <div className="">
         
@@ -158,7 +163,7 @@ const Profile = ({id, sid, ip}) => {
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Lahir di</dt>
-                                <dd className="text-lg text-gray-900 dark:text-gray-600 font-semibold">{applicant.bod? applicant.bod : ''}</dd>
+                                <dd className="text-lg text-gray-900 dark:text-gray-600 font-semibold">{applicant.pod? applicant.pod : ''}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Alamat</dt>

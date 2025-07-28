@@ -15,13 +15,14 @@ import supabase from "../../../services/database-server"
 import DocumentIcon  from '@heroicons/react/24/solid/DocumentIcon'
 
 import TabHeaderP from '../../../components/TabHeader/TabHeaderP'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
+const TopSideButtons = ({id, removeFilter, applyFilter, applySearch}) => {
 
     const [filterParam, setFilterParam] = useState("")
     const [searchText, setSearchText] = useState("")
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const locationFilters = ["Paris", "London", "Canada", "Peru", "Tokyo"]
     
 
@@ -45,9 +46,19 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
     }, [searchText])
     
 
-    const addNewQuestionModal = () => {
+    const addNewQuestionImportModal = () => {
         
-        dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.QUESTION_ADD_IMPORT}))
+        dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.QUESTION_ADD_IMPORT, 
+            extraObject: {message: "", type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_QUESTION_IMPORT, index: id, sid: ""}
+        }))
+        // dispatch(showNotification({message : "Add New Member clicked", status : 1}))
+    }
+    const addNewQuestionModal = () => {
+        navigate('/ad/exams/'+id+'/questions/add')
+        
+        // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.QUESTION_ADD_MANUAL, 
+        //     extraObject: {message: "", type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_QUESTION_ADD_MANUAL, index: id, sid: ""}
+        // }))
         // dispatch(showNotification({message : "Add New Member clicked", status : 1}))
     }
     const openAddNewLeadModal = () => {
@@ -56,7 +67,10 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
     return(
         <div className="inline-block float-right">
             <div className="inline-block float-right">
-                <button className="btn px-6 btn-sm normal-case btn-primary bg-green-800 hover:bg-green-600" onClick={() => addNewQuestionModal()}>Tambah Pertanyaan</button>
+                <button className="btn px-6 btn-sm normal-case btn-primary bg-orange-800 hover:bg-orange-600 text-gray-200 dark:text-gray-100" onClick={() => addNewQuestionImportModal()}>Import Pertanyaan</button>
+            </div>
+            <div className="inline-block float-right">
+                <button className="btn px-6 btn-sm normal-case btn-primary bg-green-800 hover:bg-green-600 text-gray-200 dark:text-gray-100" onClick={() => addNewQuestionModal()}>Tambah Pertanyaan</button>
             </div>
 
             <SearchBar searchText={searchText} styleClass="mr-4" setSearchText={setSearchText}/>
@@ -167,7 +181,7 @@ function ExamQuestions(){
         <>
             
                 <TabHeaderP id={id} activeKey="Pertanyaan" options={options}></TabHeaderP>
-            <TitleCard title="Pertanyaan" topMargin="mt-2" TopSideButtons={<TopSideButtons applySearch={applySearch} applyFilter={applyFilter} removeFilter={removeFilter}/>}>
+            <TitleCard title="Pertanyaan" topMargin="mt-2" TopSideButtons={<TopSideButtons id ={id} applySearch={applySearch} applyFilter={applyFilter} removeFilter={removeFilter}/>}>
             {/* UJIAN */}
                 {/* Team Member list in table format loaded constant */}
             <div className="overflow-x-auto w-full">

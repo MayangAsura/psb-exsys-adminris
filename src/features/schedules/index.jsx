@@ -68,6 +68,7 @@ function Schedules(){
 
     const [members, setMembers] = useState(TEAM_MEMBERS)
     const [schedules, setSchedules] = useState([])
+    const {newNotificationStatus } = useSelector((state) => state.header)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -88,6 +89,7 @@ function Schedules(){
         let { data: schedules, error } = await supabase
             .from('exam_schedules')
             .select('*')
+            .is('deleted_at', null)
 
         if(!error){
             setSchedules(schedules)
@@ -98,7 +100,9 @@ function Schedules(){
                 dispatch(openModal({title : "Konfirmasi", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
                 extraObject : { message : `Apakah Anda yakin menghapus jadwal ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.SCHEDULE_DELETE, index}}))
                 
-        
+        if(newNotificationStatus==1){
+            getSchedulesData()
+        }
     }
 
     const editCurrentSchedule = (index) => {

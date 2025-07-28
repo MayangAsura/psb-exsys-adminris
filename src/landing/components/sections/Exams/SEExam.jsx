@@ -55,6 +55,7 @@ console.log(e)
     console.log('ans',answers)
   }
   console.log('questions', questions)
+  console.log(appl_id)
 }, [id])
 
 

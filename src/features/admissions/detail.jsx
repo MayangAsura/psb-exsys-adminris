@@ -15,7 +15,7 @@ function InternalPage(){
 
     const dispatch = useDispatch()
     const [test, setTest] = useState({})
-    const id = useParams().schedule_id
+    const id = useParams().admission_id
     const options = [
         {tab: 'Detail', selected: true },
         {tab: 'Ujian', selected: false },
@@ -29,13 +29,13 @@ function InternalPage(){
       }, [])
       
     const getTestData = async () => {
-        let { data: exam_schedules, error } = await supabase
-            .from('exam_schedules')
+        let { data: admissions, error } = await supabase
+            .from('admissions')
             .select('*')
-            .eq('id', id)
+            // .eq('id', id)
 // 'd17ff676-85d2-4f9e-88f1-0fdfb37517b9'
         if(!error){
-        setTest(exam_schedules[0])
+        setTest(admissions[0])
         }
     }
 

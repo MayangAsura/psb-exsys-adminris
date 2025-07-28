@@ -16,6 +16,7 @@ import {FaClock} from 'react-icons/fa'
 
 import '../../../../index-user.css'
 import { timeout } from "async";
+import { da } from "date-fns/locale";
 
 
 const MCExam = () =>{
@@ -24,6 +25,8 @@ const MCExam = () =>{
   const [responseDetailValues, setResponseDetailValues] = useState([])
   const [started_at, setStartedAt] = useState("")
   const [exam, setEx] = useState({})
+  const [examStarted, setExamStarted] = useState("")
+  const [examEnded, setExamEnded] = useState("")
   const timeRef = useRef(null)
   // const [exam, setEx] = useState({id: "sdsf", name: "Test TKD", score: 100, start_at: new Date().toISOString(), end_at: new Date().toISOString(), question_type: 'MC'})
   // {id: "sdsf", name: "Test TKD", score: 100, start_at: new Date().toISOString(), end_at: new Date().toISOString()}
@@ -42,7 +45,7 @@ const MCExam = () =>{
   // {id: "", order : "", option: "", exam_test_id: "", type: "", exam_test_content_id: ""}
   // {order: "", option : "", point : "", exam_test_id: "", id : "", type: ""}
   const [ti, setti] = useState("")
-  const [duration, setDuration] = useState('00:00:00')
+  const [duration, setDuration] = useState('03:00:00')
   let timer 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -65,7 +68,7 @@ const MCExam = () =>{
     // if(exam.length > 0){
 
     // }
-    startCount_()
+    // startCount_()
     console.log('duration', duration)
     getUser()
     // (new Date(exam.ended_at).getTime() - new Date(exam.start_at).getTime()).getSeconds()
@@ -93,16 +96,25 @@ const MCExam = () =>{
       ))
     }
     console.log('started_at', started_at)
+    // startCount_()
     if(started_at){
-      
+      console.log(started_at)
       // console.log(shuffleData(quedata)) 
 
       // console.log(shuffleData(options)) 
       startCount_()
       
-      
     }
-  },[id, started_at])
+
+    if(exam.started_at){
+      setExamStarted(exam.started_at)
+      setExamStarted(exam.ended_at)
+      getDuration()
+      console.log('duration>', duration)
+    }
+
+    getti()
+  },[id, started_at, exam.started_at])
   const getti = async () =>{
         let { data, error } = await supabase
             .rpc('get_current_ttmp')
@@ -118,11 +130,12 @@ const MCExam = () =>{
     console.log('started')
     try {
       
-      getti()
-      console.log('ti from startCount_', ti)
+      // getti()
+      // console.log('ti from startCount_', ti)
+      console.log('examStarted', examStarted)
       getDuration_()
     } catch (error) {
-      console.log(error, ti)
+      console.log('error', error, ti)
     }
       
       // if(time !==0 && timeRef.current){
@@ -136,15 +149,22 @@ const MCExam = () =>{
       // }
   }
 
-  const getDuration_ = () => {
+  const getDuration_ = async () => {
     // const seconds = Math.max(0, getSecondsFromHHMMSS(value));
-    console.log(exam.started_at)
+    // let { data, error } = await supabase
+    //         .rpc('get_current_ttmp')
+    //       if (error) console.error(error)
+    //       else{
+    //         setti(data)
+    //         console.log('ti>', data)
+    //   }
+    console.log(examStarted)
     // const seconds_inp = new Date(exam?.ended_at).getTime() - new Date(exam?.started_at_at).getTime()  
-    var seconds_inp = new Date(exam.ended_at).getTime() - new Date(exam.start_at).getTime()
-    var end = new Date(exam.ended_at).getTime()
-    var start = new Date(exam.started_at).getTime()
-    var tser = new Date(ti).getTime()
-    var tstart = new Date(exam.started_at).getTime()
+    var seconds_inp = new Date(exam.ended_at).getSeconds() - new Date(exam.start_at).getSeconds()
+    var end = new Date(exam.ended_at).getSeconds()
+    var start = new Date(exam.started_at).getSeconds()
+    var tser = new Date(examStarted).getSeconds()
+    var tstart = new Date(exam.started_at).getSeconds()
 
     seconds_inp = end - start - (tser - tstart)
     // - (new Date().getTime() - new Date(started_at).getTime()));
@@ -180,6 +200,7 @@ const MCExam = () =>{
   // };
     // const time = toHHMMSS(seconds);
     setDuration(time);
+    
             // setDuration(hours + " : " + minutes + " : " + seconds)
             // Display the result in the element with id="demo"
             // return document.getElementById("timer").innerHTML = hours + " : " + minutes + " : " + seconds;
@@ -246,79 +267,108 @@ const MCExam = () =>{
       .eq('exam_test_id', id)
     if(!error) {
       console.log('sd',exam_test_contents)
-      shuffleData(exam_test_contents)
-      exam_test_contents.map(e => 
-      //   (setTimeout(() => {
-      //   getOptions(e.id)
-      // }, 1000),
-      // console.log(options),
-        quedata.push({qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order, options: options})
-    )
-    console.log('quedata', quedata)
+      const shuffledContents = shuffleData(exam_test_contents);
     
-  //   setQueData(quedata.map((que, key) => 
+    // Create a new array with the proper structure
+    const newQueData = await Promise.all(shuffledContents.map(async (e) => {
+      // Get options for each question
+      const options = await getOptions(e.id);
+      return {
+        qid: e.id,
+        que: e.question,
+        an: e.answer,
+        bc: e.bank_code,
+        sc: e.score,
+        qty: e.question_type,
+        ir: false,
+        or: e.order,
+        options: options,
+        num: 0 // Will be set properly below
+      };
+    }));
+
+    // Set the question numbers
+    const numberedQueData = newQueData.map((item, index) => ({
+      ...item,
+      num: index + 1
+    }));
+
+    // Update state once with the complete data
+    setQueData(numberedQueData);
+  //     shuffleData(exam_test_contents)
+  //     exam_test_contents.map(e => 
+  //     //   (setTimeout(() => {
+  //     //   getOptions(e.id)
+  //     // }, 1000),
+  //     // console.log(options),
+  //       quedata.push({qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order, options: options})
+  //   )
+  //   console.log('quedata', quedata)
+    
+  // //   setQueData(quedata.map((que, key) => 
        
-  //   console.log(key) 
-  //   //  {return {...que,num :key+1}}
-  // ))
-  console.log(quedata)
-     exam_test_contents.forEach((que, key) => 
+  // //   console.log(key) 
+  // //   //  {return {...que,num :key+1}}
+  // // ))
+  // console.log(quedata)
+  // //    exam_test_contents.forEach((que,key) => 
+  // //     // setOptions([]),
+  // //      (getOptions(que.id),
+  // //      console.log(options))
 
-       getOptions(que.id),
-       console.log(options),
-    // console.log(bank_options)
-    // setOptions
-    //  {return {...que,num :key+1}}
-  )
-  // setQueData(quedata.forEach((e ,key)=> {return {...e, options: bank_options[key]}}))
-    // exam_test_contents.map(e => quedata.)
-    // quedata.map(e=> (getOptions(e.qid), setQueData((prev, k) => [...quedata, {...prev, options: options, num:k+1}])) )
-    // (getOptions(e.id),console.log(options), , setOptions([]).
-      // const newQuedata = exam_test_contents.map((e, k) => (
-      //   // getOptions(e.id), 
-      //   // console.log('options to update to que', options),
-      //   {qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order}
-      //   // setTimeout(() => {
+  // //   // console.log(bank_options)
+  // //   // setOptions
+  // //   //  {return {...que,num :key+1}}
+  // // )
+  // // setQueData(quedata.forEach((e ,key)=> {return {...e, options: bank_options[key]}}))
+  //   // exam_test_contents.map(e => quedata.)
+  //   // quedata.map(e=> (getOptions(e.qid), setQueData((prev, k) => [...quedata, {...prev, options: options, num:k+1}])) )
+  //   // (getOptions(e.id),console.log(options), , setOptions([]).
+  //     // const newQuedata = exam_test_contents.map((e, k) => (
+  //     //   // getOptions(e.id), 
+  //     //   // console.log('options to update to que', options),
+  //     //   {qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order}
+  //     //   // setTimeout(() => {
           
-      //     // shuffleData(options)
-      //     // console.log(options),
-      //     // setQueData([...quedata, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }])
-      //     // setQueData((value, key) => ([...(Array.isArray(value)? value : []), {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order }]))
+  //     //     // shuffleData(options)
+  //     //     // console.log(options),
+  //     //     // setQueData([...quedata, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }])
+  //     //     // setQueData((value, key) => ([...(Array.isArray(value)? value : []), {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order }]))
 
-      //     // setOptions([])
-      //   // }, 1000)
+  //     //     // setOptions([])
+  //     //   // }, 1000)
 
         
-        
-      // ))
-  //     shuffleData(newQuedata)
-  //     // newQuedata.map((e, k)=> (
-  //     //   getOptions(prev.qid)
         
   //     // ))
-  //     setQueData(prev => [])
-  //     setQueData((prev, k) => 
-  //        (
-  //     // [...newQuedata],
-  //   prev.map(item => (getOptions(item.id),
-  //   // console.log('options from set que', options, item.id)
-  //   {
-  //     ...item,          // Keep existing properties
-  //     num: k+1,     // Add new property
-  //     options: options
-  //             // Add another property (optional)
-  //   })))
-  // );
-      // setQueData([...newQuedata])
-      // setQueData((v)=> [{...quedata, num: key+1}]) 
-      // setQueData([...quedata, ])
-      // quedata.map((prev, k)=> (
-      //   getOptions(prev.qid),
-      //   cons
-      //   setQueData({...prev, num: k+1, options: options})
-      //   // [...prev, {options: options}]
-      // ))
-      console.log('quedata after add option:', quedata)
+  // //     shuffleData(newQuedata)
+  // //     // newQuedata.map((e, k)=> (
+  // //     //   getOptions(prev.qid)
+        
+  // //     // ))
+  // //     setQueData(prev => [])
+  // //     setQueData((prev, k) => 
+  // //        (
+  // //     // [...newQuedata],
+  // //   prev.map(item => (getOptions(item.id),
+  // //   // console.log('options from set que', options, item.id)
+  // //   {
+  // //     ...item,          // Keep existing properties
+  // //     num: k+1,     // Add new property
+  // //     options: options
+  // //             // Add another property (optional)
+  // //   })))
+  // // );
+  //     // setQueData([...newQuedata])
+  //     // setQueData((v)=> [{...quedata, num: key+1}]) 
+  //     // setQueData([...quedata, ])
+  //     // quedata.map((prev, k)=> (
+  //     //   getOptions(prev.qid),
+  //     //   cons
+  //     //   setQueData({...prev, num: k+1, options: options})
+  //     //   // [...prev, {options: options}]
+  //     // ))
+  //     console.log('quedata after add option:', quedata)
     }
   }
   const shuffleData = (data) => {
@@ -346,49 +396,66 @@ const MCExam = () =>{
   const getOptions = async (id) => {
     console.log(id)
     setOptions([])
+    setOptions([])
+    setOptions([])
     // options = []
     let { data: exam_test_content_options, error } = await supabase
       .from('exam_test_content_options')
       .select('*')
       .eq('exam_test_content_id', id)
 
-      if(!error){
-        console.log(exam_test_content_options)
-        shuffleData(exam_test_content_options)
-        // setOptions(exam_test_content_options)
-        const opt = exam_test_content_options.map((e) => ({id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}))
-        // const opt = exam_test_content_options.map(e => (
-        //   // console.log(e),
-        //   {
-        //   id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id
-        // }
-        //   // setOptions([...options, { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}])
-        //   // options.push({ id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type})
-        //   // point: e.point, 
-        //   // setOptions((value) => ([...value, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }]))
-        //   // setOptions([...Q])
-        //           // setOptions((value) => ([...(Array.isArray(value)? value : []), { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}]))
-        // ))
-        console.log(opt)
-        // const noptions = shuffleData(options)
-        shuffleData(opt)
-        options.push(opt)
-        // setOptions({...opt})
-        // console.log(opt)
-        // setOptions([...opt])
-        console.log('options:', options)
-        quedata.forEach((e, key) => {
+      if (!error) {
+    const shuffledOptions = shuffleData(exam_test_content_options);
+    return shuffledOptions.map((e) => ({
+      id: e.id,
+      order: e.order,
+      option: e.option,
+      exam_test_id: e.exam_test_id,
+      type: e.type,
+      exam_test_content_id: e.exam_test_content_id
+    }));
+  }
+  return [];
 
-          quedata[key].options = options
-        })
-        // setQueData(set)
-        // setOptions()
-        // opt.map((e) => (
-        //   setOptions([...options, {e}])
-        // ))
-        // // setOptions()
-        // console.log(options)
-      }
+      // if(!error){
+      //   console.log(exam_test_content_options)
+      //   shuffleData(exam_test_content_options)
+      //   // setOptions(exam_test_content_options)
+      //   const opt = exam_test_content_options.map((e) => ({id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}))
+      //   // const opt = exam_test_content_options.map(e => (
+      //   //   // console.log(e),
+      //   //   {
+      //   //   id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id
+      //   // }
+      //   //   // setOptions([...options, { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}])
+      //   //   // options.push({ id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type})
+      //   //   // point: e.point, 
+      //   //   // setOptions((value) => ([...value, {num: k+1, qid:e.id, que: e.question, an: e.answer, bc: e.bank_code, sc:e.score,qty: e.question_type, ir: false, or: e.order??null, options: options }]))
+      //   //   // setOptions([...Q])
+      //   //           // setOptions((value) => ([...(Array.isArray(value)? value : []), { id: e.id, order : e.order, option: e.option, exam_test_id: e.exam_test_id, type: e.type, exam_test_content_id: e.exam_test_content_id}]))
+      //   // ))
+      //   console.log(opt)
+      //   // const noptions = shuffleData(options)
+      //   shuffleData(opt)
+      //   console.log(opt)
+      //   setOptions(opt)
+      //   // options.push(opt)
+      //   // setOptions({...opt})
+      //   // console.log(opt)
+      //   // setOptions([...opt])
+      //   console.log('options:', options)
+      //   quedata.forEach((e, key) => {
+
+      //     quedata[key].options = options
+      //   })
+      //   // setQueData(set)
+      //   // setOptions()
+      //   // opt.map((e) => (
+      //   //   setOptions([...options, {e}])
+      //   // ))
+      //   // // setOptions()
+      //   // console.log(options)
+      // }
 
   }
 
@@ -459,7 +526,7 @@ const MCExam = () =>{
           
   }
 
-  const getDuration = (s, e) => {
+  const getDuration = () => {
     // const dayNames = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
     //   const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
   
@@ -486,9 +553,9 @@ const MCExam = () =>{
     // const calculateDifference = () => {
     // Convert timestamps to numbers
     // console.log(new Date(exam.started_at).getTime())
-    console.log(s, e)
-    const start = new Date(s).getTime()
-    const end = new Date(e).getTime()
+    // console.log(s, e)
+    const start = new Date(examStarted).getSeconds()
+    const end = new Date(examEnded).getSeconds()
     console.log(exam.started_at, end)
     // Validate inputs
     if (isNaN(start) || isNaN(end)) {
@@ -518,7 +585,7 @@ const MCExam = () =>{
       seconds.toString().padStart(2, '0')
     ].join(':');
     
-    console.log()
+    console.log(formattedTime)
     setDuration(formattedTime);
   // };
 
@@ -596,13 +663,16 @@ return (
 
                                     <tbody>
                                       <th className="text-lg text-gray-800">Soal:</th>
-                                      {/* {quedata} */}
-                                    {quedata.map((el, index) => (
+                                      {/* {quedata}{quedata[0].num} */}
+                                      {/* {quedata.map((e,key) => ( */}
+                                        {/* <> */}
+                                        {quedata.forEach((el, index) => (
                                       // return (
                                         <>
-                                        {/* {el.que} */}
-                                      <tr>
-                                        <td style={{ width: '1%'}} className="items-start text-gray-800 text-lg">{el.num? el.num : index +1}. </td>
+                                        {/* {el.qid != e[key+1].qid ?( */}
+                                          {/* <> */}
+                                          <tr>
+                                        {/* <td style={{ width: '1%'}} className="items-start text-gray-800 text-lg">{el.num? el.num : index +1}. </td> */}
                                         <td className="text-gray-800 text-lg -ml-2 text-start" style={{ width:'99%' }}>{el.que} </td>
                                         {/* <?= $row['nomor'] ? $row['nomor'] : $i++ ?>. */}
                                       </tr>
@@ -630,6 +700,13 @@ return (
                                       </>
                                       // )
                                     ) )}
+                                    {/* </>
+                                        ): <></>} */}
+                                        {/* {el.que} */}
+                                      
+                                        {/* </> */}
+                                      {/* ))} */}
+                                    
                                     {/* <?php endforeach; ?> */}
                                       </tbody>
                                   </table>

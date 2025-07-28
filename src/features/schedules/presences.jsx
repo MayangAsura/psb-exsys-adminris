@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { setPageTitle } from '../../features/common/headerSlice'
+import { setPageTitle } from '../common/headerSlice'
 import TitleCard from '../../components/Cards/TitleCard'
 import supabase from "../../services/database-server"
 
@@ -9,34 +9,34 @@ import DocumentIcon  from '@heroicons/react/24/solid/DocumentIcon'
 import TabHeaderE from '../../components/TabHeader/TabHeaderE'
 import { useParams } from 'react-router-dom'
 
-function ScheduleParticipants(){
+function SchedulePresences(){
 
 
     const [trans, setTrans] = useState("")
-    const [ExamParticipants, setExamParticipants] = useState([])
+    const [ExamPresences, setExamPresences] = useState([])
 
     const id = useParams().schedule_id
     const options = [
         {tab: 'Detail', selected: false },
         {tab: 'Ujian', selected: false },
-        {tab: 'Peserta', selected: true },
-        {tab: 'Presensi', selected: false }
+        {tab: 'Peserta', selected: false },
+        {tab: 'Presensi', selected: true }
     ]
     useEffect(() => {
-        getExamParticipants(id)
-        console.log(ExamParticipants)
+        getExamPresences(id)
+        console.log(ExamPresences)
     },[id])
 
-    const getExamParticipants = async(id) => {
+    const getExamPresences = async(id) => {
     
         let { data: exam_responses, error } = await supabase
-            .from('exam_test_participants')
-            .select('*, exam_tests(name, exam_schedule_tests(exam_schedule_id)), exam_profiles(full_name, father_name, mother_name, last_login, regist_number, phone_number, created_at, completion_status))')
-            .eq('exam_tests.exam_schedule_tests.exam_schedule_id', id)
-            .is('deleted_at', null)
+            .from('exam_presences')
+            .select('*, exam_schedules(id,exam_schedule_schools(schools(school_name))), exam_profiles(full_name, regist_number, completion_status)')
+            // exam_tests(name, exam_schedule_tests(exam_schedules(exam_schedule_schools(schools(school_name))))), 
+            .eq('exam_schedules.id', id)
 
         if(!error){
-        setExamParticipants(exam_responses)
+        setExamPresences(exam_responses)
         }
             
     }
@@ -74,20 +74,11 @@ function ScheduleParticipants(){
     return dateFormat
   }
 
-  const getStatus = (status) => {
-    if(status=='ongoing'){
-        return 'Belum Tuntas'
-    }
-    if(status=='complete'){
-        return 'Tuntas'
-    }
-  }
-
     return(
         <>
             
                 <TabHeaderE id = {id} options={options} activeKey='Peserta'></TabHeaderE>
-            <TitleCard title="Peserta" topMargin="mt-2" >
+            <TitleCard title="Presensi" topMargin="mt-2" >
             {/* UJIAN */}
                 {/* Team Member list in table format loaded constant */}
                 {/* <TabHeaderE></TabHeaderSP> */}
@@ -98,16 +89,17 @@ function ScheduleParticipants(){
                         {/* <th>Icon</th> */}
                         <th>No. Registrasi</th>
                         <th>Nama</th>
-                        <th>Bergabung</th>
-                        <th>Status Asesmen</th>
-                        {/* <th>Tanggal Submit</th> */}
+                        <th>No. Wa</th>
+                        <th>Jenjang</th>
+                        <th>Tanggal Presensi</th>
+                        <th>Status Seleksi</th>
                         {/* <th>Lokasi</th>
                         <th>Update Terakhir</th> */}
                     </tr>
                     </thead>
                     <tbody>
                         {
-                            ExamParticipants.map((l, k) => {
+                            ExamPresences.map((l, k) => {
                                 return(
                                     <tr key={k}>
                                     <td><div className="font-bold">{l.exam_profiles.regist_number }</div></td>
@@ -123,11 +115,13 @@ function ScheduleParticipants(){
                                             </div>
                                         </div>
                                     </td>
-                                    {/* <td><div className="font-bold">{l.exam_schedule_tests[0].exam_schedule_schools[0].schools.school_name}</div></td> */}
-                                    {/* <td><div className="font-bold">{l.score}</div></td> */}
-                                    <td><div className="">{formatDateNew(l.created_at) }</div></td>
+                                    <div className="">{l.exam_profiles.phone_number?? '-'}</div>
+                                    <td><div className="">{l.exam_schedules.exam_schedule_schools[0].schools.school_name}</div></td>
+                                    {/* <td><div className="font-bold">{l.score}</div></td>*/}
+                                    <td><div className="">{formatDateNew(l.presence_at) }</div></td> 
                                     {/* <td><div className="badge-primary font-semibold rounded-2xl w-16 py-1 px-2">{l.test_scheme}</div> </td> */}
-                                    <td className={`${l.exam_profiles?.completion_status=='ongoing'? 'badge bg-red-400':' badge bg-blue-400'} font-bold`} >{getStatus(l.exam_profiles?.completion_status)}</td>
+                                    <td className='flex justify-center items-center align-middle badge bg-red-400'>{l.exam_profiles.completion_status==='ongoing'?'Belum Tuntas': 'Tuntas'}</td>
+
                                     {/* <td>Ujian Seleksi Jenjang SDIT</td> */}
                                     {/* <td>{l.exam_schedules_test[0].exam_schedules.name}</td> */}
                                     {/* <td>{l.score}</td> */}
@@ -146,4 +140,4 @@ function ScheduleParticipants(){
 }
 
 
-export default ScheduleParticipants
+export default SchedulePresences

@@ -140,6 +140,32 @@ const Presence = (props) => {
 
   const handlePresence = async () => {
 
+
+    let { data: presence, pre_error } = await supabase
+      .from('exam_presences')
+      .select('appl_id')
+      .eq('appl_id', id)
+  
+    if(presence){
+      openErrorModal({message: "Anda telah melakukan presensi sebelumnya."})
+    }
+    if(!presence){
+
+      const sid = props.sid? props.sid : 'd17ff676-85d2-4f9e-88f1-0fdfb37517b9'
+    const id = props.id? props.id : '5a49e038-9f25-4e37-a2b8-f4ed6fc7a923'
+    const { data, error } = await supabase
+      .from('exam_presences')
+      .insert([
+        { exam_schedule_id: sid, appl_id: id, queue_number: getQueNum(), presence_at: new Date().toISOString(), status: 'ongoing', created_by: id },
+      ])
+      .select()
+      console.log()
+    if(error){
+      openErrorModal({message: "Data tidak ditemukan"})
+    }else{
+      openSuccessModal()
+    }
+    }
     // const presence_at
     const sid = props.sid? props.sid : 'd17ff676-85d2-4f9e-88f1-0fdfb37517b9'
     const id = props.id? props.id : '5a49e038-9f25-4e37-a2b8-f4ed6fc7a923'
@@ -169,10 +195,10 @@ const Presence = (props) => {
     extraObject : {message : "Waktu Presensi "+  getFormatDate(applicantPresence.presence_at), type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_SUCCESS}
   }))
 }
-  const openErrorModal = () => {
+  const openErrorModal = ({message}) => {
   console.log('masuk')
-  dispatch(openModal({title : "Presensi Gagal", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS,
-    extraObject : {message : "Data Tidak Ditemukan", type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_SUCCESS}
+  dispatch(openModal({title : "Presensi Gagal", bodyType : MODAL_BODY_TYPES.MODAL_ERROR,
+    extraObject : {message : message, type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_ERROR}
   }))
 }
 
@@ -203,19 +229,19 @@ const getFormatDate = (date) => {
           <MdOutlineCoPresent/>
           {/* {icon} */}
         </div>
-        <div className="flex justify-center items-start ">
+        <div className="flex justify-center items-start -mt-5">
           <span className="flex flex-row text-2xl">Presensi</span>
         </div>
       </div>
       <div className="flex justify-between items-center">
         <div className="flex flex-col gap-2 my-10 mt-5">
           <p className="text-sm ">Jadwal Ujian</p>
-          <span className="text-lg text-gray-100 badge border-none mt-0 mb-0 bg-green-80 py-3 px-5">{formatDateNew(new Date().toISOString()) }</span>
+          <span className="text-lg text-gray-80 dark:text-gray-200 dark:bg-gray-800 badge border-none mt-0 mb-0 bg-green-100 py-3 px-5">{formatDateNew(new Date().toISOString()) }</span>
           {/* {`${formatDateNew(applicantPresence.exam_schedules.started_at) - formatDateNew(applicantPresence.exam_schedules.ended_at)}`}  */}
         </div>
-        <div className="flex flex-col justify-items-end">
+        <div className="flex flex-col gap-2 my-10 mt-5 justify-items-end">
           <p className="text-sm ">Kehadiran</p>
-          <span className="text-lg text-gray-100 badge border-none mt-0 mb-0 bg-green-80 py-3 px-5">{applicantPresence? formatDateNew(applicantPresence.presence_at??new Date().toISOString()): "-"}</span>
+          <span className="text-lg text-gray-800 dark:text-gray-200 dark:bg-gray-800 badge border-none mt-0 mb-0 bg-green-100 py-3 px-5">{applicantPresence? formatDateNew(applicantPresence.presence_at??new Date().toISOString()): "-"}</span>
           
         </div>
       </div>
@@ -248,7 +274,10 @@ const getFormatDate = (date) => {
         </>
       ):(
         <>
-        <button className="flex flex-row justify-center items-center btn btn-md text-lg bg-orange-500 " onClick={handlePresence}>Presensi</button>
+        <div className="flex flex-col justify-center items-center">
+          <p className="flex flex-row">Anda belum melakukan presensi. Silakan klik tombol di bawa in ipresensi</p>
+        <button className="flex btn btn-md text-lg bg-orange-500 " onClick={handlePresence}>Presensi</button>
+        </div>
         </>
       )}
         {/* <h1 className="text-xl text-gray-800 font-bold mb-1">{applicantPresence.queue_number} </h1>

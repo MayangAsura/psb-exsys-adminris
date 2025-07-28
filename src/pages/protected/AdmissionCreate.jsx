@@ -1,18 +1,18 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setPageTitle } from '../../features/common/headerSlice'
-import ScheduleEdit from '../../features/schedules/edit'
+import AdmissionCreate from '../../features/admissions/create'
 
 function InternalPage(){
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(setPageTitle({ title : "Edit"}))
+        dispatch(setPageTitle({ title : "Tambah Seleksi PSB"}))
       }, [])
 
 
     return(
-        <ScheduleEdit />
+        <AdmissionCreate />
     )
 }
 

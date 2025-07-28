@@ -37,7 +37,7 @@ function SelectBox(props){
                 {
                     options.map((o) => 
                         (
-                    <option value={o.value || o.name || o.school_id} key={o.value || o.school_id}>{o.name || o.school_name }</option>)
+                    <option value={o.value || o.school_id  || o.id} key={o.value || o.school_id} >{o.name || o.school_name }</option>)
                     
                         // return 
                     )

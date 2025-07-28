@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import {tabHeaderHandlerActiveTab} from '../../utils/tabHeaderHandlerActiveTab'
 import { useNavigate } from "react-router-dom"
 
-function TabHeaderE({styleClass, options}) {
+function TabHeaderE({styleClass, options, id}) {
 
     const [optionValues, setOptionValues] = useState([])
     const tabRef = useRef(null)
@@ -41,7 +41,15 @@ function TabHeaderE({styleClass, options}) {
       )
     );
 
-    navigate('/ad/schedules/'+id+ '/participants')
+    if(key==0)
+        navigate('/ad/schedules/detail/'+id)
+    if(key==1)
+        navigate('/ad/schedules/'+id+ '/exams')
+    if(key==2)
+        navigate('/ad/schedules/'+id+ '/participants')
+    if(key==3)
+        navigate('/ad/schedules/'+id+ '/presences')
+    
         // const option = optionValues.find(opt => opt.id === key);
         // if(option){
         //     option.
@@ -75,7 +83,7 @@ function TabHeaderE({styleClass, options}) {
                     {
                         optionValues? (
                             (optionValues).map((e, key) => (
-                                <button ref={tabRef} onClick={() => handleActiveTab(key)} className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-green-700 cursor-pointer">
+                                <button ref={tabRef} onClick={() => handleActiveTab(key, id)} className="focus:outline-none focus:text-green-700 text-sm border-green-700 pt-3 rounded-t text-gray-600 mr-12 hover:text-green-700 cursor-pointer">
                     <div className="flex items-center mb-3">
                     {/* <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-eye" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" />

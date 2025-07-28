@@ -8,6 +8,7 @@ import DocumentIcon  from '@heroicons/react/24/solid/DocumentIcon'
 
 import TabHeaderSE from '../../components/TabHeader/TabHeaderSE'
 import { useParams } from 'react-router-dom'
+import TabHeaderE from '../../components/TabHeader/TabHeaderE'
 
 function ScheduleExams(){
 
@@ -16,6 +17,12 @@ function ScheduleExams(){
     const [scheduleExams, setScheduleExams] = useState([])
 
     const id = useParams().schedule_id
+    const options = [
+        {tab: 'Detail', selected: false },
+        {tab: 'Ujian', selected: true },
+        {tab: 'Peserta', selected: false },
+        {tab: 'Presensi', selected: false }
+    ]
     useEffect(() => {
         getScheduleExams(id)
         console.log(scheduleExams)
@@ -70,10 +77,10 @@ function ScheduleExams(){
     return(
         <>
             
+                <TabHeaderE id = {id} options={options} activeKey='Ujian'></TabHeaderE>
             <TitleCard title="Ujian" topMargin="mt-2" >
             {/* UJIAN */}
                 {/* Team Member list in table format loaded constant */}
-                <TabHeaderSE></TabHeaderSE>
             <div className="overflow-x-auto w-full">
                 <table className="table w-full">
                     <thead>

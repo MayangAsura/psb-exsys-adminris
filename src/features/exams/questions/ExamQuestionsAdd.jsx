@@ -1,39 +1,35 @@
-import moment from "moment"
-import { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react";
+import TitleCard from "../../../components/Cards/TitleCard";
+// import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import TitleCard from "../../components/Cards/TitleCard"
-import { showNotification } from '../common/headerSlice'
-import InputText from '../../components/Input/InputText'
-import InputTextRadio from '../../components/Input/InputTextRadio'
-import SelectBox from "../../components/Input/SelectBox"
-import TextAreaInput from '../../components/Input/TextAreaInput'
-import ToogleInput from '../../components/Input/ToogleInput'
-import InputDateTime from "../../components/Input/InputDateTime"
+import { showNotification } from '../../common/headerSlice'
+import InputText from '../../../components/Input/InputText'
+import InputTextRadio from '../../../components/Input/InputTextRadio'
+import SelectBox from "../../../components/Input/SelectBox"
+import TextAreaInput from '../../../components/Input/TextAreaInput'
+import ToogleInput from '../../../components/Input/ToogleInput'
+import InputDateTime from "../../../components/Input/InputDateTime"
+import { CKEditor } from "@ckeditor/ckeditor5-react"
+import {ClassicEditor} from 'ckeditor5'
+import CustomUploadAdapterPlugin from "./CustomUpload"
 import { useForm } from "react-hook-form"
 
-import supabase from "../../services/database-server"
-import {addExam} from "../../services/api/exams"
+import supabase from "../../../services/database-server"
+import {addQuestion} from "../../../services/api/questions"
 
 import DateTimePicker from 'react-datetime-picker'
 import { useNavigate, useParams } from "react-router-dom"
-import InputDateTimePicker from "../../components/Input/InputDateTimePicker"
-// import DatePicker from 'rsuite/DatePicker';
-// import 'rsuite/DatePicker/styles/index.css';
-// importing styling datepicker
-// import "./css/react-datepicker/react-datepicker.css"
+import InputDateTimePicker from "../../../components/Input/InputDateTimePicker"
+// import {}
+// import addQuestion
 
-import axios from "axios"
-import schools from "../../services/api/schools"
-// import supabase from "../services/database"
 
-// type ValuePiece = Date | null
-
-// type Value = ValuePiece | [ValuePiece, ValuePiece]
-
-function ExamCreate(){
+const ExamQuestionAdd = () => {
 
     const dispatch = useDispatch()
     const [value, onChange] = useState(new Date())
+    const btnAddQuestion = useRef(null)
+    const btnAddOption = useRef(null)
     
     const [exam, setExam] = useState({name: "", subtitle: "", icon: "", started_at: "", ended_at: "", scheme: "", question_type: "", location: "", room: "", schedule_id: "" })
     // exam_category_id: "",
@@ -45,40 +41,7 @@ function ExamCreate(){
     const checked = false
     const navigate = useNavigate()
     const {register, handleSubmit} = useForm()
-    // const {id} = useParams()
 
-
-    useEffect( () => {
-        getScheduleOptions()
-        // getSchedule()
-        // console.log(id)
-        console.log(exam)
-    },[])
-
-    // Call API to update profile settings changes
-    const saveExam = async (e) => {
-        e.preventDefault()
-        console.log('exam in ad', exam)
-        const {schedule_id, ...newExam} = exam
-        const response = await addExam({newExam, schedule_id})
-        // const {error, message, data} = await addExam({exam})
-        console.log('response', response)
-        // console.log('message', message)
-        if(!response || response==null || response.error){
-            dispatch(showNotification({message : "Gagal Menambahkan Ujian", status : 0}))
-        }else if(!response.error) {
-            console.log("masuk")
-            dispatch(showNotification({message : response.message, status : 1}))
-        navigate("/ad/exams/detail/"+response.data)
-        }else{
-            dispatch(showNotification({message : "Gagal Menambahkan Ujian", status : 0}))
-        }
-    }
- 
-    // const updateSelectBoxValue = ({updateType, nameInput, value}) => {
-    //     setSchedule((schedule) =>({...schedule, [nameInput]: value}))
-    //     // console.log(updateType)
-    // }
     const updateFormValue = ({updateType, nameInput, value}) => {
         console.log('nameInput', nameInput, value)
         exam[nameInput] = value
@@ -88,52 +51,89 @@ function ExamCreate(){
         // console.log(updateType)
     }
 
-    const getScheduleOptions = async () => {
-        let { data: exam_schedules, error } = await supabase
-            .from('exam_schedules')
-            .select('*')
-            console.log(exam_schedules)
-            if(!error){
-                setScheduleOptions(exam_schedules.map(e => ({name: e.name, value: e.id})))
-                // exam_schedules.map((e)=>(
-                //         // setScheduleOptions( e => {
-                //         schedulesOptions.push({ name:e.id, value: e.name})
-                        
-                //     ))
-                    console.log('schedulesOptions', schedulesOptions)
-            //     // schedulesOptions e.name
+    const addQuestion_ = () => {
 
-            // }))
-            // name: schedule
-            // setScheduleOptions(schedule => {.})
+    }
+    const addOption_ = () => {
+
+    }
+
+    const saveQuestion = async (e) => {
+        e.preventDefault()
+
+        console.log('exam in ad', exam)
+        const {schedule_id, ...newExam} = exam
+        const response = await addQuestion({newExam, schedule_id})
+        // const {error, message, data} = await addExam({exam})
+        console.log('response', response)
+        // console.log('message', message)
+        if(!response || response==null || response.error){
+            dispatch(showNotification({message : "Gagal Menambahkan data Ujian", status : 0}))
+        }else if(!response.error) {
+            console.log("masuk")
+            dispatch(showNotification({message : response.message, status : 1}))
+        navigate("/ad/exams/detail/"+response.data)
+        }else{
+            dispatch(showNotification({message : "Gagal Menambahkan data Ujian", status : 0}))
         }
     }
 
-    // const handledSubmit = (e) => {
-    //     e.preventDefault()
+    
+    
+    
+return (
+    <><TitleCard title="Tambah Soal" topMargin="mt-2">
+                <form onSubmit={saveQuestion}>
+                    <div className="grid grid-cols-3 md:grid-cols-4 gap-1">
+                        <h5 className="flex flex-row w-1/6">No.</h5>
+                        <h5 className="flex flex-row w-3/6 justify-items-center items-center">Soal</h5>
+                        <h5 className="flex flex-row w-2/6 justify-items-center items-center" >Jawaban</h5>
+                    </div>
+                    <div className="divider"></div>
+                    <div className="grid grid-cols-3 md:grid-cols-2 gap-6">
+                        <InputText labelTitle="" nameInput={`order`+1} updateFormValue={updateFormValue} containerStyle={' w-1/6'}/>
+                    <div className="grid grid-cols-1 md:grid-cols-2 w-3/6 gap-6">
+                         <CKEditor
+                            editor={ClassicEditor}
+                            config={{
+                                extraPlugins: [CustomUploadAdapterPlugin],
+                                toolbar: {
+                                items: [
+                                    // ... other toolbar items
+                                    'imageUpload', // Ensure imageUpload button is in the toolbar
+                                    // ...
+                                ],
+                                },
+                            }}
+                            data="<p>Hello from CKEditor 5!</p>"
+                            onChange={(event, editor) => {
+                                const data = editor.getData();
+                                console.log({ event, editor, data });
+                            }}
+                            /> 
+                        {/* <div className="flex flex-row w-1/6"> */}
+                        {/* <InputText labelTitle="" nameInput={`order`+1} updateFormValue={updateFormValue} containerStyle={' w-1/6'}/> */}
 
+                        {/* </div> */}
+                        <div className="flex flex-row  ">
+                            <button ref={btnAddQuestion} onClick={()=>addQuestion_()} className="btn flex bg-green-600 text-gray-200 dark:bg-green-500 dark:text-gray-200 ">Tambah Soal</button>
+                            <button ref={btnAddOption} onClick={()=>addOption_()} className="btn flex-grow bg-green-600 text-gray-200 dark:bg-green-500 dark:text-gray-200 ">Tambah Jawaban</button>
+                            
+                        </div>
 
-    // }
-
-
-
-    const schedulesOptions2 = [
-        {name : "Today", value : "TODAY"},
-        {name : "Yesterday", value : "YESTERDAY"},
-        {name : "This Week", value : "THIS_WEEK"},
-        {name : "Last Week", value : "LAST_WEEK"},
-        {name : "This Month", value : "THIS_MONTH"},
-        {name : "Last Month", value : "LAST_MONTH"},
-    ]
-
-    return(
-        <>
-            
-            <TitleCard title="Tambah Ujian" topMargin="mt-2">
-                <form onSubmit={saveExam}>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                </div>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
+                        <div className="flex flex-row">
+                            <InputText labelTitle="" nameInput="oporderA" updateFormValue={updateFormValue}/>
+                            {/* <InputText labelTitle="Ruangan" nameInput="room" updateFormValue={updateFormValue}/> */}
+                        </div>
+                        <div className="flex">
+                            <InputText labelTitle="" nameInput="oporderB" updateFormValue={updateFormValue}/>
+                        </div>
+                    </div>
                         
+                    <div className="divider" ></div>
                     <InputText labelTitle="Nama" nameInput="name" updateFormValue={updateFormValue}/>
                     <InputText labelTitle="Deskripsi" nameInput="subtitle" updateFormValue={updateFormValue}/>
                     {/* <InputText labelTitle="Skema Ujian" defaultValue={exam.scheme} updateFormValue={updateFormValue}/> */}
@@ -182,8 +182,8 @@ function ExamCreate(){
                     {/* <InputText labelTitle="Acak Soal" type="radio" defaultValue={exam.is_random_question} updateFormValue={updateFormValue}/>
                     <InputText labelTitle="Acak Jawaban" defaultValue={exam.is_random_answer} updateFormValue={updateFormValue}/> */}
                     {/* <TextAreaInput labelTitle="About" defaultValue="Doing what I love, part time traveller" updateFormValue={updateFormValue}/> */}
-                </div>
-                <div className="divider" ></div>
+                {/* </div>
+                <div className="divider" ></div> */}
 
                 {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <InputText labelTitle="Language" defaultValue="English" updateFormValue={updateFormValue}/>
@@ -195,11 +195,8 @@ function ExamCreate(){
                 </form>
                 {/* onClick={addExam}  */}
                 {/* onClick={() => updateSchedules()} */}
-            </TitleCard>
-            
-        </>
-    )
+            </TitleCard></>
+)
 }
 
-
-export default ExamCreate
+export default ExamQuestionAdd

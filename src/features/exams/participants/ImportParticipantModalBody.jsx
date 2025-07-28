@@ -158,17 +158,25 @@ const { data: participantsI, isLoading } = useQuery({
                             
                 try {
                 addTodoMutation({ participants: participantObj, lengthPart: participants.length, i: index});
-                  setDataImport("");
+
+                if(participantsI){
+                    setDataImport("");
                   console.log('participantsI', participantsI)
-                  if(participantsI.error!==true){
+                  if(participantsI.error!=true){
+                      total_imported++
+                      console.log(total_imported)
+                    }
+                    console.log('masuk', participantsI)
                     console.log( 'inv',participantsI.data.invalidData[0].parts)
                     console.log( 'imp', participantsI.data.importedData[0].parts)
                     invalidData.push(participantsI.data.invalidData[0].parts)
                     importedData.push(participantsI.data.importedData[0].parts)
-                    total_imported++
-                  }
                             //   // console.log('message', message)
                     final_res = participantsI
+                }else{
+                    console.log('participantsI NULL')
+                }
+                  
                 } catch (e) {
                   console.log(e);
                 }
@@ -188,16 +196,23 @@ const { data: participantsI, isLoading } = useQuery({
               
                           if(participants.length > 0 && participantsI){
             if(!participantsI || participantsI==null || participantsI.error===true){
-                console.log(participantsI)
+                console.log('participantsI', participantsI)
                               // dispatch(showNotification({message : "Gagal Import Data Peserta", status : 0}))
                               setTimeout(() => {
                                 
-                                  dispatch(openModal({title : "Gagal", bodyType : MODAL_BODY_TYPES.MODAL_ERROR, size: 'sm',
-                                      extraObject : {message : "Pesan error: "+ participantsI.message + ", Total data : "+ (total_imported==0?importedData.length:total_imported) + (invalidData.length > 0? ", Data Peserta tidak valid: " + JSON.stringify(invalidData.map((val)=> val.parts).join(', ')) + (importedData.length > 0? ", Data Peserta tidak valid: " + JSON.stringify(importedData.map((val)=> val.parts).join(', ')) : ""): "")
-                                        ,
-                                        
-                                        type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_ERROR, index: index}
-                                    }))
+                                if(total_imported>0){
+                                    dispatch(openModal({title : "Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, size: 'sm',
+                                        extraObject : {message : "Total "+ (total_imported==0?importedData.length:total_imported) + " data berhasil diimport." + (invalidData.length > 0? ", Data Peserta tidak valid: " + JSON.stringify(invalidData.map((val)=> val.parts).join(', ')) + (importedData.length > 0? ", Data Peserta tidak valid: " + JSON.stringify(importedData.map((val)=> val.parts).join(', ')) : ""): "")
+                                          , 
+                                          type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_SUCCESS, index: index}
+                                      }))
+                                }else{
+                                    dispatch(openModal({title : "Gagal", bodyType : MODAL_BODY_TYPES.MODAL_ERROR, size: 'sm',
+                                        extraObject : {message : "Pesan error: "+ participantsI.message + ", Total data : "+ (total_imported==0?importedData.length:total_imported) + (invalidData.length > 0? ", Data Peserta tidak valid: " + JSON.stringify(invalidData.map((val)=> val.parts).join(', ')) + (importedData.length > 0? ", Data Peserta tidak valid: " + JSON.stringify(importedData.map((val)=> val.parts).join(', ')) : ""): "")
+                                          , 
+                                          type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_ERROR, index: index}
+                                      }))
+                                }
                                     setStatus(false)
                                     setParticipants([])
                                     setParticipantObj([])
@@ -207,8 +222,9 @@ const { data: participantsI, isLoading } = useQuery({
                               // total_imported++
                               // dispatch(showNotification({message : response.message, status : 1}))
                               dispatch(openModal({title : "Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, size: 'sm',
-                                  extraObject : {message : total_imported==0?importedData.length:total_imported+" total Data Peserta berhasil diimport", type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_SUCCESS, index: index}
+                                  extraObject : {message : participants.length+" total Data Peserta berhasil diimport", type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_SUCCESS, index: index}
                                 }))
+                                // total_imported==0?importedData.length:total_imported
                               setStatus(true)
                               setParticipants([])
                               setParticipantObj([])

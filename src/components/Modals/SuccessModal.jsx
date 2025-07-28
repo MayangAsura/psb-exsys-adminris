@@ -2,7 +2,8 @@ import {useDispatch, useSelector} from 'react-redux'
 import axios from 'axios'
 import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_CLOSE_TYPES } from '../../utils/globalConstantUtil'
 // import { deleteLead } from '../../leads/leadSlice'
-// import { showNotification } from '../headerSlice'
+// import { showNotification } from '../..headerSlice'
+import { showNotification } from '../../features/common/headerSlice'
 import { useNavigate } from 'react-router-dom'
 
 function SuccessModal({ extraObject, closeModal}){
@@ -36,8 +37,17 @@ function SuccessModal({ extraObject, closeModal}){
         if(type === CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_SUCCESS){
             // positive response, call api or dispatch redux function
             // dispatch(deleteLead({index}))
-            navigate('/ad/exams')
+            console.log(index)
+            navigate('/ad/exams/'+index+ "/participants")
+            // dispatch(showNotification({message : "Berhasil Men Peserta", status : 1}))
             // dispatch(showNotification({message : "Redirecting..!", status : 1}))
+        }
+        if(type === CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_DELETE_SUCCESS){
+            // positive response, call api or dispatch redux function
+            // dispatch(deleteLead({index}))
+            console.log(index)
+            // navigate('/ad/exams/'+index+ "/participants")
+            dispatch(showNotification({message : "Berhasil Menghapus Peserta", status : 1}))
         }
         closeModal()
     }

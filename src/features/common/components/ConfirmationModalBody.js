@@ -1,11 +1,12 @@
 import {useDispatch, useSelector} from 'react-redux'
 import axios from 'axios'
-import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_CLOSE_TYPES } from '../../../utils/globalConstantUtil'
+import { MODAL_BODY_TYPES, CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_CLOSE_TYPES } from '../../../utils/globalConstantUtil'
 import { deleteLead } from '../../leads/leadSlice'
 import { showNotification } from '../headerSlice'
 import { deleteExam, deleteParticipant  } from '../../../services/api/exams'
 import { deleteSchedule } from '../../../services/api/schedule'
 import { useNavigate } from 'react-router-dom'
+import { openModal } from '../modalSlice'
 
 function ConfirmationModalBody({ extraObject, closeModal}){
 
@@ -59,10 +60,11 @@ function ConfirmationModalBody({ extraObject, closeModal}){
             console.log('response', response)
             // console.log('message', message)
             if(!response || response==null || response.error){
-                dispatch(showNotification({message : "Gagal Menghapus Jadwa", status : 0}))
+                dispatch(showNotification({message : "Gagal Menghapus Jadwal", status : 0}))
             }else if(!response.error) {
                 console.log("masuk")
                 dispatch(showNotification({message : response.message, status : 1}))
+                // navigate('/')
             }else{
                 dispatch(showNotification({message : "Gagal Menghapus Jadwal", status : 0}))
             }
@@ -81,11 +83,18 @@ function ConfirmationModalBody({ extraObject, closeModal}){
             }else if(!response.error) {
                 console.log("masuk")
                 console.log(oid)
+                dispatch(openModal({title : "Berhasil", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, size: 'sm',
+                                      extraObject : {message : response.message,
+                                        type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_DELETE_SUCCESS, index: oid}
+                                    }))
+                // dispatch(showNotification({message : response.message, status : 1}))
+                // "Pesan error: "+ participantsI.message + ", Total data : "+ (total_imported==0?importedData.length:total_imported) + (invalidData.length > 0? ", Data Peserta tidak valid: " + JSON.stringify(invalidData.map((val)=> val.parts).join(', ')) + (importedData.length > 0? ", Data Peserta tidak valid: " + JSON.stringify(importedData.map((val)=> val.parts).join(', ')) : ""): "")
                 navigate('/ad/exams/'+oid+'/participants')
-                dispatch(showNotification({message : response.message, status : 1}))
             }else{
                 dispatch(showNotification({message : "Gagal Menghapus Peserta", status : 0}))
             }
+
+            navigate('/ad/exams/'+oid+'/participants')
             // dispatch(showNotification({message : "Lead Deleted!", status : 1}))
         }
         closeModal()

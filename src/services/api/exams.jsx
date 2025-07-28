@@ -6,6 +6,47 @@ export const addExam = async (props) => {
     // name, description, started_at, ended_at, scheme, type, location, room, is_random_question, is_random_answer, max_participants 
     // name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: ""
     console.log(props)
+    // if(props.newData.icon){
+    //     console.log(props.newData.icon)
+    //     // if(props.options.is_image){
+    //             // const upload = async (props.question.file, name ) => {
+    //             const filepath = `examicon-${Date.now()}`
+    //             // const pid = participant.id?participant.id:participant_id
+    //             const { data_, error_ } = await supabase
+    //                 .storage
+    //                 .from('exams/uploads/exams/icon')
+    //                 .upload("/" + filepath, props.newData.icon,
+    //                 {cacheControl: '3600', upsert: true}
+    //                 )
+    //             if (error_) {
+    //             console.error("Gagal Upload Gambar", error_.message)
+    //             return null
+    //             }
+    //             const { data } = await supabase.storage.from("exams/uploads/exams/icons").getPublicUrl("/" +filepath)
+    //             // const data_url = {
+    //             // path: data.publicUrl
+    //             // }
+                
+    //             console.log(data.publicUrl)
+    //             props.newData.icon = data.publicUrl
+    //             console.log('icon',props.newData.icon)
+
+    //             // const { files, error } = await supabase
+    //             // .from('exam_test_content_files')
+    //             // .insert([
+    //             //     { exam_test_id: exam_test_contents[0].exam_test_id, exam_test_content_id: exam_test_contents[0].id, exam_test_content_option_id: exam_test_content_options[0].id, file_url: data.publicUrl, file_type: props.question.file_type, is_question: false},
+    //             // ])
+    //             // .select()
+
+    //             // if(error_ ){
+    //             //     response.error= true
+    //             // response.message= 'Gagal menambahkan data Pertanyaan. Upload gambar gagal.'
+    //             // response.data= null
+    //             // return response
+    //             // }
+          
+    //         // }
+    // }
     const response = {error: true, message: 'Gagal menambahkan data Ujian', data: null }
     const { data: exam, error } = await supabase
                             .from('exam_tests')
@@ -18,7 +59,7 @@ export const addExam = async (props) => {
         if(!exam) {
             // {error: true, message: 'Gagal menambahkan data Ujian', data: null }
              response.error= true
-        response.message= 'Gagal menambahkan data Jadwal'
+        response.message= 'Gagal menambahkan data Ujian'
         response.data= null
             return response
             // response.map(response => {...response, error: false, message: 'Berhasil menambahkan data Jadwal', data: exam_schedules}) 
@@ -26,9 +67,9 @@ export const addExam = async (props) => {
             console.log(exam)
 
             const { data: schedule, e } = await supabase
-                            .from('exam_schedule_test')
+                            .from('exam_schedule_tests')
                                 .insert([
-                                    {exam_schedule_id: schedule.id, exam_test_id: exam.id }
+                                    {exam_schedule_id: props.schedule_id, exam_test_id: exam[0].id }
                                 ])
                                 .select()
             // const { school, e } = await supabase
@@ -45,7 +86,7 @@ export const addExam = async (props) => {
         // props.newSchedule.school_id = props.school_id
 
         response.error= false
-        response.message= 'Berhasil menambahkan data Jadwal'
+        response.message= 'Berhasil menambahkan data Ujian'
         response.data= exam[0].id
         return response
     }
@@ -88,17 +129,20 @@ export const addParticipants = async (props) => {
     // let ti = 0
     // name, description, started_at, ended_at, scheme, type, location, room, is_random_question, is_random_answer, max_participants 
     // name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: ""
-    console.log(props)
+    console.log('props', props)
+
+    // if(props.participants){}
     const { data: currParts, error } = await supabase
                             .from('exam_test_participants')
                             .select('*, exam_profiles(regist_number, phone_number), exam_tests(*) ')
-                            .eq(`exam_profiles.regist_number`,props.participants.NO_REGISTRASI)
+                            .eq('exam_profiles.regist_number',props.participants.NO_REGISTRASI)
                             // .eq(`exam_test_id`,props.participants.NO_REGISTRASI)
                             .like('exam_tests.test_code', props.participants.KODE_UJIAN)
                             // .eq('exam_profiles.regist_number')
     // if(imp.includes(props.))
     if(currParts.length > 0){
         console.log('in current data')
+        console.log(currParts)
         curr.push({parts: props.participants.NO_REGISTRASI})
         // if(props.index == props.lengthPart){
             response.error= true
@@ -174,18 +218,26 @@ export const addParticipants = async (props) => {
             // }
             return response
             // response.map(response => {...response, error: false, message: 'Berhasil menambahkan data Jadwal', data: exam_schedules}) 
-        }
-                                // const prof = {
+        }else{
 
-            // }                    
-        const { data: exProf, errprof } = await supabase
+            const { data: exProf1, errprof1 } = await supabase
                         .from('exam_profiles')
-                        .insert([
-                                {appl_id: app[0]?.id, full_name: app[0]?.full_name, phone_number: app[0]?.phone_number, regist_number: app[0]?.regist_number}
-                                // {exam_schedule_id: schedule.id, exam_test_id: exam.id }
-                            ])
-                            .select()
-        if(!exProf){
+                        .select('*')
+                        .eq('regist_number', props.participants.NO_REGISTRASI)
+                            // .select()   
+                            // [
+                            //     {appl_id: app[0]?.id, full_name: app[0]?.full_name, phone_number: app[0]?.phone_number, regist_number: app[0]?.regist_number}
+                            //     // {exam_schedule_id: schedule.id, exam_test_id: exam.id }
+                            // ]
+                            const { data: exProf, errprof } = await supabase
+                                            .from('exam_profiles')
+                                            .insert([
+                                                    {appl_id: app[0]?.id, full_name: app[0]?.full_name, phone_number: app[0]?.phone_number, regist_number: app[0]?.regist_number}
+                                                    // {exam_schedule_id: schedule.id, exam_test_id: exam.id }
+                                                ])
+                                                .select()
+        // if(exProf &&){}         
+        if(!exProf1 && !exProf){
             inv.push({parts: props.participants.NO_REGISTRASI})
             console.log('in error add to profile error')
             console.log(inv, props.participants.NO_REGISTRASI)
@@ -199,7 +251,7 @@ export const addParticipants = async (props) => {
         }else{
 
             const newPar = {
-                appl_id: app[0]?.id,
+                appl_id: app[0].id,
                 exam_test_id: ext[0].id
             }
     
@@ -215,7 +267,7 @@ export const addParticipants = async (props) => {
     
             console.log(exam)                                
             if(!exam) {
-                imp.push({parts: props.participants.NO_REGISTRASI})
+                // imp.push({parts: props.participants.NO_REGISTRASI})
                 console.log('in error add to participant')
                 // {error: true, message: 'Gagal menambahkan data Ujian', data: null }
                  response.error= true
@@ -227,7 +279,10 @@ export const addParticipants = async (props) => {
                 console.log('exam', exam)
                 imp.push({parts: props.participants.NO_REGISTRASI})
                 // exam.map(e => {
-    
+
+                    response.error= false
+                response.message= 'Berhasil menambahkan data Peserta'
+                response.data= {id: null, invalidData: inv.length>0? inv : [], alreadyImp: curr, importedData: imp}
     
                 // })
                 
@@ -261,12 +316,17 @@ export const addParticipants = async (props) => {
         }                       
     }
         }
+                                // const prof = {
+
+            // }     
+        
+        }
 
         
     }
     console.log('final res', response)
     
-    // return response
+    return response
 }
 
 export const deleteParticipant = async (props) => {
@@ -283,7 +343,7 @@ export const deleteParticipant = async (props) => {
                                 // )
                                 .eq('appl_id', props.pid)
                                 .eq('exam_test_id', props.exam_id)
-                                .select()
+                                // .select()
         console.log(exam)                                
         if(error) {
             // {error: true, message: 'Gagal menambahkan data Ujian', data: null }
@@ -332,6 +392,7 @@ export const updateExam = async (props) => {
     // name, description, started_at, ended_at, scheme, type, location, room, is_random_question, is_random_answer, max_participants 
     // name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: ""
     console.log(props)
+    
     const response = {error: true, message: 'Gagal memperbarui data Ujian', data: null }
     const { data: exam, error } = await supabase
                             .from('exam_tests')
@@ -351,15 +412,15 @@ export const updateExam = async (props) => {
         }else{
             console.log(exam)
             const { error } = await supabase
-                            .from('exam_schedules_test')
+                            .from('exam_schedule_tests')
                             .delete()
                             .eq('exam_schedule_id', props.schedule_id)
-                            .eq('exam_test_id', exam.id)
+                            .eq('exam_test_id', exam[0].id)
 
             const { data: schedule, e } = await supabase
-                            .from('exam_schedule_test')
+                            .from('exam_schedule_tests')
                                 .insert([
-                                    {exam_schedule_id: props.schedule_id, exam_test_id: exam.id }
+                                    {exam_schedule_id: props.schedule_id, exam_test_id: exam[0].id }
                                 ])
                                 .select()
             // const { school, e } = await supabase

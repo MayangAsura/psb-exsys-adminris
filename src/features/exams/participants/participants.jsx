@@ -160,7 +160,7 @@ let { data: exam_schedule_tests, error } = await supabase
         let { data: exam_responses, error } = await supabase
             .from('exam_test_participants')
             .select('*, exam_tests(id, name, exam_schedule_tests(exam_schedule_id)), exam_profiles(full_name, regist_number, phone_number)')
-            .eq('exam_tests.id', id)
+            .eq('exam_test_id', id)
             .is('deleted_at', null)
 
         if(!error){
@@ -218,7 +218,7 @@ let { data: exam_schedule_tests, error } = await supabase
     const deleteCurrentData = async (index) => {
             console.log(index)
             dispatch(openModal({title : "Konfirmasi", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-            extraObject : { message : `Apakah Anda yakin menghapus data ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_DELETE, index: id, oid:id }}))
+            extraObject : { message : `Apakah Anda yakin menghapus data ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_DELETE, index: index, oid:id }}))
             // const {schedule_id, ...newExam} = exam
     }
 

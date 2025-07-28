@@ -4,8 +4,9 @@ import PageStats from './components/PageStats'
 
 import UserGroupIcon  from '@heroicons/react/24/outline/UserGroupIcon'
 import UsersIcon  from '@heroicons/react/24/outline/UsersIcon'
-import { MdTaskAlt } from 'react-icons/md'
-import { MdNoteAlt } from 'react-icons/md'
+import { MdTaskAlt, MdNoteAlt, MdOutlineAddTask } from 'react-icons/md'
+import { BiTask } from 'react-icons/bi'
+import { RiUserFollowLine } from 'react-icons/ri'
 import CircleStackIcon  from '@heroicons/react/24/outline/CircleStackIcon'
 import CreditCardIcon  from '@heroicons/react/24/outline/CreditCardIcon'
 import UserChannels from './components/UserChannels'
@@ -30,41 +31,91 @@ function Dashboard(){
     // const 
 
     const dispatch = useDispatch()
-    const [statsData, setStatsData] = useEffect([])
+    // const [statsData, setStatsData] = useEffect([])
+    const [stats, setStats] = useState([])
     // const statsData = []
  
     useEffect(()=>{
         getStatsData()
-        console.log('statsData', statsData)
+        // console.log('statsData', statsData)
         
-    },[statsData])
+    },[])
 
-    const getStatsData = async () => {
+    const getStatsData = async (range) => {
 
-        let { data: exam_tests, error } = await supabase
+        if(!range){
+            setStats([])
+            let { data: exam_tests, error } = await supabase
                 .from('exam_tests')
                 .select('*')
+                // .gt('created_at', )
 
-                setStatsData((prev) => [...prev, {title : 'Ujian Aktif', value : exam_tests.length(), icon : <UserGroupIcon className='w-8 h-8'/>}])
+                setStats((prev) => [...prev, {title : 'Ujian Aktif', value : exam_tests.length, icon : <BiTask className='w-8 h-8'/>, description: "", colorIndex: "green-600"}])
+                // <UserGroupIcon className='w-8 h-8'/>
 
         // statsData.push({title : 'Ujian Aktif', value : exam_tests.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
         
         let { data: exam_test_contents, error2 } = await supabase
                 .from('exam_test_contents')
                 .select('*')
-                setStatsData((prev) => [...prev, {title : 'Ujian Aktif', value : exam_tests.length(), icon : <UserGroupIcon className='w-8 h-8'/>}])
+                setStats((prev) => [...prev, {title : 'Soal Aktif', value : exam_tests.length, icon : <MdOutlineAddTask className='w-8 h-8'/>, description: ""}])
+                // <UserGroupIcon className='w-8 h-8'/>
         // statsData.push({title : 'Bank Soal', value : exam_test_contents.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
 
         let { data: exam_test_responses, error3 } = await supabase
                 .from('exam_test_responses')
                 .select('*')
-                setStatsData((prev) => [...prev, {title : 'Responden', value : exam_test_responses.length(), icon : <UserGroupIcon className='w-8 h-8'/>}])
+                setStats((prev) => [...prev, {title : 'Responden', value : exam_test_responses.length, icon : <RiUserFollowLine className='w-8 h-8'/>, description: ""}])
+                // <UserGroupIcon className='w-8 h-8'/>
         // statsData.push({title : 'Responden', value : exam_test_responses.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
 
         let { data: exam_profiles, error4 } = await supabase
                 .from('exam_profiles')
                 .select('*')
-                setStatsData((prev) => [...prev, {title : 'Pengguna Aktif', value : exam_profiles.length(), icon : <UserGroupIcon className='w-8 h-8'/>}])
+                setStats((prev) => [...prev, {title : 'Pengguna Aktif', value : exam_profiles.length, icon : <UserGroupIcon className='w-8 h-8'/>, description: ""}])
+        }
+
+        else if(range){
+            setStats([])
+            console.log(range.startDate.toISOString())
+            let { data: exam_tests, error } = await supabase
+                .from('exam_tests')
+                .select('*')
+                .gte('created_at', range.startDate.toISOString())
+                .lte('created_at', range.endDate.toISOString())
+
+                setStats((prev) => [...prev, {title : 'Ujian Aktif', value : exam_tests.length, icon : <BiTask className='w-8 h-8'/>, description: "", colorIndex: "green-600"}])
+                // <UserGroupIcon className='w-8 h-8'/>
+
+        // statsData.push({title : 'Ujian Aktif', value : exam_tests.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
+        
+        let { data: exam_test_contents, error2 } = await supabase
+                .from('exam_test_contents')
+                .select('*')
+                .gte('created_at', range.startDate.toISOString())
+                .lte('created_at', range.endDate.toISOString())
+                setStats((prev) => [...prev, {title : 'Soal Aktif', value : exam_tests.length, icon : <MdOutlineAddTask className='w-8 h-8'/>, description: ""}])
+                // <UserGroupIcon className='w-8 h-8'/>
+        // statsData.push({title : 'Bank Soal', value : exam_test_contents.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
+
+        let { data: exam_test_responses, error3 } = await supabase
+                .from('exam_test_responses')
+                .select('*')
+                .gte('created_at', range.startDate.toISOString())
+                .lte('created_at', range.endDate.toISOString())
+                setStats((prev) => [...prev, {title : 'Responden', value : exam_test_responses.length, icon : <RiUserFollowLine className='w-8 h-8'/>, description: ""}])
+                // <UserGroupIcon className='w-8 h-8'/>
+        // statsData.push({title : 'Responden', value : exam_test_responses.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
+
+        let { data: exam_profiles, error4 } = await supabase
+                .from('exam_profiles')
+                .select('*')
+                .gte('created_at', range.startDate.toISOString())
+                .lte('created_at', range.endDate.toISOString())
+                setStats((prev) => [...prev, {title : 'Pengguna Aktif', value : exam_profiles.length, icon : <UserGroupIcon className='w-8 h-8'/>, description: ""}])
+        }
+        
+                // <UserGroupIcon className='w-8 h-8'/>
         // statsData.push({title : 'Pengguna Aktif', value : exam_profiles.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
     //     setStatsData((prev) => (
     // {...prev,  {}}
@@ -77,7 +128,9 @@ function Dashboard(){
 
     const updateDashboardPeriod = (newRange) => {
         // Dashboard range changed, write code to refresh your values
-        dispatch(showNotification({message : `Period updated to ${newRange.startDate} to ${newRange.endDate}`, status : 1}))
+        getStatsData(newRange)
+        dispatch(showNotification({message : `Periode berhasil di update.`, status : 1}))
+        // dari ${new Date(newRange.startDate.toISOString()).getDate() + } s/d ${newRange.endDate.toISOString()}`
     }
 
     return(
@@ -88,7 +141,7 @@ function Dashboard(){
         {/** ---------------------- Different stats content 1 ------------------------- */}
             <div className="grid lg:grid-cols-4 mt-2 md:grid-cols-2 grid-cols-1 gap-6">
                 {
-                    statsData.map((d, k) => {
+                    stats.map((d, k) => {
                         return (
                             <DashboardStats key={k} {...d} colorIndex={k}/>
                         )

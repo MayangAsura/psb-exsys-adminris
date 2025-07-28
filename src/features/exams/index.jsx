@@ -53,7 +53,7 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
     return(
         <div className="inline-block float-right">
             <div className="inline-block float-right">
-                <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => addNewExam()}>Tambah Jadwal</button>
+                <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => addNewExam()}>Tambah Ujian</button>
             </div>
 
             <SearchBar searchText={searchText} styleClass="mr-4" setSearchText={setSearchText}/>
@@ -87,6 +87,7 @@ function Exams(){
 
     const [trans, setTrans] = useState(RECENT_TRANSACTIONS)
     const [examData, setExamData] = useState([])
+    const {newNotificationStatus} = useSelector(state => state.header)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     useEffect(() => {
@@ -124,6 +125,10 @@ function Exams(){
             console.log(index)
             dispatch(openModal({title : "Konfirmasi", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
             extraObject : { message : `Apakah Anda yakin menghapus ujian ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_DELETE, index}}))
+
+            if(newNotificationStatus==1){
+                getExamData()
+            }
             // const {schedule_id, ...newExam} = exam
     }
     

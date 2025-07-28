@@ -85,7 +85,7 @@ function InternalPage(){
                     <div className='flex flex-col justify-between items-start'>
                         {/* <p className='flex '>Informasi Detail</p> */}
                         <div className="flex flex-col gap-y-6">
-                            <h1 className="h1 text-3xl font-semibold  css-3rz2wn">
+                            <h1 className="h1 text-3xl font-semibold mb-8 css-3rz2wn">
                                 {test.name}
                             </h1>
                             {/* <div>
@@ -95,20 +95,20 @@ function InternalPage(){
                                     <p className=" css-zuhd6s">Nama</p>
                                 </div>
                                 <div className="flex flex-wrap gap-1 -mt-2">{test.name} </div> */}
-                                <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2 "><div className="css-4o3x93"><p className=" css-zuhd6s">Skema</p></div><div className="css-4o3x93"><p className="font-semibold badge-primary rounded-2xl py-1 px-2 css-1pj8jfk">{test.scheme} </p></div></div></div>
-                                <div className="w-full flex flex-col md:flex-row gap-y-4 md:gap-y-0">
+                                <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2 "><div className="css-4o3x93"><p className=" css-zuhd6s">Skema</p></div><div className="css-4o3x93"><p className="font-semibold badge-primary bg-orange-400 text-gray-700 rounded-2xl py-3 px-5 css-1pj8jfk">{ test.scheme} </p></div></div></div>
+                                <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-064">
                                     <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
                                         <p className=" css-zuhd6s">Waktu Mulai</p>
                                         </div>
                                     <div className="css-4o3x93"><p className="w-fit h-fit font-semibold css-1bq9ewv">{formatDateNew(test.started_at) } </p></div>
                                     </div>
-                                    <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
+                                    <div className="flex flex-col gap-y-2 gap-x-52 w-full"><div className="css-4o3x93">
                                         <p className=" css-zuhd6s">Waktu Selesai</p>
                                         </div><div className="css-4o3x93">
                                         <p className="w-fit h-fit font-semibold css-zuhd6s">{formatDateNew(test.ended_at)} </p></div>
                                     </div>
                                 </div>
-                                <div className="w-full flex flex-col md:flex-row gap-y-4 md:gap-y-0">
+                                <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
                                     <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
                                         <p className=" css-zuhd6s">Tipe</p>
                                         </div>
@@ -120,7 +120,7 @@ function InternalPage(){
                                         <p className="px-3 py-2 w-fit h-fit text-white !text-[12px] rounded-[4px] font-semibold leading-none bg-successed-500 css-zuhd6s">{test_room} </p></div>
                                     </div> */}
                                 </div>
-                                <div className="w-full flex flex-col md:flex-row gap-y-4 md:gap-y-0">
+                                <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
                                     <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
                                         <p className=" css-zuhd6s">Lokasi</p>
                                         </div>
