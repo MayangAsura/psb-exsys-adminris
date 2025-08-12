@@ -59,10 +59,10 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
-          <Route path="*" element={<Navigate to={token_user? "/landing" : "/login"} replace />}/>
+          <Route path="*" element={<Navigate to={!token? "/ad/login" : "/ad/dashboard"} replace />}/>
           {/* <Route path="*" element={<Navigate to={token_user? "/landing" : ()} replace />}/> */}
           {/* <Route path="*" element={<Navigate to={token? "/ad/welcome" : (token_user? "/landing": (!token_user? "/login": !token? "/ad/login": "")} replace />}/> */}
-          <Route path="/login" element={<LandingLogin />} />
+          {/* <Route path="/login" element={<LandingLogin />} /> */}
           <Route path="/ad/login" element={<Login />} />
           <Route path="/ad/forgot-password" element={<ForgotPassword />} />
           <Route path="/ad/register" element={<Register />} />
@@ -72,14 +72,14 @@ function App() {
           <Route path="/ad/*" element={<Layout />} />
           {/* Place new routes user over this */}
           {/* <Route element={<ProtectedRoute/>}> */}
-            <Route path="/landing" element={<Landing />} />
-            <Route path="/u/exam/:id/show" element={<LandingExam />} />
+            {/* <Route path="/landing" element={<Landing />} />
+            <Route path="/u/exam/:id/show" element={<LandingExam />} /> */}
           {/* </Route> */}
-          <Route path="/register" element={<LandingRegister />} />
+          {/* <Route path="/register" element={<LandingRegister />} /> */}
           
           {/* <Route path="/u/exam/:id/start" element={<StartExam />} /> */}
+          {/* <Route path="*" element={<Navigate to={!token? "/ad/login" : "/ad/dashboard"} replace />}/> */}
           {/* <Route path="/u/*" element={<Navigate to={!token_user? "/login" : "/landing"} replace />}/>
-          <Route path="/ad/*" element={<Navigate to={!token? "/ad/login" : "/ad/welcome"} replace />}/>
           <Route path="*" element={<Navigate to={!token || !token_user? "/login" : "/landing"} replace />}/> */}
 
 

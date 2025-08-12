@@ -3,10 +3,13 @@ import Navbar from "./components/sections/Navbar/Navbar";
 import ProfileCover from "./components/sections/ProfileCover/ProfileCover";
 import Sidebar from "./components/sections/Sidebar/Sidebar";
 import Profile from "./sections/ProfileCard/Profile"; 
-import Presence from "./components/sections/Presence/Presence"; 
+import Presence from "./components/sections/Presence/Presence";
 import Exam from "./sections/Exams/Exam";
 import Header from "./components/Header";
 import '../index-user.css'
+
+import { MODAL_BODY_TYPES, CONFIRMATION_MODAL_CLOSE_TYPES } from "../utils/globalConstantUtil";
+import { openModal } from "../features/common/modalSlice";
 
 import axios from "axios";
 import supabase from "../services/database-server";
@@ -14,17 +17,36 @@ import supabase from "../services/database-server";
 
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 function Landing() {
 
   const [applicant, setApplicant] = useState({})
   const [sid, setScheduleId] = useState("")
   const [ip, setIp] = useState("")
+  const dispatch = useDispatch()
   // const [applicant, setApplicant] = useState({id: "133c032c-6903-4e25-a2db-579d431fe6b4", sid: "d17ff676-85d2-4f9e-88f1-0fdfb37517b9"})
   useEffect(()=> {
+    getApplIp()
     getApplicant()
-    getIp()
-  }, [])
+    console.log('applicant', applicant)
+    // getIp()
+  }, [applicant])
+  const getApplIp = async () => {
+    fetch('https://geolocation-db.com/json/')
+      .then(response => response.json())
+      .then(data => {
+        setIp(data.IPv4)
+        // setCountry(data.country_name)
+        // setLatitude(data.latitude)
+        // setLongitude(data.longitude)
+      })
+      .catch(error => console.log(error))
+    // const res = await axios.get("https://api.ipify.org/?format=json");
+    // console.log(res.data)
+    // setIp(res.data.ip)
+    
+  }
   const getIp = async () => {
     const res = await axios.get("https://api.ipify.org/?format=json");
     console.log(res.data)
@@ -34,14 +56,15 @@ function Landing() {
     const token_user = localStorage.getItem('token-user')
     if(token_user){
       
-      let { data: applicants, errorApp } = await supabase
-        .from('applicants')
-        .select('id')
-        .eq('refresh_token', token_user)
-        console.log(applicants)
+      let { data: applicants, error } = await supabase.from('applicants').select('*')
+      .eq('refresh_token', token_user)
+      console.log('masuk getapl-')
+      // .eq('status', 'active')
+      // console.log(applicants)
       if(applicants){
         // full_name, phone_number, regist_number, participants(dob, home_address, participant_father_data(father_name), participant_mother_data(mother_name))π
         setApplicant(applicants[0])
+        console.log('applicant from g', applicant)
       // let { data: exam_test_participants, errorpart } = await supabase
       //   .from('exam_schedule_tests')
       //   .select('*, exam_tests(exam_test_participants(appl_id))')
@@ -51,17 +74,22 @@ function Landing() {
     .from('exam_tests')
     .select('id, exam_test_participants(appl_id), exam_schedule_tests(exam_schedule_id)')
     // .eq('exam_tests[0].exam_schedule_tests.exam_schedule_id', sid)
-    .eq('exam_test_participants.appl_id', applicants[0].id)
-    // .neq('exam_schedule_tests.exam_schedule_id', null)
+    .eq('exam_test_participants.appl_id', applicant.id)
+    .neq('exam_schedule_tests.exam_schedule_id', null)
     // .neq('exam_test_participants.appl_id', null)
 
+    console.log('exam_test_participants', exam_test_participants)
+    if(!exam_test_participants || error2){
+          // openErrorModal()
+        }
         if(exam_test_participants){
           // console.log(exam_test_participants[0])
-          setScheduleId(exam_test_participants[0]?.exam_schedule_tests[0]?.exam_schedule_id?? '')
+          setScheduleId(exam_test_participants[0]?.exam_schedule_tests[0]?.exam_schedule_id)
+          console.log('sid-', sid)
           // sid = exam_test_participants[0]?.exam_schedule_tests[0]?.exam_schedule_id??''
           // sid = exam_test_participants[0].exam_tests.exam_schedule_tests[0].exam_schedule_id
-          console.log('sid', sid)
         }
+        
       }
       
       
@@ -69,10 +97,16 @@ function Landing() {
     }
       
   }
+  const openErrorModal = () => {
+        console.log('schedule')
+        dispatch(openModal({title : "Error Akses", bodyType : MODAL_BODY_TYPES.MODAL_ERROR,
+            extraObject : {message : "Halaman ini dibatasi. Mohon periksa jadwal ujian Anda", type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_ERROR}
+        }))
+    }
   const page = 'Beranda'
   return (
     <main className="min-h-screen relative bg-gray-50 pb-10" >
-      <Header appl_id={applicant.id}/>
+      <Header id={applicant.id}/>
       {/* style={{ maxWidth:390 }} */}
       <ProfileCover page={page} />
       <div className="container px-4">

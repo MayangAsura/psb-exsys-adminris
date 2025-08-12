@@ -1,14 +1,14 @@
 
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { setPageTitle } from '../../features/common/headerSlice'
+import { setPageTitle } from '../common/headerSlice'
 import TitleCard from '../../components/Cards/TitleCard'
 import supabase from "../../services/database-server"
 import { tabHeaderHandlerActiveTab } from '../../utils/tabHeaderHandlerActiveTab'
 
 import DocumentIcon  from '@heroicons/react/24/solid/DocumentIcon'
 
-import TabHeaderE from '../../components/TabHeader/TabHeaderE'
+import TabHeaderSE from '../../components/TabHeader/TabHeaderSE'
 import { useParams } from 'react-router-dom'
 
 function InternalPage(){
@@ -18,9 +18,9 @@ function InternalPage(){
     const id = useParams().admission_id
     const options = [
         {tab: 'Detail', selected: true },
-        {tab: 'Ujian', selected: false },
-        {tab: 'Peserta', selected: false },
-        {tab: 'Presensi', selected: false }
+        {tab: 'Jenjang', selected: false },
+        // {tab: 'Peserta', selected: false },
+        {tab: 'Report', selected: false }
     ]
     
     useEffect(() => {
@@ -32,7 +32,7 @@ function InternalPage(){
         let { data: admissions, error } = await supabase
             .from('admissions')
             .select('*')
-            // .eq('id', id)
+            .eq('id', id)
 // 'd17ff676-85d2-4f9e-88f1-0fdfb37517b9'
         if(!error){
         setTest(admissions[0])
@@ -59,23 +59,21 @@ function InternalPage(){
   }
     return(
         <div className="bg-base-200">
-            <TabHeaderE id= {id}  options={options} activeKey='Detail' />
+            <TabHeaderSE id={id} options={options} activeKey='Detail' />
             <TitleCard title="Informasi Detail" topMargin="mt-2">
                 <div className="overflow-x-auto w-full ">
                     <div className='flex flex-col justify-between items-start'>
-                        {/* <p className='flex '>Informasi Detail</p> */}
+                         {/* <p className='flex '>Informasi Detail</p> */}
                         <div className="flex flex-col gap-y-4">
                             <h5 className="text-3xl font-semibold mb-8 css-3rz2wn">
-                            {test.name}</h5>
+                            {test.title}</h5>
                             {/* <div>
                                 <div className="h-auto overflow-hidden relative"><div style="max-height: 400px;" className="overflow-hidden text-ellipsis leading-[22px] font-normal text-[14px]"><p className="tiptap-paragraph">..</p></div></div>
                             </div> */}
                                 {/* <div className="css-4o3x93">
                                     <p className=" css-zuhd6s">Nama</p>
                                 </div>
-                                <div className="flex flex-wrap gap-1 -mt-2">{test.name} </div>  */}
-                                <div className="w-full flex mb-2 gap-y-52 gap-x-60"><div className="flex flex-col gap-y-2"><div className="css-4o3x93"><p className="w-full css-zuhd6s">Jumlah Peserta</p></div>
-                                <div className="css-4o3x93"><p className="">{test.max_participants} </p></div></div></div>
+                                <div className="flex flex-wrap gap-1 -mt-2">{test.title} </div>  */}
                                 <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
                                     <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
                                         <p className=" css-zuhd6s">Waktu Mulai</p>
@@ -83,10 +81,17 @@ function InternalPage(){
                                     <div className="css-4o3x93"><p className="w-fit h-fit font-semibold css-1bq9ewv">{formatDateNew(test.started_at)} </p></div>
                                     </div>
                                     <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
-                                        <p className=" css-zuhd6s">Waktu Selesai</p>
+                                        <p className=" css-zuhd6s">Waktu Berakhir</p>
                                         </div><div className="css-4o3x93">
                                         <p className="w-fit h-fit font-semibold">{formatDateNew(test.ended_at)} </p></div>
                                     </div>
+                                </div>
+                                <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
+                                    <div className="flex flex-col gap-y-2 w-full">
+                                        <div className="css-4o3x93"><p className="w-full css-zuhd6s">Tahun Ajaran</p></div>
+                                <div className="css-4o3x93"><p className="font-semibold">{test.ta} </p></div></div>
+                                
+                                <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2 "><div className="css-4o3x93"><p className=" css-zuhd6s">Status</p></div><div className="css-4o3x93"><p className="font-semibold badge-primary bg-orange-400 text-gray-700 rounded-2xl py-3 px-5 css-1pj8jfk">{ test.status} </p></div></div></div>
                                 </div>
                                 {/* <div className="w-full flex flex-col md:flex-row gap-y-4 md:gap-y-0">
                                     <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">

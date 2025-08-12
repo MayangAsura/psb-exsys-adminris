@@ -25,6 +25,7 @@ const SEExam = ({id, appl_id, started_at}) => {
   const [responseDetailValues, setResponseDetailValues] = useState([])
   const res = []
   const dispatch = useDispatch()
+  const [activeNum, setActiveNum] = useState(1)
   // const id = useParams().id
 
   const steps = [
@@ -75,7 +76,7 @@ console.log(e)
       console.log(exam_test_contents);
       exam_test_contents[0].exam_test_contents.map((e, key) => (
 
-        setQuestions((question) => ([...Array.isArray(question)? question:[], {label: `Soal `+ key+1, description: e.question, id: e.id, order: e.order }]))
+        setQuestions((question) => ([...Array.isArray(question)? question:[], {label: `Soal ${key+1}`, description: e.question, id: e.id, order: e.order, num: key+1, answer: "" }]))
       )
       //  {
       //   id: e.id,
@@ -89,9 +90,9 @@ console.log(e)
         // }
       )
       // setQuestions(data_questions)
-      Object.keys(exam_test_contents).map(function(key){
-        // obj = [key, {labe}];
-      });
+      // Object.keys(exam_test_contents).map(function(key){
+      //   // obj = [key, {labe}];
+      // });
       console.log('questions', questions)
     }
     function convertObjectToList(obj) {
@@ -153,7 +154,7 @@ console.log(e)
     .select()
 
     if(!error){
-      
+      console.log('upsert response', data)
       
       
       if(newans){
@@ -169,7 +170,9 @@ console.log(e)
   
   // setResponseDetailValues(mappedArray); 
       } 
-      console.log('d',responseDetailValues)
+      setResponseDetailValues(questions.map((value)=> [...responseDetailValues, {exam_test_response_id: data[0].id, exam_test_content_id: value.id, answer:value.answer}]))
+      console.log('responseDetailValues',responseDetailValues)
+
     
     const { data2, error2 } = await supabase
       .from('exam_test_response_details')
@@ -179,6 +182,7 @@ console.log(e)
       .select()
 
       if(!error2){
+        console.log('upsert res detail', data2)
         
         dispatch(openModal({title : "Jawaban Tersimpan", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, 
                 extraObject : { message : '', type: CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_SUCCESS}}))
@@ -197,10 +201,11 @@ console.log(e)
       ])
       .select()
       if(!error){
-        console.log('d',responseDetailValues)
+        console.log('insert res',data)
         console.log(answers)
-        answers?.map((value) => (setResponseDetailValues([...Array.isArray(responseDetailValues)?responseDetailValues:[], {exam_test_response_id: data[0].id, exam_test_content_id: value.name, answer:value.answer}])))
-        console.log(responseDetailValues)
+        setResponseDetailValues(questions.map((value)=> [...responseDetailValues, {exam_test_response_id: data[0].id, exam_test_content_id: value.id, answer:value.answer}]))
+        // answers?.map((value) => (setResponseDetailValues([...Array.isArray(responseDetailValues)?responseDetailValues:[], {exam_test_response_id: data[0].id, exam_test_content_id: value.name, answer:value.answer}])))
+        console.log('responseDetailValues', responseDetailValues)
       const { data2, error2 } = await supabase
       .from('exam_test_response_details')
       .upsert([
@@ -209,6 +214,7 @@ console.log(e)
       .select()
 
       if(!error2){
+        console.log('insert res detail', data2)
         
         dispatch(openModal({title : "Ujian Tersimpan", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, 
                 extraObject : { message : 'Anda telah menyelesaikan ujian', type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_SUCCESS}}))
@@ -250,14 +256,16 @@ console.log(e)
         console.log('nameInput', nameInput, value)
         // answers[nameInput] = value
         // if(sd)
+        questions[activeStep].answer = value
+        console.log('questions[activeStep].answer', questions[activeStep].answer)
         // setAnswers((pres) =>  (pres?.name != nameInput? [...answers, {name: nameInput, answer: value}]:[...answers]))
         // const setValue = (name, e)=>{
-    setAnswers((value) => 
-      value.filter((obj) =>(obj.name != nameInput? answers.push({exam_test_content_id: nameInput, answer: value}) :  '')))
+    setAnswers((val) => 
+      val.filter((obj) =>(obj.name != nameInput? answers.push({exam_test_content_id: nameInput, answer: value}) :  '')))
         // {exam_test_response_id: data[0].id, exam_test_content_id: value.name, answer:value.answer}
     // [...values{...values,}]
   // }
-        console.log()
+        console.log('answers', answers)
         // exam[nameInput] = value
         // console.log('exam>', exam)
         // setSchedule( (data) =>  ({...data, [nameInput]: value}))
@@ -267,9 +275,14 @@ console.log(e)
 
   const setIr = (qid, no) => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setActiveStep(no)
+    // setActiveStep(no-1)
     res.push(qid)
   }
+  const handleActive = (qid, no) => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep(no - 1)
+    setActiveNum(no)
+  } 
 
   return (
     <div>
@@ -278,8 +291,8 @@ console.log(e)
         <p>Soal</p>
         <div className='bg-white grid grid-cols-4 gap-3 flex-col justify-center items-center w-full px-4 pt-5 pb-6 mx-auto mt-8 mb-6 rounded-none shadow-xl sm:rounded-lg sm:px-6'>
           {questions.map((e, key) => (
-
-          <NumberItem no={key+1} qid={e.id} ir={res.includes(e.order?e.order:e.id)?true:false} setIr={setIr} or={e.order}></NumberItem>
+          
+          <NumberItem no={key+1} qid={e.id} ques={questions} setActiveStep={handleActive} activeNum={activeNum} ir={res.includes(e.order?e.order:e.id)?true:false} setIr={setIr} or={e.order}></NumberItem>
         ))}
         </div>
         
@@ -301,7 +314,7 @@ console.log(e)
           bgcolor: 'background.default',
         }}
       >
-        <Typography>{questions[activeStep]?.label}</Typography>
+        {/* <Typography>{questions[activeStep]?.label}.</Typography> */}
       </Paper>
       <Box sx={{ height: 655, width: '100%', p: 2 }}>
         {questions[activeStep]?.description}
@@ -312,6 +325,7 @@ console.log(e)
             required
             placeholder=""
             rows="12"
+            defaultValue={questions[activeStep]?.answer}
             className="w-full border border-gray-100 rounded py-4 px-6 text-sm bg-white"
             updateFormValue={updateFormValue}
           ></TextAreaInput>

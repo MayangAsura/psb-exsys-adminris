@@ -35,7 +35,7 @@ function AdmissionCreate(){
     const dispatch = useDispatch()
     const [value, onChange] = useState(new Date())
     
-    const [admission, setadmission] = useState({name: "", started_at: new Date(), ended_at: new Date(), max_participants: "", school_id: "" })
+    const [admission, setadmission] = useState({title: "", started_at: new Date(), ended_at: new Date(), status: ""})
     // const [admission, setadmission] = useState({name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: "" })
     const [schoolOptions, setSchoolOptions] = useState([])
     const [selectedOption, setSelectedOption] = useState(null);
@@ -56,19 +56,19 @@ function AdmissionCreate(){
 
         e.preventDefault()
         console.log('admission', admission)
-        const {school_id, ...newAdmission} = admission
-        const response = await addAdmission({newAdmission, school_id})
+        // const { ...newAdmission} = admission
+        const response = await addAdmission({newAdmission: admission})
         // const {error, message, data} = await addExam({exam})
         console.log('response', response)
         // console.log('message', message)
         if(!response || response==null || response.error){
-            dispatch(showNotification({message : "Gagal Menambahkan Ujian", status : 0}))
+            dispatch(showNotification({message : "Gagal Menambahkan Seleksi", status : 0}))
         }else if(!response.error) {
             console.log("masuk")
             dispatch(showNotification({message : response.message, status : 1}))
             navigate("/ad/admissions/detail/"+response.data)
         }else{
-            dispatch(showNotification({message : "Gagal Menambahkan Ujian", status : 0}))
+            dispatch(showNotification({message : "Gagal Menambahkan Seleksi", status : 0}))
         }
         // e.preventDefault()
         // console.log(admission)
@@ -135,16 +135,23 @@ function AdmissionCreate(){
     return(
         <>
             
-            <TitleCard title="Tambah Jadwal" topMargin="mt-2">
+            <TitleCard title="Tambah Seleksi" topMargin="mt-2">
                 <form onSubmit={saveAdmissions}>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+                        <InputText labelTitle="Nama" nameInput="title"  required={true} containerStyle="w-120" defaultValue={admission.title} updateFormValue={updateFormValue}/>
+
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         
-                        <InputText labelTitle="Nama" nameInput="name"  required={true} defaultValue={admission.name} updateFormValue={updateFormValue}/>
-                        <InputDateTimePicker labelTitle="Waktu Mulai"  required={true} nameInput="started_at"  updateFormValue={updateFormValue}/>
+                        <InputDateTimePicker labelTitle="Waktu Mulai"  required={true} nameInput="started_at" containerStyle="w-52" defaultValue={admission.started_at} updateFormValue={updateFormValue}/>
+                        <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" defaultValue={admission.ended_at} containerStyle="w-52" updateFormValue={updateFormValue}/>
                         {/* defaultValue={admission.started_at?admission.started_at:new Date()} */}
-                        <SelectBox 
-                            labelTitle="Jenjang"
+                        
+                        {/* <InputText labelTitle="Maksimal Peserta" type="number" name="max_participants" defaultValue={admission.description} updateFormValue={updateFormValue}/> */}
+                        {/* <SelectBox 
+                            labelTitle="Statu"
                             options={schoolOptions}
                             placeholder="Pilih Jenjang"
                             containerStyle="w-72"
@@ -152,11 +159,9 @@ function AdmissionCreate(){
                             // labelStyle="hidden"
                             // defaultValue={schoolOptions.school_id}
                             updateFormValue={updateFormValue}
-                        />
-                        
-                        {/* <InputText labelTitle="Maksimal Peserta" type="number" name="max_participants" defaultValue={admission.description} updateFormValue={updateFormValue}/> */}
-                        <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" updateFormValue={updateFormValue}/>
-                        <InputText labelTitle="Maksimal Peserta"  type="number" nameInput="max_participants" defaultValue={admission.max_participants} updateFormValue={updateFormValue} containerStyle="w-72"/>
+                        /> */}
+                        {/* <InputText labelTitle="Status Pendaftaran" nameInput="status"  required={true} defaultValue={admission.status} updateFormValue={updateFormValue}/> */}
+                        {/* <InputText labelTitle="Kuota Pendaftaran"  type="number" nameInput="max_participants" defaultValue={admission.max_participants} updateFormValue={updateFormValue} containerStyle="w-72"/> */}
                         {/* <InputDateTime labelTitle="Waktu Mulai" name="started_at" defaultValue={admission.started_at} updateFormValue={updateFormValue}/>
                         <InputDateTime labelTitle="Waktu Selesai" name="ended_at" defaultValue={admission.ended_at} updateFormValue={updateFormValue}/> */}
                         {/* <InputText labelTitle="Skema" name="scheme" defaultValue={admission.scheme} updateFormValue={updateFormValue}/>
@@ -170,6 +175,9 @@ function AdmissionCreate(){
                     {/* <InputText labelTitle="Waktu Mulai" defaultValue="alex@dashwind.com" updateFormValue={updateFormValue}/>
                     <InputText labelTitle="Waktu Selesai" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/>
                     <TextAreaInput labelTitle="About" defaultValue="Doing what I love, part time traveller" updateFormValue={updateFormValue}/> */}
+                </div>
+                <InputText labelTitle="Tahun Ajaran" nameInput="ta"  required={true} containerStyle="w-120" placeholder="2025/2026" defaultValue={admission.ta} updateFormValue={updateFormValue}/>
+                <ToogleInput  labelTitle="Status Pendaftaran" nameInput="status" defaultValue={false} containerStyle="flex flex-grow justify-between item-center" updateFormValue={updateFormValue}/>
                 </div>
                 <div className="divider" ></div>
 

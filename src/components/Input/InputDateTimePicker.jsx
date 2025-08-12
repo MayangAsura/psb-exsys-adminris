@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 // import DateTimePicker from "react-datetime-picker"
 // import DatePicker from "react-datepicker";
 import { DatePicker, Stack } from 'rsuite';
@@ -7,14 +7,20 @@ import { FaCalendar, FaClock } from 'react-icons/fa';
 import 'rsuite/dist/rsuite.min.css';
 
 
-function InputDateTimePicker({labelTitle, labelStyle, register, nameInput, type, containerStyle, defaultValue, placeholder, updateFormValue, updateType}){
+function InputDateTimePicker({labelTitle, labelStyle, register, nameInput, type, containerStyle, defaultValue, placeholder, updateFormValue, updateType, errors, error_msg}){
 
-    const [value, setValue] = useState(new Date())
+    const [value, setValue] = useState()
 
+    useEffect(() => {
+        if(defaultValue){
+            setValue(defaultValue)
+        }
+    },[defaultValue])
     const updateInputValue = (val) => {
         // val.toISOString()
-        setValue(val.toISOString())
+        setValue(val)
         updateFormValue({updateType, nameInput, value})
+        console.log(value)
     }
 
     const CustomTimeInput = ({ value, onChange }) => (
@@ -28,7 +34,7 @@ function InputDateTimePicker({labelTitle, labelStyle, register, nameInput, type,
     );
 
     return(
-        <div className={`form-control w-full ${containerStyle}`}>
+        <div className={`form-control w-full  ${containerStyle}`}>
             <label className="label">
                 <span className={"label-text text-base-content " + labelStyle}>{labelTitle}</span>
             </label>
@@ -38,9 +44,17 @@ function InputDateTimePicker({labelTitle, labelStyle, register, nameInput, type,
                 caretAs={FaCalendar}
                 style={{ width: 220 }}
                 name={nameInput}
-                value={value && new Date(value) }
+                value={value}
                 onChange={updateInputValue}
                 />
+                {errors && 
+                    <span className="mt-2 text-sm text-red-500 ">
+                        {error_msg}
+                                                    {/* {error[nameInput] && error[nameInput].message} */}
+                                                    </span>
+                                                    // hidden peer-[&:not(:placeholder-shown):not(:focus):invalid]:block
+                
+                }
             {/* <DatePicker
                 selected={value}
                 onChange={(date) => updateInputValue(date)}

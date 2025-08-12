@@ -1,24 +1,133 @@
 import moment from "moment"
 import { useEffect, useState } from "react"
+import * as XLSX from 'xlsx';
 import { useDispatch, useSelector } from "react-redux"
 import TitleCard from "../../components/Cards/TitleCard"
 import { showNotification } from '../common/headerSlice'
+import SearchBar from "../../components/Input/SearchBar"
+import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon"
+import FunnelIcon from "@heroicons/react/24/outline/FunnelIcon"
+import { saveAs } from 'file-saver';
+// import XLSX from 'xlsx';
 
 import supabase from "../../services/database-server"
 
-const TopSideButtons = () => {
+const TopSideButtons = ({participants, removeFilter, applyFilter, applySearch}) => {
 
+    const [filterParam, setFilterParam] = useState("")
+    const [searchText, setSearchText] = useState("")
     const dispatch = useDispatch()
+    const participantFilters = ["Laki-Laki", "Perempuan"]
+    
 
-    const addNewTeamMember = () => {
-        dispatch(showNotification({message : "Add New Member clicked", status : 1}))
+    const showFiltersAndApply = (params) => {
+        applyFilter(params)
+        setFilterParam(params)
+    }
+
+    const removeAppliedFilter = () => {
+        removeFilter()
+        setFilterParam("")
+        setSearchText("")
+    }
+
+    useEffect(() => {
+        
+        if(searchText == ""){
+            removeAppliedFilter()
+        }else{
+            applySearch(searchText)
+        }
+    }, [participants, searchText])
+    
+
+    const addNewParticipant = () => {
+        
+        // dispatch(showNotification({message : "Add New Member clicked", status : 1}))
+    }
+    const exportParticipants = () => {
+        // const exportToExcel = () => {
+    const clean_data = participants.map(value => ({
+        NAMA : value.applicants.full_name,
+        KK : value.kk_number,
+        STATUS_PENDAFTARAN: value.is_complete==true?'Lulus':'Tidak Lulus',
+        STATUS_SELEKSI:	value.submission_status==true?'Tuntas':'Belum Tuntas',
+        STATUS_PENGISIAN_FORMULIR:	value.is_draft==true?'Lengkap':'Belum Lengkap',
+        STATUS_PENGISIAN_UKURAN_SERAGAM: value.is_uniform_sizing==true?'Lengkap':'Belum Lengkap',
+        ALAMAT: value.home_address,
+        TEMPAT_LAHIR: value.pob,
+        TANGGAL_LAHIR: value.dob,
+        KATEGORI_SISWA: value.student_category,
+        METODE_PEMBAYARAN_UANGPANGKAL: value.metode_uang_pangkal,
+        CITA_CITA: value.aspiration,
+        // ALAMAT_SEKOLAH_SEBELUMNYA : value.prev_school_address,
+        // prev_school_address	kk_number	pob	dob	medical_history	sickness_history	home_address	child_status	child_number	live_with	parent_phone_number	distance	created_at	deleted_at	updated_at	student_category	metode_uang_pangkal	prev_school	nationality	province	region	postal_code	aspiration	id	nik	parent_email	is_complete	submission_status	is_draft	is_uniform_sizing
+    }))
+    // setParticipants
+            const fileName = 'Peserta'
+    const worksheet = XLSX.utils.json_to_sheet(clean_data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], {type: 'application/octet-stream'});
+    saveAs(blob, `${fileName}.xlsx`);
+//   };
+
+        // dispatch(showNotification({message : "Add New Member clicked", status : 1}))
+        
     }
 
     return(
-        <div className="inline-block float-right">
-            <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => addNewTeamMember()}>Tambah Peserta</button>
+        <div className="inline-block float-right " z-index='20'>
+            <div className="inline-block float-right">
+                <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => addNewParticipant()}>Tambah Peserta</button>
+            </div>
+            <div className="inline-block float-right">
+                <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => exportParticipants()}>Export Peserta</button>
+            </div>
+
+            <SearchBar searchText={searchText} styleClass="mr-4" setSearchText={setSearchText}/>
+            {filterParam != "" && <button onClick={() => removeAppliedFilter()} className="btn btn-xs mr-2 btn-active btn-ghost normal-case">{filterParam}<XMarkIcon className="w-4 ml-2"/></button>}
+            <div className="dropdown dropdown-bottom dropdown-end">
+                <label tabIndex={0} className="btn btn-sm btn-outline"><FunnelIcon className="w-5 mr-2"/>Filter</label>
+                <ul tabIndex={0} className="dropdown-content menu p-2 text-sm shadow bg-base-100 rounded-box w-52">
+                    {
+                        participantFilters.map((l, k) => {
+                            return  <li key={k}><a onClick={() => showFiltersAndApply(l)}>{l}</a></li>
+                        })
+                    }
+                    <div className="divider mt-0 mb-0"></div>
+                    <li><a onClick={() => removeAppliedFilter()}>Remove Filter</a></li>
+                </ul>
+            </div>
         </div>
     )
+
+    // return(
+    //     <div className="inline-block float-right">
+    //         <div className="inline-block float-right">
+    //             <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => addNewParticipant()}>Tambah Peserta</button>
+    //         {/* <div className="inline-block float-right"> */}
+    //             {/* <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => addNewTeamMember()}>Tambah Peserta</button> */}
+    //         </div>
+
+    //         <SearchBar searchText={searchText} styleClass="mr-4" setSearchText={setSearchText}/>
+    //         {filterParam != "" && <button onClick={() => removeAppliedFilter()} className="btn btn-xs mr-2 btn-active btn-ghost normal-case">{filterParam}<XMarkIcon className="w-4 ml-2"/></button>}
+    //         <div className="dropdown dropdown-bottom dropdown-end">
+    //             <label tabIndex={0} className="btn btn-sm btn-outline"><FunnelIcon className="w-5 mr-2"/>Filter</label>
+    //             <ul tabIndex={0} className="dropdown-content menu p-2 text-sm shadow bg-base-100 rounded-box w-52">
+    //                 {
+    //                     participantFilters.map((l, k) => {
+    //                         return  <li key={k}><a onClick={() => showFiltersAndApply(l)}>{l}</a></li>
+    //                     })
+    //                 }
+    //                 <div className="divider mt-0 mb-0"></div>
+    //                 <li><a onClick={() => removeAppliedFilter()}>Remove Filter</a></li>
+    //             </ul>
+    //         </div>
+    //     {/* </div> */}
+    //     </div>
+    // )
 }
 
 
@@ -52,13 +161,13 @@ function Participants(){
     }
 
     const getParticipantData = async () => {
-        let { data: participants, error } = await supabase
+        let { data: Participants, error } = await supabase
             .from('participants')
             .select('*, applicants(*)')
             .is('deleted_at', null)
 
         if(!error){
-            setParticipants(participants)
+            setParticipants(Participants)
         }
     }
 
@@ -72,6 +181,23 @@ function Participants(){
         // if(!error){
         //     setParticipants(Participants)
         // }
+    }
+
+    const removeFilter = () => {
+        setParticipants(Participants)
+    }
+
+    const applyFilter = (params) => {
+        let value =''
+        params=='Laki-Laki'?value='male':value='female'
+        let filteredTransactions = Participants.filter((t) => {return t.applicants.gender == value })
+        setParticipants(filteredTransactions)
+    }
+
+    // Search according to name
+    const applySearch = (value) => {
+        let filteredTransactions = Participants.filter((t) => {return t.regist_number.toLowerCase().includes(value.toLowerCase()) ||  t.phone_number.toLowerCase().includes(value.toLowerCase())})
+        setParticipants(filteredTransactions)
     }
 
     const formatDateNew = (date) => {
@@ -96,7 +222,7 @@ function Participants(){
     return(
         <>
             
-            <TitleCard title="Peserta" topMargin="mt-2" TopSideButtons={<TopSideButtons />}>
+            <TitleCard title="Peserta" topMargin="mt-2" TopSideButtons={<TopSideButtons participants={Participants} applySearch={applySearch} applyFilter={applyFilter} removeFilter={removeFilter}/>}>
 
                 {/* Team Member list in table format loaded constant */}
             <div className="overflow-x-auto w-full">
@@ -104,8 +230,8 @@ function Participants(){
                     <thead>
                     <tr>
                         <th>Nama</th>
-                        <th>No Registrasi</th>
-                        <th>No WhatsApp</th>
+                        <th>No. Registrasi</th>
+                        <th>No. WhatsApp</th>
                         <th>Tempat Lahir</th>
                         <th>Status Seleksi</th>
                         <th>Pembayaran</th>
@@ -131,16 +257,16 @@ function Participants(){
                                             </div>
                                         </div>
                                     </td> */}
-                                    <td>{l.applicants.full_name}</td>
-                                    <td>{l.applicants.regist_number}</td>
+                                    <td >{l.applicants.full_name}</td>
+                                    <td className="font-bold ">{l.applicants.regist_number}</td>
                                     <td>{l.applicants.phone_number}</td>
                                     <td>{l.pob}</td>
-                                    <td className={`rounded-2xl w-24 py-1 px-2 text-gray-100 badge ${l.is_complete==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_complete==='true'?'Lulus':'Tidak Lulus'}</td>
-                                    <td >{l.is_settlement==='true'?'Sudah Bayar':'Belum Bayar'}</td>
+                                    <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_complete==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_complete==='true'?'Lulus':'Tidak Lulus'}</div></td>
+                                    <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_settlement==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_settlement==='true'?'Sudah Bayar':'Belum Bayar'}</div></td>
                                     {/* className={`rounded-2xl w-32 py-1 px-2 text-gray-100 badge ${l.is_settlement==true? 'bg-orange-400': 'bg-green-400'}`} */}
-                                    <td >{l.is_draft==='true'?'Lengkap':'Belum Lengkap'}</td>
+                                    <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_draft==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_draft==='true'?'Lengkap':'Belum Lengkap'}</div></td>
                                     {/* className={`rounded-2xl w-24 py-1 px-2 text-gray-100 badge ${l.is_draft==true? 'bg-blue-400': 'bg-gray-400'}`} */}
-                                    <td >{l.is_uniform_sizing==='true'?'Selesai':'Belum Lengkap'}</td>
+                                    <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_uniform_sizing==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_uniform_sizing==='true'?'Selesai':'Belum Lengkap'}</div></td>
                                     {/* className={`rounded-2xl w-24 py-1 px-2 text-gray-100 badge ${l.is_uniform_sizing==true? 'bg-yellow-400': 'bg-cyan-400'}`} */}
                                     {/* <td>{getEducationUnit(l.Participant_name)}</td>
                                     <td>{l.address}</td> */}

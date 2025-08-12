@@ -22,6 +22,7 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
     const [filterParam, setFilterParam] = useState("")
     const [searchText, setSearchText] = useState("")
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const locationFilters = ["Paris", "London", "Canada", "Peru", "Tokyo"]
     
 
@@ -46,6 +47,8 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
     
 
     const addNewExam = () => {
+
+        navigate("/ad/exams/create")
         
         // dispatch(showNotification({message : "Add New Member clicked", status : 1}))
     }
@@ -201,7 +204,8 @@ function Exams(){
                                             </div> */}
                                         </div>
                                     </td>
-                                    <td><div className="font-bold">{l.exam_tests.name}</div></td>
+                                    <td><div className="font-bold dark:text-gray-200">{l.exam_tests.name}</div></td>
+                                    {/* text-gray-500 */}
                                     <td><div className={`badge-primary ${l.exam_tests.scheme=='Online'? 'bg-green-400' : 'bg-orange-400'}  font-semibold text-gray-50 rounded-2xl w-16 py-1 px-2`}>{l.exam_tests.scheme}</div> </td>
                                     {/* <td>{l.test_schedule}</td> */}
                                     <td>Ujian Seleksi Jenjang SDIT</td>

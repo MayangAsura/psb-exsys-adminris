@@ -31,6 +31,13 @@ function ErrorModal({ extraObject, closeModal}){
         // dispatch(deleteLead({index}))
             // dispatch(showNotification({message : "Lead Deleted!", status : 1}))
         }
+        if(type === CONFIRMATION_MODAL_CLOSE_TYPES.LOGIN_ERROR){
+            console.log('ind',index)
+            navigate('/login')
+            // positive response, call api or dispatch redux function
+        // dispatch(deleteLead({index}))
+            // dispatch(showNotification({message : "Lead Deleted!", status : 1}))
+        }
         closeModal()
     }
 
@@ -42,7 +49,7 @@ function ErrorModal({ extraObject, closeModal}){
 
         <div className="modal-action mt-3">
                 
-                <button className="btn btn-outline   " onClick={() => closeModal()}>OK</button>
+                <button className="btn btn-outline   " onClick={() => proceedWithYes()}>OK</button>
 
                 {/* <button className="btn btn-primary w-36" onClick={() => proceedWithYes()}>Yes</button>  */}
 

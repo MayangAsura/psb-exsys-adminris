@@ -104,30 +104,37 @@ const Login = () =>{
 
         const token = localStorage.getItem("token-user")
         console.log(token)
-        // const { data: applicant, error_app } = await supabase
-        //   .from('applicants')
-        //   .select('id, full_name')
-        //   .eq('refresh_token', token)
-        //   // .single()
-        //   // , participants(participant_father_data(father_name), participant_mother_data(mother_name)), regist_number, phone_number 
-        //   console.log('applicant', applicant)
-      // if(applicant){
-
-          // const { data, error } = await supabase
-          //   .from('exam_profiles')
-          //   .insert({ appl_id:applicant.id, full_name: applicant.full_name, father_name: applicant.participants[0].participant_father_data[0].father_name, mother_name: applicant.participants[0].participant_mother_data[0].mother_name, ip: ip, last_login: new Date().toISOString(), regist_number: applicant.regist_number, phone_number: applicant.phone_number, refresh_token: response.data.token_refresh })
-          //   // .eq('appl_id', applicant.id)
-          //   .select()
-          //   console.log(data)
-            // if(!error){
+        if(token){
+          const { data: applicant, error_app } = await supabase
+          .from('applicants')
+          .select('id, full_name')
+          .eq('refresh_token', token)
+          // .single()
+          // , participants(participant_father_data(father_name), participant_mother_data(mother_name)), regist_number, phone_number 
+          console.log('applicant', applicant)
+      
+          if(applicant){
+          
+            const { data, error } = await supabase
+            .from('exam_profiles')
+            .update({refresh_token: token, updated_at: new Date().toISOString()})
+            // .insert({ appl_id:applicant.id, full_name: applicant.full_name, father_name: applicant.participants[0].participant_father_data[0].father_name, mother_name: applicant.participants[0].participant_mother_data[0].mother_name, ip: ip, last_login: new Date().toISOString(), regist_number: applicant.regist_number, phone_number: applicant.phone_number, refresh_token: response.data.token_refresh })
+            .eq('appl_id', applicant[0].id)
+            .select()
+            console.log(data)
+            if(!error){
               openSuccessModal()
-              // navigate('/landing')
-            // }else{
-            //   openErrorModal()
-            // }
+              navigate('/landing')
+            }else{
+              openErrorModal()
+            }
+          
               
+        }
+          
               
-        // }
+        }
+        
 
         // if(!error){
         //       openSuccessModal()

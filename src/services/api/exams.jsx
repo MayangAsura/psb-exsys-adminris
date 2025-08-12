@@ -140,7 +140,9 @@ export const addParticipants = async (props) => {
                             .like('exam_tests.test_code', props.participants.KODE_UJIAN)
                             // .eq('exam_profiles.regist_number')
     // if(imp.includes(props.))
+    console.log(currParts, error)
     if(currParts.length > 0){
+
         console.log('in current data')
         console.log(currParts)
         curr.push({parts: props.participants.NO_REGISTRASI})

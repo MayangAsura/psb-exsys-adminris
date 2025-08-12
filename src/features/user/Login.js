@@ -4,13 +4,13 @@ import LandingIntro from './LandingIntro'
 import ErrorText from  '../../components/Typography/ErrorText'
 import InputText from '../../components/Input/InputText'
 
+const INITIAL_LOGIN_OBJ = {
+    password : "",
+    username : "",
+    role : "admin"
+}
 function Login(){
 
-    const INITIAL_LOGIN_OBJ = {
-        password : "",
-        username : "",
-        role : "admin"
-    }
 
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
@@ -19,9 +19,9 @@ function Login(){
     const submitForm = async (e) =>{
         e.preventDefault()
         setErrorMessage("")
-
-        if(loginObj.username.trim() === "")return setErrorMessage("Email Id is required! (use any value)")
-        if(loginObj.password.trim() === "")return setErrorMessage("Password is required! (use any value)")
+        console.log(loginObj)
+        if(loginObj.username.trim() === "")return setErrorMessage("Email tidak boleh kosong.")
+        if(loginObj.password.trim() === "")return setErrorMessage("Password tidak boleh kosong.")
         else{
             setLoading(true)
             // Call API to check user credentials and save token in localstorage
@@ -158,8 +158,9 @@ function Login(){
     }
 
     const updateFormValue = ({updateType, value}) => {
-        setErrorMessage("")
-        setLoginObj({...loginObj, [updateType] : value})
+        setLoginObj(prev => ({...prev, [updateType] : value}))
+        // setErrorMessage("")
+        // console.log(loginObj)
     }
 
     return(
@@ -175,9 +176,9 @@ function Login(){
 
                         <div className="mb-4">
 
-                            <InputText type="username" defaultValue={loginObj.username} updateType="username" containerStyle="mt-4" labelTitle="Username" updateFormValue={updateFormValue}/>
+                            <InputText type="text" updateType="username" containerStyle="mt-4" labelTitle="Username" updateFormValue={updateFormValue}/>
 
-                            <InputText defaultValue={loginObj.password} type="password" updateType="password" containerStyle="mt-4" labelTitle="Password" updateFormValue={updateFormValue}/>
+                            <InputText type="password" updateType="password" containerStyle="mt-4" labelTitle="Password" updateFormValue={updateFormValue}/>
 
                         </div>
 

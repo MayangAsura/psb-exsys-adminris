@@ -5,7 +5,7 @@ import { DefaultContext } from "react-icons/lib"
 // import { useForm } from "react-hook-form"
 
 
-function InputText({labelTitle, labelStyle, error, register, registerOptions, required, nameInput, type, pattern, checked, containerStyle, inputStyle, defaultValue, placeholder, updateFormValue, updateType, error_msg}){
+function InputText({labelTitle, labelStyle, error, register, registerName, registerOptions, required, nameInput, type, pattern, checked, containerStyle, inputStyle, defaultValue, placeholder, updateFormValue, updateType, errors, error_msg}){
 
     const [value, setValue] = useState(defaultValue)
     const [registerOptions_, setRegisterOptions] = useState(registerOptions)
@@ -16,7 +16,7 @@ useEffect(()=>{
     if(registerOptions)
         setRegisterOptions(registerOptions)
     console.log('registerOptions', registerOptions)
-    console.log(error)
+    console.log('er', errors)
     console.log(defaultValue)
     if(defaultValue)
         setValue(defaultValue)
@@ -42,6 +42,9 @@ useEffect(()=>{
     const updateInputValue = (val) => {
         setValue(val)
         console.log(updateType, nameInput, value)
+        if(type=="number"){
+            setValue(parseInt(val))
+        }
         updateFormValue({updateType, nameInput, value})
     }
 
@@ -51,11 +54,17 @@ useEffect(()=>{
                 <span className={"label-text text-base-content " + labelStyle}>{labelTitle}</span>
             </label>
             {/* {...register(nameInput, {required})}  */}
-            <input name={nameInput} type={type || "text"} value={value} pattern={pattern} checked placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)} required  className={`input input-bordered w-full ${inputStyle}` }  />
-            <span className="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block" required>
-                                            {/* {error[nameInput] && error[nameInput].message} */}
-                                        </span>
+            <input name={nameInput} type={type || "text"} value={value} {...register(registerName)} pattern={pattern} checked placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)} required className={`input input-bordered w-full ${inputStyle}` }  />
+                {errors && 
+                    <span className="mt-2 text-sm text-red-500 ">
+                        {error_msg}
+                                                    {/* {error[nameInput] && error[nameInput].message} */}
+                                                    </span>
+                                                    // hidden peer-[&:not(:placeholder-shown):not(:focus):invalid]:block
+                
+                }
         </div>
+
     )
 }
 

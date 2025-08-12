@@ -241,7 +241,7 @@ const MCExam = () =>{
     
     if(!error){
       console.log('pro', exam_profiles)
-      setApplId(exam_profiles.appl_id)
+      setApplId(exam_profiles[0]?.appl_id)
     }else{
       
       openErrorModal("Token Tidak Valid")
@@ -469,17 +469,21 @@ const MCExam = () =>{
       }
   }
 
-  const setValue = (name, e)=>{
-    setValues((value) => 
-      value.filter((obj) =>(values.push({exam_test_content_id: name, answer: e}))))
+  const updateValue = (name, e)=>{
+
+    setValues(prev => [...prev, {exam_test_content_id: name, answer: e}])
+    console.log(values)
+    // setValues((value) => 
+    //   value.filter((obj) =>(values.push({exam_test_content_id: name, answer: e}))))
     // [...values{...values,}]
   }
   
   const startExam = (date) => {
     setStartedAt(date)
   }
-  const handleSubmit = async () => {
-    // e.preventDefault()
+  const handleSubmit = async (e) => {
+    // console.log('e', e)
+    e.preventDefault();
     console.log("masuk")
     console.log(values)
     quedata.forEach(element => {
@@ -645,15 +649,16 @@ return (
             <div className="flex flex-col gap-1">
                       <p className="font-bold text-gray-900 text-4xl flex justify-center text-center items-center">{exam.name?? "Ujian TKD"}</p>
                       <p className="text-gray-800 text-md mt-3">{getFormatDate(exam.started_at)}</p>
-                      <p className="text-gray-800 text-md">Jumlah Soal : {quedata.length} Soal</p>
-                      <p className="text-gray-800 text-md">Durasi : {duration} detik</p>
+                      {/* <p className="text-gray-800 text-md">Jumlah Soal : {quedata.length} Soal</p>
+                      <p className="text-gray-800 text-md">Durasi : {duration} detik</p> */}
                     </div>
                     </div>
                     </section>
               <section className="bg-gray-300 rounded-3xl my-3 w-screen">
                   <div className="px-0 py-20 mx-auto max-w-7xl sm:px-4">
                       <div>
-                        <form onSubmit={handleSubmit}>
+                        {/* onSubmit={handleSubmit} */}
+                        <form onSubmit={(e) =>handleSubmit(e)}>
                           
                                 <input type="hidden" name="tipe" value="SOAL"/>
                                 <div className="form-group ">
@@ -666,13 +671,13 @@ return (
                                       {/* {quedata}{quedata[0].num} */}
                                       {/* {quedata.map((e,key) => ( */}
                                         {/* <> */}
-                                        {quedata.forEach((el, index) => (
+                                        {quedata.map((el, index) => (
                                       // return (
                                         <>
                                         {/* {el.qid != e[key+1].qid ?( */}
                                           {/* <> */}
                                           <tr>
-                                        {/* <td style={{ width: '1%'}} className="items-start text-gray-800 text-lg">{el.num? el.num : index +1}. </td> */}
+                                        <td style={{ width: '1%'}} className="items-start text-gray-800 text-lg">{el.num? el.num : index +1}. </td>
                                         <td className="text-gray-800 text-lg -ml-2 text-start" style={{ width:'99%' }}>{el.que} </td>
                                         {/* <?= $row['nomor'] ? $row['nomor'] : $i++ ?>. */}
                                       </tr>
@@ -687,7 +692,7 @@ return (
                                               {/* "optizon[<?= $key ?>][answer]"
                                               "<?= $selection['key'] ?>"
                                               option[${e.order? e.order : o.id}][answer] */}
-                                              <input className="form-input radio-md text-gray-800 rounded-lg " name={el.qid} placeholder={o.order? o.order : '' } type="radio" value={o.option?o.option:o.id} onChange={(e) => setValue(el.qid, e.target.value)}/> 
+                                              <input className="form-input radio-md text-gray-800 rounded-lg " name={el.qid} placeholder={o.order? o.order : '' } type="radio" value={o.option?o.option:o.id} onChange={(e) => updateValue(el.qid, e.target.value)}/> 
                                               {/* name={`option[${el.or? el.or : el.qid}][answer]`}  */}
                                               <span className="text-gray-800 ">{o.order? o.order : "" } {o.option}</span>
                                                <br />
@@ -713,7 +718,7 @@ return (
                                 </div>
                                 <div className="flex justify-center items-center">
 
-                                <button type="submit" name="submit" id="mySubmit" className="btn block w-full bg-green-700 border-none " >Kirim Jawaban</button>
+                                <button type="submit" className="btn block w-full bg-green-700 border-none ">Kirim Jawaban</button>
                                 </div>
                         </form>
                               </div>

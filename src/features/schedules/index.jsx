@@ -68,6 +68,7 @@ function Schedules(){
 
     const [members, setMembers] = useState(TEAM_MEMBERS)
     const [schedules, setSchedules] = useState([])
+    const [numPresences, setNumPresences] = useState([])
     const {newNotificationStatus } = useSelector((state) => state.header)
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -83,7 +84,8 @@ function Schedules(){
     useEffect(() => {
         getSchedulesData()
         console.log(schedules)
-    },[])
+        getNumPresences(schedules)
+    },[schedules])
 
     const getSchedulesData = async () => {
         let { data: schedules, error } = await supabase
@@ -94,6 +96,28 @@ function Schedules(){
         if(!error){
             setSchedules(schedules)
         }
+    }
+
+    const getNumPresences = async (schedules) => {
+        const counts = {}
+        for(const item of schedules){
+
+            let { data: presences, error } = await supabase
+                .from('exam_presences')
+                .select('*')
+                .eq('schedule_id', item.id)
+                .is('deleted_at', null)
+    
+            if(!error){
+                counts[item.id] = presences.length || 0
+                // setNumPresences(cou)
+                // console.log(presences.length)
+                // const numPresences_ = parseInt(presences.length)
+                // return numPresences_
+            }
+        }
+        setNumPresences(counts)
+
     }
 
     const deleteCurrentSchedule = (index) => {
@@ -146,7 +170,8 @@ function Schedules(){
                             schedules.map((l, k) => {
                                 return(
                                     <tr key={k}>
-                                    <td className="font-bold text-gray-500 dark:text-gray-200"> {l.name}</td>    
+                                    <td className="font-bold dark:text-gray-200"> {l.name}</td>    
+                                    {/* text-gray-500 dark:text-gray-200 */}
                                     {/* <td>
                                         <div className="flex items-center space-x-3">
                                             <div className="avatar">
@@ -161,8 +186,9 @@ function Schedules(){
                                     </td> */}
                                     <td>{formatDateNew(l.started_at)}</td>
                                     <td>{formatDateNew(l.ended_at)}</td>
+                                    {/* getNumPresences */}
                                     <td>{l.max_participants}</td>
-                                    <td>{l.max_participants}</td>
+                                    <td>{numPresences[l.id] || 0}</td>
                                     {/* <td>{getRoleComponent(l.role)}</td> */}
                                     <td>{formatDateNew(l.updated_at)}</td>
                                     <td>

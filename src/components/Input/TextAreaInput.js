@@ -1,10 +1,15 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 function TextAreaInput({labelTitle, labelStyle, required, nameInput, type, containerStyle, defaultValue, placeholder, updateFormValue, updateType}){
 
-    const [value, setValue] = useState(defaultValue)
+    const [value, setValue] = useState("")
 
+    useEffect(() => {
+        if(defaultValue){
+            setValue(defaultValue)
+        }
+    }, [defaultValue])
     const updateInputValue = (val) => {
         setValue(val)
         updateFormValue({updateType, nameInput,  value})

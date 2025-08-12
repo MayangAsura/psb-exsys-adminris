@@ -7,7 +7,7 @@ import InformationCircleIcon from '@heroicons/react/24/outline/InformationCircle
 
 function SelectBox(props){
     
-    const {labelTitle, labelDescription, nameInput, defaultValue, containerStyle, placeholder, labelStyle, options, updateType, updateFormValue} = props
+    const {labelTitle, labelDescription, nameInput, defaultValue, register, containerStyle, placeholder, labelStyle, options, updateType, updateFormValue, errors, error_msg} = props
 
     const [value, setValue] = useState(defaultValue || "")
     console.log('op', options)
@@ -16,7 +16,7 @@ function SelectBox(props){
 
     const updateValue = (newValue) =>{
         setValue(newValue)
-        console.log('newValue', newValue)
+        console.log('newValue', newValue, updateType)
         updateFormValue({updateType, nameInput, value})
     }
     
@@ -37,7 +37,9 @@ function SelectBox(props){
                 {
                     options.map((o) => 
                         (
-                    <option value={o.value || o.school_id  || o.id} key={o.value || o.school_id} >{o.name || o.school_name }</option>)
+                            
+                            // selected={o.value || o.school_id==value} 
+                    <option value={o.value || o.school_id  || o.id} key={o.value || o.school_id} >{o.label || o.school_name }</option>)
                     
                         // return 
                     )
@@ -45,6 +47,14 @@ function SelectBox(props){
                     // })
                 }
             </select>
+            {errors && 
+                <span className="mt-2 text-sm text-red-500 ">
+                    {error_msg}
+                                                {/* {error[nameInput] && error[nameInput].message} */}
+                                                </span>
+                                                    // hidden peer-[&:not(:placeholder-shown):not(:focus):invalid]:block
+                
+            }
         </div>
     )
 }

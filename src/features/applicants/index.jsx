@@ -135,7 +135,7 @@ function Applicants(){
                                     <td>{l.phone_number}</td>
                                     <td>{l.gender}</td>
                                     <td>{l.email}</td>
-                                    <td>{l.status}</td>
+                                    <td><div className={`flex justify-center items-center badge ${l.status=='active'? 'bg-green-400' : 'bg-orange-400'}  font-semibold text-gray-50 rounded-2xl w-16 py-1 px-2`}>{l.status} </div></td>
                                     {/* <td>{getEducationUnit(l.Applicant_name)}</td>
                                     <td>{l.address}</td> */}
                                     <td>{formatDateNew(l.updated_at) }</td>

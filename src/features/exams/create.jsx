@@ -9,6 +9,8 @@ import SelectBox from "../../components/Input/SelectBox"
 import TextAreaInput from '../../components/Input/TextAreaInput'
 import ToogleInput from '../../components/Input/ToogleInput'
 import InputDateTime from "../../components/Input/InputDateTime"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
 import supabase from "../../services/database-server"
@@ -24,11 +26,38 @@ import InputDateTimePicker from "../../components/Input/InputDateTimePicker"
 
 import axios from "axios"
 import schools from "../../services/api/schools"
+import { root } from "postcss"
 // import supabase from "../services/database"
 
 // type ValuePiece = Date | null
 
 // type Value = ValuePiece | [ValuePiece, ValuePiece]
+export const scheduleSchema = z.object({
+    name: z.string().min(1, "Nama wajib diisi"),        
+    subtitle: z.string().min(1, "Deskripsi wajib diisi"),        
+    icon: z.string().min(1, "Ikon wajib diupload"),        
+    // started_at: z.string().min(1, "Waktu Mulai wajid diisi"),
+    ended_at: z.string().min(1, "Waktu Selesai wajid diisi"),
+    scheme: z.string().min(1, "Deskripsi wajib diisi"),        
+    question_type: z.string().min(1, "Deskripsi wajib diisi"),        
+    location: z.string().min(1, "Deskripsi wajib diisi"),        
+    room: z.string().min(1, "Deskripsi wajib diisi"),
+    schedule_id: z.string().min(1, "Jenjang wajib diisi")
+})
+
+export const scheduleDefaultValues = {
+  name: "",
+  subtitle: "",
+//   icon: "",
+  scheme: "",
+  question_type: "",
+  location: "",
+  room: "",
+  started_at: "",
+  ended_at: "",
+  schedule_id: ""  
+};
+
 
 function ExamCreate(){
 
@@ -38,13 +67,20 @@ function ExamCreate(){
     const [exam, setExam] = useState({name: "", subtitle: "", icon: "", started_at: "", ended_at: "", scheme: "", question_type: "", location: "", room: "", schedule_id: "" })
     // exam_category_id: "",
     // const [schedule, setSchedule] = useState({name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: "" })
-    const [schemeOptions, setSchemeOptions] = useState([{name: "Online", value: "online"},{name: "Offline", value: "offline"}])
-    const [typeOptions, setTypeOptions] = useState([{name: "Pilihan Ganda", value: "MC"},{name: "Benar Salah", value: "BS"},{name: "Essay Singkat", value: "ES"},{name: "Essay", value: "E"}])
+    const [schemeOptions, setSchemeOptions] = useState([{label: "Online", value: "online"},{label: "Offline", value: "offline"}])
+    const [typeOptions, setTypeOptions] = useState([{label: "Pilihan Ganda", value: "MC"},{label: "Benar Salah", value: "BS"},{label: "Essay Singkat", value: "ES"},{label: "Essay", value: "E"}])
     const [schedulesOptions, setScheduleOptions] = useState([])
     const [selectedOption, setSelectedOption] = useState(null);
     const checked = false
     const navigate = useNavigate()
-    const {register, handleSubmit} = useForm()
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+      } = useForm({
+        resolver: zodResolver(scheduleSchema),
+        defaultValues: scheduleDefaultValues,
+      });
     // const {id} = useParams()
 
 
@@ -134,8 +170,8 @@ function ExamCreate(){
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         
-                    <InputText labelTitle="Nama" nameInput="name" updateFormValue={updateFormValue}/>
-                    <InputText labelTitle="Deskripsi" nameInput="subtitle" updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Nama" register={register} registerName="name" nameInput="name" updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Deskripsi" register={register} registerName="subtitle" nameInput="subtitle" updateFormValue={updateFormValue}/>
                     {/* <InputText labelTitle="Skema Ujian" defaultValue={exam.scheme} updateFormValue={updateFormValue}/> */}
                     {/* <SelectBox labelTitle="Jadwal" defaultValue="" updateFormValue={updateFormValue}/> */}
                     <SelectBox
@@ -149,7 +185,7 @@ function ExamCreate(){
                         // defaultValue="TODAY"
                         updateFormValue={updateFormValue}
                     />
-                    <InputTextRadio labelTitle="Tipe" nameInput="question_type" type="radio" options={typeOptions} defaultValue={'MC'} updateFormValue={updateFormValue}/>
+                    <InputTextRadio labelTitle="Tipe" register={register} registerName="question_type" nameInput="question_type" type="radio" options={typeOptions} defaultValue={'MC'} updateFormValue={updateFormValue}/>
                     {/* <SelectBox 
                     options={schedulesOptions}
                     labelTitle="Period"
@@ -159,22 +195,23 @@ function ExamCreate(){
                     // defaultValue="TODAY"
                     updateFormValue={updateSelectBoxValue}
                 /> */}
-                    <InputDateTimePicker labelTitle="Waktu Mulai" nameInput="started_at" updateFormValue={updateFormValue}/>
-                    <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" updateFormValue={updateFormValue}/>
+                    <InputDateTimePicker labelTitle="Waktu Mulai" register={register} registerName="started_at" nameInput="started_at" updateFormValue={updateFormValue}/>
+                    <InputDateTimePicker labelTitle="Waktu Selesai" register={register} registerName="ended_at" nameInput="ended_at" updateFormValue={updateFormValue}/>
                     
                     {/* <InputText labelTitle="Waktu Mulai" type="date" defaultValue="alex@dashwind.com" updateFormValue={updateFormValue}/> */}
                     {/* <InputText labelTitle="Waktu Selesai" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/> */}
-                    <InputText labelTitle="Lokasi" nameInput="location" updateFormValue={updateFormValue}/>
-                    <InputText labelTitle="Ruangan" nameInput="room" updateFormValue={updateFormValue}/>
-                    <ToogleInput updateType="randomQuestion" nameInput="is_random_question" labelTitle="Acak Soal" defaultValue={true} updateFormValue={updateFormValue}/>
-                    <ToogleInput updateType="randomAnswer" nameInput="is_random_answer" labelTitle="Acak Jawaban" defaultValue={true} updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Lokasi" register={register} registerName="location" nameInput="location" updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Ruangan" register={register} registerName="room" nameInput="room" updateFormValue={updateFormValue}/>
+                    <ToogleInput updateType="randomQuestion" register={register} registerName="is_random_question" nameInput="is_random_question" labelTitle="Acak Soal" defaultValue={true} updateFormValue={updateFormValue}/>
+                    <ToogleInput updateType="randomAnswer" register={register} registerName="is_random_answer" nameInput="is_random_answer" labelTitle="Acak Jawaban" defaultValue={true} updateFormValue={updateFormValue}/>
                     <SelectBox
                         nameInput="schedule_id"
                         options={schedulesOptions}
                         labelTitle="Jadwal Ujian"
                         placeholder="Pilih Jadwal"
                         containerStyle="w-72"
-                        
+                        register={register}
+                        registerName="schedule_id"
                         // labelStyle="hidden"
                         // defaultValue="TODAY"
                         updateFormValue={updateFormValue}

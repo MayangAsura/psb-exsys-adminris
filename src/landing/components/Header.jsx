@@ -15,7 +15,7 @@ import ModalLayout from '../../containers/ModalLayout'
 import { useDispatch } from 'react-redux'
 
 
-function Header({appl_id}){
+function Header({id}){
 
     // const dispatch = useDispatch()
     // const {noOfNotifications, pageTitle} = useSelector(state => state.header)
@@ -36,12 +36,13 @@ function Header({appl_id}){
             }
         }
         // pathname
-        if(!appl_id && pathname!=='/login'){
-            openAuthValidationModal()
+        if(!id && pathname!=='/login'){
+            // openAuthValidationModal()
         }
+        console.log('in header id', id)
 
         // 👆 false parameter is required for react project
-      }, [appl_id])
+      }, [id])
 
 
     // Opening right sidebar for notification
@@ -117,7 +118,7 @@ function Header({appl_id}){
 
 
                 {/* Profile icon, opening menu on click */}
-                {appl_id? (
+                {id? (
                     <div className="dropdown dropdown-end ml-4">
                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">

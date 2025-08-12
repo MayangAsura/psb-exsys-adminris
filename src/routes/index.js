@@ -2,6 +2,8 @@
 
 import { lazy } from 'react'
 import Accounts from '../features/accounts'
+// import AdmissionSchools from '../features/tas/schools'
+import AdmissionReport from '../features/admissions/reports'
 // import AdmissionCreate from '../features/admissions/create'
 // import MCExam from '../landing/components/sections/Exams/MCExam'
 // import ExamQuestions from '../features/exams/questions/questions'
@@ -31,8 +33,15 @@ const Schools = lazy(() => import('../pages/protected/Schools'))
 const Applicants = lazy(() => import('../pages/protected/Applicants'))
 const Participants = lazy(() => import('../pages/protected/Participants'))
 const Admissions = lazy(() => import('../pages/protected/Admissions'))
+const GenAdmissions = lazy(() => import('../pages/protected/GenAdmissions'))
 const AdmissionCreate = lazy(() => import('../pages/protected/AdmissionCreate'))
 const AdmissionEdit = lazy(() => import('../pages/protected/AdmissionEdit'))
+const AdmissionDetail = lazy(() => import('../pages/protected/AdmissionDetail'))
+const AdmissionSchools = lazy(() => import('../pages/protected/AdmissionSchools'))
+const AdmissionReports = lazy(() => import('../pages/protected/AdmissionReports'))
+const AdmissionSchDetail = lazy(() => import('../pages/protected/AdmissionSchDetail'))
+const AdmissionSchParticipants = lazy(() => import('../pages/protected/AdmissionSchParticipants'))
+const AdmissionSchReports = lazy(() => import('../pages/protected/AdmissionSchReports'))
 const Account = lazy(() => import('../pages/protected/Account'))
 
 const Landing = lazy(() => import('../landing/Landing'))
@@ -153,12 +162,44 @@ const routes = [
     component: Admissions, // view rendered
   },
   {
-    path: '/admissions/create', // the url
+    path: '/academic-years', // the url
+    component: Admissions, // view rendered
+  },
+  {
+    path: '/academic-years/create', // the url
     component: AdmissionCreate, // view rendered
   },
   {
-    path: '/admissions/edit', // the url
+    path: '/academic-years/edit/:academic_years_id', // the url
     component: AdmissionEdit, // view rendered
+  },
+  {
+    path: '/academic-years/detail/:academic_years_id', // the url
+    component: AdmissionDetail, // view rendered
+  },
+  {
+    path: '/academic-years/:academic_years_id/schools', // the url
+    component: AdmissionSchools, // view rendered
+  },
+  {
+    path: '/academic-years/:academic_years_id/reports', // the url
+    component: AdmissionReports, // view rendered
+  },
+  {
+    path: '/academic-years/:academic_years_id/schools/detail/:school_id', // the url
+    component: AdmissionSchDetail, // view rendered
+  },
+  {
+    path: '/academic-years/:academic_years_id/schools/:school_id/participants', // the url
+    component: AdmissionSchParticipants, // view rendered
+  },
+  {
+    path: '/academic-years/:academic_years_id/schools/:school_id/reports', // the url
+    component: AdmissionSchReports, // view rendered
+  },
+  {
+    path: '/account', // the url
+    component: Account, // view rendered
   },
   {
     path: '/welcome', // the url

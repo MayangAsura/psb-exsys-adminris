@@ -26,7 +26,7 @@ function InputTextRadio({labelTitle, labelStyle, register, required, nameInput, 
                 <div className="flex flex-auto justify-start items-center gap-1  mb-1">
                     {/* style={{ borderRadius: 35% }} */}
                     <input name={nameInput} type="radio" key={option.value} value={option.value} checked={option.value===value?true:false} placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)} className="input-radio radio radio-primary border-green-500 hover:border-green-800 focus-visible:bg-green-800 checked:bg-green-800 " />
-                     <span className="text-base-content"> {option.name}</span>
+                     <span className="text-base-content"> {option.label}</span>
                 </div>
             ))}
         </div>

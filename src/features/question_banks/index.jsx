@@ -1,5 +1,5 @@
 import moment from "moment"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import TitleCard from "../../components/Cards/TitleCard"
 import TrashIcon from '@heroicons/react/24/outline/TrashIcon'
@@ -8,6 +8,10 @@ import EyeIcon from '@heroicons/react/24/outline/EyeIcon'
 import { openModal } from "../common/modalSlice"
 import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../utils/globalConstantUtil'
 import { showNotification } from '../common/headerSlice'
+import { TasksTable } from "./components/tasks-table"
+import { DataTableSkeleton } from "../../components/DataTable/data-table-skeleton"
+
+
 
 import supabase from "../../services/database-server"
 
@@ -44,6 +48,16 @@ function QuestionBanks(){
     const [members, setMembers] = useState(TEAM_MEMBERS)
     const [questionBanks, setQuestionBanks] = useState([])
     const dispatch = useDispatch()
+
+    const promises = Promise.all([
+        // getTasks({
+        // ...search,
+        // filters: validFilters,
+        // }),
+        // getTaskStatusCounts(),
+        // getTaskPriorityCounts(),
+        // getEstimatedHoursRange(),
+    ]);
 
     const getRoleComponent = (role) => {
         if(role  === "Admin")return <div className="badge badge-secondary">{role}</div>
@@ -96,19 +110,34 @@ function QuestionBanks(){
             
             <TitleCard title="Bank Soal" topMargin="mt-2" TopSideButtons={<TopSideButtons />}>
 
-                {/* Team Member list in table format loaded constant */}
             <div className="overflow-x-auto w-full">
-                <table className="table w-full">
+                <React.Suspense
+          fallback={
+            <DataTableSkeleton
+              columnCount={7}
+              filterCount={2}
+              cellWidths={[
+                "10rem",
+                "30rem",
+                "10rem",
+                "10rem",
+                "6rem",
+                "6rem",
+                "6rem",
+              ]}
+              shrinkZero
+            />
+          }
+        >
+          <TasksTable promises={promises} />
+        </React.Suspense>
+                {/* <table className="table w-full">
                     <thead>
                     <tr>
-                        {/* <th>Icon</th> */}
                         <th>Pertanyaan</th>
                         <th>Tipe</th>
                         <th>Kode Soal</th>
                         <th>Skor</th>
-                        {/* <th>Tanggal Submit</th> */}
-                        {/* <th>Lokasi</th>
-                        <th>Update Terakhir</th> */}
                     </tr>
                     </thead>
                     <tbody>
@@ -125,14 +154,12 @@ function QuestionBanks(){
                                         <button className="btn btn-square btn-ghost" onClick={() => editCurrentQuestion(l.id)}><PencilIcon className="w-5"/></button>
                                         <button className="btn btn-square btn-ghost" onClick={() => deleteCurrentQuestion(l.id)}><TrashIcon className="w-5"/></button>
                                     </td>
-                                    {/* <td>{l.updated_at}</td> */}
-                                    {/* <td>{moment(l.date).format("D MMM")}</td> */}
                                     </tr>
                                 )
                             })
                         }
                     </tbody>
-                </table>
+                </table> */}
             </div>
             </TitleCard>
         </>

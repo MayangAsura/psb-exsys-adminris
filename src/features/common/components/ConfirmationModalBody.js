@@ -7,6 +7,7 @@ import { deleteExam, deleteParticipant  } from '../../../services/api/exams'
 import { deleteSchedule } from '../../../services/api/schedule'
 import { useNavigate } from 'react-router-dom'
 import { openModal } from '../modalSlice'
+import { deleteAdmission } from '../../../services/api/admissions'
 
 function ConfirmationModalBody({ extraObject, closeModal}){
 
@@ -95,6 +96,24 @@ function ConfirmationModalBody({ extraObject, closeModal}){
             }
 
             navigate('/ad/exams/'+oid+'/participants')
+            // dispatch(showNotification({message : "Lead Deleted!", status : 1}))
+        }
+        if(type === CONFIRMATION_MODAL_CLOSE_TYPES.ADMISSIONS_DELETE){
+            // positive response, call api or dispatch redux function
+            // dispatch(deleteLead({index}))
+            const response = await deleteAdmission({id: index})
+            // const {error, message, data} = await addExam({exam})
+            console.log('response', response)
+            // console.log('message', message)
+            if(!response || response==null || response.error){
+                dispatch(showNotification({message : "Gagal Menghapus data PSB", status : 0}))
+            }else if(!response.error) {
+                console.log("masuk")
+                dispatch(showNotification({message : response.message, status : 1}))
+                // navigate('/')
+            }else{
+                dispatch(showNotification({message : "Gagal Menghapus data PSB", status : 0}))
+            }
             // dispatch(showNotification({message : "Lead Deleted!", status : 1}))
         }
         closeModal()

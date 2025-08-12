@@ -81,8 +81,9 @@ const Profile = ({id, sid, ip}) => {
             .select('full_name, phone_number, regist_number, pob, home_address, father_name, mother_name)')
             .eq('appl_id', id)
 // participants(dob, home_address, participant_father_data(father_name), participant_mother_data(mother_name)
-        if(!error){
-          console.log(exam_profiles)
+        if(exam_profiles){
+          // console.log()
+          console.log('exam_profiles', id)
           setApplicant(exam_profiles[0])
           console.log('applicant', applicant)
         }
@@ -161,9 +162,17 @@ const Profile = ({id, sid, ip}) => {
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Nama Calon Santri</dt>
                                 <dd className="text-lg text-gray-900 dark:text-gray-600 font-semibold">{applicant.full_name? applicant.full_name : ''} </dd>
                             </div>
+                            <div className="flex flex-col pb-3">
+                                <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">No. Registrasi</dt>
+                                <dd className="text-lg text-gray-900 dark:text-gray-600 font-semibold">{applicant.regist_number? applicant.regist_number : ''} </dd>
+                            </div>
+                            <div className="flex flex-col py-3">
+                                <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">No. WA</dt>
+                                <dd className="text-lg ftext-gray-900 dark:text-gray-600 font-semibold">{applicant.phone_number? applicant.phone_number : ''}</dd>
+                            </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Lahir di</dt>
-                                <dd className="text-lg text-gray-900 dark:text-gray-600 font-semibold">{applicant.pod? applicant.pod : ''}</dd>
+                                <dd className="text-lg text-gray-900 dark:text-gray-600 font-semibold">{applicant.pob? applicant.pob : ''}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Alamat</dt>
@@ -172,10 +181,6 @@ const Profile = ({id, sid, ip}) => {
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Nama Ayah</dt>
                                 <dd className="text-lg text-gray-900 dark:text-gray-600 font-semibold">{applicant.father_name? applicant.father_name : ''}</dd>
-                            </div>
-                            <div className="flex flex-col py-3">
-                                <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">No. WA</dt>
-                                <dd className="text-lg ftext-gray-900 dark:text-gray-600 ont-semibold">{applicant.phone_number? applicant.phone_number : ''}</dd>
                             </div>
                             <div className="flex flex-col py-3">
                                 <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">IP Address</dt>

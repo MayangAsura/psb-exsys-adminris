@@ -26,6 +26,7 @@ import InputDateTimePicker from "../../components/Input/InputDateTimePicker"
 
 import axios from "axios"
 import schools from "../../services/api/schools"
+import { title } from "process"
 // import supabase from "../services/database"
 
 // type ValuePiece = Date | null
@@ -37,7 +38,7 @@ function AdmissionEdit(){
     const dispatch = useDispatch()
     const [value, onChange] = useState(new Date())
     
-    const [admission, setadmission] = useState({name: "", started_at: new Date(), ended_at: new Date(), max_participants: "", school_id: "" })
+    const [admission, setAdmission] = useState({title: "", started_at: new Date(), ended_at: new Date(), status: "", ta: "" })
     // admission_category_id: "",
     // const [admission, setadmission] = useState({name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: "" })
     const [schemeOptions, setSchemeOptions] = useState([{name: "Online", value: "online"},{name: "Offline", value: "offline"}])
@@ -55,7 +56,7 @@ function AdmissionEdit(){
         getSchoolsOptions()
         // getadmission()
         if(id)
-            getadmission(id)
+            getAdmission(id)
         // console.log(id)
         console.log(id)
     },[id])
@@ -64,18 +65,18 @@ function AdmissionEdit(){
     const saveAdmissions = async (e) => {
         e.preventDefault()
         console.log(admission)
-        const {school_id, ...newadmission} = admission
-        const response = await updateAdmission({newadmission, id})
+        // const {school_id, ...newadmission} = admission
+        const response = await updateAdmission({newAdmission: admission, id})
         // const {error, message, data} = await addadmission({admission})
         console.log('response', response)
         // console.log('message', message)
         if(!response || response==null || response.error){
-            dispatch(showNotification({message : "Gagal Memperbarui Jadwal", status : 0}))
+            dispatch(showNotification({message : "Gagal Memperbarui data PSB", status : 0}))
         }else if(!response.error) {
             console.log("masuk")
             dispatch(showNotification({message : response.message, status : 1}))
         }else{
-            dispatch(showNotification({message : "Gagal Memperbarui Jadwal", status : 0}))
+            dispatch(showNotification({message : "Gagal Memperbarui data PSB", status : 0}))
         }
     }
 
@@ -119,15 +120,15 @@ function AdmissionEdit(){
         // console.log(updateType)
     }
 
-    const getadmission = async (id) => {
-        let { data: exam_admission, error } = await supabase
-            .from('exam_admissions')
+    const getAdmission = async (id) => {
+        let { data: admissions, error } = await supabase
+            .from('admissions')
             .select('*')
             .eq('id', id)
-            console.log(exam_admission[0])
+            console.log(admissions[0])
             if(!error){
                 // name: "", subtitle: "", icon: "", started_at: "", ended_at: "", scheme: "", question_type: "", location: "", room: "" 
-                setadmission((prev) => ({...prev, name: exam_admission[0].name, subtitle: exam_admission[0].subtitle, icon: exam_admission[0].icon, started_at: exam_admission[0].started_at, ended_at: exam_admission[0].ended_at, scheme: exam_admission[0].scheme, question_type: exam_admission[0].question_type, location: exam_admission[0].location, room: exam_admission[0].room}))
+                setAdmission((prev) => ({...prev, title: admissions[0].title, started_at: admissions[0].started_at, ended_at: admissions[0].ended_at, status: admissions[0].status, ta: admissions[0].ta}))
                 console.log('admission', admission)
             }
     } 
@@ -193,29 +194,33 @@ function AdmissionEdit(){
 
     return(
         <>
-            <TitleCard title="Edit Jadwal" topMargin="mt-2">
+            <TitleCard title="Edit Seleksi" topMargin="mt-2">
                 <form onSubmit={saveAdmissions}>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+                        <InputText labelTitle="Nama" nameInput="title"  required={true} containerStyle="w-120" defaultValue={admission.title} updateFormValue={updateFormValue}/>
+
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         
-                        <InputText labelTitle="Nama" nameInput="name" required defaultValue={admission.name} updateFormValue={updateFormValue}/>
-                        <InputDateTimePicker labelTitle="Waktu Mulai" nameInput="started_at" defaultValue={admission.name}  updateFormValue={updateFormValue}/>
+                        <InputDateTimePicker labelTitle="Waktu Mulai"  required={true} nameInput="started_at" containerStyle="w-52" defaultValue={admission.started_at} updateFormValue={updateFormValue}/>
+                        <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" defaultValue={admission.ended_at} containerStyle="w-52" updateFormValue={updateFormValue}/>
                         {/* defaultValue={admission.started_at?admission.started_at:new Date()} */}
-                        <SelectBox 
-                            labelTitle="Jenjang"
+                        
+                        {/* <InputText labelTitle="Maksimal Peserta" type="number" name="max_participants" defaultValue={admission.description} updateFormValue={updateFormValue}/> */}
+                        {/* <SelectBox 
+                            labelTitle="Statu"
                             options={schoolOptions}
                             placeholder="Pilih Jenjang"
                             containerStyle="w-72"
                             nameInput="school_id"
-                            defaultValue={admission.school_id}
                             // labelStyle="hidden"
                             // defaultValue={schoolOptions.school_id}
                             updateFormValue={updateFormValue}
-                        />
-                        
-                        {/* <InputText labelTitle="Maksimal Peserta" type="number" name="max_participants" defaultValue={admission.description} updateFormValue={updateFormValue}/> */}
-                        <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" defaultValue={admission.ended_at} updateFormValue={updateFormValue}/>
-                        <InputText labelTitle="Maksimal Peserta"  type="number" nameInput="max_participants" defaultValue={admission.max_participants} updateFormValue={updateFormValue} containerStyle="w-72"/>
+                        /> */}
+                        {/* <InputText labelTitle="Status Pendaftaran" nameInput="status"  required={true} defaultValue={admission.status} updateFormValue={updateFormValue}/> */}
+                        {/* <InputText labelTitle="Kuota Pendaftaran"  type="number" nameInput="max_participants" defaultValue={admission.max_participants} updateFormValue={updateFormValue} containerStyle="w-72"/> */}
                         {/* <InputDateTime labelTitle="Waktu Mulai" name="started_at" defaultValue={admission.started_at} updateFormValue={updateFormValue}/>
                         <InputDateTime labelTitle="Waktu Selesai" name="ended_at" defaultValue={admission.ended_at} updateFormValue={updateFormValue}/> */}
                         {/* <InputText labelTitle="Skema" name="scheme" defaultValue={admission.scheme} updateFormValue={updateFormValue}/>
@@ -230,6 +235,9 @@ function AdmissionEdit(){
                     <InputText labelTitle="Waktu Selesai" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/>
                     <TextAreaInput labelTitle="About" defaultValue="Doing what I love, part time traveller" updateFormValue={updateFormValue}/> */}
                 </div>
+                <InputText labelTitle="Tahun Ajaran" nameInput="ta"  required={true} containerStyle="w-120" placeholder="2025/2026" defaultValue={admission.ta} updateFormValue={updateFormValue}/>
+                <ToogleInput  labelTitle="Status Pendaftaran" nameInput="status" defaultValue={admission.status} containerStyle="flex flex-grow justify-between item-center" updateFormValue={updateFormValue}/>
+                </div>
                 <div className="divider" ></div>
 
                 {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -238,9 +246,9 @@ function AdmissionEdit(){
                     <ToogleInput updateType="syncData" labelTitle="Sync Data" defaultValue={true} updateFormValue={updateFormValue}/>
                     </div> */}
 
-                <div className="mt-16"><button className="btn btn-primary float-right bg-green-700 hover:bg-green-600 text-gray-50 dark:text-gray-100" type="submit" >Simpan</button></div>
+                <div className="mt-16"><button className="btn btn-primary float-right bg-green-700 hover:bg-green-600 text-gray-50 dark:text-gray-100" type="submit">Simpan</button></div>
                 </form>
-                {/* onClick={() => updateAdmissions()} */}
+                {/* onClick={() => updateadmissions()} */}
             </TitleCard>
             
             

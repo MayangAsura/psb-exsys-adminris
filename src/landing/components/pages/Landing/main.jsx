@@ -14,7 +14,7 @@ function App() {
   return (
     // style={{ maxWidth:390 }}
     <main className="min-w-lg min-h-screen relative bg-gray-50 pb-10" >
-      <Header  />
+      <Header id={applicant.id}  />
       {/* <ProfileCover /> */}
       <div className="container px-4">
         <div className="flex flex-wrap px-4">

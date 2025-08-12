@@ -3,6 +3,8 @@ import { MODAL_BODY_TYPES } from '../utils/globalConstantUtil'
 import { useSelector, useDispatch } from 'react-redux'
 import { closeModal } from '../features/common/modalSlice'
 import AddLeadModalBody from '../features/leads/components/AddLeadModalBody'
+import AddAdmissionSchoolModalBody from '../features/admissions/schools/components/AddAdmissionSchoolModalBody'
+import EditAdmissionSchoolModalBody from '../features/admissions/schools/components/EditAdmissionSchoolModalBody'
 import ImportQuestionModalBody from '../features/exams/questions/ImportQuestionModalBody'
 import ImportParticipantModalBody from '../features/exams/participants/ImportParticipantModalBody'
 import ManualQuestionModalBody from '../features/exams/questions/ManualQuestionModalBody'
@@ -40,6 +42,8 @@ function ModalLayout(){
                     {
                              [MODAL_BODY_TYPES.LEAD_ADD_NEW] : <AddLeadModalBody closeModal={close} extraObject={extraObject}/>,
                              [MODAL_BODY_TYPES.QUESTION_ADD_IMPORT] : <ImportQuestionModalBody closeModal={close} extraObject={extraObject}/>,
+                             [MODAL_BODY_TYPES.ADMISSION_SCHOOLS_CREATE] : <AddAdmissionSchoolModalBody closeModal={close} extraObject={extraObject}/>,
+                             [MODAL_BODY_TYPES.ADMISSION_SCHOOLS_EDIT] : <EditAdmissionSchoolModalBody closeModal={close} extraObject={extraObject}/>,
                              [MODAL_BODY_TYPES.EXAM_PARTIC_IMPORT] : <ImportParticipantModalBody closeModal={close} extraObject={extraObject}/>,
                              [MODAL_BODY_TYPES.QUESTION_ADD_MANUAL] : <ManualQuestionModalBody closeModal={close} extraObject={extraObject}/>,
                              [MODAL_BODY_TYPES.MODAL_SUCCESS] : <SuccessModal closeModal={close} extraObject={extraObject}/>,

@@ -1,10 +1,14 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 function ToogleInput({labelTitle, labelStyle, nameInput, type, containerStyle, defaultValue, placeholder, updateFormValue, updateType}){
 
     const [value, setValue] = useState(defaultValue)
 
+    useEffect(()=> {
+        defaultValue==='active'?setValue(true):setValue(false)
+        
+    },[defaultValue])
     const updateToogleValue = () => {
         setValue(!value)
         updateFormValue({updateType, nameInput, value : !value})

@@ -3,14 +3,21 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import TitleCard from "../../components/Cards/TitleCard"
 import { showNotification } from '../common/headerSlice'
+import { openModal } from "../common/modalSlice"
+import TrashIcon from '@heroicons/react/24/outline/TrashIcon'
+import PencilIcon from '@heroicons/react/24/outline/PencilIcon'
+import EyeIcon from "@heroicons/react/24/outline/EyeIcon"
+import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../utils/globalConstantUtil'
+import { useNavigate } from "react-router-dom"
 
 import supabase from "../../services/database-server"
-import { useNavigate } from "react-router-dom"
+
 
 const TopSideButtons = () => {
 
-    const dispatch = useDispatch()
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
 
     // const addNewTeamMember = () => {
     //     dispatch(showNotification({message : "Add New Member clicked", status : 1}))
@@ -42,7 +49,10 @@ function Admissions(){
 
 
     const [members, setMembers] = useState(TEAM_MEMBERS)
+    const { newNotificationStatus } = useSelector((state) => state.modal)
     const [Admissions, setAdmissions] = useState([])
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         getSchoolData()
@@ -98,6 +108,29 @@ function Admissions(){
     // const indonesianFormat = `${dayName}, ${day} ${monthName} ${year} ${hour}:${minute} WIB`;
     return dateFormat
   }
+  const deleteCurrentAdmission = (index) => {
+                dispatch(openModal({title : "Konfirmasi", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+                extraObject : { message : `Apakah Anda yakin menghapus jadwal ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.ADMISSIONS_DELETE, index}}))
+                
+        if(newNotificationStatus==1){
+            getSchoolData()
+        }
+    }
+
+    const editCurrentAdmission = (index) => {
+        navigate(`/ad/admissions/edit/${index}`)
+        // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.SCHEDULE_EDIT}))
+        // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+        // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
+
+    }
+    const detailCurrentAdmission = (index) => {
+        navigate(`/ad/admissions/detail/${index}`)
+        // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_DETAIL}))
+        // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+        // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
+
+    }
 
     return(
         <>
@@ -110,10 +143,12 @@ function Admissions(){
                     <thead>
                     <tr>
                         <th>Judul</th>
+                        <th>Tahun Ajaran</th>
                         <th>Tanggal Pendaftaran</th>
                         <th>Tanggal Akhir Pendaftaran</th>
                         <th>Status</th>
                         <th>Update Terakhir</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -134,10 +169,16 @@ function Admissions(){
                                         </div>
                                     </td> */}
                                     <td>{l.title}</td>
-                                    <td>{formatDateNew(l.start_at) }</td>
-                                    <td>{formatDateNew(l.end_at) }</td>
-                                    <td>{getEducationUnit(l.status)}</td>
+                                    <td>{l.ta}</td>
+                                    <td>{formatDateNew(l.started_at) }</td>
+                                    <td>{formatDateNew(l.ended_at) }</td>
+                                    <td><div className={`flex justify-center items-center badge ${l.status=='active'? 'bg-green-400' : 'bg-orange-400'}  font-semibold text-gray-50 rounded-2xl w-16 py-1 px-2`}>{getEducationUnit(l.status)}</div></td>
                                     <td>{formatDateNew(l.updated_at) }</td>
+                                    <td>
+                                        <button className="btn btn-sm btn-square btn-ghost hover:bg-green-200" onClick={() => detailCurrentAdmission(l.id)}><EyeIcon className="w-5"/></button>
+                                        <button className="btn btn-sm btn-square btn-ghost hover:bg-orange-200" onClick={() => editCurrentAdmission(l.id)}><PencilIcon className="w-5"/></button>
+                                        <button className="btn btn-sm btn-square btn-ghost hover:bg-red-200" onClick={() => deleteCurrentAdmission(l.id)}><TrashIcon className="w-5"/></button>
+                                    </td>
                                     {/* <td>{l.address}</td> */}
                                     {/* <td>{getRoleComponent(l.role)}</td> */}
                                     {/* <td>{l.lastActive}</td> */}
