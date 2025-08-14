@@ -1,12 +1,34 @@
 import axios from "axios"
+import { jwtDecode } from 'jwt-decode'
+import { use } from "react"
+import supabase from '../services/database-server'
 
 const checkAuth = () => {
 /*  Getting token value stored in localstorage, if token is not present we will open login page 
     for all internal dashboard routes  */
-    const TOKEN = localStorage.getItem("token")
     const PUBLIC_ROUTES = ["ad/login", "ad/forgot-password", "ad/register", "ad/documentation"]
+    
+    const { subscription: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session) {
+        const jwt = jwtDecode(session.access_token)
+        const userRole = jwt.user_role
 
+        console.log('jwt', jwt, userRole)
+
+        // const TOKEN = localStorage.setItem("token-session", jwt)
+
+        // localStorage.setItem("token", )
+        // localStorage.setItem("token-refresh", data.refresh_token)
+        // setLoading(false)
+        // window.location.href = '/ad/dashboard'
+        
+      }
+    })
+
+    const TOKEN = localStorage.getItem('token')
     const isPublicPage = PUBLIC_ROUTES.some( r => window.location.href.includes(r))
+    
+
 
     if(!TOKEN && !isPublicPage){
         window.location.href = '/ad/login'

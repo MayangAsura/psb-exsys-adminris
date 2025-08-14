@@ -54,7 +54,12 @@ useEffect(()=>{
                 <span className={"label-text text-base-content " + labelStyle}>{labelTitle}</span>
             </label>
             {/* {...register(nameInput, {required})}  */}
-            <input name={nameInput} type={type || "text"} value={value} {...register(registerName)} pattern={pattern} checked placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)} required className={`input input-bordered w-full ${inputStyle}` }  />
+            {register && (
+                <input name={nameInput} type={type || "text"} value={value} {...register(registerName)} pattern={pattern} checked placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)} required className={`input input-bordered w-full ${inputStyle}` }  />
+            )}
+            {!register && (
+                <input name={nameInput} type={type || "text"} value={value} pattern={pattern} checked placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)} required className={`input input-bordered w-full ${inputStyle}` }  />
+            )}
                 {errors && 
                     <span className="mt-2 text-sm text-red-500 ">
                         {error_msg}

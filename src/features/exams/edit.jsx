@@ -10,6 +10,8 @@ import SelectBox from "../../components/Input/SelectBox"
 import TextAreaInput from '../../components/Input/TextAreaInput'
 import ToogleInput from '../../components/Input/ToogleInput'
 import InputDateTime from "../../components/Input/InputDateTime"
+import z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 // import {updateExam} from "../../services/api/exams"
 
@@ -26,11 +28,34 @@ import InputDateTimePicker from "../../components/Input/InputDateTimePicker"
 
 import axios from "axios"
 import schools from "../../services/api/schools"
+import { type } from "@testing-library/user-event/dist/type"
 // import supabase from "../services/database"
 
 // type ValuePiece = Date | null
 
 // type Value = ValuePiece | [ValuePiece, ValuePiece]
+
+export const examSchema = z.object({
+    name: z.string().min(1, "Nama wajib diisi"),        
+    subtitle: z.string().min(1, "Nama wajib diisi"),        
+    started_at: z.string().min(1, "Waktu Mulai wajid diisi"),
+    ended_at: z.string().min(1, "Waktu Selesai wajid diisi"),
+    scheme: z.string().min(1, "Nama wajib diisi"),        
+    question_type: z.string().min(1, "Nama wajib diisi"),        
+    location: z.string().min(1, "Nama wajib diisi"),        
+    room: z.string().min(1, "Nama wajib diisi")
+})
+
+export const examDefaultValues = {
+  name: "",
+  subtitle: "",
+  started_at: "",
+  ended_at: "",
+  scheme: "",
+  question_type: "",
+  location: "",
+  room: ""
+};
 
 function ExamEdit(){
 
@@ -281,8 +306,8 @@ if(file){
                                         </span>
         </div>    */}
                     {/* <input type="file" /> */}
-                    <InputText labelTitle="Nama" nameInput="name" defaultValue={exam.name} updateFormValue={updateFormValue}   error_msg={"Harap isi Nama"} required={"true"} inputStyle={" peer invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"}/>
-                    <InputText labelTitle="Deskripsi" nameInput="subtitle" defaultValue={exam.subtitle} updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Nama" nameInput="name" register={register} registerName="name" defaultValue={exam.name} updateFormValue={updateFormValue}   error_msg={"Harap isi Nama"} required={"true"} inputStyle={" peer invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"}/>
+                    <InputText labelTitle="Deskripsi" nameInput="subtitle" register={register} registerName="subtitle" defaultValue={exam.subtitle} updateFormValue={updateFormValue}/>
                     {/* <InputText labelTitle="Skema Ujian" defaultValue={exam.scheme} updateFormValue={updateFormValue}/> */}
                     {/* <SelectBox labelTitle="Jadwal" defaultValue="" updateFormValue={updateFormValue}/> */}
                     <SelectBox
@@ -291,11 +316,13 @@ if(file){
                         labelTitle="Skema Ujian"
                         placeholder="Pilih Skema"
                         containerStyle="w-72"
+                        register={register} 
+                        registerName="scheme"
                         // labelStyle="hidden"
                         // defaultValue="TODAY"
                         updateFormValue={updateFormValue}
                     />
-                    <InputTextRadio labelTitle="Tipe" nameInput="question_type" type="radio" options={typeOptions} defaultValue={exam.type?exam.type:'MC'} updateFormValue={updateFormValue} />
+                    <InputTextRadio labelTitle="Tipe" nameInput="question_type" register={register} registerName="question_type" type="radio" options={typeOptions} defaultValue={exam.type?exam.type:'MC'} updateFormValue={updateFormValue} />
                     {/* <SelectBox 
                     options={schedulesOptions}
                     labelTitle="Period"
@@ -305,16 +332,16 @@ if(file){
                     // defaultValue="TODAY"
                     updateFormValue={updateSelectBoxValue}
                 /> */}
-                    <InputDateTimePicker labelTitle="Waktu Mulai" nameInput="started_at" defaultValue={exam.started_at} updateFormValue={updateFormValue} />
-                    <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" defaultValue={exam.ended_at} updateFormValue={updateFormValue} />
+                    <InputDateTimePicker labelTitle="Waktu Mulai" nameInput="started_at" register={register} registerName="started_at" defaultValue={exam.started_at} updateFormValue={updateFormValue} />
+                    <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" register={register} registerName="ended_at" defaultValue={exam.ended_at} updateFormValue={updateFormValue} />
                     
                     {/* <InputText labelTitle="Waktu Mulai" type="date" defaultValue="alex@dashwind.com" updateFormValue={updateFormValue}/> */}
                     {/* <InputText labelTitle="Waktu Selesai" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/> */}
-                    <InputText labelTitle="Lokasi" nameInput="location" defaultValue={exam.location} updateFormValue={updateFormValue}/>
-                    <InputText labelTitle="Ruangan" nameInput="room" defaultValue={exam.room} updateFormValue={updateFormValue}/>
-                    <ToogleInput updateType="randomQuestion" nameInput="is_random_question" labelTitle="Acak Soal" defaultValue={exam.is_random_question} updateFormValue={updateFormValue} />
+                    <InputText labelTitle="Lokasi" nameInput="location" register={register} registerName="location" defaultValue={exam.location} updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Ruangan" nameInput="room" register={register} registerName="room" defaultValue={exam.room} updateFormValue={updateFormValue}/>
+                    <ToogleInput updateType="randomQuestion" nameInput="is_random_question" register={register} registerName="is_random_question" labelTitle="Acak Soal" defaultValue={exam.is_random_question} updateFormValue={updateFormValue} />
                     {/* register={register} registerOptions={registerOptions} error={errors}  */}
-                    <ToogleInput updateType="randomAnswer" nameInput="is_random_answer" labelTitle="Acak Jawaban" defaultValue={exam.is_random_answer} updateFormValue={updateFormValue} />
+                    <ToogleInput updateType="randomAnswer" nameInput="is_random_answer" register={register} registerName="is_random_answer" labelTitle="Acak Jawaban" defaultValue={exam.is_random_answer} updateFormValue={updateFormValue} />
                     {/* {exam.exam_schedule_tests[0].exam_schedules?.id} */}
                     <SelectBox
                         nameInput="schedule_id"
@@ -325,6 +352,8 @@ if(file){
                         labelTitle="Pilih Jadwal"
                         placeholder="Pilih Jadwal"
                         containerStyle="w-72"
+                        register={register}
+                        registerName="schedule_id"
                         // defaultValue={exam.exam_schedule_tests[0]?.exam_schedules?.id}
                         // labelStyle="hidden"
                         // defaultValue="TODAY"

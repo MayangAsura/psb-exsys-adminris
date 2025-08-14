@@ -33,7 +33,7 @@ import { title } from "process"
 
 // type Value = ValuePiece | [ValuePiece, ValuePiece]
 
-function AdmissionEdit(){
+function AdmissionAysEdit(){
 
     const dispatch = useDispatch()
     const [value, onChange] = useState(new Date())
@@ -258,4 +258,4 @@ function AdmissionEdit(){
 }
 
 
-export default AdmissionEdit
+export default AdmissionAysEdit

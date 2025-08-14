@@ -1,7 +1,7 @@
 // import { useState } from 'react'
 import supabase from '../database-server'
 
-export const addAdmission = async (props) => {
+export const addAdmissionAys = async (props) => {
     // name, description, started_at, ended_at, scheme, type, location, room, is_random_question, is_random_answer, max_participants 
     // name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: ""
     console.log(props)
@@ -9,7 +9,7 @@ export const addAdmission = async (props) => {
     const { data: admissions, error } = await supabase
                             .from('admissions')
                                 .insert([
-                                    props.newAdmission
+                                    props.newAdmissionAys
                                 ])
                                 .select()
     if(error) {
@@ -83,7 +83,7 @@ export const updateAdmission = async (props) => {
     const { data: exam, error } = await supabase
                             .from('admissions')
                                 .update([
-                                    props.newAdmission
+                                    props.newAdmissionAys
                                 ])
                                 .eq('id', props.id)
                                 .select()

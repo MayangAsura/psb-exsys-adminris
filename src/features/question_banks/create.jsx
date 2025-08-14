@@ -30,7 +30,7 @@ import schools from "../../services/api/schools"
 
 // type Value = ValuePiece | [ValuePiece, ValuePiece]
 
-function ExamCreate(){
+function QuestionBankCreate(){
 
     const dispatch = useDispatch()
     const [value, onChange] = useState(new Date())
@@ -186,4 +186,4 @@ function ExamCreate(){
 }
 
 
-export default ExamCreate
+export default QuestionBankCreate

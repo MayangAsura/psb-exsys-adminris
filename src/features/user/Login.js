@@ -1,8 +1,12 @@
-import {useState, useRef} from 'react'
-import {Link} from 'react-router-dom'
+import {useState, useRef, useEffect} from 'react'
+import {Link, useNavigate} from 'react-router-dom'
 import LandingIntro from './LandingIntro'
 import ErrorText from  '../../components/Typography/ErrorText'
 import InputText from '../../components/Input/InputText'
+
+import supabase from '../../services/database-server'
+import { jwtDecode } from 'jwt-decode'
+import { log } from 'async'
 
 const INITIAL_LOGIN_OBJ = {
     password : "",
@@ -15,15 +19,65 @@ function Login(){
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
     const [loginObj, setLoginObj] = useState(INITIAL_LOGIN_OBJ)
+    const [userLoaded, setUserLoaded] = useState(false)
+    const [user, setUser] = useState("")
+    const [session, setSession] = useState("")
+    const navigate = useNavigate()
+
+    useEffect(()=> {
+        
+    },[])
 
     const submitForm = async (e) =>{
         e.preventDefault()
         setErrorMessage("")
-        console.log(loginObj)
+        console.log('inaut-')
+        
+    //     supabase.auth.getSession().then(({data: {session}})=> saveSession(session))
+    //     const { subscription: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+    //         console.log('masuk')
+    //         console.log('obj',loginObj)
+    //         console.log('se',session)
+
+    //   if (session) {
+    //     saveSession(session)
+    //     const jwt = jwtDecode(session.access_token)
+    //     const userRole = jwt.user_role
+
+    //     console.log('jwt', jwt, userRole)
+    //   }
+    // })
+
+    
+        // console.log('listener',authListener)
         if(loginObj.username.trim() === "")return setErrorMessage("Email tidak boleh kosong.")
         if(loginObj.password.trim() === "")return setErrorMessage("Password tidak boleh kosong.")
         else{
             setLoading(true)
+            console.log(loginObj)
+            const nUsername =  '62'+ loginObj.username.slice(1)
+            console.log(nUsername)
+            
+            const { data, error } = await supabase.auth.signInWithPassword({
+                phone: nUsername,
+                password: loginObj.password,
+            })
+
+            if(data){
+                setLoading(true)
+                setUser(data.user)
+                setSession(data.session)
+                console.log(session)
+                console.log(user)
+
+                // Call API to check user credentials and save token in localstorage
+                localStorage.setItem("token", session.access_token??data.session.access_token )
+                // localStorage.setItem("token-refresh", data.refresh_token)
+                setLoading(false)
+                window.location.href = '/ad/dashboard'
+            }
+
+        console.log(data)
             // Call API to check user credentials and save token in localstorage
             // const handledSubmit = async (e) => {
 
@@ -32,14 +86,14 @@ function Login(){
     // console.log("Data submit >", password)
     // setErrorMessage("")
 
-    //     if(loginObj.emailId.trim() === "")return setErrorMessage("Email Id is required! (use any value)")
-    //     if(loginObj.password.trim() === "")return setErrorMessage("Password is required! (use any value)")
+        // if(loginObj.emailId.trim() === "")return setErrorMessage("Email Id is required! (use any value)")
+        // if(loginObj.password.trim() === "")return setErrorMessage("Password is required! (use any value)")
         // else{
-            // setLoading(true)
-            // Call API to check user credentials and save token in localstorage
-            // localStorage.setItem("token", "DumyTokenHere")
-            // setLoading(false)
-            // window.location.href = '/admin/welcome'
+        //     setLoading(true)
+        //     // Call API to check user credentials and save token in localstorage
+        //     localStorage.setItem("token", )
+        //     setLoading(false)
+        //     window.location.href = '/admin/welcome'
         // }
     // const data = {
     //   username: username,
@@ -151,11 +205,24 @@ function Login(){
     //     }
 
 //   }
-            localStorage.setItem("token", "DumyTokenHere")
-            setLoading(false)
-            window.location.href = '/ad/welcome'
+            // localStorage.setItem("token", "DumyTokenHere")
+            // setLoading(false)
+            // window.location.href = '/ad/welcome'
         }
     }
+
+    const saveSession = (session) => {
+        setSession(session)
+        const currentUser = session?.user
+        if(session){
+            const jwt = jwtDecode(session.access_token)
+            currentUser.appRole = jwt.user_role
+        }
+        setUser(currentUser ?? null)
+        setUserLoaded(!!currentUser)
+        if(currentUser){navigate("/login")}
+    }
+
 
     const updateFormValue = ({updateType, value}) => {
         setLoginObj(prev => ({...prev, [updateType] : value}))

@@ -83,7 +83,7 @@ function Schedules(){
 
     useEffect(() => {
         getSchedulesData()
-        console.log(schedules)
+        // console.log(schedules)
         getNumPresences(schedules)
     },[schedules])
 
