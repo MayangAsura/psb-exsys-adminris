@@ -68,13 +68,18 @@ function Admissions(){
     }
 
     const getSchoolData = async () => {
-        let { data: admissions, error } = await supabase
-            .from('admissions')
-            .select('*')
+        let { data: admissions_ays, error } = await supabase
+            .from('admission_ays')
+            .select('*, admissions(*))')
+            .eq('admission_id', 'e63830b4-c751-4714-9279-fd57c4be5f10')
             .is('deleted_at', null)
 
         if(!error){
-            setAdmissions(admissions)
+            setAdmissions(admissions_ays)
+            // const {admissions, ...newAdmissions} = admissions_ays[0]
+            // setAdmissions(newAdmissions)
+            // setAdmissions(prev => ({...prev, admissions: admissions}))
+            console.log(Admissions)
         }
     }
 
@@ -118,14 +123,14 @@ function Admissions(){
     }
 
     const editCurrentAdmission = (index) => {
-        navigate(`/ad/admissions/edit/${index}`)
+        navigate(`/ad/academic-years/edit/${index}`)
         // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.SCHEDULE_EDIT}))
         // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
         // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
 
     }
     const detailCurrentAdmission = (index) => {
-        navigate(`/ad/admissions/detail/${index}`)
+        navigate(`/ad/academic-years/detail/${index}`)
         // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_DETAIL}))
         // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
         // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
@@ -142,7 +147,7 @@ function Admissions(){
                 <table className="table w-full">
                     <thead>
                     <tr>
-                        <th>Judul</th>
+                        <th>Judul Admissions</th>
                         <th>Tahun Ajaran</th>
                         <th>Tanggal Pendaftaran</th>
                         <th>Tanggal Akhir Pendaftaran</th>
@@ -168,8 +173,8 @@ function Admissions(){
                                             </div>
                                         </div>
                                     </td> */}
-                                    <td>{l.title}</td>
-                                    <td>{l.ta}</td>
+                                    <td>{l.admissions.title}</td>
+                                    <td>{l.academic_year}</td>
                                     <td>{formatDateNew(l.started_at) }</td>
                                     <td>{formatDateNew(l.ended_at) }</td>
                                     <td><div className={`flex justify-center items-center badge ${l.status=='active'? 'bg-green-400' : 'bg-orange-400'}  font-semibold text-gray-50 rounded-2xl w-16 py-1 px-2`}>{getEducationUnit(l.status)}</div></td>

@@ -42,11 +42,11 @@ function TabHeaderAdmission({styleClass, options, id}) {
     );
 
     if(key==0)
-        navigate('/ad/admissions/detail/'+id)
+        navigate('/ad/academic_years/detail/'+id)
     if(key==1)
-        navigate('/ad/admissions/'+id+ '/schools')
+        navigate('/ad/academic_years/'+id+ '/schools')
     if(key==2)
-        navigate('/ad/admissions/'+id+ '/reports')
+        navigate('/ad/academic_years/'+id+ '/reports')
     // if(key==3)
     //     navigate('/ad/admissions/'+id+ '/presences')
     

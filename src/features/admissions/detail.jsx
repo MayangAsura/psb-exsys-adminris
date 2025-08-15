@@ -15,7 +15,7 @@ function InternalPage(){
 
     const dispatch = useDispatch()
     const [test, setTest] = useState({})
-    const id = useParams().admission_id
+    const id = useParams().academic_years_id
     const options = [
         {tab: 'Detail', selected: true },
         {tab: 'Jenjang', selected: false },
@@ -30,7 +30,7 @@ function InternalPage(){
       
     const getTestData = async () => {
         let { data: admissions, error } = await supabase
-            .from('admissions')
+            .from('admission_ays')
             .select('*')
             .eq('id', id)
 // 'd17ff676-85d2-4f9e-88f1-0fdfb37517b9'
@@ -89,7 +89,7 @@ function InternalPage(){
                                 <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
                                     <div className="flex flex-col gap-y-2 w-full">
                                         <div className="css-4o3x93"><p className="w-full css-zuhd6s">Tahun Ajaran</p></div>
-                                <div className="css-4o3x93"><p className="font-semibold">{test.ta} </p></div></div>
+                                <div className="css-4o3x93"><p className="font-semibold">{test.academic_year} </p></div></div>
                                 
                                 <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2 "><div className="css-4o3x93"><p className=" css-zuhd6s">Status</p></div><div className="css-4o3x93"><p className="font-semibold badge-primary bg-orange-400 text-gray-700 rounded-2xl py-3 px-5 css-1pj8jfk">{ test.status} </p></div></div></div>
                                 </div>
