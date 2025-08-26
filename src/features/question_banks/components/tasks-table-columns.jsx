@@ -1,4 +1,4 @@
-// "use client";
+// // "use client";
 
 // import { ColumnDef } from "@tanstack/react-table";
 // import {
@@ -9,12 +9,12 @@
 //   Ellipsis,
 //   Text,
 // } from "lucide-react";
-// import * as React from "react";
+// import React from "react";
 // import { toast } from "sonner";
 // import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-// import { Badge } from "@/components/ui/badge";
-// import { Button } from "@/components/ui/button";
-// import { Checkbox } from "@/components/ui/checkbox";
+// import { Badge } from "@/components/UI/badge";
+// import { Button } from "@/components/UI/button";
+// import { Checkbox } from "@/components/UI/checkbox";
 // import {
 //   DropdownMenu,
 //   DropdownMenuContent,
@@ -27,10 +27,10 @@
 //   DropdownMenuSubContent,
 //   DropdownMenuSubTrigger,
 //   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
+// } from "@/components/UI/dropdown-menu";
 // import { Task, tasks } from "@/db/schema";
 // import { formatDate } from "@/lib/format";
-// import { getErr                                                                                                                                                                                                                                                                                                                                                                                                                                              orMessage } from "@/lib/handle-error";
+// import { getErrorMessage } from "@/lib/handle-error";
 // import{ DataTableRowAction } from "@/types/data-table";
 
 // import { updateTask } from "../_lib/actions";
@@ -123,7 +123,7 @@
 //       ),
 //       cell: ({ cell }) => {
 //         const status = tasks.status.enumValues.find(
-//           (status) => status === cell.getValue<Task["status"]>(),
+//           (status) => status === cell.getValue(),
 //         );
 
 //         if (!status) return null;
@@ -158,7 +158,7 @@
 //       ),
 //       cell: ({ cell }) => {
 //         const priority = tasks.priority.enumValues.find(
-//           (priority) => priority === cell.getValue<Task["priority"]>(),
+//           (priority) => priority === cell.getValue(),
 //         );
 
 //         if (!priority) return null;
@@ -192,7 +192,7 @@
 //         <DataTableColumnHeader column={column} title="Est. Hours" />
 //       ),
 //       cell: ({ cell }) => {
-//         const estimatedHours = cell.getValue<number>();
+//         const estimatedHours = cell.getValue();
 //         return <div className="w-20 text-right">{estimatedHours}</div>;
 //       },
 //       meta: {
@@ -210,7 +210,7 @@
 //       header: ({ column }) => (
 //         <DataTableColumnHeader column={column} title="Created At" />
 //       ),
-//       cell: ({ cell }) => formatDate(cell.getValue<Date>()),
+//       cell: ({ cell }) => formatDate(cell.getValue()),
 //       meta: {
 //         label: "Created At",
 //         variant: "dateRange",
@@ -250,7 +250,7 @@
 //                         toast.promise(
 //                           updateTask({
 //                             id: row.original.id,
-//                             label: value as Task["label"],
+//                             label: value,
 //                           }),
 //                           {
 //                             loading: "Updating...",

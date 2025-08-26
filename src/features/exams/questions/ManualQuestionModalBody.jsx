@@ -227,7 +227,8 @@ function ManualQuestionModalBody({closeModal, extraObject}){
                     <div className="">
                         <InputText labelTitle="" nameInput="question_2" defaultValue={questions.question_2} updateFormValue={updateFormValue}/>
                     </div>
-                    <div className=""><CKEditor
+                    <div className="">
+                        {/* <CKEditor
                 editor={ClassicEditor}
                 data={editorData}
                 onReady={(editor) => {
@@ -257,7 +258,8 @@ function ManualQuestionModalBody({closeModal, extraObject}){
                     },
                     extraPlugins: [CustomUploadAdapterPlugin],
                 }}
-            /></div>
+            /> */}
+            </div>
                     <div className="">
                         <InputText labelTitle="" nameInput="point_2" defaultValue={questions.point_2} updateFormValue={updateFormValue}/>
                     </div>

@@ -4,6 +4,13 @@ import { useEffect, useState } from "react"
 import { DatePicker, Stack } from 'rsuite';
 import { FaCalendar, FaClock } from 'react-icons/fa';
 
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from 'dayjs';
+// import DateTimePicker from 'react-datetime-picker';
+
+
 import 'rsuite/dist/rsuite.min.css';
 
 
@@ -12,6 +19,7 @@ function InputDateTimePicker({labelTitle, labelStyle, register, nameInput, type,
     const [value, setValue] = useState()
 
     useEffect(() => {
+        // new Date()
         if(defaultValue){
             setValue(defaultValue)
         }
@@ -19,7 +27,7 @@ function InputDateTimePicker({labelTitle, labelStyle, register, nameInput, type,
     const updateInputValue = (val) => {
         // val.toISOString()
         setValue(val)
-        updateFormValue({updateType, nameInput, value})
+        updateFormValue({updateType, nameInput, value: val.toISOString()})
         console.log(value)
     }
 
@@ -38,7 +46,10 @@ function InputDateTimePicker({labelTitle, labelStyle, register, nameInput, type,
             <label className="label">
                 <span className={"label-text text-base-content " + labelStyle}>{labelTitle}</span>
             </label>
-            <DatePicker
+             <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker value={value ?? dayjs(new Date())}  onChange={updateInputValue} defaultValue={defaultValue} minutesStep={5} />
+             </LocalizationProvider>
+            {/* <DatePicker
                 format="dd MMM yyyy hh:mm:ss aa"
                 showMeridiem
                 caretAs={FaCalendar}
@@ -46,7 +57,7 @@ function InputDateTimePicker({labelTitle, labelStyle, register, nameInput, type,
                 name={nameInput}
                 value={value}
                 onChange={updateInputValue}
-                />
+                /> */}
                 {errors && 
                     <span className="mt-2 text-sm text-red-500 ">
                         {error_msg}

@@ -15,7 +15,7 @@ function InternalPage(){
 
     const dispatch = useDispatch()
     const [test, setTest] = useState({})
-    const id = useParams().academic_years_id
+    const id = useParams().academic_year_id
     const options = [
         {tab: 'Detail', selected: true },
         {tab: 'Jenjang', selected: false },

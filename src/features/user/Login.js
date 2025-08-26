@@ -3,8 +3,10 @@ import {Link, useNavigate} from 'react-router-dom'
 import LandingIntro from './LandingIntro'
 import ErrorText from  '../../components/Typography/ErrorText'
 import InputText from '../../components/Input/InputText'
+import { TbEye, TbEyeOff } from "react-icons/tb";
 
 import supabase from '../../services/database-server'
+import { AuthWeakPasswordError } from '@supabase/supabase-js'
 import { jwtDecode } from 'jwt-decode'
 import { log } from 'async'
 
@@ -19,9 +21,12 @@ function Login(){
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
     const [loginObj, setLoginObj] = useState(INITIAL_LOGIN_OBJ)
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
     const [userLoaded, setUserLoaded] = useState(false)
     const [user, setUser] = useState("")
     const [session, setSession] = useState("")
+    const [isVisible, setIsVisible] = useState(false)
     const navigate = useNavigate()
 
     useEffect(()=> {
@@ -49,35 +54,48 @@ function Login(){
     // })
 
     
-        // console.log('listener',authListener)
-        if(loginObj.username.trim() === "")return setErrorMessage("Email tidak boleh kosong.")
-        if(loginObj.password.trim() === "")return setErrorMessage("Password tidak boleh kosong.")
+        console.log('logn',loginObj)
+        if(username.trim() === "")return setErrorMessage("Username tidak boleh kosong.")
+        if(password.trim() === "")return setErrorMessage("Password tidak boleh kosong.")
         else{
             setLoading(true)
-            console.log(loginObj)
-            const nUsername =  '62'+ loginObj.username.slice(1)
+            // console.log(loginObj)
+            const nUsername =  '62'+ username.slice(1)
             console.log(nUsername)
             
             const { data, error } = await supabase.auth.signInWithPassword({
                 phone: nUsername,
-                password: loginObj.password,
+                password: password,
             })
 
-            if(data){
-                setLoading(true)
+            if(error){
+                
+                    console.log('session', error, new AuthWeakPasswordError)
+                    if(error.code == 'invalid_credentials'){
+                        setErrorMessage('Username atau Password salah.')          
+                    }else{
+                        setErrorMessage(error.message)
+                    }
+                    setLoading(false)
+            }else{
+
                 setUser(data.user)
                 setSession(data.session)
-                console.log(session)
+                console.log('data', data)
                 console.log(user)
-
+                console.log('session', data.user, data.session)
                 // Call API to check user credentials and save token in localstorage
-                localStorage.setItem("token", session.access_token??data.session.access_token )
-                // localStorage.setItem("token-refresh", data.refresh_token)
+                localStorage.setItem("token", data.session.access_token??data.session?.access_token )
+                localStorage.setItem("token-refresh", data.session.refresh_token)
                 setLoading(false)
                 window.location.href = '/ad/dashboard'
+            // }
+    
+        console.log(data)
             }
 
-        console.log(data)
+            // if(data){
+                // setLoading(true)
             // Call API to check user credentials and save token in localstorage
             // const handledSubmit = async (e) => {
 
@@ -211,6 +229,10 @@ function Login(){
         }
     }
 
+    const handledVisible = () => {
+    setIsVisible(prevState => !prevState)
+  }
+
     const saveSession = (session) => {
         setSession(session)
         const currentUser = session?.user
@@ -225,7 +247,7 @@ function Login(){
 
 
     const updateFormValue = ({updateType, value}) => {
-        setLoginObj(prev => ({...prev, [updateType] : value}))
+        setLoginObj({...loginObj, [updateType] : value})
         // setErrorMessage("")
         // console.log(loginObj)
     }
@@ -242,15 +264,35 @@ function Login(){
                     <form onSubmit={(e) => submitForm(e)}>
 
                         <div className="mb-4">
+                        
+                            {/* <InputText defaultValue={registerObj.name} updateType="name" containerStyle="mt-4" labelTitle="Name" updateFormValue={updateFormValue}/> */}
 
-                            <InputText type="text" updateType="username" containerStyle="mt-4" labelTitle="Username" updateFormValue={updateFormValue}/>
+                            {/* <InputText defaultValue={username} updateType="username" containerStyle="mt-4" labelTitle="No. WhatsApp" placeholder="08123456789" /> */}
 
-                            <InputText type="password" updateType="password" containerStyle="mt-4" labelTitle="Password" updateFormValue={updateFormValue}/>
+                            {/* <InputText defaultValue={password} type="password" updateType="password" containerStyle="mt-4" labelTitle="Password" /> */}
+                            <label className="block">
+                            <span className="block mb-1 text-base font-medium text-gray-700">Username</span>
+                            <input className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" type="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)}  placeholder="" inputMode="" required />
+                            {/* text-gray-800 */}
+                            </label>
+                            <span className="block mb-1 mt-3 text-base font-medium text-gray-700">Password</span>
+                            <label className=" flex mb-4">
+                            <input className="form-input w-full shadow appearance-none border rounded py-3 px-4  focus:outline-none focus:shadow-outline" type={isVisible? "text" : "password"} name="password" value={password} onChange={(e)=> setPassword(e.target.value)} placeholder="••••••••" required />
+                            <button type="button" onClick={handledVisible} 
+                                className="flex justify-around items-center">
+                                    {isVisible? (
+                                    <TbEyeOff size={20} className='absolute mr-10'></TbEyeOff>
+                                    ):(
+                                    <TbEye size={20} className='absolute mr-10'></TbEye>
+                                    ) }
+                                    
+                                </button>
+                            </label>
 
                         </div>
 
-                        <div className='text-right text-black'><Link to="/ad/forgot-password"><span className="text-sm  inline-block  hover:text-green-300 hover:underline hover:cursor-pointer transition duration-200">Lupa Password?</span></Link>
-                        </div>
+                        {/* <div className='text-right text-black'><Link to="/ad/forgot-password"><span className="text-sm  inline-block  hover:text-green-300 hover:underline hover:cursor-pointer transition duration-200">Lupa Password?</span></Link> */}
+                        {/* </div> */}
 
                         <ErrorText styleClass="mt-8">{errorMessage}</ErrorText>
                         <button type="submit" className={"btn mt-2 w-full bg-green-500" + (loading ? " loading" : "")}>Login</button>

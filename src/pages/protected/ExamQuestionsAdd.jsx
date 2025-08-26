@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setPageTitle } from '../../features/common/headerSlice'
-import ExamQuestionsAdd from '../../features/exams/questions/ExamQuestionsAdd'
+import ExamQuestionsAdd from '../../features/exams/questions/question_add'
 
 function InternalPage(){
     const dispatch = useDispatch()

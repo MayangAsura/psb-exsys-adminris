@@ -103,6 +103,7 @@ function AdmissionSchools(){
     const [trans, setTrans] = useState("")
     const {newNotificationMessage, newNotificationStatus} = useSelector(state => state.header)
     const [examParticipants, setExamParticipants] = useState([])
+    const [admissionSchools, setAdmissionSchools] = useState([])
     const [examSch, setExamSch] = useState("")
 
     const [filterParam, setFilterParam] = useState("")
@@ -131,15 +132,38 @@ function AdmissionSchools(){
         // {tab: 'Jawaban Peserta', selected: false }
     ]
     
-    const id = useParams().admission_id
+    const id = useParams().academic_year_id
     useEffect(() => {
-        getAdmissionSchoolData()
+        getAdmissionSchoolData(id)
         getSchedule(id)
-        getScheduleFilter()
+
+        //getScheduleFilter()
         // console.log(ExamParticipants)
+        if(examParticipants){
+            
+            getExamParticipants(id)
+            // examParticipants.map(value => [...value, {}])
+        }
+        console.log('examParticipants in school', examParticipants)
     },[id])
 
-    const getScheduleFilter = () => {
+    const getExamParticipants = async () => {
+        const newParticipants = examParticipants.map(async (value) => ({
+            ...value
+            // remindQuota: await getRemindQuota(value.quota, value.schools?.school_id, value.admission_ays_id)
+            }))
+        
+        setExamParticipants(newParticipants)
+        console.log('examParticipants>', examParticipants)
+        // setQueData(questionsWithOptions);
+        // const newParticipants = await Promise.all(
+            
+        //         examParticipants.map( async (value) => {return {
+        //         ...value,
+        //         remindQuota: await getRemindQuota(value.quota, value.schools?.school_id, value.admission_ays_id)
+        //     }})
+        // )
+    
 
     }
 
@@ -160,12 +184,12 @@ let { data: exam_schedule_tests, error } = await supabase
           
     }
 
-    const getAdmissionSchoolData = async () => {
+    const getAdmissionSchoolData = async (id) => {
     
         let { data: admission_schools, error } = await supabase
             .from('admission_schools')
-            .select('*, schools(school_id, school_name, address), admissions(*))')
-            .eq('admission_id', id)
+            .select('*, schools(school_id, school_name, address), admission_ays(*))')
+            .eq('admission_ays_id', id)
             .is('deleted_at', null)
 
         if(!error){
@@ -183,7 +207,10 @@ let { data: exam_schedule_tests, error } = await supabase
         
         })
         ))
-        console.log(data)
+
+        setAdmissionSchools(admission_schools)
+
+        console.log('setAdmissionSchools', admissionSchools)
         // setExamParticipants(data)
         // setExamParticipants(value => ({
         //     school_name: value
@@ -196,23 +223,34 @@ let { data: exam_schedule_tests, error } = await supabase
             
     }
 
-    const getRemindQuota = (quota, sch_id) => {
+    const getRemindQuota = async (quota, sch_id, ad_id) => {
         
-        const participants = getCurQuota(sch_id)
-        const curParts = participants.length  
-        return curParts - quota
+        const curParts =  await getCurNewStudents(sch_id, ad_id)
+        console.log('curParts', curParts, quota, quota - curParts)
+        // const curParts = participants.length  
+        const remindQuota = - (quota- curParts)
+        return remindQuota
         // return 
         // setRemidQuota(curParts - quota)                                  
     }
 
-    const getCurQuota = async (sch_id) =>{
-        const {data: participants, error} = await supabase.from('exam_test_participants')
-                                            .select('id, exam_tests(exam_schedule_tests(exam_schedules(admission_id, exam_schedule_schools(school_id))))')
-                                            .eq('exam_tests.exam_schedule_tests.exam_schedules.exam_schedule_schools.school_id', sch_id)
-                                            .eq('exam_tests.exam_schedule_tests.exam_schedules.admission_id', id)
+    const getCurNewStudents = async (sch_id, ad_id) =>{
+        console.log(sch_id, id)
+        const {data: participants, error} = await supabase.from('applicants')
+                                            .select('*, participants(*), applicant_schools(school_id, admission_ays_id)), )')
+                                            .eq('applicant_schools.school_id', sch_id)
+                                            .eq('applicant_schools.admission_ays_id', ad_id)
+                                            .eq('status', 'active')
+                                            .eq('participants.submission_status', 'accepted')
+                                            .not('applicant_schools.admission_ays_id', 'is', null)
                                             .is('deleted_at', null)
 
-                                            return participants
+                                            if(participants){
+                                                console.log('participants', participants.length, error)
+                                                // setTotalNewStud(participant.length)
+                                                return participants.length
+                                            }
+                                            return []
     }
     const removeFilter = () => {
         setTrans("")
@@ -285,7 +323,7 @@ let { data: exam_schedule_tests, error } = await supabase
 
     }
     const detailCurrentSchedule = (index) => {
-        navigate(`/ad/admissions/${id}/schools/detail/${index}`)
+        navigate(`/ad/academic-years/${id}/schools/detail/${index}`)
         // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_DETAIL}))
         // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
         // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
@@ -376,7 +414,8 @@ let { data: exam_schedule_tests, error } = await supabase
                                     <td><div className="font-bold">{l.status??'Aktif'}</div></td>
                                     <td><div className="font-bold">{l.admission_fee??'Rp.125.000'}</div></td>
                                     <td><div className="font-bold">{l.quota}</div></td>
-                                    <td><div className="font-bold">{getRemindQuota(l.quota, l.schools?.school_id)?? l.quota}</div></td>
+                                    <td><div className="font-bold">{l.quota}</div></td>
+                                    {/* <td><div className="font-bold">{getRemindQuota(l.quota, l.schools?.school_id, l.admission_ays_id)}</div></td> */}
                                     {/* <td><div className="font-bold">{l.exam_schedule_tests[0].exam_schedule_schools[0].schools.school_name}</div></td> */}
                                     {/* <td><div className="font-bold">{formatDateNew(l.submit_at) }</div></td> */}
                                     {/* <td><div className="badge-primary font-semibold rounded-2xl w-16 py-1 px-2">{l.test_scheme}</div> </td> */}

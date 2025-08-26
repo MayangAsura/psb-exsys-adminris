@@ -41,10 +41,10 @@ useEffect(()=>{
 // {...register(nameInput, registerOptions[nameInput])}
     const updateInputValue = (val) => {
         setValue(val)
-        console.log(updateType, nameInput, value)
-        if(type=="number"){
+        if(type==="number"){
             setValue(parseInt(val))
         }
+        console.log(updateType, nameInput, value)
         updateFormValue({updateType, nameInput, value})
     }
 

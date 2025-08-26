@@ -130,7 +130,7 @@ function ExamCreate(){
             .select('*')
             console.log(exam_schedules)
             if(!error){
-                setScheduleOptions(exam_schedules.map(e => ({name: e.name, value: e.id})))
+                setScheduleOptions(exam_schedules.map(e => ({value: e.id, label: e.name})))
                 // exam_schedules.map((e)=>(
                 //         // setScheduleOptions( e => {
                 //         schedulesOptions.push({ name:e.id, value: e.name})

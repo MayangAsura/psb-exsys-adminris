@@ -14,8 +14,9 @@ const checkAuth = () => {
         const userRole = jwt.user_role
 
         console.log('jwt', jwt, userRole)
+        // setSession(session)
 
-        // const TOKEN = localStorage.setItem("token-session", jwt)
+        const TOKEN = localStorage.setItem("token", session.access_token)
 
         // localStorage.setItem("token", )
         // localStorage.setItem("token-refresh", data.refresh_token)
@@ -24,7 +25,6 @@ const checkAuth = () => {
         
       }
     })
-
     const TOKEN = localStorage.getItem('token')
     const isPublicPage = PUBLIC_ROUTES.some( r => window.location.href.includes(r))
     
@@ -54,6 +54,7 @@ const checkAuth = () => {
           });
         return TOKEN
     }
+
 }
 
 export default checkAuth

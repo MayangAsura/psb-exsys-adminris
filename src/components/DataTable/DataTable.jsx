@@ -12,7 +12,7 @@
       TableHead,
       TableHeader,
       TableRow,
-    } from "@/components/ui/table"; // Shadcn UI table components
+    } from "@/components/UI/table"; // Shadcn UI table components
 
     export function DataTable({ columns, data }) {
       const table = useReactTable({

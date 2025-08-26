@@ -9,6 +9,7 @@ function TabHeaderAdmissionSchool({styleClass, options, id, sch_id}) {
     const navigate = useNavigate()
     let defaultOptions = [
         {tab: 'Detail', selected: true },
+        {tab: 'Pendaftar', selected: false },
         {tab: 'Peserta', selected: false },
         {tab: 'Report', selected: false }
     ]
@@ -42,11 +43,13 @@ function TabHeaderAdmissionSchool({styleClass, options, id, sch_id}) {
     );
 
     if(key==0)
-        navigate('/ad/admissions/'+id+'/schools/detail/'+sch_id)
+        navigate('/ad/academic-years/'+id+'/schools/detail/'+sch_id)
     if(key==1)
-        navigate('/ad/admissions/'+id+'/schools/'+sch_id+ '/participants')
+        navigate('/ad/academic-years/'+id+'/schools/'+sch_id+ '/applicants')
     if(key==2)
-        navigate('/ad/admissions/'+id+'/schools/'+sch_id+ '/reports')
+        navigate('/ad/academic-years/'+id+'/schools/'+sch_id+ '/participants')
+    if(key==3)
+        navigate('/ad/academic-years/'+id+'/schools/'+sch_id+ '/reports')
     // if(key==3)
     //     navigate('/ad/admissions/'+id+ '/presences')
     

@@ -59,7 +59,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
-          <Route path="*" element={<Navigate to={!token? "/ad/login" : "/ad/dashboard"} replace />}/>
           {/* <Route path="*" element={<Navigate to={token_user? "/landing" : ()} replace />}/> */}
           {/* <Route path="*" element={<Navigate to={token? "/ad/welcome" : (token_user? "/landing": (!token_user? "/login": !token? "/ad/login": "")} replace />}/> */}
           {/* <Route path="/login" element={<LandingLogin />} /> */}
@@ -70,6 +69,7 @@ function App() {
           
           {/* Place new routes admin over this*/}
           <Route path="/ad/*" element={<Layout />} />
+          <Route path="*" element={<Navigate to={!token? "/ad/login" : "/ad/dashboard"} replace />}/>
           {/* Place new routes user over this */}
           {/* <Route element={<ProtectedRoute/>}> */}
             {/* <Route path="/landing" element={<Landing />} />

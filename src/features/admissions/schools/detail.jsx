@@ -15,25 +15,26 @@ function InternalPage(){
 
     const dispatch = useDispatch()
     const [test, setTest] = useState({})
-    const id = useParams().admission_id
+    const id = useParams().academic_year_id
     const sch_id = useParams().school_id
     const options = [
         {tab: 'Detail', selected: true },
+        {tab: 'Pendaftar', selected: false },
         {tab: 'Peserta', selected: false },
-        // {tab: 'Peserta', selected: false },
         {tab: 'Report', selected: false }
     ]
     
     useEffect(() => {
         dispatch(setPageTitle({ title : "Detail"}))
-        getTestData()
-      }, [])
+        getTestData(id, sch_id)
+        console.log('id-sch_id',id, sch_id)
+      }, [id, sch_id])
       
-    const getTestData = async () => {
+    const getTestData = async (id, sch_id) => {
         let { data: admissions, error } = await supabase
             .from('admission_schools')
             .select('*')
-            .eq('admission_id', id)
+            .eq('admission_ays_id', id)
             .eq('school_id', sch_id)
             .is('deleted_at', null)
 // 'd17ff676-85d2-4f9e-88f1-0fdfb37517b9'

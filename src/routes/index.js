@@ -40,7 +40,10 @@ const AdmissionDetail = lazy(() => import('../pages/protected/AdmissionDetail'))
 const AdmissionSchools = lazy(() => import('../pages/protected/AdmissionSchools'))
 const AdmissionReports = lazy(() => import('../pages/protected/AdmissionReports'))
 const AdmissionSchDetail = lazy(() => import('../pages/protected/AdmissionSchDetail'))
+const AdmissionSchApplicants = lazy(() => import('../pages/protected/AdmissionSchApplicants'))
+const AdmissionSchApplicantDetail = lazy(() => import('../pages/protected/AdmissionSchApplicantDetail'))
 const AdmissionSchParticipants = lazy(() => import('../pages/protected/AdmissionSchParticipants'))
+const AdmissionSchParticipantDetail = lazy(() => import('../pages/protected/AdmissionSchParticipantDetail'))
 const AdmissionSchReports = lazy(() => import('../pages/protected/AdmissionSchReports'))
 const Account = lazy(() => import('../pages/protected/Account'))
 
@@ -170,31 +173,43 @@ const routes = [
     component: AdmissionCreate, // view rendered
   },
   {
-    path: '/academic-years/edit/:academic_years_id', // the url
+    path: '/academic-years/edit/:academic_year_id', // the url
     component: AdmissionEdit, // view rendered
   },
   {
-    path: '/academic-years/detail/:academic_years_id', // the url
+    path: '/academic-years/detail/:academic_year_id', // the url
     component: AdmissionDetail, // view rendered
   },
   {
-    path: '/academic-years/:academic_years_id/schools', // the url
+    path: '/academic-years/:academic_year_id/schools', // the url
     component: AdmissionSchools, // view rendered
   },
   {
-    path: '/academic-years/:academic_years_id/reports', // the url
+    path: '/academic-years/:academic_year_id/reports', // the url
     component: AdmissionReports, // view rendered
   },
   {
-    path: '/academic-years/:academic_years_id/schools/detail/:school_id', // the url
+    path: '/academic-years/:academic_year_id/schools/detail/:school_id', // the url
     component: AdmissionSchDetail, // view rendered
   },
   {
-    path: '/academic-years/:academic_years_id/schools/:school_id/participants', // the url
+    path: '/academic-years/:academic_year_id/schools/:school_id/applicants', // the url
+    component: AdmissionSchApplicants, // view rendered
+  },
+  {
+    path: '/academic-years/:academic_year_id/schools/:school_id/applicants/detail/:apl_id', // the url
+    component: AdmissionSchApplicantDetail, // view rendered
+  },
+  {
+    path: '/academic-years/:academic_year_id/schools/:school_id/participants', // the url
     component: AdmissionSchParticipants, // view rendered
   },
   {
-    path: '/academic-years/:academic_years_id/schools/:school_id/reports', // the url
+    path: '/academic-years/:academic_year_id/schools/:school_id/participants/detail/:pid', // the url
+    component: AdmissionSchParticipantDetail, // view rendered
+  },
+  {
+    path: '/academic-years/:academic_year_id/schools/:school_id/reports', // the url
     component: AdmissionSchReports, // view rendered
   },
   {

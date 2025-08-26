@@ -7,6 +7,8 @@ import InputText from '../../components/Input/InputText'
 import supabase from '../../services/database-server'
 import { AuthWeakPasswordError } from '@supabase/supabase-js'
 
+import { TbEye, TbEyeOff } from "react-icons/tb";
+
 function Register(){
 
     const INITIAL_REGISTER_OBJ = {
@@ -17,30 +19,33 @@ function Register(){
 
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
     const [registerObj, setRegisterObj] = useState(INITIAL_REGISTER_OBJ)
+    const [isVisible, setIsVisible] = useState(false)
 
     const submitForm = async (e) =>{
         e.preventDefault()
         setErrorMessage("")
 
         // if(registerObj.name.trim() === "")return setErrorMessage("Name is required! (use any value)")
-        if(registerObj.username.trim() === "")return setErrorMessage("Username is required! (use any value)")
-        if(registerObj.password.trim() === "")return setErrorMessage("Password is required! (use any value)")
+        if(username === "")return setErrorMessage("Username wajib diisi")
+        if(password === "")return setErrorMessage("Password wajib diisi")
         else{
             setLoading(true)
 
-            const _username = '+62' + registerObj.username.slice(1)
+            const _username = '+62' + username.slice(1)
             const { data, error } = await supabase.auth.signUp({
                 phone: _username,
-                password: registerObj.password,
+                password: password,
                 options: {
                     channel: 'sms'
                 }
             })
             
-            console.log('data', registerObj)
+            console.log('data', username, password)
             if(error){
-                console.log('data', error, new AuthWeakPasswordError)
+                console.log('session', error, new AuthWeakPasswordError)
                 if(error.code == 'user_already_exists'){
                     setErrorMessage('Pengguna sudah ada')          
                 }else{
@@ -102,7 +107,11 @@ function Register(){
 
 
         }
+
     }
+    const handledVisible = () => {
+    setIsVisible(prevState => !prevState)
+  }
 
     const updateFormValue = ({updateType, value}) => {
         setErrorMessage("")
@@ -125,9 +134,27 @@ function Register(){
 
                             {/* <InputText defaultValue={registerObj.name} updateType="name" containerStyle="mt-4" labelTitle="Name" updateFormValue={updateFormValue}/> */}
 
-                            <InputText defaultValue={registerObj.username} updateType="username" containerStyle="mt-4" labelTitle="No. WhatsApp" placeholder="08123456789" updateFormValue={updateFormValue}/>
+                            {/* <InputText defaultValue={username} updateType="username" containerStyle="mt-4" labelTitle="No. WhatsApp" placeholder="08123456789" /> */}
 
-                            <InputText defaultValue={registerObj.password} type="password" updateType="password" containerStyle="mt-4" labelTitle="Password" updateFormValue={updateFormValue}/>
+                            {/* <InputText defaultValue={password} type="password" updateType="password" containerStyle="mt-4" labelTitle="Password" /> */}
+                            <label className="block">
+                            <span className="block mb-1 text-base font-medium text-gray-700">No. WhatsApp</span>
+                            <input className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" type="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)}  placeholder="" inputMode="" required />
+                            {/* text-gray-800 */}
+                            </label>
+                            <span className="block mb-1 mt-3 text-base font-medium text-gray-700">Password</span>
+                            <label className=" flex mb-4">
+                            <input className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" type={isVisible? "text" : "password"} name="password" value={password} onChange={(e)=> setPassword(e.target.value)} placeholder="••••••••" required />
+                            <button type="button" onClick={handledVisible} 
+                                className="flex justify-around items-center">
+                                    {isVisible? (
+                                    <TbEyeOff size={20} className='absolute mr-10'></TbEyeOff>
+                                    ):(
+                                    <TbEye size={20} className='absolute mr-10'></TbEye>
+                                    ) }
+                                    
+                                </button>
+                            </label>
 
                         </div>
 

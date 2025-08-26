@@ -33,9 +33,9 @@ import schools from "../../services/api/schools"
 
 export const scheduleSchema = z.object({
     name: z.string().min(1, "Nama wajib diisi"),        
-    started_at: z.string().min(1, "Waktu Mulai wajid diisi"),
-    ended_at: z.string().min(1, "Waktu Selesai wajid diisi"),
-    max_participants: z.number().min(1, "Maksimal Peserta wajib diisi"),
+    started_at: z.string().datetime().min(1, "Waktu Mulai wajib diisi"),
+    ended_at: z.string().datetime().min(1, "Waktu Selesai wajib diisi"),
+    max_participants: z.string().min(1, "Maksimal Peserta wajib diisi"),
     school_id: z.string().min(1, "Jenjang wajib diisi")
 })
 
@@ -56,6 +56,7 @@ function ScheduleCreate(){
     // const [schedule, setSchedule] = useState({name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: "" })
     const [schoolOptions, setSchoolOptions] = useState([])
     const [selectedOption, setSelectedOption] = useState(null);
+    
     const {
     register,
     handleSubmit,
@@ -125,11 +126,13 @@ function ScheduleCreate(){
             console.log(schools)
             if(!error){
                 // setSchoolOptions(schools)
-                schools.map((e)=>(
+                setSchoolOptions(
+                    schools.map((e)=>(
                         // setScheduleOptions( e => {
-                        schoolOptions.push({ value:e.school_id, label: e.school_name})
+                        { value:e.school_id, label: e.school_name}
                         
                     ))
+                )
                     console.log(schoolOptions)
             // //     // schedulesOptions e.name
 
@@ -182,8 +185,8 @@ function ScheduleCreate(){
                         
                         {/* <InputText labelTitle="Maksimal Peserta" type="number" name="max_participants" defaultValue={schedule.description} updateFormValue={updateFormValue}/> */}
                         <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" register={register}  registerName="ended_at" errors={errors.ended_at} error_msg={errors.ended_at?.message??null} updateFormValue={updateFormValue}/>
-                        <InputText labelTitle="Maksimal Peserta"  type="number" nameInput="max_participants" register={register} registerName="max_participants" errors={errors.max_participants} error_msg={errors.max_participants?.message??null} defaultValue={schedule.max_participants??0} updateFormValue={updateFormValue}/>
-                        <SelectBox 
+                        <InputText labelTitle="Maksimal Peserta" type="text" nameInput="max_participants" register={register} registerName="max_participants" errors={errors.max_participants} error_msg={errors.max_participants?.message??null} defaultValue={schedule.max_participants??0} updateFormValue={updateFormValue}/>
+                        {/* <SelectBox 
                             labelTitle="Jenjang"
                             options={schoolOptions}
                             placeholder="Pilih Jenjang"
@@ -194,7 +197,19 @@ function ScheduleCreate(){
                             // labelStyle="hidden"
                             // defaultValue={schoolOptions.school_id}
                             updateFormValue={updateFormValue}
-                        />
+                        /> */}
+                        {/* <SelectBox 
+                            labelTitle="Tahun Ajaran"
+                            options={schoolOptions}
+                            placeholder="Pilih TA."
+                            containerStyle="w-full"
+                            register={register} 
+                            registerName="admission_ays_id"
+                            nameInput="admission_ays_id"
+                            // labelStyle="hidden"
+                            // defaultValue={schoolOptions.school_id}
+                            updateFormValue={updateFormValue}
+                        /> */}
                         {/* <InputDateTime labelTitle="Waktu Mulai" name="started_at" defaultValue={schedule.started_at} updateFormValue={updateFormValue}/>
                         <InputDateTime labelTitle="Waktu Selesai" name="ended_at" defaultValue={schedule.ended_at} updateFormValue={updateFormValue}/> */}
                         {/* <InputText labelTitle="Skema" name="scheme" defaultValue={schedule.scheme} updateFormValue={updateFormValue}/>

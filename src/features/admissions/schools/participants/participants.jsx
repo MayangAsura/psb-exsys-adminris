@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { setPageTitle } from '../../common/headerSlice'
-import TitleCard from '../../../components/Cards/TitleCard'
+import { useDispatch, useSelector } from 'react-redux'
+import { setPageTitle } from '../../../common/headerSlice'
+import TitleCard from '../../../../components/Cards/TitleCard'
 import * as XLSX from 'xlsx';
-import SearchBar from "../../../components/Input/SearchBar"
+import SearchBar from "../../../../components/Input/SearchBar"
 import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon"
 import FunnelIcon from "@heroicons/react/24/outline/FunnelIcon"
 import { saveAs } from 'file-saver';
 
-import supabase from "../../../services/database-server"
+import supabase from "../../../../services/database-server"
 
 import DocumentIcon  from '@heroicons/react/24/solid/DocumentIcon'
+import { createColumn } from "../components/Columns";
+import { DataTable } from "../components/Table";
+import { ColumnDef } from "@tanstack/react-table";
+import { openModal } from "../../../common/modalSlice"
+import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../../../utils/globalConstantUtil'
 
-import TabHeaderSP from '../../../components/TabHeader/TabHeaderSP'
-import { useParams } from 'react-router-dom'
+import TabHeaderSP from '../../../../components/TabHeader/TabHeaderSP'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const TopSideButtons = ({participants, removeFilter, applyFilter, applySearch}) => {
 
@@ -57,6 +62,9 @@ const TopSideButtons = ({participants, removeFilter, applyFilter, applySearch}) 
 
     if(value === 'gel_1') {
       return 'Gelombang 1 (Dibayarkan 2 Pekan Setelah Dinyatakan diterima)'
+    }
+    if(value === 'jalur_khusus') {
+      return 'Jalur Khusus'
     }
   }
     const exportParticipants = () => {
@@ -149,30 +157,33 @@ const TopSideButtons = ({participants, removeFilter, applyFilter, applySearch}) 
 function AdmissionParticipants(){
 
     const [trans, setTrans] = useState("")
+    const {newNotificationMessage, newNotificationStatus} = useSelector(state => state.header)
     const [ExamParticipants, setExamParticipants] = useState([])
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const id = useParams().admission_id
+    const id = useParams().academic_year_id
     const sch_id = useParams().school_id
     const options = [
         {tab: 'Detail', selected: false },
-        // {tab: 'Jenjang', selected: false },
+        {tab: 'Pendaftar', selected: false },
         {tab: 'Peserta', selected: true },
         {tab: 'Report', selected: false }
     ]
     useEffect(() => {
-        getExamParticipants(id)
+        getExamParticipants(id, sch_id)
         console.log(ExamParticipants)
-    },[id])
+    },[id, sch_id])
 
-    const getExamParticipants = async(id, keyword=null) => {
+    const getExamParticipants = async(id, sch_id, keyword=null) => {
     
         console.log('keyword', keyword)
         if(keyword){
             const {data: participants, error} = await supabase.from('participants')
-                                                .select('*, applicants(*, applicant_schools(school_id, admission_id)) ')
+                                                .select('*, applicants(*, applicant_schools(school_id, admission_ays_id)) ')
                                                 // .or('applicants.phone_number.ilike.male')
                                                 .eq('applicants.applicant_schools.school_id', sch_id)
-                                                .eq('applicants.applicant_schools.admission_id', id)
+                                                .eq('applicants.applicant_schools.admission_ays_id', id)
                                                 .ilike('applicants.phone_number.ilike', `${keyword}`)
                                                 // .or(`applicants.phone_number.ilike.%${keyword}%,applicants.phone_number.ilike.%${keyword}%`)
                                                 // .or(`applicants.phone_number.eq.${keyword}, applicants.full_name.eq.${keyword}, applicants.regist_number.eq.${keyword}`)
@@ -193,9 +204,9 @@ function AdmissionParticipants(){
         }
         if(!keyword || keyword==null){
             const {data: participants, error} = await supabase.from('participants')
-                                                .select('*, applicants(*, applicant_schools(school_id, admission_id)) ')
+                                                .select('*, applicants(*, applicant_schools(school_id, admission_ays_id)) ')
                                                 .eq('applicants.applicant_schools.school_id', sch_id)
-                                                .eq('applicants.applicant_schools.admission_id', id)
+                                                .eq('applicants.applicant_schools.admission_ays_id', id)
                                                 // .select('id,created_at, exam_profiles(full_name,regist_number, completion_status), exam_tests(exam_schedule_tests(exam_schedules(admission_id, exam_schedule_schools(school_id))))')
                                                 // .eq('exam_tests.exam_schedule_tests.exam_schedules.exam_schedule_schools.school_id', sch_id)
                                                 // .eq('exam_tests.exam_schedule_tests.exam_schedules.admission_id', id)
@@ -263,19 +274,122 @@ function AdmissionParticipants(){
     }
   }
 
+  const deleteCurrentSchedule = (index) => {
+                  dispatch(openModal({title : "Konfirmasi", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+                  extraObject : { message : `Apakah Anda yakin menghapus pendaftar ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.ADMISSION_SCHOOLS_DELETE, index}}))
+                  
+          if(newNotificationStatus==1){
+              getExamParticipants(id, sch_id)
+          }
+      }
+  
+      const editCurrentSchedule = (index) => {
+          dispatch(openModal({title : "Edit Pendaftar", bodyType : MODAL_BODY_TYPES.ADMISSION_SCHOOLS_EDIT,
+              extraObject : {message : "", type: CONFIRMATION_MODAL_CLOSE_TYPES.ADMISSION_SCHOOLS_EDIT_SAVE, index: id, sch_id: index }
+          },
+              
+          ))
+          // navigate(`/ad/admissions/schools/edit/${index}`)
+          // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.SCHEDULE_EDIT}))
+          // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+          // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
+  
+      }
+      const detailCurrentSchedule = (index) => {
+          navigate(`/ad/academic-years/${id}/schools/${sch_id}/participants/detail/${index}`)
+          // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_DETAIL}))
+          // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+          // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
+  
+      }
+
+  const columns = [
+    // createColumn("id", ""),
+    createColumn("full_name", "Nama Lengkap"),
+    createColumn("gender", "Jenis Kelamin"),
+    createColumn("phone_number", "No. WhatsApp"),
+    createColumn("regist_number", "No. Registrasi"),
+    createColumn("created_at", "Tanggal Bergabung"),
+    createColumn("status", "Status Seleksi"),
+    createColumn("is_settlement", "Status Pembayaran"),
+    createColumn("is_draft", "Status Pengisian Formulir"),
+    createColumn("is_uniform_sizing", "Status Pengukuran Seragam"),
+    createColumn("action", "Aksi"),
+  ];
+  
+  async function updatePost(id) {
+      // call your api to update
+      console.log(id, "a");
+    }
+    async function deletePost(id) {
+      // call your api to delete
+      console.log(id, "");
+    }
+  
+    const serelizeData = () => {
+      if (ExamParticipants) {
+        //  <th>Bergabung</th>
+        //                 <th>Status Seleksi</th>
+        //                 <th>Pembayaran</th>
+        //                 <th>Kelengkapan Formulir</th>
+        //                 <th>Kelengkapan Pengukuran Seragam</th>
+        //                 <th>Update Terakhir</th>
+        // ${l.submission_status==true? 'bg-green-400': 'bg-red-400'}`}>{l.submission_status==='accepted'?'Lulus':l.submission_status==='initial_submission'?'Pendaftaran/Pemberkasan':'Tidak Lulus'}
+        const newData = ExamParticipants?.map((item) => {
+          return {
+            id: item?.id,
+            full_name: item?.applicants.full_name,
+            gender: item?.applicants.gender==='male'?'Laki-Laki':'Perempuan',
+            phone_number: item?.applicants.phone_number,
+            regist_number: item?.applicants.regist_number,
+            created_at: formatDateNew(item?.created_at),
+            status: <div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${item.submission_status==true? 'bg-green-400': 'bg-red-400'}`}>{item.submission_status==='accepted'?'Lulus':item.submission_status==='initial_submission'?'Pendaftaran/Pemberkasan':'Tidak Lulus'}</div>,
+            is_settlement: <div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${item.is_settlement==true? 'bg-green-400': 'bg-red-400'}`}>{item.is_settlement==='true'?'Sudah Bayar':'Belum Bayar'}</div>,
+            is_draft: <div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${item.is_draft==true? 'bg-green-400': 'bg-red-400'}`}>{item.is_draft==='true'?'Lengkap':'Belum Lengkap'}</div>,
+            is_uniform_sizing: <div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${item.is_uniform_sizing==true? 'bg-green-400': 'bg-red-400'}`}>{item.is_uniform_sizing==='true'?'Selesai':'Belum Lengkap'}</div>,
+            action: [
+                {
+                label: "Detail",
+                callback: () => detailCurrentSchedule(item?.id),
+                },
+                {
+                label: "Edit",
+                callback: () => editCurrentSchedule(item?.id),
+                },
+                {
+                label: "Hapus",
+                callback: () => deleteCurrentSchedule(item?.id),
+                },
+            ],
+          };
+        });
+        return newData;
+      }
+    };
+  
+    const serelizedData = serelizeData();
+
     return(
         <>
             
-                <TabHeaderSP id = {id} options={options} activeKey='Peserta' ></TabHeaderSP>
+                <TabHeaderSP id = {id} options={options} sch_id={sch_id} activeKey='Peserta' ></TabHeaderSP>
             <TitleCard title="Peserta" topMargin="mt-2" TopSideButtons={<TopSideButtons participants={ExamParticipants} applySearch={applySearch} applyFilter={applyFilter} removeFilter={removeFilter}/>}>
             {/* UJIAN */}
                 {/* Team Member list in table format loaded constant */}
                 {/* <TabHeaderE></TabHeaderSP> */}
             <div className="overflow-x-auto w-full" z-index="-10">
-                <table className="table w-full">
+                {ExamParticipants && (
+                                    <div className="w-full mx-auto py-10">
+                                    <DataTable
+                                        columns={columns}
+                                        data={serelizedData ?? []}
+                                        filterBy="full_name"
+                                    />
+                                    </div>
+                                )}
+                {/* <table className="table w-full">
                     <thead>
                     <tr>
-                        {/* <th>Icon</th> */}
                         <th>No. Registrasi</th>
                         <th>Nama</th>
                         <th>No. WhatsApp</th>
@@ -287,10 +401,6 @@ function AdmissionParticipants(){
                         <th>Kelengkapan Formulir</th>
                         <th>Kelengkapan Pengukuran Seragam</th>
                         <th>Update Terakhir</th>
-                        {/* <th>Status Seleksi</th> */}
-                        {/* <th>Tanggal Submit</th> */}
-                        {/* <th>Lokasi</th>
-                        <th>Update Terakhir</th> */}
                     </tr>
                     </thead>
                     <tbody>
@@ -301,44 +411,26 @@ function AdmissionParticipants(){
                                     <td><div className="font-bold">{l.applicants.regist_number }</div></td>
                                     <td>
                                         <div className="flex items-center space-x-3">
-                                            {/* <div className="avatar">
-                                                <div className="mask mask-circle w-12 h-12">
-                                                    <img src={l.icon} alt="Avatar" />
-                                                </div>
-                                            </div> */}
                                             <div>
                                                 <div className="font-bold">{l.applicants.full_name}</div>
                                             </div>
                                         </div>
-                                    </td>
-                                    {/* <td><div className="font-bold">{l.exam_schedule_tests[0].exam_schedule_schools[0].schools.school_name}</div></td> */}
+                                    </td> 
                                     <td><div className="">{l.applicants.phone_number}</div></td>
                                     <td><div className="">{l.applicants.gender==='male'? 'Laki-Laki': 'Perempuan'}</div></td>
                                     <td><div className="">{l.pob}</div></td>
                                     <td><div className="">{formatDateNew(l.created_at) }</div></td>
-                                    {/* <td><div className="badge-primary font-semibold rounded-2xl w-16 py-1 px-2">{l.test_scheme}</div> </td> */}
                                     <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.submission_status==true? 'bg-green-400': 'bg-red-400'}`}>{l.submission_status==='accepted'?'Lulus':l.submission_status==='initial_submission'?'Pendaftaran/Pemberkasan':'Tidak Lulus'}</div></td>
                                     <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_settlement==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_settlement==='true'?'Sudah Bayar':'Belum Bayar'}</div></td>
-                                    {/* className={`rounded-2xl w-32 py-1 px-2 text-gray-100 badge ${l.is_settlement==true? 'bg-orange-400': 'bg-green-400'}`} */}
                                     <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_draft==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_draft==='true'?'Lengkap':'Belum Lengkap'}</div></td>
-                                    {/* className={`rounded-2xl w-24 py-1 px-2 text-gray-100 badge ${l.is_draft==true? 'bg-blue-400': 'bg-gray-400'}`} */}
                                     <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_uniform_sizing==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_uniform_sizing==='true'?'Selesai':'Belum Lengkap'}</div></td>
-                                    {/* className={`rounded-2xl w-24 py-1 px-2 text-gray-100 badge ${l.is_uniform_sizing==true? 'bg-yellow-400': 'bg-cyan-400'}`} */}
-                                    {/* <td>{getEducationUnit(l.Participant_name)}</td>
-                                    <td>{l.address}</td> */}
                                     <td>{formatDateNew(l.updated_at) }</td>
-                                    {/* <td className={`${l.exam_profiles?.completion_status=='ongoing'? 'badge bg-red-400':' badge bg-blue-400'} font-bold`} >{getStatus(l.exam_profiles?.completion_status)}</td> */}
-                                    {/* <td>Ujian Seleksi Jenjang SDIT</td> */}
-                                    {/* <td>{l.exam_schedules_test[0].exam_schedules.name}</td> */}
-                                    {/* <td>{l.score}</td> */}
-                                    {/* <td>{l.updated_at}</td> */}
-                                    {/* <td>{moment(l.date).format("D MMM")}</td> */}
                                     </tr>
                                 )
                             })
                         }
                     </tbody>
-                </table>
+                </table> */}
             </div>
             </TitleCard>
         </>

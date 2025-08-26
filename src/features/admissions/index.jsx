@@ -56,7 +56,7 @@ function Admissions(){
 
     useEffect(() => {
         getSchoolData()
-        console.log(Admissions)
+        console.log('Admissions', Admissions)
     },[])
 
     const getRoleComponent = (role) => {
@@ -71,7 +71,7 @@ function Admissions(){
         let { data: admissions_ays, error } = await supabase
             .from('admission_ays')
             .select('*, admissions(*))')
-            .eq('admission_id', 'e63830b4-c751-4714-9279-fd57c4be5f10')
+            // .eq('admission_id', 'e63830b4-c751-4714-9279-fd57c4be5f10')
             .is('deleted_at', null)
 
         if(!error){
