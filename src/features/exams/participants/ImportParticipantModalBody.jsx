@@ -13,7 +13,7 @@ import {
 // import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import FileUploads from "./FileUploads";
+import FileUploads from "../../admissions/schools/components/FileUploads";
 // import { CONFIRMATION_MODAL_CLOSE_TYPES } from "../../../utils/globalConstantUtil"
 import { useNavigate } from "react-router-dom";
 import supabase from "../../../services/database-server";

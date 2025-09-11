@@ -1,4 +1,6 @@
-function DashboardStats({title, icon, value, description, colorIndex}){
+import { useEffect } from "react"
+
+function DashboardStats({title, icon, value, description, colorIndex, dataSource, setDataSource}){
 
     const COLORS = ["primary", "primary"]
 
@@ -6,6 +8,16 @@ function DashboardStats({title, icon, value, description, colorIndex}){
         if(description.includes("↗︎"))return "font-bold text-green-700 dark:text-green-300"
         else if(description.includes("↙"))return "font-bold text-rose-500 dark:text-red-400"
         else return ""
+    }
+    useEffect(() => {
+        // if(dataSource){
+        //     // setDataSource(dataSource)
+        // }
+    },[dataSource])
+    
+    const openStat = (source) => {
+        
+        setDataSource(source)
     }
 
     return(
@@ -15,6 +27,10 @@ function DashboardStats({title, icon, value, description, colorIndex}){
                 <div className="stat-title dark:text-slate-300">{title}</div>
                 <div className={`stat-value dark:text-slate-300 text-${COLORS[colorIndex%2]}`}>{value}</div>
                 <div className={"stat-desc  " + getDescStyle()}>{description}</div>
+                {setDataSource ? (
+
+                    <div className={"  border border-sm flex items-end"} onClick={() => openStat(dataSource)}>Lihat Grafik</div>
+                ): ""}
             </div>
         </div>
     )

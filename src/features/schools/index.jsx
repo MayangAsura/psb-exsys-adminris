@@ -55,6 +55,8 @@ function Schools(){
         let { data: schools, error } = await supabase
             .from('schools')
             .select('*')
+            .is('deleted_at', null)
+            .order('created_at', 'desc')
 
         if(!error){
             setSchools(schools)

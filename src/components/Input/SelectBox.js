@@ -13,11 +13,24 @@ function SelectBox(props){
     console.log('op', options)
 
     console.log(labelTitle)
+    useEffect(()=>{
+        console.log('defaultValue', defaultValue)
+        if(defaultValue){
+            setValue(defaultValue)
+        }
+        if(options){
+
+        }
+    },[defaultValue, options])
 
     const updateValue = (newValue) =>{
-        setValue(newValue)
-        console.log('newValue', newValue, updateType)
-        updateFormValue({updateType, nameInput, value})
+        setTimeout(() => {
+            if(newValue){
+                setValue(newValue)
+            }
+        }, 1000);
+        console.log('newValue', value, newValue )
+        updateFormValue({updateType, nameInput, value, newValue})
     }
     
 
@@ -32,7 +45,7 @@ function SelectBox(props){
             </label>
 
             <select className="select select-bordered w-full" name={nameInput} value={value} onChange={(e) => updateValue(e.target.value)}>
-                <option disabled value="PLACEHOLDER">{placeholder}</option>
+                <option disabled value="">{placeholder}</option>
                 {/* <option value={o.value || o.name} key={k}>{o.name}</option> */}
                 {
                     options.map((o) => 

@@ -22,7 +22,7 @@ import DocumentDuplicateIcon from '@heroicons/react/24/outline/DocumentDuplicate
 import { MdOutlineTask, MdOutlineDateRange, MdOutlineSchool, MdOutlineAddTask, MdAppRegistration} from "react-icons/md";
 import { TbUserSquareRounded } from "react-icons/tb";
 import { BiTask} from "react-icons/bi";
-import { RiUserFollowLine, RiUserReceivedLine} from "react-icons/ri";
+import { RiUserFollowLine, RiUserReceivedLine, RiTShirt2Line} from "react-icons/ri";
 import { FaFileAlt, FaTasks} from "react-icons/fa";
 
 const iconClasses = `h-6 w-6`
@@ -88,6 +88,11 @@ const routes = [
     icon: <MdAppRegistration className={iconClasses}/>, 
     name: 'Pendaftaran',
     submenu: [
+      {
+        path: '/ad/uniform-models',
+        icon: <RiTShirt2Line className={submenuIconClasses}/>,
+        name: 'Pengukuran Seragam',
+      },
       {
         path: '/ad/participants',
         icon: <RiUserFollowLine className={submenuIconClasses}/>,

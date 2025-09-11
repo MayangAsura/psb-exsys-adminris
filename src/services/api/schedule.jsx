@@ -4,12 +4,12 @@ import supabase from '../database-server'
 export const addSchedule = async (props) => {
     // name, description, started_at, ended_at, scheme, type, location, room, is_random_question, is_random_answer, max_participants 
     // name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: ""
-    console.log(props)
+    console.log('props', props.school_id)
     const response = {error: true, message: 'Gagal menambahkan data Jadwal', data: null }
     const { data: schedule, error } = await supabase
                             .from('exam_schedules')
                                 .insert([
-                                    props.newSchedule
+                                    {...props.newSchedule, school_id: props.school_id}
                                 ])
                                 .select()
     if(error) {
@@ -45,7 +45,7 @@ export const updateSchedule = async (props) => {
     const { data: exam, error } = await supabase
                             .from('exam_schedules')
                                 .update([
-                                    props.newSchedule
+                                    {...props.newSchedule, school_id: props.school_id}
                                 ])
                                 .eq('id', props.id)
                                 .select()

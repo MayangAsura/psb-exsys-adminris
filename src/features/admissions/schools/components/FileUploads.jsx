@@ -2,14 +2,14 @@
 
 import React from 'react';
 import * as XLSX from 'xlsx';
-import {addParticipants} from "../../../services/api/exams"
+import {addParticipants} from "../../../../services/api/exams"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
-import InputText from '../../../components/Input/InputText'
-import ErrorText from '../../../components/Typography/ErrorText'
-import { showNotification } from "../../common/headerSlice"
-import { openModal } from "../../common/modalSlice"
-import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../../utils/globalConstantUtil'
+import InputText from '../../../../components/Input/InputText'
+import ErrorText from '../../../../components/Typography/ErrorText'
+import { showNotification } from "../../../common/headerSlice"
+import { openModal } from "../../../common/modalSlice"
+import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../../../utils/globalConstantUtil'
 import { useEffect } from 'react';
 
 function FileUploads({save, setStatus, id, sid}) {
@@ -87,7 +87,7 @@ function FileUploads({save, setStatus, id, sid}) {
         <input type="file" hidden onChange={handleFileUpload} className='rounded-sm text-green-100' />
         <input
               type="text"
-              placeholder={file ? file.name : "Upload data Peserta"}
+              placeholder={file ? file.name : "Upload data status Peserta"}
               value={file && file?.name}
               disabled={!file}
               className={`border ${
@@ -102,7 +102,8 @@ function FileUploads({save, setStatus, id, sid}) {
         )}
         </div>
         <div className='flex flex-row justify-end items-end '>
-          <a className='ml-2 flex-grow rounded-r-lg border-r-0 border-top-0 border-bottom-0 ' href='https://cnpcpmdrblvjfzzeqoau.supabase.co/storage/v1/object/public/exams/uploads/templates/TemplateImportPesertaUjian.xlsx' download>
+          <a className='ml-2 flex-grow rounded-r-lg border-r-0 border-top-0 border-bottom-0 ' href='https://cnpcpmdrblvjfzzeqoau.supabase.co/storage/v1/object/public/admissions/participants/Template%20update%20status%20peserta.xlsx' download>
+          {/* https://cnpcpmdrblvjfzzeqoau.supabase.co/storage/v1/object/public/exams/uploads/templates/TemplateImportPesertaUjian.xlsx */}
           
             <span className='flex text-sm items-center text-center hover:text-green-400'>Download Template</span>
 

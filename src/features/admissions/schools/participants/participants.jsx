@@ -54,6 +54,15 @@ const TopSideButtons = ({participants, removeFilter, applyFilter, applySearch}) 
         
         // dispatch(showNotification({message : "Add New Member clicked", status : 1}))
     }
+    const updateStatusParticipant = () => {
+        
+        dispatch(openModal({title : "Upload Status Pendaftaran", bodyType : MODAL_BODY_TYPES.ADMISSION_SCHOOLS_PARTICIPANT_STATUS_IMPORT,
+            extraObject : {message : "", type: CONFIRMATION_MODAL_CLOSE_TYPES.ADMISSION_SCHOOLS_PARTICIPANT_STATUS_IMPORT}
+        },
+            
+        ))
+        // dispatch(showNotification({message : "Add New Member clicked", status : 1}))
+    }
 
     const getParticipantCategory = (category) => {
         return (category)=='alumni'?"Alumni":((category)=='hasfamily'?"Memiliki saudara kandung sekolah di Rabbaanii":"Bukan Alumni/Keluarga Rabbaanii") 
@@ -105,6 +114,9 @@ const TopSideButtons = ({participants, removeFilter, applyFilter, applySearch}) 
         <div className="inline-block float-right z-200" z-index='200'>
             <div className="inline-block float-right">
                 <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-800 dark:text-gray-600" onClick={() => addNewParticipant()}>Tambah Peserta</button>
+            </div>
+             <div className="inline-block float-right">
+                <button className="btn px-6 btn-sm normal-case bg-orange-500 text-gray-100 hover:bg-green-800 dark:text-gray-600" onClick={() => updateStatusParticipant()}>Update Status</button>
             </div>
             <div className="inline-block float-right">
                 <button className="btn px-6 btn-sm normal-case bg-orange-700 text-gray-100 hover:bg-orange-800 dark:text-gray-600" onClick={() => exportParticipants()}>Export Peserta</button>
@@ -180,7 +192,7 @@ function AdmissionParticipants(){
         console.log('keyword', keyword)
         if(keyword){
             const {data: participants, error} = await supabase.from('participants')
-                                                .select('*, applicants(*, applicant_schools(school_id, admission_ays_id)) ')
+                                                .select('*, applicants!inner(*, applicant_schools!inner(school_id, admission_ays_id)) ')
                                                 // .or('applicants.phone_number.ilike.male')
                                                 .eq('applicants.applicant_schools.school_id', sch_id)
                                                 .eq('applicants.applicant_schools.admission_ays_id', id)
@@ -191,6 +203,7 @@ function AdmissionParticipants(){
                                                 // .eq('exam_tests.exam_schedule_tests.exam_schedules.exam_schedule_schools.school_id', sch_id)
                                                 // .eq('exam_tests.exam_schedule_tests.exam_schedules.admission_id', id)
                                                 .is('deleted_at', null)
+                                                .order('created_at', 'desc')
                                                 // if(keyword){
         // participants
             //   .ilike('applicants.phone_number', `%${searchTerm}%`)
@@ -204,13 +217,14 @@ function AdmissionParticipants(){
         }
         if(!keyword || keyword==null){
             const {data: participants, error} = await supabase.from('participants')
-                                                .select('*, applicants(*, applicant_schools(school_id, admission_ays_id)) ')
+                                                .select('*, applicants!inner(*, applicant_schools!inner(school_id, admission_ays_id)) ')
                                                 .eq('applicants.applicant_schools.school_id', sch_id)
                                                 .eq('applicants.applicant_schools.admission_ays_id', id)
                                                 // .select('id,created_at, exam_profiles(full_name,regist_number, completion_status), exam_tests(exam_schedule_tests(exam_schedules(admission_id, exam_schedule_schools(school_id))))')
                                                 // .eq('exam_tests.exam_schedule_tests.exam_schedules.exam_schedule_schools.school_id', sch_id)
                                                 // .eq('exam_tests.exam_schedule_tests.exam_schedules.admission_id', id)
                                                 .is('deleted_at', null)
+                                                .order('created_at', 'desc')
 
             if(!error){
                 setExamParticipants(participants)
@@ -284,8 +298,8 @@ function AdmissionParticipants(){
       }
   
       const editCurrentSchedule = (index) => {
-          dispatch(openModal({title : "Edit Pendaftar", bodyType : MODAL_BODY_TYPES.ADMISSION_SCHOOLS_EDIT,
-              extraObject : {message : "", type: CONFIRMATION_MODAL_CLOSE_TYPES.ADMISSION_SCHOOLS_EDIT_SAVE, index: id, sch_id: index }
+          dispatch(openModal({title : "Edit Peserta", bodyType : MODAL_BODY_TYPES.ADMISSION_SCHOOLS_PARTICIPANT_EDIT,
+              extraObject : {message : "", type: CONFIRMATION_MODAL_CLOSE_TYPES.ADMISSION_SCHOOLS_PARTICIPANT_EDIT_SAVE, index: id, sch_id: sch_id, pid: index  }
           },
               
           ))

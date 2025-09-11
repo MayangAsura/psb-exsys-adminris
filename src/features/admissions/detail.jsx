@@ -31,7 +31,7 @@ function InternalPage(){
     const getTestData = async () => {
         let { data: admissions, error } = await supabase
             .from('admission_ays')
-            .select('*')
+            .select('*, admissions!inner(title)')
             .eq('id', id)
 // 'd17ff676-85d2-4f9e-88f1-0fdfb37517b9'
         if(!error){
@@ -66,7 +66,7 @@ function InternalPage(){
                          {/* <p className='flex '>Informasi Detail</p> */}
                         <div className="flex flex-col gap-y-4">
                             <h5 className="text-3xl font-semibold mb-8 css-3rz2wn">
-                            {test.title}</h5>
+                            {test.admissions?.title}</h5>
                             {/* <div>
                                 <div className="h-auto overflow-hidden relative"><div style="max-height: 400px;" className="overflow-hidden text-ellipsis leading-[22px] font-normal text-[14px]"><p className="tiptap-paragraph">..</p></div></div>
                             </div> */}

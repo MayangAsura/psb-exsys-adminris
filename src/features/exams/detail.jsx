@@ -32,15 +32,13 @@ function InternalPage(){
 
     let { data: exam_schedule_tests, error } = await supabase
     .from('exam_schedule_tests')
-    .select(`
-        exam_test_id,
-        exam_schedule_id
-    `)
+    .select('exam_test_id, exam_schedule_id')
     .eq('exam_test_id',id)
     //   .eq('deleted_at', )
 
     if(!error){
-        setExamSch(exam_schedule_tests[0].exam_schedule_id)
+        console.log(exam_schedule_tests)
+        setExamSch(exam_schedule_tests[0]?.exam_schedule_id)
     }
           
     }

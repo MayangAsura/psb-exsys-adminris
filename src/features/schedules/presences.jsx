@@ -23,7 +23,7 @@ function SchedulePresences(){
         {tab: 'Presensi', selected: true }
     ]
     useEffect(() => {
-        getExamPresences(id)
+        // getExamPresences(id)
         console.log(ExamPresences)
     },[id])
 

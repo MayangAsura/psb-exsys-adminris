@@ -8,6 +8,7 @@ import FunnelIcon from '@heroicons/react/24/outline/FunnelIcon'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 import TrashIcon from '@heroicons/react/24/outline/TrashIcon'
 import PencilIcon from '@heroicons/react/24/outline/PencilIcon'
+import EyeIcon from "@heroicons/react/24/outline/EyeIcon"
 import { FaTasks } from "react-icons/fa";
 import { openModal } from "../common/modalSlice"
 import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../utils/globalConstantUtil'
@@ -15,7 +16,6 @@ import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../utils/gl
 import SearchBar from "../../components/Input/SearchBar"
 import supabase from "../../services/database-server"
 import { useNavigate } from "react-router-dom"
-import EyeIcon from "@heroicons/react/24/outline/EyeIcon"
 
 const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
 
@@ -101,8 +101,13 @@ function Exams(){
     const getExamData = async() => {
     
         let { data: exam_tests, error } = await supabase
-            .from('exam_schedule_tests')
-            .select('exam_schedules(name), exam_tests(*)')
+            .from('exam_tests')
+            .select('*')
+            .is('deleted_at', null)
+            .order('created_at', 'desc')
+        // let { data: exam_tests, error } = await supabase
+        //     .from('exam_schedule_tests')
+        //     .select('exam_schedules(name), exam_tests(*)')
 
         if(!error){
         setExamData(exam_tests)
@@ -204,18 +209,18 @@ function Exams(){
                                             </div> */}
                                         </div>
                                     </td>
-                                    <td><div className="font-bold dark:text-gray-200">{l.exam_tests.name}</div></td>
+                                    <td><div className="font-bold dark:text-gray-200">{l.name}</div></td>
                                     {/* text-gray-500 */}
-                                    <td><div className={`badge-primary ${l.exam_tests.scheme=='Online'? 'bg-green-400' : 'bg-orange-400'}  font-semibold text-gray-50 rounded-2xl w-16 py-1 px-2`}>{l.exam_tests.scheme}</div> </td>
+                                    <td><div className={`badge-primary ${l.scheme=='Online'? 'bg-green-400' : 'bg-orange-400'}  font-semibold text-gray-50 rounded-2xl w-16 py-1 px-2`}>{l.scheme}</div> </td>
                                     {/* <td>{l.test_schedule}</td> */}
-                                    <td>Ujian Seleksi Jenjang SDIT</td>
+                                    {/* <td>Ujian Seleksi Jenjang SDIT</td> */}
                                     {/* <td>{l.exam_schedules_test[0].exam_schedules.name}</td> */}
-                                    <td>{l.exam_tests.room}</td>
-                                    <td>{l.exam_tests.updated_at??'-'}</td>
+                                    <td>{l.room}</td>
+                                    <td>{l.updated_at??'-'}</td>
                                     <td>
-                                        <button className="btn btn-square btn-ghost" onClick={() => detailCurrentExam(l.exam_tests.id)}><EyeIcon className="w-5"/></button>
-                                        <button className="btn btn-square btn-ghost" onClick={() => editCurrentData(l.exam_tests.id)}><PencilIcon className="w-5"/></button>
-                                        <button className="btn btn-square btn-ghost" onClick={() => deleteCurrentData(l.exam_tests.id)}><TrashIcon className="w-5"/></button>
+                                        <button className="btn btn-square btn-ghost" onClick={() => detailCurrentExam(l.id)}><EyeIcon className="w-5"/></button>
+                                        <button className="btn btn-square btn-ghost" onClick={() => editCurrentData(l.id)}><PencilIcon className="w-5"/></button>
+                                        <button className="btn btn-square btn-ghost" onClick={() => deleteCurrentData(l.id)}><TrashIcon className="w-5"/></button>
                                     </td>
                                     {/* <td>{moment(l.date).format("D MMM")}</td> */}
                                     </tr>

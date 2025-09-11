@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 // importing styling datepicker
 // import ".. /css/react-datepicker/react-datepicker.css"
 // import { useForm } from "react-hook-form"
@@ -8,12 +8,18 @@ function InputTextRadio({labelTitle, labelStyle, register, required, nameInput, 
 
     const [value, setValue] = useState(defaultValue)
     // const {register, handleSubmit} = useForm()
-    console.log(options)
+    useEffect(()=>{
+        console.log(options)
+        console.log('value', value)
+        if(defaultValue){
+            setValue(defaultValue)
+        }
+    },[defaultValue])
 
     const updateInputValue = (val) => {
         
         setValue(val)
-        updateFormValue({updateType, nameInput, value})
+        updateFormValue({updateType, nameInput, value, newValue: val})
     }
 
     return(

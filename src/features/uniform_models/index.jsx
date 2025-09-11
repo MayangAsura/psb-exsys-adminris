@@ -6,15 +6,22 @@ import { showNotification } from '../common/headerSlice'
 import SearchBar from "../../components/Input/SearchBar"
 import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon"
 import FunnelIcon from "@heroicons/react/24/outline/FunnelIcon"
+import TrashIcon from '@heroicons/react/24/outline/TrashIcon'
+import PencilIcon from '@heroicons/react/24/outline/PencilIcon'
+import EyeIcon from "@heroicons/react/24/outline/EyeIcon"
+import { openModal } from "../common/modalSlice"
+import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../utils/globalConstantUtil'
 
 import supabase from "../../services/database-server"
+import { useNavigate } from "react-router-dom"
 
-const TopSideButtons = ({UniformSizing, removeFilter, applyFilter, applySearch}) => {
+const TopSideButtons = ({UniformModels, removeFilter, applyFilter, applySearch}) => {
 
     const [filterParam, setFilterParam] = useState("")
     const [searchText, setSearchText] = useState("")
     const dispatch = useDispatch()
-    const participantFilters = ["Laki-Laki", "Perempuan"]
+    const navigate = useNavigate()
+    const uniformModelsFilters = ["Laki-Laki", "Perempuan"]
     
 
     const showFiltersAndApply = (params) => {
@@ -35,18 +42,18 @@ const TopSideButtons = ({UniformSizing, removeFilter, applyFilter, applySearch})
         }else{
             applySearch(searchText)
         }
-    }, [UniformSizing, searchText])
+    }, [UniformModels, searchText])
     
 
-    const addNewParticipant = () => {
-        
+    const addNewUniformModels = () => {
+        navigate('/ad/uniform-models/create')
         // dispatch(showNotification({message : "Add New Member clicked", status : 1}))
     }
 
     return(
         <div className="inline-block float-right">
             <div className="inline-block float-right">
-                <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => addNewParticipant()}>Tambah Peserta</button>
+                <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => addNewUniformModels()}>Tambah Seragam</button>
             </div>
 
             <SearchBar searchText={searchText} styleClass="mr-4" setSearchText={setSearchText}/>
@@ -55,7 +62,7 @@ const TopSideButtons = ({UniformSizing, removeFilter, applyFilter, applySearch})
                 <label tabIndex={0} className="btn btn-sm btn-outline"><FunnelIcon className="w-5 mr-2"/>Filter</label>
                 <ul tabIndex={0} className="dropdown-content menu p-2 text-sm shadow bg-base-100 rounded-box w-52">
                     {
-                        participantFilters.map((l, k) => {
+                        uniformModelsFilters.map((l, k) => {
                             return  <li key={k}><a onClick={() => showFiltersAndApply(l)}>{l}</a></li>
                         })
                     }
@@ -80,7 +87,7 @@ const TopSideButtons = ({UniformSizing, removeFilter, applyFilter, applySearch})
     //             <label tabIndex={0} className="btn btn-sm btn-outline"><FunnelIcon className="w-5 mr-2"/>Filter</label>
     //             <ul tabIndex={0} className="dropdown-content menu p-2 text-sm shadow bg-base-100 rounded-box w-52">
     //                 {
-    //                     participantFilters.map((l, k) => {
+    //                     uniformModelsFilters.map((l, k) => {
     //                         return  <li key={k}><a onClick={() => showFiltersAndApply(l)}>{l}</a></li>
     //                     })
     //                 }
@@ -104,15 +111,18 @@ const TEAM_MEMBERS = [
 
 ]
 
-function UniformSizing(){
+function UniformModels(){
 
 
+    const {newNotificationMessage, newNotificationStatus} = useSelector(state => state.header)
     const [members, setMembers] = useState(TEAM_MEMBERS)
-    const [UniformSizing, setUniformSizing] = useState([])
+    const [UniformModels, setUniformModels] = useState([])
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         getUniformModelsData()
-        console.log(UniformSizing)
+        console.log(UniformModels)
     },[])
 
     const getRoleComponent = (role) => {
@@ -124,42 +134,69 @@ function UniformSizing(){
     }
 
     const getUniformModelsData = async () => {
-        let { data: UniformSizing, error } = await supabase
+        let { data: UniformModels, error } = await supabase
             .from('school_uniform_models')
-            .select('*')
-            .eq('school_id', id)
+            .select('*, schools(school_name)')
+            // .eq('school_id', sch_id)
             .is('deleted_at', null)
+            .order('created_at', 'desc')
 
         if(!error){
-            setUniformSizing(UniformSizing)
+            setUniformModels(UniformModels)
         }
     }
 
     const getEducationUnit = (value) => {
         // if(value)
         return value
-        // let { data: UniformSizing, error } = await supabase
-        //     .from('UniformSizing')
+        // let { data: UniformModels, error } = await supabase
+        //     .from('UniformModels')
         //     .select('*')
 
         // if(!error){
-        //     setUniformSizing(UniformSizing)
+        //     setUniformModels(UniformModels)
         // }
     }
 
     const removeFilter = () => {
-        setUniformSizing(UniformSizing)
+        setUniformModels(UniformModels)
     }
 
     const applyFilter = (params) => {
-        let filteredTransactions = UniformSizing.filter((t) => {return t.location == params})
-        setUniformSizing(filteredTransactions)
+        let filteredTransactions = UniformModels.filter((t) => {return t.gender == params})
+        setUniformModels(filteredTransactions)
     }
 
     // Search according to name
     const applySearch = (value) => {
-        let filteredTransactions = UniformSizing.filter((t) => {return t.email.toLowerCase().includes(value.toLowerCase()) ||  t.email.toLowerCase().includes(value.toLowerCase())})
-        setUniformSizing(filteredTransactions)
+        let filteredTransactions = UniformModels.filter((t) => {return t.name.toLowerCase().includes(value.toLowerCase()) ||  t.name.toLowerCase().includes(value.toLowerCase())})
+        setUniformModels(filteredTransactions)
+    }
+
+    const deleteCurrentData = async (index) => {
+            console.log(index)
+            dispatch(openModal({title : "Konfirmasi", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+            extraObject : { message : `Apakah Anda yakin menghapus seragam ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_DELETE, index}}))
+
+            if(newNotificationStatus==1){
+                getUniformModelsData()
+            }
+            // const {schedule_id, ...newExam} = exam
+    }
+    
+    const editCurrentData = (index) => {
+        navigate(`/ad/uniform-models/edit/${index}`)
+        // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_EDIT}))
+        // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+        // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
+
+    }
+    const detailCurrentExam = (index) => {
+        navigate(`/ad/uniform-models/detail/${index}`)
+        // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_DETAIL}))
+        // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+        // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
+
     }
 
     const formatDateNew = (date) => {
@@ -184,27 +221,28 @@ function UniformSizing(){
     return(
         <>
             
-            <TitleCard title="Peserta" topMargin="mt-2" TopSideButtons={<TopSideButtons UniformSizing={UniformSizing} applySearch={applySearch} applyFilter={applyFilter} removeFilter={removeFilter}/>}>
+            <TitleCard title="Model Seragam" topMargin="mt-2" TopSideButtons={<TopSideButtons UniformModels={UniformModels} applySearch={applySearch} applyFilter={applyFilter} removeFilter={removeFilter}/>}>
 
                 {/* Team Member list in table format loaded constant */}
             <div className="overflow-x-auto w-full">
                 <table className="table w-full">
                     <thead>
                     <tr>
-                        <th>Nama</th>
-                        <th>No. Registrasi</th>
-                        <th>No. WhatsApp</th>
-                        <th>Tempat Lahir</th>
-                        <th>Status Seleksi</th>
+                        <th>Model</th>
+                        <th>Kode</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Jenjang</th>
+                        {/* <th>Status Seleksi</th>
                         <th>Pembayaran</th>
                         <th>Kelengkapan Formulir</th>
-                        <th>Kelengkapan Pengukuran Seragam</th>
+                        <th>Kelengkapan Pengukuran Seragam</th> */}
                         <th>Update Terakhir</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                         {
-                            UniformSizing.map((l, k) => {
+                            UniformModels.map((l, k) => {
                                 return(
                                     <tr key={k}>
                                     {/* <td>
@@ -219,20 +257,28 @@ function UniformSizing(){
                                             </div>
                                         </div>
                                     </td> */}
-                                    <td >{l.applicants.full_name}</td>
-                                    <td className="font-bold ">{l.applicants.regist_number}</td>
+                                    <td >{l.model_name}</td>
+                                    <td >{l.model_code}</td>
+                                    <td >{l.model_gender=='male'?'Laki-Laki':'Perempuan'}</td>
+                                    <td >{l.schools?.school_name}</td>
+                                    {/* <td className="font-bold ">{l.applicants.regist_number}</td>
                                     <td>{l.applicants.phone_number}</td>
                                     <td>{l.pob}</td>
                                     <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_complete==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_complete==='true'?'Lulus':'Tidak Lulus'}</div></td>
-                                    <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_settlement==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_settlement==='true'?'Sudah Bayar':'Belum Bayar'}</div></td>
+                                    <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_settlement==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_settlement==='true'?'Sudah Bayar':'Belum Bayar'}</div></td> */}
                                     {/* className={`rounded-2xl w-32 py-1 px-2 text-gray-100 badge ${l.is_settlement==true? 'bg-orange-400': 'bg-green-400'}`} */}
-                                    <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_draft==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_draft==='true'?'Lengkap':'Belum Lengkap'}</div></td>
+                                    {/* <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_draft==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_draft==='true'?'Lengkap':'Belum Lengkap'}</div></td> */}
                                     {/* className={`rounded-2xl w-24 py-1 px-2 text-gray-100 badge ${l.is_draft==true? 'bg-blue-400': 'bg-gray-400'}`} */}
-                                    <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_uniform_sizing==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_uniform_sizing==='true'?'Selesai':'Belum Lengkap'}</div></td>
-                                    {/* className={`rounded-2xl w-24 py-1 px-2 text-gray-100 badge ${l.is_uniform_sizing==true? 'bg-yellow-400': 'bg-cyan-400'}`} */}
+                                    {/* <td><div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${l.is_uniform_Models==true? 'bg-green-400': 'bg-red-400'}`}>{l.is_uniform_Models==='true'?'Selesai':'Belum Lengkap'}</div></td> */}
+                                    {/* className={`rounded-2xl w-24 py-1 px-2 text-gray-100 badge ${l.is_uniform_Models==true? 'bg-yellow-400': 'bg-cyan-400'}`} */}
                                     {/* <td>{getEducationUnit(l.Participant_name)}</td>
                                     <td>{l.address}</td> */}
-                                    <td>{formatDateNew(l.updated_at) }</td>
+                                    <td>{l.updated_at?formatDateNew(l.updated_at):'-' }</td>
+                                    <td>
+                                        <button className="btn btn-square btn-ghost" onClick={() => detailCurrentExam(l.id)}><EyeIcon className="w-5"/></button>
+                                        <button className="btn btn-square btn-ghost" onClick={() => editCurrentData(l.id)}><PencilIcon className="w-5"/></button>
+                                        <button className="btn btn-square btn-ghost" onClick={() => deleteCurrentData(l.id)}><TrashIcon className="w-5"/></button>
+                                    </td>
                                     {/* <td>{getRoleComponent(l.role)}</td> */}
                                     {/* <td>{l.lastActive}</td> */}
                                     </tr>
@@ -248,4 +294,4 @@ function UniformSizing(){
 }
 
 
-export default UniformSizing
+export default UniformModels

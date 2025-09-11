@@ -5,7 +5,7 @@ import { DefaultContext } from "react-icons/lib"
 // import { useForm } from "react-hook-form"
 
 
-function InputText({labelTitle, labelStyle, error, register, registerName, registerOptions, required, nameInput, type, pattern, checked, containerStyle, inputStyle, defaultValue, placeholder, updateFormValue, updateType, errors, error_msg}){
+function InputText({labelTitle, labelStyle, error, register, registerName, registerOptions, isRequired, nameInput, type, pattern, checked, _disabled, containerStyle, inputStyle, defaultValue, placeholder, updateFormValue, updateType, errors, error_msg}){
 
     const [value, setValue] = useState(defaultValue)
     const [registerOptions_, setRegisterOptions] = useState(registerOptions)
@@ -20,7 +20,10 @@ useEffect(()=>{
     console.log(defaultValue)
     if(defaultValue)
         setValue(defaultValue)
-},[defaultValue, registerOptions])
+    if(type==='file'){
+        setValue()
+    }
+},[defaultValue, registerOptions, type])
 // const registerOptions = {
 //     name: { required: "Harap isi Nama" },
 //     subtitle: { required: "Harap isi Deskripsi" },
@@ -55,10 +58,15 @@ useEffect(()=>{
             </label>
             {/* {...register(nameInput, {required})}  */}
             {register && (
-                <input name={nameInput} type={type || "text"} value={value} {...register(registerName)} pattern={pattern} checked placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)} required className={`input input-bordered w-full ${inputStyle}` }  />
+                <input name={nameInput} type={type || "text"} value={value} {...register(registerName)} pattern={pattern} checked disabled={_disabled} placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)} required={isRequired} className={`input input-bordered w-full ${inputStyle}` }  />
             )}
-            {!register && (
-                <input name={nameInput} type={type || "text"} value={value} pattern={pattern} checked placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)} required className={`input input-bordered w-full ${inputStyle}` }  />
+            {type !== 'file' && !register && (
+                
+                <input name={nameInput} type={type || "text"} value={value} pattern={pattern} checked placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.value)} required={isRequired} className={`input input-bordered w-full ${inputStyle}` }  />
+                
+            )}
+            {type === 'file' && (
+                <input name={nameInput} type={"file"} value={value} pattern={pattern} placeholder={placeholder || ""} onChange={(e) => updateInputValue(e.target.files[0])} required={isRequired} className={`input input-bordered w-full ${inputStyle}` }  />
             )}
                 {errors && 
                     <span className="mt-2 text-sm text-red-500 ">

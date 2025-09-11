@@ -14,20 +14,30 @@ import dayjs from 'dayjs';
 import 'rsuite/dist/rsuite.min.css';
 
 
-function InputDateTimePicker({labelTitle, labelStyle, register, nameInput, type, containerStyle, defaultValue, placeholder, updateFormValue, updateType, errors, error_msg}){
+function InputDateTimePicker({handleStartDateChange, handleEndDateChange, handleDateChange, labelTitle, labelStyle, register, nameInput, type, containerStyle, defaultValue, placeholder, updateFormValue, updateType, errors, error_msg}){
 
     const [value, setValue] = useState()
 
     useEffect(() => {
         // new Date()
         if(defaultValue){
-            setValue(defaultValue)
+            setValue(dayjs(defaultValue))
         }
     },[defaultValue])
     const updateInputValue = (val) => {
         // val.toISOString()
         setValue(val)
-        updateFormValue({updateType, nameInput, value: val.toISOString()})
+        // if(nameInput==='started_at'){
+
+        //     console.log('start')
+        //     handleStartDateChange(value)
+        // }
+        // if(nameInput==='ended_at'){
+
+        //     handleEndDateChange(value)
+        // }
+        // handleDateChange({value, nameInput})
+        updateFormValue({updateType, nameInput, value, newValue: val})
         console.log(value)
     }
 
@@ -47,7 +57,7 @@ function InputDateTimePicker({labelTitle, labelStyle, register, nameInput, type,
                 <span className={"label-text text-base-content " + labelStyle}>{labelTitle}</span>
             </label>
              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateTimePicker value={value ?? dayjs(new Date())}  onChange={updateInputValue} defaultValue={defaultValue} minutesStep={5} />
+                <DateTimePicker value={value ? value: dayjs(new Date())}  onChange={updateInputValue} minutesStep={5} />
              </LocalizationProvider>
             {/* <DatePicker
                 format="dd MMM yyyy hh:mm:ss aa"

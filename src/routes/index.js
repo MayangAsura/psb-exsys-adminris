@@ -32,6 +32,11 @@ const QuestionBankCreate = lazy(() => import('../pages/protected/QuestionBankCre
 const Schools = lazy(() => import('../pages/protected/Schools'))
 const Applicants = lazy(() => import('../pages/protected/Applicants'))
 const Participants = lazy(() => import('../pages/protected/Participants'))
+const UniformModels = lazy(() => import('../pages/protected/UniformModels'))
+const UniformModelsCreate = lazy(() => import('../pages/protected/UniformModelsCreate'))
+const UniformModelsDetail = lazy(() => import('../pages/protected/UniformModelsDetail'))
+// const UniformModelsDetail = lazy(() => import('../pages/protected/UniformModelsDetail'))
+const UniformModelsEdit = lazy(() => import('../pages/protected/UniformModelsEdit'))
 const Admissions = lazy(() => import('../pages/protected/Admissions'))
 const GenAdmissions = lazy(() => import('../pages/protected/GenAdmissions'))
 const AdmissionCreate = lazy(() => import('../pages/protected/AdmissionCreate'))
@@ -151,6 +156,22 @@ const routes = [
   {
     path: '/schools', // the url
     component: Schools, // view rendered
+  },
+  {
+    path: '/uniform-models', // the url
+    component: UniformModels, // view rendered
+  },
+  {
+    path: '/uniform-models/create', // the url
+    component: UniformModelsCreate, // view rendered
+  },
+  {
+    path: '/uniform-models/detail/:mid', // the url
+    component: UniformModelsDetail, // view rendered
+  },
+  {
+    path: '/uniform-models/edit/:mid', // the url
+    component: UniformModelsEdit, // view rendered
   },
   {
     path: '/applicants', // the url

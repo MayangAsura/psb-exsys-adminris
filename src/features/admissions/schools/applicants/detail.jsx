@@ -40,6 +40,7 @@ function InternalPage(){
             .is('deleted_at', null)
 // 'd17ff676-85d2-4f9e-88f1-0fdfb37517b9'
         if(admissions.length >0){
+            
         setTest(admissions[0])
         }
     }
@@ -110,6 +111,117 @@ function InternalPage(){
                                 <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
                                     <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
                                         <p className=" css-zuhd6s">Nama Lengkap</p>
+                                        </div>
+                                    <div className="css-4o3x93"><p className="w-fit h-fit font-semibold css-1bq9ewv">{test.full_name} </p></div>
+                                    </div>
+                                    <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
+                                        <p className=" css-zuhd6s">Jenis Kelamin</p>
+                                        </div><div className="css-4o3x93">
+                                        <p className="w-fit h-fit font-semibold">{test.gender==='male'?'Laki-Laki':'Perempuan'} </p></div>
+                                    </div>
+                                </div>
+                                <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
+                                    <div className="flex flex-col gap-y-2 w-full">
+                                        <div className="css-4o3x93"><p className="w-full css-zuhd6s">Email</p></div>
+                                <div className="css-4o3x93"><p className="font-semibold">{test.email} </p></div></div>
+                                
+                                <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2 ">
+                                    <div className="css-4o3x93"><p className=" css-zuhd6s">No. WhatsAppp</p></div><div className="css-4o3x93">
+                                        <p className="font-semibold badge-primary bg-orange-400 text-gray-700 rounded-2xl py-3 px-5 css-1pj8jfk">{test.phone_number} </p></div></div></div>
+                                </div>
+                                <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
+                                    <div className="flex flex-col gap-y-2 w-full">
+                                        <div className="css-4o3x93"><p className="w-full css-zuhd6s">Terakhir Aktif</p></div>
+                                <div className="css-4o3x93"><p className="font-semibold">{test.updated_at} </p></div></div>
+                                
+                                <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2 ">
+                                    <div className="css-4o3x93"><p className=" css-zuhd6s">Status</p></div><div className="css-4o3x93">
+                                        <p className="font-semibold badge-primary bg-orange-400 text-gray-700 rounded-2xl py-3 px-5 css-1pj8jfk">{convertToUpper(test.status)} </p></div></div></div>
+                                </div>
+                                <hr />
+                                {/* <p>Data Peserta</p>
+                                <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
+                                    <div className="flex flex-col gap-y-2 w-full">
+                                        <div className="css-4o3x93"><p className="w-full css-zuhd6s">Tempat Lahir, Tanggal Lahir</p></div>
+                                <div className="css-4o3x93"><p className="font-semibold">{`${test.participants[0]?.pob}, ${formatDateNew(test.participants[0]?.dob)}`} </p></div></div>
+                                
+                                <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2 ">
+                                    <div className="css-4o3x93"><p className=" css-zuhd6s">NISN</p></div><div className="css-4o3x93">
+                                        <p className="font-semibold badge-primary bg-orange-400 text-gray-700 rounded-2xl py-3 px-5 css-1pj8jfk">{test.participants[0]?.nisn} </p></div></div></div>
+                                </div>
+                                <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
+                                    <div className="flex flex-col gap-y-2 w-full">
+                                        <div className="css-4o3x93"><p className="w-full css-zuhd6s">No. KK</p></div>
+                                <div className="css-4o3x93"><p className="font-semibold">{test.participants[0]?.kk_number} </p></div></div>
+                                
+                                <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2 ">
+                                    <div className="css-4o3x93"><p className=" css-zuhd6s">NIK</p></div><div className="css-4o3x93">
+                                        <p className="font-semibold badge-primary bg-orange-400 text-gray-700 rounded-2xl py-3 px-5 css-1pj8jfk">{test.participants[0]?.nik} </p></div></div></div>
+                                </div>
+                                <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
+                                    <div className="flex flex-col gap-y-2 w-full">
+                                        <div className="css-4o3x93"><p className="w-full css-zuhd6s">Alamat Sekolah Sebelumnya</p></div>
+                                <div className="css-4o3x93"><p className="font-semibold">{test.participants[0]?.prev_school_address} </p></div></div>
+                                
+                                <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2 ">
+                                    <div className="css-4o3x93"><p className=" css-zuhd6s">NIK</p></div><div className="css-4o3x93">
+                                        <p className="font-semibold badge-primary bg-orange-400 text-gray-700 rounded-2xl py-3 px-5 css-1pj8jfk">{test.participants[0]?.nik} </p></div></div></div>
+                                </div> */}
+                                <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
+                                    {/* <div className="flex flex-col gap-y-2 w-full">
+                                        <div className="css-4o3x93"><p className="w-full css-zuhd6s">Biaya Masuk</p></div>
+                                <div className="css-4o3x93"><p className="font-semibold">{formatRupiah(test.admission_fee??"")} </p></div></div> */}
+                                 
+                                {/* <div className="w-full flex mb-2"><div className="flex flex-col gap-y-2 "><div className="css-4o3x93"><p className=" css-zuhd6s">Status</p></div><div className="css-4o3x93"><p className="font-semibold badge-primary bg-orange-400 text-gray-700 rounded-2xl py-3 px-5 css-1pj8jfk">{convertToUpper(test.admission_status)} </p></div></div></div> */}
+                                </div>
+                                {/* <div className="w-full flex flex-col md:flex-row gap-y-4 md:gap-y-0">
+                                    <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
+                                        <p className=" css-zuhd6s">Tipe</p>
+                                        </div>
+                                    <div className="css-4o3x93"><p className="w-fit h-fit font-semibold css-1bq9ewv">{test.test_type} </p></div>
+                                    </div>
+                                    <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
+                                        <p className=" css-zuhd6s">Lokasi</p>
+                                        </div><div className="css-4o3x93">
+                                        <p className="px-3 py-2 w-fit h-fit text-white !text-[12px] rounded-[4px] font-semibold leading-none bg-successed-500 css-zuhd6s">{test_room} </p></div>
+                                    </div>
+                                </div>
+                                <div className="w-full flex flex-col md:flex-row gap-y-4 md:gap-y-0">
+                                    <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
+                                        <p className=" css-zuhd6s">Lokasi</p>
+                                        </div>
+                                    <div className="css-4o3x93"><p className="w-fit h-fit font-semibold css-1bq9ewv">{test.location} </p></div>
+                                    </div>
+                                    <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
+                                        <p className=" css-zuhd6s">Ruangan</p>
+                                        </div><div className="css-4o3x93">
+                                        <p className="w-fit h-fit font-semibold">{test.room} </p></div>
+                                    </div>
+                                </div> */}
+                                    
+                            </div>
+                    </div>
+                    
+                </div>
+
+            </TitleCard>
+            <TitleCard title="Pembayaran Formulir" topMargin="mt-2">
+                <div className="overflow-x-auto w-full ">
+                    <div className='flex flex-col justify-between items-start'>
+                         {/* <p className='flex '>Informasi Detail</p> */}
+                        <div className="flex flex-col gap-y-4">
+                            {/* <h5 className="text-3xl font-semibold mb-8 css-3rz2wn">
+                            {test.full_name}</h5> */}
+                            {/* <div>
+                                <div className="h-auto overflow-hidden relative"><div style="max-height: 400px;" className="overflow-hidden text-ellipsis leading-[22px] font-normal text-[14px]"><p className="tiptap-paragraph">..</p></div></div>
+                            </div> */}
+                                {/* <div className="css-4o3x93">
+                                    <p className=" css-zuhd6s">Nama</p>
+                                </div>
+                                <div className="flex flex-wrap gap-1 -mt-2">{test.title} </div>  */}
+                                <div className="w-full flex flex-col md:flex-row gap-y-52 gap-x-52 md:gap-y-64">
+                                    <div className="flex flex-col gap-y-2 w-full"><div className="css-4o3x93">
+                                        <p className=" css-zuhd6s">No. Formulir</p>
                                         </div>
                                     <div className="css-4o3x93"><p className="w-fit h-fit font-semibold css-1bq9ewv">{test.full_name} </p></div>
                                     </div>

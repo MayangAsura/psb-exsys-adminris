@@ -70,7 +70,7 @@ const Presence = () => {
   //   },[])
 
     useEffect(() =>{
-      getPresenceData()
+      // getPresenceData()
       console.log(applicantPresence)
     },[])
 

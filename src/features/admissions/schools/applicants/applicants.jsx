@@ -25,6 +25,7 @@ import { cn } from '../../../../lib/utils';
 
 import TabHeaderSP from '../../../../components/TabHeader/TabHeaderSP'
 import { useNavigate, useParams } from 'react-router-dom'
+import { email } from 'zod';
 
 const TopSideButtons = ({applicants, removeFilter, applyFilter, applySearch}) => {
 
@@ -109,6 +110,7 @@ const TopSideButtons = ({applicants, removeFilter, applyFilter, applySearch}) =>
             <div className="inline-block float-right">
                 <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-800 dark:text-gray-600" onClick={() => addNewApplicant()}>Tambah Pendaftar</button>
             </div>
+           
             <div className="inline-block float-right">
                 <button className="btn px-6 btn-sm normal-case bg-orange-700 text-gray-100 hover:bg-orange-800 dark:text-gray-600" onClick={() => exportApplicants()}>Export Pendaftar</button>
             </div>
@@ -162,6 +164,7 @@ function AdmissionApplicants(){
     const [trans, setTrans] = useState("")
     const {newNotificationMessage, newNotificationStatus} = useSelector(state => state.header)
     const [ExamApplicants, setExamApplicants] = useState([])
+    const [applicant, setApplicant] = useState({})
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -176,25 +179,25 @@ function AdmissionApplicants(){
 
 const columns = [
 //   createColumn("id", ""),
-createColumn("regist_number", "No. Registrasi"),
-  createColumn("full_name", "Nama Lengkap"),
-  createColumn("gender", "Jenis Kelamin"),
-  createColumn("phone_number", "No. WhatsApp"),
-  createColumn("action", "Aksi")
+    createColumn("regist_number", "No. Registrasi"),
+    createColumn("full_name", "Nama Lengkap"),
+    createColumn("gender", "Jenis Kelamin"),
+    createColumn("phone_number", "No. WhatsApp"),
+    createColumn("action", "Aksi")
 ];
 
-async function detailPost(id) {
-    // call your api to update
-    console.log(id, "a");
-  }
-async function updatePost(id) {
-    // call your api to update
-    console.log(id, "a");
-  }
-  async function deletePost(id) {
-    // call your api to delete
-    console.log(id, "");
-  }
+    async function detailPost(id) {
+        // call your api to update
+        console.log(id, "a");
+    }
+    async function updatePost(id) {
+        // call your api to update
+        console.log(id, "a");
+    }
+    async function deletePost(id) {
+        // call your api to delete
+        console.log(id, "");
+    }
 
   const serelizeData = () => {
     if (ExamApplicants) {
@@ -234,22 +237,46 @@ async function updatePost(id) {
         console.log('id-sch_id', id, sch_id)
     },[id, sch_id])
 
+    const getApplicant = async (index, sch_id, appl_id) => {
+        if (appl_id) {
+            const {data: admission_schools, error } = await supabase.from('applicants')
+                                                        .select("*, applicant_schools!inner(*)")
+                                                        .eq('applicant_schools.school_id', sch_id)
+                                                        .eq('applicant_schools.admission_ays_id', index.toString())
+                                                        // .neq('applicant_schools.school_id', null)
+                                                        // .neq('applicant_schools.admission_ays_id', null)
+                                                        .eq('id', appl_id)
+                                                        .is('deleted_at', null)
+            if(admission_schools){
+                console.log(admission_schools[0])
+                setApplicant(admission_schools[0])
+                console.log(applicant)
+                // setApplicantSchool(admission_schools[0].applicant_schools[0])
+            }else{
+                console.log(error)
+            }
+        }else{
+            
+        }
+    }
+
     const getExamApplicants = async(id, sch_id, keyword=null) => {
     
         console.log('keyword', keyword)
         if(keyword){
             const {data: applicants, error} = await supabase.from('applicants')
-                                                .select('*, applicant_schools(school_id, admission_ays_id), participants(*)')
+                                                .select('*, applicant_schools!inner(school_id, admission_ays_id), participants(*)')
                                                 // .or('applicants.phone_number.ilike.male')
                                                 .eq('applicant_schools.school_id', sch_id)
                                                 .eq('applicant_schools.admission_ays_id', id)
-                                                .ilike('phone_number.ilike', `${keyword}`)
+                                                // .ilike('phone_number.ilike', `${keyword}`)
                                                 // .or(`applicants.phone_number.ilike.%${keyword}%,applicants.phone_number.ilike.%${keyword}%`)
                                                 // .or(`applicants.phone_number.eq.${keyword}, applicants.full_name.eq.${keyword}, applicants.regist_number.eq.${keyword}`)
                                                 // .select('id,created_at, exam_profiles(full_name,regist_number, completion_status), exam_tests(exam_schedule_tests(exam_schedules(admission_id, exam_schedule_schools(school_id))))')
                                                 // .eq('exam_tests.exam_schedule_tests.exam_schedules.exam_schedule_schools.school_id', sch_id)
                                                 // .eq('exam_tests.exam_schedule_tests.exam_schedules.admission_id', id)
                                                 .is('deleted_at', null)
+                                                // .order('created_at', 'desc')
                                                 // if(keyword){
         // applicants
             //   .ilike('applicants.phone_number', `%${searchTerm}%`)
@@ -263,15 +290,15 @@ async function updatePost(id) {
         }
         if(!keyword || keyword==null){
             const {data: applicants, error} = await supabase.from('applicants')
-                                                .select('*, applicant_schools(school_id, admission_ays_id), participants(*)')
-                                                // .or('applicants.phone_number.ilike.male')
+                                                .select('*, applicant_schools!inner(school_id, admission_ays_id), participants(*)')
                                                 .eq('applicant_schools.school_id', sch_id)
                                                 .eq('applicant_schools.admission_ays_id', id)
-                                                // .ilike('phone_number.ilike', `${keyword}`)
                                                 .is('deleted_at', null)
+                                                // .order('created_at', 'desc')
 
             if(!error){
                 setExamApplicants(applicants)
+                console.log('ExamApplicants', ExamApplicants)
             }
         }
 
@@ -354,8 +381,27 @@ async function updatePost(id) {
     }
 
     const editCurrentSchedule = (index) => {
-        dispatch(openModal({title : "Edit Pendaftar", bodyType : MODAL_BODY_TYPES.ADMISSION_SCHOOLS_EDIT,
-            extraObject : {message : "", type: CONFIRMATION_MODAL_CLOSE_TYPES.ADMISSION_SCHOOLS_EDIT_SAVE, index: id, sch_id: index }
+        console.log(id, sch_id, index, applicant)
+        setTimeout(() => {
+            getApplicant(id, sch_id, index)
+            
+        }, 1000);
+        // setTimeout(() => {
+            
+        // }, 1000);
+        const applicantData = {
+            full_name: applicant.full_name,
+            gender: applicant.gender,
+            phone_number: applicant.phone_number,
+            regist_number: applicant.regist_number,
+            email: applicant.email,
+            media: applicant.media,
+            // school_id: applicant.applicant_schools[0]?.school_id || 0
+        }
+        // setSchedule((prev) => ({...prev, name: exam_schedule[0].name, max_participants: exam_schedule[0].max_participants, 
+        //             started_at: exam_schedule[0].started_at, ended_at: exam_schedule[0].ended_at, school_id: exam_schedule[0].exam_schedule_schools[0]?.school_id, admission_ays_id: exam_schedule[0].admission_ays_id}))
+        dispatch(openModal({title : "Edit Pendaftar", bodyType : MODAL_BODY_TYPES.ADMISSION_SCHOOLS_APPLICANT_EDIT,
+            extraObject : {message : "", type: CONFIRMATION_MODAL_CLOSE_TYPES.ADMISSION_SCHOOLS_APPLICANT_EDIT_SAVE, index: id, sch_id: sch_id, appl_id: index, data: applicantData }
         },
             
         ))

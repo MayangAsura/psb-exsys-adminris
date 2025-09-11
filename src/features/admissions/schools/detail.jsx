@@ -15,6 +15,7 @@ function InternalPage(){
 
     const dispatch = useDispatch()
     const [test, setTest] = useState({})
+    const [school, setSchool] = useState("")
     const id = useParams().academic_year_id
     const sch_id = useParams().school_id
     const options = [
@@ -33,13 +34,15 @@ function InternalPage(){
     const getTestData = async (id, sch_id) => {
         let { data: admissions, error } = await supabase
             .from('admission_schools')
-            .select('*')
+            .select('*, schools(school_name)')
             .eq('admission_ays_id', id)
             .eq('school_id', sch_id)
             .is('deleted_at', null)
 // 'd17ff676-85d2-4f9e-88f1-0fdfb37517b9'
         if(!error){
         setTest(admissions[0])
+        setSchool(admissions[0].schools.school_name)
+        console.log('test', test)
         }
     }
 
@@ -98,7 +101,8 @@ function InternalPage(){
                          {/* <p className='flex '>Informasi Detail</p> */}
                         <div className="flex flex-col gap-y-4">
                             <h5 className="text-3xl font-semibold mb-8 css-3rz2wn">
-                            {test.school_name}</h5>
+                            {school}
+                            </h5>
                             {/* <div>
                                 <div className="h-auto overflow-hidden relative"><div style="max-height: 400px;" className="overflow-hidden text-ellipsis leading-[22px] font-normal text-[14px]"><p className="tiptap-paragraph">..</p></div></div>
                             </div> */}

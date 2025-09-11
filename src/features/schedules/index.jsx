@@ -84,7 +84,7 @@ function Schedules(){
     useEffect(() => {
         getSchedulesData()
         // console.log(schedules)
-        getNumPresences(schedules)
+        // getNumPresences(schedules)
     },[schedules])
 
     const getSchedulesData = async () => {
@@ -107,6 +107,7 @@ function Schedules(){
                 .select('*')
                 .eq('schedule_id', item.id)
                 .is('deleted_at', null)
+                .order('created_at', 'desc')
     
             if(!error){
                 counts[item.id] = presences.length || 0

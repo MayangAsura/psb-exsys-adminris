@@ -21,6 +21,7 @@ import {updateExam} from "../../services/api/exams"
 import DateTimePicker from 'react-datetime-picker'
 import { useNavigate, useParams } from "react-router-dom"
 import InputDateTimePicker from "../../components/Input/InputDateTimePicker"
+import dayjs from 'dayjs';
 // import DatePicker from 'rsuite/DatePicker';
 // import 'rsuite/DatePicker/styles/index.css';
 // importing styling datepicker
@@ -40,10 +41,10 @@ export const examSchema = z.object({
     subtitle: z.string().min(1, "Nama wajib diisi"),        
     started_at: z.string().min(1, "Waktu Mulai wajid diisi"),
     ended_at: z.string().min(1, "Waktu Selesai wajid diisi"),
-    scheme: z.string().min(1, "Nama wajib diisi"),        
-    question_type: z.string().min(1, "Nama wajib diisi"),        
-    location: z.string().min(1, "Nama wajib diisi"),        
-    room: z.string().min(1, "Nama wajib diisi")
+    scheme: z.string().min(1, "Skema diisi"),        
+    question_type: z.string().min(1, "Tipe Pertanyaan wajib diisi"),        
+    location: z.string().min(1, "Lokasi wajib diisi"),        
+    room: z.string().min(1, "Ruangan wajib diisi")
 })
 
 export const examDefaultValues = {
@@ -65,13 +66,16 @@ function ExamEdit(){
     const [exam, setExam] = useState({name: "", subtitle: "", icon: "", started_at: "", ended_at: "", scheme: "", question_type: "", location: "", room: "" })
     // exam_category_id: "",
     // const [schedule, setSchedule] = useState({name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: "" })
-    const [schemeOptions, setSchemeOptions] = useState([{name: "Online", value: "online"},{name: "Offline", value: "offline"}])
-    const [typeOptions, setTypeOptions] = useState([{name: "Pilihan Ganda", value: "MC"},{name: "Benar Salah", value: "BS"},{name: "Essay Singkat", value: "ES"},{name: "Essay", value: "E"}])
+    const [schemeOptions, setSchemeOptions] = useState([{label: "Online", value: "online"},{label: "Offline", value: "offline"}])
+    const [typeOptions, setTypeOptions] = useState([{label: "Pilihan Ganda", value: "MC"},{label: "Benar Salah", value: "BS"},{label: "Essay Singkat", value: "ES"},{label: "Essay", value: "E"}])
     const [selectedOption, setSelectedOption] = useState(null);
     const [schedulesOptions, setScheduleOptions] = useState([])
     const [icon_file_url, setIconFileUrl] = useState("")
     const checked = false
-    const {register, handleSubmit, formState: {errors}} = useForm()
+    const {register, handleSubmit, formState: {errors}} = useForm({
+            resolver: zodResolver(examSchema),
+            defaultValues: examDefaultValues,
+          })
     const id = useParams().exam_id
 
 
@@ -81,7 +85,7 @@ function ExamEdit(){
         // getSchedule()
         getExam(id)
         // console.log(id)
-        console.log('exam', exam)
+        console.log('exam', exam, id)
     },[id])
 
     const registerOptions = {
@@ -184,6 +188,7 @@ if(file){
         console.log('nameInput', nameInput, value)
         exam[nameInput] = value
         console.log('exam>', exam)
+        setExam({...exam, [nameInput] : value})
         // setSchedule( (data) =>  ({...data, [nameInput]: value}))
 
         // console.log(updateType)
@@ -192,13 +197,15 @@ if(file){
     const getExam = async (id) => {
         let { data: exam, error } = await supabase
             .from('exam_tests')
-            .select('*, exam_schedule_tests(exam_schedules(id, name)) ')
+            .select('*, exam_schedule_tests(deleted_at, exam_schedules(id, name)) ')
             .eq('id', id)
+            .is('deleted_at', null)
+            .is('exam_schedule_tests.deleted_at', null)
             console.log(exam[0])
             if(!error){
                 // name: "", subtitle: "", icon: "", started_at: "", ended_at: "", scheme: "", question_type: "", location: "", room: "" 
                 // setExam(exam[0])
-                setExam((prev) => ({...prev, name: exam[0].name, subtitle: exam[0].subtitle, icon: exam[0].icon, started_at: exam[0].started_at, ended_at: exam[0].ended_at, scheme: exam[0].scheme, question_type: exam[0].question_type, location: exam[0].location, room: exam[0].room}))
+                setExam((prev) => ({...prev, name: exam[0].name, subtitle: exam[0].subtitle, icon: exam[0].icon, started_at: exam[0].started_at, ended_at: exam[0].ended_at, scheme: exam[0].scheme, question_type: exam[0].question_type, location: exam[0].location, room: exam[0].room, schedule_id: exam[0].exam_schedule_tests[0]?.exam_schedules.id}))
                 console.log('exam>', exam)
             }
     } 
@@ -207,15 +214,16 @@ if(file){
         let { data: schools, error } = await supabase
             .from('exam_schedules')
             .select('*')
+            .is('deleted_at', null)
             console.log(schools)
             if(!error){
-                setScheduleOptions(schools)
+                // setScheduleOptions(schools)
                 schools.map((e)=>(
                         // setScheduleOptions( e => {
-                        schedulesOptions.push({ name:e.id, value: e.name})
+                        schedulesOptions.push({ value:e.id, label: e.name})
                         
                     ))
-                    console.log(schedulesOptions)
+                    console.log('schedulesOptions', schedulesOptions)
             // //     // schedulesOptions e.name
 
             // }))
@@ -318,6 +326,7 @@ if(file){
                         containerStyle="w-72"
                         register={register} 
                         registerName="scheme"
+                        defaultValue={exam.scheme}
                         // labelStyle="hidden"
                         // defaultValue="TODAY"
                         updateFormValue={updateFormValue}
@@ -332,8 +341,8 @@ if(file){
                     // defaultValue="TODAY"
                     updateFormValue={updateSelectBoxValue}
                 /> */}
-                    <InputDateTimePicker labelTitle="Waktu Mulai" nameInput="started_at" register={register} registerName="started_at" defaultValue={exam.started_at} updateFormValue={updateFormValue} />
-                    <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" register={register} registerName="ended_at" defaultValue={exam.ended_at} updateFormValue={updateFormValue} />
+                    <InputDateTimePicker labelTitle="Waktu Mulai" nameInput="started_at" register={register} registerName="started_at" defaultValue={dayjs(exam.started_at)} updateFormValue={updateFormValue} />
+                    <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" register={register} registerName="ended_at" defaultValue={dayjs(exam.ended_at)} updateFormValue={updateFormValue} />
                     
                     {/* <InputText labelTitle="Waktu Mulai" type="date" defaultValue="alex@dashwind.com" updateFormValue={updateFormValue}/> */}
                     {/* <InputText labelTitle="Waktu Selesai" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/> */}
@@ -354,7 +363,7 @@ if(file){
                         containerStyle="w-72"
                         register={register}
                         registerName="schedule_id"
-                        // defaultValue={exam.exam_schedule_tests[0]?.exam_schedules?.id}
+                        defaultValue={exam.schedule_id}
                         // labelStyle="hidden"
                         // defaultValue="TODAY"
                         updateFormValue={updateFormValue}

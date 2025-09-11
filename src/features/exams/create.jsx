@@ -68,7 +68,7 @@ function ExamCreate(){
     // exam_category_id: "",
     // const [schedule, setSchedule] = useState({name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: "" })
     const [schemeOptions, setSchemeOptions] = useState([{label: "Online", value: "online"},{label: "Offline", value: "offline"}])
-    const [typeOptions, setTypeOptions] = useState([{label: "Pilihan Ganda", value: "MC"},{label: "Benar Salah", value: "BS"},{label: "Essay Singkat", value: "ES"},{label: "Essay", value: "E"}])
+    const [typeOptions, setTypeOptions] = useState([{label: "Pilihan Ganda", value: "MC"},{label: "Essay Singkat", value: "ES"},{label: "Benar Salah", value: "BS"},{label: "Essay", value: "E"}])
     const [schedulesOptions, setScheduleOptions] = useState([])
     const [selectedOption, setSelectedOption] = useState(null);
     const checked = false
@@ -95,6 +95,10 @@ function ExamCreate(){
     const saveExam = async (e) => {
         e.preventDefault()
         console.log('exam in ad', exam)
+        if(exam.name=="" || exam.subtitle=="" || exam.started_at=="" || exam.ended_at=="" || exam.location=="" || exam.room == "" || exam.schedule_id=="" || exam.scheme==""){
+            dispatch(showNotification({message : "Gagal Menambahkan Ujian. Data tidak valid.", status : 0}))
+            return
+        }
         const {schedule_id, ...newExam} = exam
         const response = await addExam({newExam, schedule_id})
         // const {error, message, data} = await addExam({exam})
@@ -115,9 +119,11 @@ function ExamCreate(){
     //     setSchedule((schedule) =>({...schedule, [nameInput]: value}))
     //     // console.log(updateType)
     // }
-    const updateFormValue = ({updateType, nameInput, value}) => {
+    const updateFormValue = ({updateType, nameInput, value, newValue=null}) => {
         console.log('nameInput', nameInput, value)
-        exam[nameInput] = value
+        console.log('value', value, newValue)
+        exam[nameInput] = value?value:newValue
+        // setExam(prev => ({...prev, [nameInput]:value?value:newValue}))
         console.log('exam>', exam)
         // setSchedule( (data) =>  ({...data, [nameInput]: value}))
 
@@ -171,6 +177,7 @@ function ExamCreate(){
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         
                     <InputText labelTitle="Nama" register={register} registerName="name" nameInput="name" updateFormValue={updateFormValue}/>
+                    {/* <InputText labelTitle="Nama" register={register} registerName="name" nameInput="name" updateFormValue={updateFormValue}/> */}
                     <InputText labelTitle="Deskripsi" register={register} registerName="subtitle" nameInput="subtitle" updateFormValue={updateFormValue}/>
                     {/* <InputText labelTitle="Skema Ujian" defaultValue={exam.scheme} updateFormValue={updateFormValue}/> */}
                     {/* <SelectBox labelTitle="Jadwal" defaultValue="" updateFormValue={updateFormValue}/> */}

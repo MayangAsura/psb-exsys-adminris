@@ -302,8 +302,9 @@ let { data: exam_schedule_tests, error } = await supabase
     //         // const {schedule_id, ...newExam} = exam
     // }
     const deleteCurrentSchedule = (index) => {
+        console.log(index)
                 dispatch(openModal({title : "Konfirmasi", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-                extraObject : { message : `Apakah Anda yakin menghapus jadwal ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.ADMISSION_SCHOOLS_DELETE, index}}))
+                extraObject : { message : `Apakah Anda yakin menghapus jenjang ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.ADMISSION_SCHOOLS_DELETE, index}}))
                 
         if(newNotificationStatus==1){
             getAdmissionSchoolData()
@@ -411,8 +412,8 @@ let { data: exam_schedule_tests, error } = await supabase
                                     </td>
                                     <td><div className="font-bold">{formatDateNew(l.started_at) }</div></td>
                                     <td><div className="font-bold">{formatDateNew(l.ended_at) }</div></td>
-                                    <td><div className="font-bold">{l.status??'Aktif'}</div></td>
-                                    <td><div className="font-bold">{l.admission_fee??'Rp.125.000'}</div></td>
+                                    <td><div className="font-bold">{l.status??'-'}</div></td>
+                                    <td><div className="font-bold">{l.admission_fee??'-'}</div></td>
                                     <td><div className="font-bold">{l.quota}</div></td>
                                     <td><div className="font-bold">{l.quota}</div></td>
                                     {/* <td><div className="font-bold">{getRemindQuota(l.quota, l.schools?.school_id, l.admission_ays_id)}</div></td> */}

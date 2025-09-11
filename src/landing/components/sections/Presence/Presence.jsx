@@ -74,7 +74,7 @@ const Presence = (props) => {
   //   },[])
 
     useEffect(() =>{
-      getPresenceData(props.id, props.sid)
+      // getPresenceData(props.id, props.sid)
       console.log(applicantPresence)
     },[props.id, props.sid])
 

@@ -19,6 +19,7 @@ function Register(){
 
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
+    const [full_name, setFullName] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [registerObj, setRegisterObj] = useState(INITIAL_REGISTER_OBJ)
@@ -57,12 +58,14 @@ function Register(){
                 // const { data: exam_users, error } = await supabase
                 // .from('exam_users')
                 // .insert([
-                //     {   full_name: registerObj.full_name,
-                //         phone_number: registerObj.username, provider : 'phone', 
+                //     {   full_name: full_name,
+                //         phone_number: username, 
+                //         provider : 'phone', 
                 //         phone_verified: data.user.user_metadata.phone_verified,
                 //         user_id: data.user.id,
                 //         refresh_token: data.session.refresh_token, expired_at: new Date(data.session.expires_at).toISOString(), expired_in: data.session.expires_in,
-                //         last_sign_in: data.session.last_sign_in_at
+                //         last_sign_in: data.user.last_sign_in_at
+                        
 
                 //         // created_at timestamp with time zone not null default now()
                 //     },
@@ -95,13 +98,13 @@ function Register(){
                 //     if(error){
                 //         setErrorMessage("Registrasi Gagal")
                 //     }else{
-                        // setLoading(true)
+                        setLoading(true)
                         // Call API to check user credentials and save token in localstorage
                         localStorage.setItem("token", data.session.access_token)
                         localStorage.setItem("token-refresh", data.session.refresh_token)
                         setLoading(false)
                         window.location.href = '/ad/dashboard'
-                //     }
+                    // }
                 // }
             }
 
@@ -137,6 +140,11 @@ function Register(){
                             {/* <InputText defaultValue={username} updateType="username" containerStyle="mt-4" labelTitle="No. WhatsApp" placeholder="08123456789" /> */}
 
                             {/* <InputText defaultValue={password} type="password" updateType="password" containerStyle="mt-4" labelTitle="Password" /> */}
+                            <label className="block">
+                            <span className="block mb-1 text-base font-medium text-gray-700">Nama</span>
+                            <input className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" type="full_name" name="full_name" value={full_name} onChange={(e) => setFullName(e.target.value)}  placeholder="" inputMode="" required />
+                            {/* text-gray-800 */}
+                            </label>
                             <label className="block">
                             <span className="block mb-1 text-base font-medium text-gray-700">No. WhatsApp</span>
                             <input className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" type="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)}  placeholder="" inputMode="" required />

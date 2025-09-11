@@ -192,14 +192,34 @@ function Account(){
 
     return(
         <>
-            <TitleCard title="Edit Jadwal" topMargin="mt-2">
+
+            <TitleCard title="Profile Settings" topMargin="mt-2">
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <InputText labelTitle="Name" defaultValue="Alex" updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Email Id" defaultValue="alex@dashwind.com" updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Title" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Place" defaultValue="California" updateFormValue={updateFormValue}/>
+                    <TextAreaInput labelTitle="About" defaultValue="Doing what I love, part time traveller" updateFormValue={updateFormValue}/>
+                </div>
+                <div className="divider" ></div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <InputText labelTitle="Language" defaultValue="English" updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Timezone" defaultValue="IST" updateFormValue={updateFormValue}/>
+                    <ToogleInput updateType="syncData" labelTitle="Sync Data" defaultValue={true} updateFormValue={updateFormValue}/>
+                </div>
+
+                <div className="mt-16"><button className="btn btn-primary float-right" >Update</button></div>
+            </TitleCard>
+            {/* <TitleCard title="Akun" topMargin="mt-2">
                 <form onSubmit={saveAccounts}>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         
                         <InputText labelTitle="Nama" nameInput="name" required defaultValue={account.name} updateFormValue={updateFormValue}/>
                         <InputDateTimePicker labelTitle="Waktu Mulai" nameInput="started_at" defaultValue={account.name}  updateFormValue={updateFormValue}/>
-                        {/* defaultValue={account.started_at?account.started_at:new Date()} */}
+                        defaultValue={account.started_at?account.started_at:new Date()}
                         <SelectBox 
                             labelTitle="Jenjang"
                             options={schoolOptions}
@@ -212,35 +232,16 @@ function Account(){
                             updateFormValue={updateFormValue}
                         />
                         
-                        {/* <InputText labelTitle="Maksimal Peserta" type="number" name="max_participants" defaultValue={account.description} updateFormValue={updateFormValue}/> */}
+                        <InputText labelTitle="Maksimal Peserta" type="number" name="max_participants" defaultValue={account.description} updateFormValue={updateFormValue}/>
                         <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" defaultValue={account.ended_at} updateFormValue={updateFormValue}/>
                         <InputText labelTitle="Maksimal Peserta"  type="number" nameInput="max_participants" defaultValue={account.max_participants} updateFormValue={updateFormValue} containerStyle="w-72"/>
-                        {/* <InputDateTime labelTitle="Waktu Mulai" name="started_at" defaultValue={account.started_at} updateFormValue={updateFormValue}/>
-                        <InputDateTime labelTitle="Waktu Selesai" name="ended_at" defaultValue={account.ended_at} updateFormValue={updateFormValue}/> */}
-                        {/* <InputText labelTitle="Skema" name="scheme" defaultValue={account.scheme} updateFormValue={updateFormValue}/>
-                        <InputText labelTitle="Tipe" name="type" defaultValue={account.type} updateFormValue={updateFormValue}/>
-                        <InputText labelTitle="Lokasi" name="location" defaultValue={account.location} updateFormValue={updateFormValue}/>
-                        <InputText labelTitle="Ruangan" name="room" defaultValue={account.room} updateFormValue={updateFormValue}/>
-                        <InputText labelTitle="Acak Soal" name="is_random_question" defaultValue={true} type="radio" updateFormValue={updateFormValue}/>
-                        <InputText labelTitle="Acak Jawaban" name="is_random_answer" defaultValue={true}  type="radio" updateFormValue={updateFormValue}/> */}
-
-                        {/* <SelectBox labelTitle="Jadwal" defaultValue="" updateFormValue={updateFormValue}/> */}
-                    {/* <InputText labelTitle="Waktu Mulai" defaultValue="alex@dashwind.com" updateFormValue={updateFormValue}/>
-                    <InputText labelTitle="Waktu Selesai" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/>
-                    <TextAreaInput labelTitle="About" defaultValue="Doing what I love, part time traveller" updateFormValue={updateFormValue}/> */}
                 </div>
                 <div className="divider" ></div>
 
-                {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <InputText labelTitle="Language" defaultValue="English" updateFormValue={updateFormValue}/>
-                    <InputText labelTitle="Timezone" defaultValue="IST" updateFormValue={updateFormValue}/>
-                    <ToogleInput updateType="syncData" labelTitle="Sync Data" defaultValue={true} updateFormValue={updateFormValue}/>
-                    </div> */}
-
                 <div className="mt-16"><button className="btn btn-primary float-right bg-green-700 hover:bg-green-600 text-gray-50 dark:text-gray-100" type="submit" >Simpan</button></div>
                 </form>
-                {/* onClick={() => updateaccounts()} */}
-            </TitleCard>
+
+            </TitleCard> */}
             
             
             
