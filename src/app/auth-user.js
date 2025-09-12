@@ -4,12 +4,12 @@ const checkAuthUser = () => {
 /*  Getting token value stored in localstorage, if token is not present we will open login page 
     for all internal dashboard routes  */
     const TOKEN = localStorage.getItem("token-user")
-    const PUBLIC_ROUTES = ["login", "forgot-password", "register"]
+    const PUBLIC_ROUTES = ["/ad/login", "/ad/forgot-password", "/ad/register"]
 
     const isPublicPage = PUBLIC_ROUTES.some( r => window.location.href.includes(r))
 
     if(!TOKEN && !isPublicPage){
-        window.location.href = '/login'
+        window.location.href = '/ad/login'
         return;
     }else{
         axios.defaults.headers.common['Authorization'] = `Bearer ${TOKEN}`

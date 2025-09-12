@@ -47,6 +47,7 @@ function QuestionBanks(){
 
     const {newNotificationStatus} = useSelector((state) => state.header)
     const [members, setMembers] = useState(TEAM_MEMBERS)
+    const [search, setSearch] = useState("");
     const [questionBanks, setQuestionBanks] = useState([])
     const dispatch = useDispatch()
 

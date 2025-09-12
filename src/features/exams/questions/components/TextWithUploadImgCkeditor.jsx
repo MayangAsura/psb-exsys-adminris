@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import Editor from './ckeditor/cusEditor';
 import CustomEditor from '../ckeditor/customEditor';
- import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+//  import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 // import { supabase } from '../../../services/supabase';
 import supabase from '../../../../services/database-server';
