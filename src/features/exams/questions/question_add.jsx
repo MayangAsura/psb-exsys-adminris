@@ -5,6 +5,7 @@ import { questionSchema } from './schemas/question_schemas';
 import supabase from '../../../services/database-server';
 import TextWithUploadImgCkeditor from './components/TextWithUploadImgCkeditor';
 import EditorWithGallery from '../../../components/Input/TextEditor';
+import TextEditor from './components/TextEditor';
 
 function QuestionAdd () {
   const [uploading, setUploading] = useState(false);
@@ -92,11 +93,14 @@ function QuestionAdd () {
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Question Text *
           </label>
-          <EditorWithGallery
+          <TextEditor>
+
+          </TextEditor>
+          {/* <EditorWithGallery
             value={watch('questionText') || ''}
             onChange={(content) => setValue('questionText', content)}
             onBlur={() => {}}
-          />
+          /> */}
           {errors.questionText && (
             <p className="mt-1 text-sm text-red-600">{errors.questionText.message}</p>
           )}
@@ -104,10 +108,10 @@ function QuestionAdd () {
 
         {/* Question Image Upload */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          {/* <label className="block text-sm font-medium text-gray-700 mb-1">
             Question Image (Optional)
-          </label>
-          <input
+          </label> */}
+          {/* <input
             type="file"
             accept="image/*"
             onChange={(e) => handleImageUpload(e.target.files[0], 'question')}
@@ -122,12 +126,12 @@ function QuestionAdd () {
                 className="h-32 object-contain"
               />
             </div>
-          )}
+          )} */}
         </div>
 
         {/* Answers */}
         <div className="space-y-4">
-          <h2 className="text-lg font-medium text-gray-900">Answers (Select one correct answer)</h2>
+          <h2 className="text-lg font-medium text-gray-900">Pilihan Jawaban (Select one correct answer)</h2>
           
           {fields.map((field, index) => (
             <div key={field.id} className="p-4 border border-gray-200 rounded-md">
@@ -152,11 +156,12 @@ function QuestionAdd () {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Answer Text *
                 </label>
-                <EditorWithGallery
+                <TextEditor></TextEditor>
+                {/* <EditorWithGallery
                   value={watch(`answers.${index}.text`) || ''}
                   onChange={(content) => setValue(`answers.${index}.text`, content)}
                   onBlur={() => {}}
-                />
+                /> */}
                 {errors.answers?.[index]?.text && (
                   <p className="mt-1 text-sm text-red-600">
                     {errors.answers[index].text.message}
@@ -181,7 +186,7 @@ function QuestionAdd () {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                {/* <label className="block text-sm font-medium text-gray-700 mb-1">
                   Answer Image (Optional)
                 </label>
                 <input
@@ -199,14 +204,14 @@ function QuestionAdd () {
                       className="h-32 object-contain"
                     />
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           ))}
 
-          {errors.answers && typeof errors.answers.message === 'string' && (
+          {/* {errors.answers && typeof errors.answers.message === 'string' && (
             <p className="mt-1 text-sm text-red-600">{errors.answers.message}</p>
-          )}
+          )} */}
         </div>
 
         {/* Explanation */}

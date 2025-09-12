@@ -167,12 +167,13 @@ const useApplicants = () => {
       const { data: data_appl, error } = await supabase.rpc("edit_applicant", {
             _full_name : data.full_name,
             _gender : data.gender,
+            _phone_number : data.phone_number,
             _email : data.email,
             _password : data.password,
             _media : data.media,
             _school_id : parseInt(data.school_id),
             _subschool : data.subschool,
-            _phone_number : data.phone_number,
+            _dob : data.dob
           });
         return data_appl
       // return register(

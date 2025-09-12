@@ -4,6 +4,10 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import Editor from './ckeditor/cusEditor';
 import CustomEditor from '../ckeditor/customEditor';
 //  import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+import { ClassicEditor, Essentials, Paragraph, Bold, Italic } from 'ckeditor5';
+import { FormatPainter } from 'ckeditor5-premium-features';
+
 
 // import { supabase } from '../../../services/supabase';
 import supabase from '../../../../services/database-server';

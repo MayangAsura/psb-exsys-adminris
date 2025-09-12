@@ -50,7 +50,7 @@ function App() {
     // console.log(token_user)
     // load tabHeaderHandler
     // tabHeaderHandlerActiveTab()
-    console.log(token_user)
+    console.log('token', token)
   }, [])
 
 
@@ -69,7 +69,7 @@ function App() {
           
           {/* Place new routes admin over this*/}
           <Route path="/ad/*" element={<Layout />} />
-          <Route path="*" element={<Navigate to={!token? "/ad/login" : "/ad/dashboard"} replace />}/>
+          <Route path="*" element={<Navigate to={token? "/ad/dashboard": "/ad/login" } replace />}/>
           {/* Place new routes user over this */}
           {/* <Route element={<ProtectedRoute/>}> */}
             {/* <Route path="/landing" element={<Landing />} />
