@@ -1,15 +1,16 @@
 import { useSelector } from 'react-redux'
 import { Link, Outlet } from 'react-router-dom'
 // import Header from '../partials/Header'
-import checkAuthUser from '../../../../app/auth-user';
+// import checkAuthUser from '../../../../app/auth-user';
+import checkAuth from '../../../../app/auth';
 import Header from "../../Header"
 
 const ProtectedRoute = () => {
 //   const { userInfo } = useSelector((state) => state.auth)
-    const token_user = checkAuthUser()
+    const token = checkAuth()
 
   // show unauthorized screen if no user is found in redux store
-  if (!token_user) {
+  if (!token) {
     return (
       <div className="flex flex-col max-w-lg min-h-screen my-0 mx-auto shadow-lg overflow-hidden relative">
       {/* flex flex-col max-w-lg min-h-screen my-0 mx-auto overflow-hidden relative */}

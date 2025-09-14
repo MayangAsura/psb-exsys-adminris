@@ -101,10 +101,10 @@ const Login = () =>{
         
         
         localStorage.setItem("token-user", response.data.token_refresh)
-        console.log(response.data.token_refresh)
+        console.log('response.data.token_refresh', response.data.token_refresh)
 
         const token = localStorage.getItem("token-user")
-        console.log(token)
+        console.log('token', token)
         if(token){
           const { data: applicant, error_app } = await supabase
           .from('applicants')
