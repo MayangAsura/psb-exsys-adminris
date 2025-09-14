@@ -1,6 +1,5 @@
 import axios from "axios"
 import { jwtDecode } from 'jwt-decode'
-import { use } from "react"
 import supabase from '../services/database-server'
 
 const checkAuth = () => {
