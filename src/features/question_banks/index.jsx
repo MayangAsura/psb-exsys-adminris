@@ -15,10 +15,12 @@ import { getAllQuestionBanks, getQBFemaleCounts, getQBMaleCounts } from "../../l
 
 
 import supabase from "../../services/database-server"
+import { useNavigate } from "react-router-dom"
 
 const TopSideButtons = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const addNewTeamMember = () => {
         dispatch(showNotification({message : "Add New Member clicked", status : 1}))
@@ -107,14 +109,15 @@ function QuestionBanks(){
     
     const deleteCurrentQuestion = (index) => {
             dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
-            extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_DELETE, index}}))
+            extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_BANK_DELETE, index}}))
 
             if(newNotificationStatus==1){
                 getQuestionBanks()
             }
         }
     const editCurrentQuestion = (index) => {
-        dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_EDIT}))
+        navigate('/ad/question_bank')
+        // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_EDIT}))
         // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
         // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
 
@@ -133,7 +136,7 @@ function QuestionBanks(){
             <TitleCard title="Bank Soal" topMargin="mt-2" TopSideButtons={<TopSideButtons />}>
 
             <div className="overflow-x-auto w-full">
-                <React.Suspense
+                {/* <React.Suspense
           fallback={
             <DataTableSkeleton
               columnCount={7}
@@ -152,8 +155,8 @@ function QuestionBanks(){
           }
         >
           <TasksTable promises={promises} />
-        </React.Suspense>
-                {/* <table className="table w-full">
+        </React.Suspense> */}
+                <table className="table w-full">
                     <thead>
                     <tr>
                         <th>Pertanyaan</th>
@@ -181,7 +184,7 @@ function QuestionBanks(){
                             })
                         }
                     </tbody>
-                </table> */}
+                </table>
             </div>
             </TitleCard>
         </>

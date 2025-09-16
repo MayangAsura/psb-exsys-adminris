@@ -11,6 +11,8 @@ import ToogleInput from '../../components/Input/ToogleInput'
 import InputDateTime from "../../components/Input/InputDateTime"
 import { useForm } from "react-hook-form"
 
+import './custom-styles/style.css'
+
 import supabase from "../../services/database-server"
 import {addExam} from "../../services/api/exams"
 
@@ -42,7 +44,7 @@ function QuestionBankCreate(){
     const [typeOptions, setTypeOptions] = useState([{name: "Pilihan Ganda", value: "MC"},{name: "Benar Salah", value: "BS"},{name: "Essay Singkat", value: "ES"},{name: "Essay", value: "E"}])
     const [selectedOption, setSelectedOption] = useState(null);
     const checked = false
-    const {register, handleSubmit} = useForm()
+    // const {register, handleSubmit} = useForm()
     // const {id} = useParams()
 
 
@@ -52,6 +54,111 @@ function QuestionBankCreate(){
         // console.log(id)
         console.log(exam)
     },[])
+
+    const QuestionForm = ({ 
+        initialData = null, 
+        questionsBank = [], 
+        categories = [], 
+        onSubmit, 
+        onCancel 
+        }) => {
+        const [formData, setFormData] = useState({
+            id: '',
+            uuid: '',
+            question: '',
+            answer: '',
+            type: '',
+            score: '',
+            bank_code: '',
+            category_id: '',
+            parent_id: ''
+        });
+
+        const [errors, setErrors] = useState({});
+        const [isEditing, setIsEditing] = useState(false);
+
+        // Filter out current question from parent options
+        const parentOptions = questionsBank.filter(question => 
+            question.uuid !== formData.uuid
+        );
+
+        useEffect(() => {
+            if (initialData) {
+            setFormData(initialData);
+            setIsEditing(true);
+            }
+        }, [initialData]);
+
+        const handleChange = (e) => {
+            const { name, value } = e.target;
+            setFormData(prev => ({
+            ...prev,
+            [name]: value
+            }));
+
+            // Clear error when field is changed
+            if (errors[name]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: ''
+            }));
+            }
+        };
+
+        const validateForm = () => {
+            const newErrors = {};
+
+            if (!formData.question.trim()) {
+            newErrors.question = 'Pertanyaan wajib diisi';
+            }
+
+            if (!formData.answer.trim()) {
+            newErrors.answer = 'Jawaban wajib diisi';
+            }
+
+            if (!formData.type.trim()) {
+            newErrors.type = 'Tipe wajib diisi';
+            }
+
+            if (!formData.score || isNaN(formData.score) || formData.score <= 0) {
+            newErrors.score = 'Score harus berupa angka positif';
+            }
+
+            if (!formData.bank_code.trim()) {
+            newErrors.bank_code = 'Kode bank wajib diisi';
+            }
+
+            if (!formData.category_id) {
+            newErrors.category_id = 'Kategori wajib dipilih';
+            }
+
+            setErrors(newErrors);
+            return Object.keys(newErrors).length === 0;
+        };
+
+        const handleSubmit = (e) => {
+            e.preventDefault();
+            
+            if (validateForm()) {
+            onSubmit(formData);
+            }
+        };
+
+        const handleReset = () => {
+            setFormData(initialData || {
+            id: '',
+            uuid: '',
+            question: '',
+            answer: '',
+            type: '',
+            score: '',
+            bank_code: '',
+            category_id: '',
+            parent_id: ''
+            });
+            setErrors({});
+        };
+
 
     // Call API to update profile settings changes
     const updateExam = async (e) => {
@@ -127,26 +234,165 @@ function QuestionBankCreate(){
         <>
             
             <TitleCard title="Tambah Soal" topMargin="mt-2">
-                <form onSubmit={handleSubmit(updateExam)}>
+
+                <form onSubmit={handleSubmit} className="question-form">
+                    <div className="form-row">
+                    <div className="form-group">
+                        <label htmlFor="question">Pertanyaan *</label>
+                        <textarea
+                        id="question"
+                        name="question"
+                        value={formData.question}
+                        onChange={handleChange}
+                        placeholder="Masukkan pertanyaan..."
+                        rows="4"
+                        className={errors.question ? 'error' : ''}
+                        />
+                        {errors.question && <span className="error-message">{errors.question}</span>}
+                    </div>
+                    </div>
+
+                    <div className="form-row">
+                    <div className="form-group">
+                        <label htmlFor="answer">Jawaban *</label>
+                        <input
+                        type="text"
+                        id="answer"
+                        name="answer"
+                        value={formData.answer}
+                        onChange={handleChange}
+                        placeholder="Masukkan jawaban..."
+                        className={errors.answer ? 'error' : ''}
+                        />
+                        {errors.answer && <span className="error-message">{errors.answer}</span>}
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="type">Tipe Pertanyaan *</label>
+                        <select
+                        id="type"
+                        name="type"
+                        value={formData.type}
+                        onChange={handleChange}
+                        className={errors.type ? 'error' : ''}
+                        >
+                        <option value="">Pilih Tipe</option>
+                        <option value="multiple_choice">Pilihan Ganda</option>
+                        <option value="essay">Essay</option>
+                        <option value="true_false">Benar/Salah</option>
+                        <option value="fill_blank">Isian</option>
+                        </select>
+                        {errors.type && <span className="error-message">{errors.type}</span>}
+                    </div>
+                    </div>
+
+                    <div className="form-row">
+                    <div className="form-group">
+                        <label htmlFor="score">Score *</label>
+                        <input
+                        type="number"
+                        id="score"
+                        name="score"
+                        value={formData.score}
+                        onChange={handleChange}
+                        placeholder="0"
+                        min="0"
+                        step="0.5"
+                        className={errors.score ? 'error' : ''}
+                        />
+                        {errors.score && <span className="error-message">{errors.score}</span>}
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="bank_code">Kode Bank *</label>
+                        <input
+                        type="text"
+                        id="bank_code"
+                        name="bank_code"
+                        value={formData.bank_code}
+                        onChange={handleChange}
+                        placeholder="Contoh: BNK001"
+                        className={errors.bank_code ? 'error' : ''}
+                        />
+                        {errors.bank_code && <span className="error-message">{errors.bank_code}</span>}
+                    </div>
+                    </div>
+
+                    <div className="form-row">
+                    <div className="form-group">
+                        <label htmlFor="category_id">Kategori *</label>
+                        <select
+                        id="category_id"
+                        name="category_id"
+                        value={formData.category_id}
+                        onChange={handleChange}
+                        className={errors.category_id ? 'error' : ''}
+                        >
+                        <option value="">Pilih Kategori</option>
+                        {categories.map(category => (
+                            <option key={category.uuid} value={category.uuid}>
+                            {category.name}
+                            </option>
+                        ))}
+                        </select>
+                        {errors.category_id && <span className="error-message">{errors.category_id}</span>}
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="parent_id">Soal Induk (Opsional)</label>
+                        <select
+                        id="parent_id"
+                        name="parent_id"
+                        value={formData.parent_id}
+                        onChange={handleChange}
+                        >
+                        <option value="">Tidak ada induk</option>
+                        {parentOptions.map(question => (
+                            <option key={question.uuid} value={question.uuid}>
+                            {question.bank_code} - {question.question.substring(0, 50)}...
+                            </option>
+                        ))}
+                        </select>
+                        <span className="help-text">Pilih soal yang menjadi induk (exclude diri sendiri)</span>
+                    </div>
+                    </div>
+
+                    {/* Hidden fields for id and uuid */}
+                    <input type="hidden" name="id" value={formData.id} />
+                    <input type="hidden" name="uuid" value={formData.uuid} />
+
+                    <div className="form-actions">
+                    <button type="button" onClick={onCancel} className="btn-secondary">
+                        Batal
+                    </button>
+                    <button type="button" onClick={handleReset} className="btn-reset">
+                        Reset
+                    </button>
+                    <button type="submit" className="btn-primary">
+                        {isEditing ? 'Update Soal' : 'Simpan Soal'}
+                    </button>
+                    </div>
+                </form>
+                {/* <form onSubmit={handleSubmit(updateExam)}>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         
                     <InputText labelTitle="Nama" nameInput="name" defaultValue={exam.name} updateFormValue={updateFormValue}/>
                     <InputText labelTitle="Deskripsi" nameInput="subtitle" defaultValue={exam.subtitle} updateFormValue={updateFormValue}/>
-                    {/* <InputText labelTitle="Skema Ujian" defaultValue={exam.scheme} updateFormValue={updateFormValue}/> */}
-                    {/* <SelectBox labelTitle="Jadwal" defaultValue="" updateFormValue={updateFormValue}/> */}
+                    <InputText labelTitle="Skema Ujian" defaultValue={exam.scheme} updateFormValue={updateFormValue}/>
+                    <SelectBox labelTitle="Jadwal" defaultValue="" updateFormValue={updateFormValue}/>
                     <SelectBox
                         nameInput="scheme"
                         options={schemeOptions}
                         labelTitle="Skema Ujian"
                         placeholder="Pilih Skema"
                         containerStyle="w-72"
-                        // labelStyle="hidden"
-                        // defaultValue="TODAY"
+                        labelStyle="hidden"
+                        defaultValue="TODAY"
                         updateFormValue={updateFormValue}
                     />
                     <InputTextRadio labelTitle="Tipe" nameInput="question_type" type="radio" options={typeOptions} defaultValue={exam.type?exam.type:'MC'} updateFormValue={updateFormValue}/>
-                    {/* <SelectBox 
+                    <SelectBox 
                     options={schedulesOptions}
                     labelTitle="Period"
                     placeholder="Select date range"
@@ -154,35 +400,36 @@ function QuestionBankCreate(){
                     labelStyle="hidden"
                     // defaultValue="TODAY"
                     updateFormValue={updateSelectBoxValue}
-                /> */}
+                />
                     <InputDateTimePicker labelTitle="Waktu Mulai" nameInput="started_at" updateFormValue={updateFormValue}/>
                     <InputDateTimePicker labelTitle="Waktu Selesai" nameInput="ended_at" updateFormValue={updateFormValue}/>
                     
-                    {/* <InputText labelTitle="Waktu Mulai" type="date" defaultValue="alex@dashwind.com" updateFormValue={updateFormValue}/> */}
-                    {/* <InputText labelTitle="Waktu Selesai" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/> */}
+                    <InputText labelTitle="Waktu Mulai" type="date" defaultValue="alex@dashwind.com" updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Waktu Selesai" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/>
                     <InputText labelTitle="Lokasi" nameInput="location" defaultValue={exam.location} updateFormValue={updateFormValue}/>
                     <InputText labelTitle="Ruangan" nameInput="room" defaultValue={exam.room} updateFormValue={updateFormValue}/>
                     <ToogleInput updateType="randomQuestion" nameInput="is_random_question" labelTitle="Acak Soal" defaultValue={true} updateFormValue={updateFormValue}/>
                     <ToogleInput updateType="randomAnswer" nameInput="is_random_answer" labelTitle="Acak Jawaban" defaultValue={true} updateFormValue={updateFormValue}/>
-                    {/* <InputText labelTitle="Acak Soal" type="radio" defaultValue={exam.is_random_question} updateFormValue={updateFormValue}/>
-                    <InputText labelTitle="Acak Jawaban" defaultValue={exam.is_random_answer} updateFormValue={updateFormValue}/> */}
-                    {/* <TextAreaInput labelTitle="About" defaultValue="Doing what I love, part time traveller" updateFormValue={updateFormValue}/> */}
+                    <InputText labelTitle="Acak Soal" type="radio" defaultValue={exam.is_random_question} updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Acak Jawaban" defaultValue={exam.is_random_answer} updateFormValue={updateFormValue}/>
+                    <TextAreaInput labelTitle="About" defaultValue="Doing what I love, part time traveller" updateFormValue={updateFormValue}/>
                 </div>
                 <div className="divider" ></div>
 
-                {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <InputText labelTitle="Language" defaultValue="English" updateFormValue={updateFormValue}/>
                     <InputText labelTitle="Timezone" defaultValue="IST" updateFormValue={updateFormValue}/>
                     <ToogleInput updateType="syncData" labelTitle="Sync Data" defaultValue={true} updateFormValue={updateFormValue}/>
-                    </div> */}
+                    </div>
 
                 <div className="mt-16"><button className="btn btn-primary float-right" type="submit" >Simpan</button></div>
                 </form>
-                {/* onClick={() => updateSchedules()} */}
+                onClick={() => updateSchedules()} */}
             </TitleCard>
             
         </>
     )
+}
 }
 
 
