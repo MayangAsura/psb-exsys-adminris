@@ -89,142 +89,207 @@ function QuestionAdd () {
       
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Question Text */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Question Text *
-          </label>
-          <TextEditor>
-
-          </TextEditor>
-          {/* <EditorWithGallery
-            value={watch('questionText') || ''}
-            onChange={(content) => setValue('questionText', content)}
-            onBlur={() => {}}
-          /> */}
-          {errors.questionText && (
-            <p className="mt-1 text-sm text-red-600">{errors.questionText.message}</p>
-          )}
-        </div>
-
-        {/* Question Image Upload */}
-        <div>
-          {/* <label className="block text-sm font-medium text-gray-700 mb-1">
-            Question Image (Optional)
-          </label> */}
-          {/* <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleImageUpload(e.target.files[0], 'question')}
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-            disabled={uploading}
-          />
-          {previewUrls.question && (
-            <div className="mt-2">
-              <img 
-                src={previewUrls.question} 
-                alt="Question preview" 
-                className="h-32 object-contain"
-              />
-            </div>
-          )} */}
-        </div>
-
-        {/* Answers */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-medium text-gray-900">Pilihan Jawaban (Select one correct answer)</h2>
-          
-          {fields.map((field, index) => (
-            <div key={field.id} className="p-4 border border-gray-200 rounded-md">
-              <div className="flex items-center mb-2">
-                <input
-                  type="radio"
-                  checked={watch(`answers.${index}.isCorrect`)}
-                  onChange={() => {
-                    // Set all other answers to false
-                    for (let i = 0; i < 4; i++) {
-                      setValue(`answers.${i}.isCorrect`, i === index);
-                    }
-                  }}
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
-                />
-                <label className="ml-2 block text-sm font-medium text-gray-700">
-                  Correct Answer
-                </label>
-              </div>
-
-              <div className="mb-2">
+        <div className="mt-4">
+                    <label htmlFor="media" className="block text-sm font-medium text-gray-900">Media</label>
+                    <select 
+                        id="media" 
+                        name="media" 
+                        value={media} 
+                        onChange={(e) => setQuestionType(e.target.value)}
+                        className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        required
+                        {...register('question_type')}
+                    >
+                        <option value="">-Pilih Tipe-</option>
+                        <option value="upload">Upload</option>
+                        <option value="mc">Pilihan Ganda</option>
+                    </select>
+                    
+                </div>
+          {question_type == 'upload' && (
+            <>
+              <div>
+                  
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Answer Text *
+                  Pertanyaan
                 </label>
-                <TextEditor></TextEditor>
+                <TextEditor>
+
+                </TextEditor>
                 {/* <EditorWithGallery
-                  value={watch(`answers.${index}.text`) || ''}
-                  onChange={(content) => setValue(`answers.${index}.text`, content)}
+                  value={watch('questionText') || ''}
+                  onChange={(content) => setValue('questionText', content)}
                   onBlur={() => {}}
                 /> */}
-                {errors.answers?.[index]?.text && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.answers[index].text.message}
-                  </p>
+                {errors.questionText && (
+                  <p className="mt-1 text-sm text-red-600">{errors.questionText.message}</p>
                 )}
               </div>
+            </>
 
-              <div className="mb-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Score *
-                </label>
-                <input
-                  type="number"
-                  {...register(`answers.${index}.score`, { valueAsNumber: true })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                />
-                {errors.answers?.[index]?.score && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.answers[index].score.message}
-                  </p>
-                )}
-              </div>
-
+          )}
+          {question_type == 'mc' && ( 
+            <>
               <div>
-                {/* <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Answer Image (Optional)
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageUpload(e.target.files[0], 'answer', index)}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-                  disabled={uploading}
-                />
-                {previewUrls.answers[index] && (
-                  <div className="mt-2">
-                    <img 
-                      src={previewUrls.answers[index]} 
-                      alt={`Answer ${index + 1} preview`} 
-                      className="h-32 object-contain"
-                    />
-                  </div>
-                )} */}
-              </div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Pertanyaan
+              </label>
+              <TextEditor>
+
+              </TextEditor>
+              {/* <EditorWithGallery
+                value={watch('questionText') || ''}
+                onChange={(content) => setValue('questionText', content)}
+                onBlur={() => {}}
+              /> */}
+              {errors.questionText && (
+                <p className="mt-1 text-sm text-red-600">{errors.questionText.message}</p>
+              )}
             </div>
-          ))}
 
-          {/* {errors.answers && typeof errors.answers.message === 'string' && (
-            <p className="mt-1 text-sm text-red-600">{errors.answers.message}</p>
-          )} */}
-        </div>
+            <div className="p-4 border border-gray-200 rounded-md">
 
+                  <div className="mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Score *
+                    </label>
+                    <input
+                      type="number"
+                      {...register(`answers.${index}.score`, { valueAsNumber: true })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    />
+                    {errors.answers?.[index]?.score && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.answers[index].score.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                  </div>
+                </div>
+
+            {/* Question Image Upload */}
+            <div>
+              {/* <label className="block text-sm font-medium text-gray-700 mb-1">
+                Question Image (Optional)
+              </label> */}
+              {/* <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleImageUpload(e.target.files[0], 'question')}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                disabled={uploading}
+              />
+              {previewUrls.question && (
+                <div className="mt-2">
+                  <img 
+                    src={previewUrls.question} 
+                    alt="Question preview" 
+                    className="h-32 object-contain"
+                  />
+                </div>
+              )} */}
+            </div>
+
+            {/* Answers */}
+            <div className="space-y-4">
+              <h2 className="text-lg font-medium text-gray-900">Pilihan Jawaban (Pilih satu jawaban benar)</h2>
+              
+              {fields.map((field, index) => (
+                <div key={field.id} className="p-4 border border-gray-200 rounded-md">
+                  <div className="flex items-center mb-2">
+                    <input
+                      type="radio"
+                      checked={watch(`answers.${index}.isCorrect`)}
+                      onChange={() => {
+                        // Set all other answers to false
+                        for (let i = 0; i < 4; i++) {
+                          setValue(`answers.${i}.isCorrect`, i === index);
+                        }
+                      }}
+                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                    />
+                    <label className="ml-2 block text-sm font-medium text-gray-700">
+                      Jawaban Benar
+                    </label>
+                  </div>
+
+                  <div className="mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Jawaban
+                    </label>
+                    <TextEditor></TextEditor>
+                    {/* <EditorWithGallery
+                      value={watch(`answers.${index}.text`) || ''}
+                      onChange={(content) => setValue(`answers.${index}.text`, content)}
+                      onBlur={() => {}}
+                    /> */}
+                    {errors.answers?.[index]?.text && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.answers[index].text.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Score *
+                    </label>
+                    <input
+                      type="number"
+                      {...register(`answers.${index}.score`, { valueAsNumber: true })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    />
+                    {errors.answers?.[index]?.score && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.answers[index].score.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    {/* <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Answer Image (Optional)
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e.target.files[0], 'answer', index)}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                      disabled={uploading}
+                    />
+                    {previewUrls.answers[index] && (
+                      <div className="mt-2">
+                        <img 
+                          src={previewUrls.answers[index]} 
+                          alt={`Answer ${index + 1} preview`} 
+                          className="h-32 object-contain"
+                        />
+                      </div>
+                    )} */}
+                  </div>
+                </div>
+              ))}
+
+              {/* {errors.answers && typeof errors.answers.message === 'string' && (
+                <p className="mt-1 text-sm text-red-600">{errors.answers.message}</p>
+              )} */}
+            </div>
+            </>
+        
+        )}
         {/* Explanation */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Explanation (Optional)
-          </label>
-          <textarea
+        {/* // <div>
+        //   <label className="block text-sm font-medium text-gray-700 mb-1">
+        //     Explanation (Optional)
+        //   </label>
+        //   <textarea
             {...register('explanation')}
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             rows={3}
           />
-        </div>
+        </div> */}
 
         {/* Submit Button */}
         <div className="flex justify-end">

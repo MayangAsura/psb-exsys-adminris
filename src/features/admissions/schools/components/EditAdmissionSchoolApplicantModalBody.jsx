@@ -90,15 +90,15 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
                     subschool: applicantData.applicant_schools[0]?.subschool || "",
                     regist_number: applicantData.regist_number || ""
                 });
-                setFullName(applicantData.full_name)
-                setRegistNumber(applicantData.regist_number)
-                setPhoneNumber(applicantData.phone_number)
-                setGender(applicantData.gender)
-                setMedia(applicantData.media)
-                setEmail(applicantData.email)
-                setSchoolId(applicantData.school_id)
-                setSubschool(applicantData.subschool)
-                setApplicantSchool(admission_schools[0].applicant_schools[0]);
+                // setFullName(applicantData.full_name)
+                // setRegistNumber(applicantData.regist_number)
+                // setPhoneNumber(applicantData.phone_number)
+                // setGender(applicantData.gender)
+                // setMedia(applicantData.media)
+                // setEmail(applicantData.email)
+                // setSchoolId(applicantData.school_id)
+                // setSubschool(applicantData.subschool)
+                // setApplicantSchool(admission_schools[0].applicant_schools[0]);
             } else {
                 console.log(error);
             }
@@ -154,7 +154,8 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
                         className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" 
                         type="text" 
                         name="full_name" 
-                        value={full_name} 
+                        value={full_name}
+                        defaultValue={setAdmissionSchool.full_name}
                         onChange={(e) => setFullName(e.target.value)} 
                         placeholder="" 
                         required
@@ -171,7 +172,8 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
                         className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" 
                         type="text" 
                         name="regist_number" 
-                        value={regist_number} 
+                        value={regist_number}
+                        defaultValue={setAdmissionSchool.regist_number} 
                         onChange={(e) => setRegistNumber(e.target.value)}
                         placeholder=""
                         required 
@@ -219,7 +221,8 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
                         className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" 
                         type="text" 
                         name="phone_number" 
-                        value={phone_number} 
+                        value={phone_number}
+                        defaultValue={setAdmissionSchool.phone_number}
                         onChange={(e) => setPhoneNumber(e.target.value)}
                         placeholder="" 
                         required
@@ -236,7 +239,8 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
                         className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" 
                         type="email" 
                         name="email" 
-                        value={email} 
+                        value={email}
+                        defaultValue={setAdmissionSchool.email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="" 
                         required
@@ -253,7 +257,8 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
                         // className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" 
                         className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline"
                         name="subschool" 
-                        value={subschool} 
+                        value={subschool}
+                        defaultValue={setAdmissionSchool.subschool}
                         onChange={(e) => setSubschool(e.target.value)}
                         placeholder=""
                         {...register('subschool')}
@@ -270,7 +275,8 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
                             // className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline" 
                             className="form-input w-full shadow appearance-none border rounded py-3 px-4 leading-tight focus:outline-none focus:shadow-outline"
                             type={isVisible ? "text" : "password"} 
-                            name="password"   
+                            name="password"
+                            value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             // required
                             {...register('password')}
@@ -295,7 +301,8 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
                     <select 
                         id="media" 
                         name="media" 
-                        value={media} 
+                        value={media}
+                        defaultValue={setAdmissionSchool.media}
                         onChange={(e) => setMedia(e.target.value)}
                         className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         required
@@ -326,7 +333,8 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
                     <select 
                         id="school_id" 
                         name="school_id" 
-                        value={school_id} 
+                        value={school_id}
+                        defaultValue={setAdmissionSchool.school_id}
                         onChange={(e) => setSchoolId(e.target.value)}
                         className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         required

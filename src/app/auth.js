@@ -5,7 +5,7 @@ import supabase from '../services/database-server'
 const checkAuth = () => {
 /*  Getting token value stored in localstorage, if token is not present we will open login page 
     for all internal dashboard routes  */
-    const PUBLIC_ROUTES = ["ad/login", "ad/forgot-password", "ad/register", "ad/documentation"]
+    const PUBLIC_ROUTES = ["/login", "/forgot-password", "/register", "/documentation"]
     
     const { subscription: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session) {
@@ -31,7 +31,7 @@ const checkAuth = () => {
 
     if(!TOKEN && !isPublicPage){
       console.log('masuk')
-        window.location.href = 'ad/login'
+        // window.location.href = '/ad/dashboard'
         return;
     }else{
       console.log('masuk_')

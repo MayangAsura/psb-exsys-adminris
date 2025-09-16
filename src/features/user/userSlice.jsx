@@ -7,6 +7,10 @@ export const getLeadsContent = createAsyncThunk('/leads/content', async () => {
     const response = await axios.get('/api/users?page=2', {})
     return response.data;
 })
+export const login = createAsyncThunk('/api/auth/login', async () => {
+    const response = await axios.get('/api/auth/login', {})
+    return response.data;
+})                                                                                                                                                                                                                                                                                                                                                                                                         
 
 export const usersSlice = createSlice({
     name: 'leads',
