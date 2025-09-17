@@ -55,57 +55,57 @@ function Register(){
                 setLoading(false)
             }else{
                 console.log('data', data)
-                // const { data: exam_users, error } = await supabase
-                // .from('exam_users')
-                // .insert([
-                //     {   full_name: full_name,
-                //         phone_number: username, 
-                //         provider : 'phone', 
-                //         phone_verified: data.user.user_metadata.phone_verified,
-                //         user_id: data.user.id,
-                //         refresh_token: data.session.refresh_token, expired_at: new Date(data.session.expires_at).toISOString(), expired_in: data.session.expires_in,
-                //         last_sign_in: data.user.last_sign_in_at
+                const { data: exam_users, error } = await supabase
+                .from('exam_users')
+                .insert([
+                    {   full_name: full_name,
+                        phone_number: username, 
+                        provider : 'phone', 
+                        phone_verified: data.user.user_metadata.phone_verified,
+                        user_id: data.user.id,
+                        refresh_token: data.session.refresh_token, expired_at: new Date(data.session.expires_at).toISOString(), expired_in: data.session.expires_in,
+                        last_sign_in: data.user.last_sign_in_at
                         
 
-                //         // created_at timestamp with time zone not null default now()
-                //     },
-                // ])
-                // .select()
-                // .single()
+                        // created_at timestamp with time zone not null default now()
+                    },
+                ])
+                .select()
+                .single()
 
-                // if(error){
-                //     setErrorMessage("Registrasi Gagal")
-                // }else{
-                //     console.log(exam_users)
-                //     const { data: user_roles, error } = await supabase
-                //     .from('user_roles')
-                //     .insert([
-                //         {   user_id: data.user.id,
-                //             role: 'admin',
-                //             user_profile_id: data.id
-                //             // full_name: registerObj.full_name,
-                //             // phone_number: registerObj.username, provider : 'phone', 
-                //             // phone_verified: data.user.user_metadata.phone_verified,
+                if(error){
+                    setErrorMessage("Registrasi Gagal")
+                }else{
+                    console.log(exam_users)
+                    const { data: user_roles, error } = await supabase
+                    .from('user_roles')
+                    .insert([
+                        {   user_id: data.user.id,
+                            role: 'admin',
+                            user_profile_id: data.id
+                            // full_name: registerObj.full_name,
+                            // phone_number: registerObj.username, provider : 'phone', 
+                            // phone_verified: data.user.user_metadata.phone_verified,
                             
-                //             // refresh_token: data.session.refresh_token, expired_at: new Date(data.session.expired_at), expired_in: data.session.expired_in,
-                //             // last_sign_in: data.session.last_sign_in_at
+                            // refresh_token: data.session.refresh_token, expired_at: new Date(data.session.expired_at), expired_in: data.session.expired_in,
+                            // last_sign_in: data.session.last_sign_in_at
 
-                //             // created_at timestamp with time zone not null default now()
-                //         },
-                //     ])
-                //     .select()
+                            // created_at timestamp with time zone not null default now()
+                        },
+                    ])
+                    .select()
 
-                //     if(error){
-                //         setErrorMessage("Registrasi Gagal")
-                //     }else{
+                    if(error){
+                        setErrorMessage("Registrasi Gagal")
+                    }else{
                         setLoading(true)
                         // Call API to check user credentials and save token in localstorage
                         localStorage.setItem("token", data.session.access_token)
                         localStorage.setItem("token-refresh", data.session.refresh_token)
                         setLoading(false)
                         window.location.href = '/ad/dashboard'
-                    // }
-                // }
+                    }
+                }
             }
 
 
@@ -113,8 +113,8 @@ function Register(){
 
     }
     const handledVisible = () => {
-    setIsVisible(prevState => !prevState)
-  }
+        setIsVisible(prevState => !prevState)
+    }
 
     const updateFormValue = ({updateType, value}) => {
         setErrorMessage("")

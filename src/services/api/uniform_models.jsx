@@ -3,30 +3,31 @@ import supabase from '../database-server'
 
 
 
-export const addUniformModels = async (props) => {
+export const addUniformModels = async ({uniformModels}) => {
     // name, description, started_at, ended_at, scheme, type, location, room, is_random_question, is_random_answer, max_participants 
     // name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: ""
-    console.log('props', props)
-    const uniform_models = {}
-    setTimeout( async() => {
+    console.log('props', uniformModels)
+    // let uniform_models = {}
+    // setTimeout( async() => {
         
-        uniform_models = {
-            model_name: props.uniformModels.model_name,
-            model_gender:  props.uniformModels.model_gender,
-            model_name: props.uniformModels.model_name,
-            model_url: props.uniformModels.model_url,
-            // model_url: await upload(props.uniformModels.model_url, props.uniformModels.model_name, props.uniformModels.school_id),
-            school_id: props.uniformModels.school_id,
-            admission_ays_id: props.uniformModels.admission_ays_id,
-            model_size_charts: props.uniformModels.model_size_charts
-        }
-    }, 2000);
+    // const uniform_models = {
+    //         model_name: props.uniformModelData.model_name,
+    //         model_code: props.uniformModelData.uniformModelData.model_code,
+    //         model_gender:  props.uniformModelData.uniformModelData.model_gender,
+    //         // model_name: props.uniformModelData.model_name,
+    //         model_url: props.uniformModelData.uniformModelData.model_url,
+    //         // model_url: await upload(props.uniformModels.model_url, props.uniformModels.model_name, props.uniformModels.school_id),
+    //         school_id: props.uniformModelData.uniformModelData.school_id,
+    //         // admission_ays_id: props.uniformModelData.admission_ays_id,
+    //         model_size_charts: props.uniformModelData.uniformModelData.model_size_charts
+    //     }
+    // }, 2000);
 
     const response = {error: true, message: 'Gagal menambahkan data Seragam', data: null }
     const { data: admissions, error } = await supabase
                             .from('school_uniform_models')
                                 .insert([
-                                    uniform_models
+                                    uniformModels
                                 ])
                                 .select()
     if(error) {

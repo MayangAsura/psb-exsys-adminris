@@ -80,54 +80,72 @@ export const updateApplicant = async (props) => {
     // name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: ""
     console.log(props)
     const response = {error: true, message: 'Gagal memperbarui data Pendaftar', data: null }
-    const { data: exam, error } = await supabase
-                            .from('applicants')
-                                .update([
-                                    {...props.applicant, updated_at: new Date().toISOString()}
-                                ])
-                                .eq('id', props.id)
-                                .select()
-        console.log(exam)                                
-        if(!exam) {
-            // {error: true, message: 'Gagal menambahkan data Ujian', data: null }
-            response.error= true
-            response.message= 'Gagal memperbarui data Pendaftar'
-            response.data= null
-            return response
-            // response.map(response => {...response, error: false, message: 'Berhasil menambahkan data Jadwal', data: exam_Admissionss}) 
-        }else{
-            console.log(exam)
-            const applicant_schools = {
-                school_id : props.applicant.school_id,
-            }
-            const { error } = await supabase
-                            .from('applicant_schools')
-                            .update([
-                                {
-                                    school_id: props.applicant.school_id,
-                                    applicant_id: props.id,
-                                    subschool: props.applicant.subschool??'',
-                                    admission_ays_id: props.applicant.admission_ays_id
-                                }
-                            ])
-                            .eq('applicant_id', props.id)
-                            .eq('admission_ays_id', props.applicant.admission_ays_id)
+    if(props.password){
+
+    }
+
+    const { data: data_appl, error } = await supabase.rpc("edit_applicant", {
+            _email : props.applicant.email,
+            _full_name : props.applicant.full_name,
+            _gender : props.applicant.gender,
+            _media : props.applicant.media,
+            _password : props.applicant.password==""?"":props.applicant.password,
+            _phone_number : props.applicant.phone_number,
+            _regist_number : props.applicant.regist_number,
+            _school_id : parseInt(props.applicant.school_id),
+            _subschool : props.applicant.subschool,
+            // _dob : props.applicant.dob || ""
+          });
+
+          console.log(data_appl)
+    // const { data: exam, error } = await supabase
+    //                         .from('applicants')
+    //                             .update([
+    //                                 {...props.applicant, updated_at: new Date().toISOString()}
+    //                             ])
+    //                             .eq('id', props.id)
+    //                             .select()
+    //     console.log(exam)                                
+    //     if(!exam) {
+    //         // {error: true, message: 'Gagal menambahkan data Ujian', data: null }
+    //         response.error= true
+    //         response.message= 'Gagal memperbarui data Pendaftar'
+    //         response.data= null
+    //         return response
+    //         // response.map(response => {...response, error: false, message: 'Berhasil menambahkan data Jadwal', data: exam_Admissionss}) 
+    //     }else{
+    //         console.log(exam)
+    //         const applicant_schools = {
+    //             school_id : props.applicant.school_id,
+    //         }
+    //         const { error } = await supabase
+    //                         .from('applicant_schools')
+    //                         .update([
+    //                             {
+    //                                 school_id: props.applicant.school_id,
+    //                                 applicant_id: props.id,
+    //                                 subschool: props.applicant.subschool??'',
+    //                                 // admission_ays_id: props.applicant.admission_ays_id
+    //                             }
+    //                         ])
+    //                         .eq('applicant_id', props.id)
+                            // .eq('admission_ays_id', props.applicant.admission_ays_id)
                             // .eq('school_id', props.applicant.school_id)
 
-            const { data: Admissions, error_admission } = await supabase
-                            .from('exam_Admissions_test')
-                                .insert([
-                                    {exam_Admissions_id: props.Admissions_id, exam_test_id: exam.id }
-                                ])
-                                .select()
-            const { school, e } = await supabase
-            .from('exam_Admissions_schools')
-            .insert([
-                { exam_Admissions_id: Admissions[0].id, school_id: props.school_id },
-            ])
-            .select()
+            // const { data: Admissions, error_admission } = await supabase
+            //                 .from('exam_admissions_test')
+            //                     .insert([
+            //                         {exam_Admissions_id: props.Admissions_id, exam_test_id: exam.id }
+            //                     ])
+            //                     .select()
+            // const { school, e } = await supabase
+            // .from('exam_Admissions_schools')
+            // .insert([
+            //     { exam_Admissions_id: Admissions[0].id, school_id: props.school_id },
+            // ])
+            // .select()
 
-            if(e){
+            if(error){
                 return response
             }
 
@@ -135,9 +153,9 @@ export const updateApplicant = async (props) => {
 
         response.error= false
         response.message= 'Berhasil memperbarui data PSB'
-        response.data= exam[0].id
+        response.data= ""
         return response
-    }
+    
 }
 export const updateAdmissions = async (props) => {
     // name, description, started_at, ended_at, scheme, type, location, room, is_random_question, is_random_answer, max_participants 

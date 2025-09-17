@@ -146,6 +146,10 @@ const routes = [
     component: QuestionBank, // view rendered
   },
   {
+    path: '/question-banks/create', // the url
+    component: QuestionBankCreate, // view rendered
+  },
+  {
     path: '/question-banks/edit/:qbank_id', // the url
     component: QuestionBank, // view rendered
   },

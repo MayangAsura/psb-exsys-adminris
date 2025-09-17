@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import store from './app/store'
 import { Provider } from 'react-redux'
 import SuspenseContent from './containers/SuspenseContent';
+import { AuthProvider } from './app/context/AuthContext';
 
 // const container = document.getElementById('root');
 // const root = createRoot(container)
@@ -14,9 +15,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Suspense fallback={<SuspenseContent />}>
+      <AuthProvider>
         <Provider store={store}>
             <App />
         </Provider>
+        </AuthProvider>
     </Suspense>
   </React.StrictMode>
 );

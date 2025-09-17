@@ -22,13 +22,14 @@ const TopSideButtons = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const addNewTeamMember = () => {
-        dispatch(showNotification({message : "Add New Member clicked", status : 1}))
+    const addQuestionBank = () => {
+        navigate('/ad/question-banks/create')
+        // dispatch(showNotification({message : "Add New Member clicked", status : 1}))
     }
 
     return(
         <div className="inline-block float-right">
-            <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => addNewTeamMember()}>Tambah Bank Soal</button>
+            <button className="btn px-6 btn-sm normal-case bg-green-700 text-gray-100 hover:bg-green-500 dark:text-gray-600" onClick={() => addQuestionBank()}>Tambah Bank Soal</button>
         </div>
     )
 }
@@ -53,6 +54,7 @@ function QuestionBanks(){
     const [validFilters, setValidFilter] = useState("");
     const [questionBanks, setQuestionBanks] = useState([])
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     // const promises = Promise.all([
     //     getTasks({
@@ -88,15 +90,15 @@ function QuestionBanks(){
         }
     }
 
-    const promises = Promise.all([
-    getAllQuestionBanks({
-      ...search,
-      filters: validFilters,
-    }),
-    getQBFemaleCounts(),
-    getQBMaleCounts(),
-    // getEstimatedHoursRange(),
-  ]);
+//     const promises = Promise.all([
+//     getAllQuestionBanks({
+//       ...search,
+//       filters: validFilters,
+//     }),
+//     getQBFemaleCounts(),
+//     getQBMaleCounts(),
+//     // getEstimatedHoursRange(),
+//   ]);
 //     const promises = Promise.all([
 //     getTasks({
 //       ...search,

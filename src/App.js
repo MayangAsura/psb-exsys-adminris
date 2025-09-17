@@ -11,6 +11,8 @@ import {tabHeaderHandlerActiveTab} from './utils/tabHeaderHandlerActiveTab'
 import ProtectedRoute from './landing/components/pages/Routing/ProtectedRoute';
 
 // import "react-datepicker/dist/react-datepicker.css";
+import { AuthContext } from './app/context/AuthContext';
+import { useContext } from 'react';
 
 // Importing pages
 const Layout = lazy(() => import('./containers/Layout'))
@@ -44,6 +46,8 @@ const queryClient = new QueryClient({
 
 function App() {
 
+  const { user, loading } = useContext(AuthContext);
+
   useEffect(() => {
     // 👆 daisy UI themes initialization
     themeChange(false) 
@@ -59,23 +63,23 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
-          <Route path="/ad/*" element={<Navigate to={token? "/ad/dashboard" : "/ad/login"} replace />}/>
+          {/* <Route path="/ad/*" element={<Navigate to={user || token? "/ad/dashboard" : "/ad/login"} replace />}/> */}
           {/* <Route path="*" element={<Navigate to={token? "/ad/dashboard": "/ad/register" } replace />}/> */}
           {/* <Route path="*" element={<Navigate to={token_user? "/landing" : ()} replace />}/> */}
           {/* <Route path="*" element={<Navigate to={token? "/ad/welcome" : (token_user? "/landing": (!token_user? "/login": !token? "/ad/login": "")} replace />}/> */}
           {/* <Route path="/login" element={<LandingLogin />} /> */}
-          <Route path="/ad/login" element={token? <Navigate to="/ad/dashboard" replace/>: <Login />}  />
+          <Route path="/ad/login" element={user || token? <Navigate to="/ad/dashboard" replace/>: <Login />}  />
           <Route path="/ad/forgot-password" element={<ForgotPassword />} />
           <Route path="/ad/register" element={token? <Navigate to="/ad/dashboard" replace/>: <Register />}  />
           <Route path="/ad/documentation" element={<Documentation />} />
           
           {/* Place new routes user over this */}
-          {/* <Route element={<ProtectedRoute/>}> */}
+          <Route element={<ProtectedRoute/>}>
             {/* Place new routes admin over this*/}
-            <Route path="/ad/*" element={!token? <Navigate to="/ad/login" replace/>: <Layout />}  />
+            <Route path="/ad/*" element={<Layout />}  />
             {/* <Route path="/landing" element={<Landing />} />
             <Route path="/u/exam/:id/show" element={<LandingExam />} /> */}
-          {/* </Route> */}
+          </Route>
           {/* <Route path="/register" element={<LandingRegister />} /> */}
           
           {/* <Route path="/u/exam/:id/start" element={<StartExam />} /> */}

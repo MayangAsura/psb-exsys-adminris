@@ -23,7 +23,7 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
     const [searchText, setSearchText] = useState("")
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const locationFilters = ["Paris", "London", "Canada", "Peru", "Tokyo"]
+    const examFilters = ["Online", "Offline"]
     
 
     const showFiltersAndApply = (params) => {
@@ -65,12 +65,12 @@ const TopSideButtons = ({removeFilter, applyFilter, applySearch}) => {
                 <label tabIndex={0} className="btn btn-sm btn-outline"><FunnelIcon className="w-5 mr-2"/>Filter</label>
                 <ul tabIndex={0} className="dropdown-content menu p-2 text-sm shadow bg-base-100 rounded-box w-52">
                     {
-                        locationFilters.map((l, k) => {
+                        examFilters.map((l, k) => {
                             return  <li key={k}><a onClick={() => showFiltersAndApply(l)}>{l}</a></li>
                         })
                     }
                     <div className="divider mt-0 mb-0"></div>
-                    <li><a onClick={() => removeAppliedFilter()}>Remove Filter</a></li>
+                    <li><a onClick={() => removeAppliedFilter()}>Hapus Filter</a></li>
                 </ul>
             </div>
         </div>
@@ -102,7 +102,7 @@ function Exams(){
     
         let { data: exam_tests, error } = await supabase
             .from('exam_tests')
-            .select('*')
+            .select('*, exam_schedule_tests(exam_schedules(name))')
             .is('deleted_at', null)
             .order('created_at', 'desc')
         // let { data: exam_tests, error } = await supabase
@@ -115,17 +115,17 @@ function Exams(){
             
     }
     const removeFilter = () => {
-        setTrans(RECENT_TRANSACTIONS)
+        setTrans(examData)
     }
 
     const applyFilter = (params) => {
-        let filteredTransactions = RECENT_TRANSACTIONS.filter((t) => {return t.location == params})
+        let filteredTransactions = examData.filter((t) => {return t.scheme == params.toLowerCase()})
         setTrans(filteredTransactions)
     }
 
     // Search according to name
     const applySearch = (value) => {
-        let filteredTransactions = RECENT_TRANSACTIONS.filter((t) => {return t.email.toLowerCase().includes(value.toLowerCase()) ||  t.email.toLowerCase().includes(value.toLowerCase())})
+        let filteredTransactions = examData.filter((t) => {return t.name.toLowerCase().includes(value.toLowerCase()) ||  t.exam_schedule_tests[0]?.exam_schedules?.name.toLowerCase().includes(value.toLowerCase()) || t.location.toLowerCase().includes(value.toLowerCase()) || t.room.toLowerCase().includes(value.toLowerCase())})
         setTrans(filteredTransactions)
     }
 
@@ -215,7 +215,8 @@ function Exams(){
                                     {/* <td>{l.test_schedule}</td> */}
                                     {/* <td>Ujian Seleksi Jenjang SDIT</td> */}
                                     {/* <td>{l.exam_schedules_test[0].exam_schedules.name}</td> */}
-                                    <td>{l.room}</td>
+                                    <td>{l.exam_schedule_tests[0]?.exam_schedules?.name}</td>
+                                    <td>{l.location}</td>
                                     <td>{l.updated_at??'-'}</td>
                                     <td>
                                         <button className="btn btn-square btn-ghost" onClick={() => detailCurrentExam(l.id)}><EyeIcon className="w-5"/></button>
