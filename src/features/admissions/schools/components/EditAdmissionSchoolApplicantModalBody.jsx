@@ -891,6 +891,7 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
         school_id: "",
         subschool: ""
     });
+    const [school_id, setSchoolId] = useState(0)
     const [loading, setLoading] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const [password, setPassword] = useState("");
@@ -967,6 +968,12 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
             ...prev,
             [field]: value
         }));
+
+        console.log(field, value)
+        if(field!='school_id' && admissionSchool.school_id) {
+            admissionSchool.school_id = 0
+        }
+        console.log(admissionSchool.school_id)
     };
 
     const handledVisible = () => {
@@ -984,6 +991,11 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
                 // setAdmissionSchool(prev => {...prev, password: password})
                 admissionSchool.password = password
             }
+
+            if(school_id == 0){
+                admissionSchool.school_id= 0
+            }
+            
             const response = await updateApplicant({
                 applicant: admissionSchool, 
                 id: appl_id,
@@ -1170,7 +1182,7 @@ function EditAdmissionSchoolApplicantModalBody({closeModal, extraObject}){
                         <select 
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             value={admissionSchool.school_id}
-                            onChange={(e) => handleInputChange('school_id', e.target.value)}
+                            onChange={(e) => (handleInputChange('school_id', e.target.value), setSchoolId(e.target.value))}
                             required
                         >
                             <option value="">-Pilih Jenjang-</option>

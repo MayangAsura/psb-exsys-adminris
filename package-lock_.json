@@ -2845,667 +2845,667 @@
       }
     },
     "node_modules/@ckeditor/ckeditor5-adapter-ckfinder": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-adapter-ckfinder/-/ckeditor5-adapter-ckfinder-46.1.1.tgz",
-      "integrity": "sha512-7wq9WdYyq0jabUZOlnq/vOa/WQO6jXKQ01QCsx6Y7WZ00mxOQ0AmwzLEusHf9VEvXx25yH7jZa07axyEvjM+RQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-adapter-ckfinder/-/ckeditor5-adapter-ckfinder-46.1.0.tgz",
+      "integrity": "sha512-ELR5/xm5CeJsELtJ3nZF9UFwNbXgtOsGX5e8NrqrHvvFpkw4UZl+tvsiwknBni46Ljdd108dCVQE7AbT6h+JoQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-upload": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-upload": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-ai": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-ai/-/ckeditor5-ai-46.1.1.tgz",
-      "integrity": "sha512-J0vm41nneQ4to2SdtDo5JbbByQ00SqC1nZQvndJV2tcoSZ3vjwTz1NPGgOlxUvOEVh/axVNPkrAjQ9Fwof0KRg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-ai/-/ckeditor5-ai-46.1.0.tgz",
+      "integrity": "sha512-AJq3masNg6VVMw/EDWF/ORNsmFzkoRPTbzeoh9Soxgan+pfA8JJwu0HoHFvwV0pTLaPWKGLHGUJjvvl1XqIC+A==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
         "@aws-sdk/client-bedrock-runtime": "3.823.0",
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-table": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-table": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-alignment": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-alignment/-/ckeditor5-alignment-46.1.1.tgz",
-      "integrity": "sha512-LD9XMo0lqZw8Nm4Rdsd3b19rjVNLInAUrlbuJpXxgHTOP3CcrE1+kklosow3KreUZkWSxui0tszp45jRmGL1qQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-alignment/-/ckeditor5-alignment-46.1.0.tgz",
+      "integrity": "sha512-+21zwXkjWDAPFqqkZfB/UzX4eJl1WxaPIRG5Qq62pI9EpQ/Hu26LKC7TVIQmdSop4QnDecAxeZSSkqGc+/126A==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-autoformat": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-autoformat/-/ckeditor5-autoformat-46.1.1.tgz",
-      "integrity": "sha512-D2gC9NMd73BAszrP7GdwEqv5YAb+k/EMSIzlcyeUn8gYslGE+SrZHcgj4VCWaGWS+iu/G80ZskiXMBbNgC4NAw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-autoformat/-/ckeditor5-autoformat-46.1.0.tgz",
+      "integrity": "sha512-ESXhgVmNmTLJZJ/W3k2L63PEUYbPEHLkSlkfhP8/aYs+JLmcusA3IuX4aBndJ+HNL3IvCbA03PlFV7jP7pM54Q==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-heading": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-heading": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-autosave": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-autosave/-/ckeditor5-autosave-46.1.1.tgz",
-      "integrity": "sha512-VJ2U0P0ybuIF92fU1rSL9jkqOnywKek7ANR+B9Gc3vs3JdNEkN078pF5KS9xvnAkcrEt1KZBmqwghSDiiI91Wg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-autosave/-/ckeditor5-autosave-46.1.0.tgz",
+      "integrity": "sha512-4nHSKDq9Bka/NfIcLKxfQ2SkrkiWrO6p8LpUxN90AwcTQF9p2zL+LMhEz3RjGmB8KS6pYXMc52CcfPryUV2pug==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-basic-styles": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-basic-styles/-/ckeditor5-basic-styles-46.1.1.tgz",
-      "integrity": "sha512-NiCugPGmaCIHc4ivvJRUq/hcfchaChksWyRK6i5xbjj5NSlASjXt0fe4717pQVTN6lZxiJ9CaX6btCAYlmu5BQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-basic-styles/-/ckeditor5-basic-styles-46.1.0.tgz",
+      "integrity": "sha512-Bo2w5zr018Xn4wrkxpxSNcYf74Bmh6r6YxPh5e24AHzfFfJbE0SPLo4yab001ae/vPbumjF+tv5/nq+cr46wnA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-block-quote": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-block-quote/-/ckeditor5-block-quote-46.1.1.tgz",
-      "integrity": "sha512-m9MhmntW8cZBfhqluaDE4sJaMjks36ClxzxQwuz7Br+YhUXNhhtUrvpFggeZvgZ/IuII+OG6DolnD1WRHJlMEg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-block-quote/-/ckeditor5-block-quote-46.1.0.tgz",
+      "integrity": "sha512-sM4WMfwz8fw3id84z1XtRo+nwXV7MVb/Q7OCNuuR3ZFI6JQxufa78dA2hBThXZIR7LGjSq2rLmRBZOu8YZLacQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-enter": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-enter": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-bookmark": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-bookmark/-/ckeditor5-bookmark-46.1.1.tgz",
-      "integrity": "sha512-TiCO6F9uHiHOuGGfR+t7a5i93bJqPEoBpX67qQYV7EkhNIa7roa0PTkPXw6RFBGFv6LNgt0cNle/f7O94qhfcQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-bookmark/-/ckeditor5-bookmark-46.1.0.tgz",
+      "integrity": "sha512-4fP7dPEz7LT7F6QZftREseA1PXa7/M/ky+Zfk1uF9KWFDqkHVxHzQzWryGtfriOmF4KIi3cx5H9mZOHJIZAHBA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-link": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-link": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-case-change": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-case-change/-/ckeditor5-case-change-46.1.1.tgz",
-      "integrity": "sha512-dmvMBWSjUP86fh5wUNKe94jPL7I1pESM0BvlMk3LfnHgEgoJW6YbZkTgkJ9pzB5Gfd1ZGqLn3qbFsNHq3br39g==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-case-change/-/ckeditor5-case-change-46.1.0.tgz",
+      "integrity": "sha512-/ftT2LX7vVVp5CzFgoET1lxy8fo2Ku0nHjBBwm65Hezr113vC6H2Iu6aCd24ODH6kqbBlCyyRV3Xpdu1OCnWjw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-ckbox": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-ckbox/-/ckeditor5-ckbox-46.1.1.tgz",
-      "integrity": "sha512-ngKJf1doQFp0FExF7skmtzHcD1H6cxkFFWH5ipRm8t5AcxivZIkbaMlNQMZTGKhMKtLmT77dQ7oGI4HT1XV4bA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-ckbox/-/ckeditor5-ckbox-46.1.0.tgz",
+      "integrity": "sha512-LycqQVu2xkgLupp+mYPZo3i+adPuEuVDtj8/MCBAFiTdzBXoskP0azgOezM6ieCbvSsqe7Fu/rOD1RXzVKXXKA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-cloud-services": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-image": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-upload": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
+        "@ckeditor/ckeditor5-cloud-services": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-image": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-upload": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
         "blurhash": "2.0.5",
-        "ckeditor5": "46.1.1",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-ckfinder": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-ckfinder/-/ckeditor5-ckfinder-46.1.1.tgz",
-      "integrity": "sha512-u096IDCS/9R7DhUUgHhP7ED5pjIP5JPE1SMRZ3UcfipVUveqT9Qqgm892Rsm4VfouoXw3f3pwoK68KIVjdxMlw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-ckfinder/-/ckeditor5-ckfinder-46.1.0.tgz",
+      "integrity": "sha512-2xdCjru99nGAHnTCuaC8q7P2NytieZ+EFEqOojGVSiW9o1t+dbTYlOlJ8CbtTIN/jpoHSL7PkWH5BfdrOOWOJQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-image": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-image": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-clipboard": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-clipboard/-/ckeditor5-clipboard-46.1.1.tgz",
-      "integrity": "sha512-YaFYBPdOIBqkYY1e7RYzZlicldmkM251WoWVAjbSwY7EWQY/tmLrnVmBZ31B/TqwvSBy6txQYBtuRZvozQ3F0w==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-clipboard/-/ckeditor5-clipboard-46.1.0.tgz",
+      "integrity": "sha512-ITc8WlNbM1CW2SGUVQtPBC/LdHUsm1hlk1Qx9RVMbHtXxfD8kvQ8fNC48pxJG5cB0ubOVtQTV6oRb3HbnuLPMg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-cloud-services": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-cloud-services/-/ckeditor5-cloud-services-46.1.1.tgz",
-      "integrity": "sha512-YBBklzman8taer22uehNxeehDKaGbwnAaI8h7JIxaf0EpvaldjDnswg1hvJTHpLYDZiiEoI3pHmtdatuNWMlrg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-cloud-services/-/ckeditor5-cloud-services-46.1.0.tgz",
+      "integrity": "sha512-7pee0vArToQj6jafcmh0nacxkzocih53wjp1in+OXPyW+eXz5G9ek+bQnjvB5R5U9Pb/ZkjsmRqPEIg5uQm/Fw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-code-block": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-code-block/-/ckeditor5-code-block-46.1.1.tgz",
-      "integrity": "sha512-YG1YOKHV/zHsSS/CcQJUx/Y8virChUG7JB7HbS3WgkFccvMEZLusx5GkeKXQHRZp0yUxbcAKO+woeVIwylrbCw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-code-block/-/ckeditor5-code-block-46.1.0.tgz",
+      "integrity": "sha512-MsvLnckFnApTil4csLwi+FIXfhqHrYsZX0KrVj/0XqrjXfSxYydBs3KEL6psmyoaLHPcduqHKyox2xPsBiLSTg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-enter": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-enter": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-collaboration-core": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-collaboration-core/-/ckeditor5-collaboration-core-46.1.1.tgz",
-      "integrity": "sha512-Zo1WuVOXY8RebukbshHeGKaGyxnKgL/4PpzfqEZswjsHUAzLCoZfW4hqJ1bfW2J1VM/jRhbyQ6TXMTW32PDrCg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-collaboration-core/-/ckeditor5-collaboration-core-46.1.0.tgz",
+      "integrity": "sha512-Cr3XVR6taWg/8HWRtFxo+lbZo7AKjqqnBKx/slEV7sTQ0CdBAd1KE4FNVIOXWT0ryYDhvCSnCxP3klWBd1DkXw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-comments": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-theme-lark": "46.1.1",
-        "@ckeditor/ckeditor5-track-changes": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
+        "@ckeditor/ckeditor5-comments": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-theme-lark": "46.1.0",
+        "@ckeditor/ckeditor5-track-changes": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
         "@types/luxon": "3.6.2",
-        "ckeditor5": "46.1.1",
+        "ckeditor5": "46.1.0",
         "luxon": "3.6.1"
       }
     },
     "node_modules/@ckeditor/ckeditor5-comments": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-comments/-/ckeditor5-comments-46.1.1.tgz",
-      "integrity": "sha512-fyE8IJtqNlVL2ppV6CmCQh7L4+SqHNG/nrWYhdtiaLrhYx96TAXTYGffjgj2NOkYDTgxnOpbQBc7K/u5akVwDA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-comments/-/ckeditor5-comments-46.1.0.tgz",
+      "integrity": "sha512-Cklp9kxUNWq3DauHGsKYhrDpV1lAYoX8DSnsjqtjhNJcjk3jAdlxF9IrVi/Hs5goFKNfwDqfWspXXjG/0cB+kQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-collaboration-core": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-enter": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-paragraph": "46.1.1",
-        "@ckeditor/ckeditor5-select-all": "46.1.1",
-        "@ckeditor/ckeditor5-source-editing": "46.1.1",
-        "@ckeditor/ckeditor5-theme-lark": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-undo": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1",
-        "ckeditor5-collaboration": "46.1.1",
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-collaboration-core": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-enter": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-paragraph": "46.1.0",
+        "@ckeditor/ckeditor5-select-all": "46.1.0",
+        "@ckeditor/ckeditor5-source-editing": "46.1.0",
+        "@ckeditor/ckeditor5-theme-lark": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-undo": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0",
+        "ckeditor5-collaboration": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-core": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-core/-/ckeditor5-core-46.1.1.tgz",
-      "integrity": "sha512-J1WsQxxnbzgbG+xz669+bzfJ+jRbaMdYsdxZZAHlGjaKaOOMXMVrmsAesxy9OoV2LEuMed3BMu7BnICKIoD/aw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-core/-/ckeditor5-core-46.1.0.tgz",
+      "integrity": "sha512-oYBXP+Gi0CknbgSHbdF7QvCy8RQDRm3rQu0Ur2ODp0Dhq4yK2/EQgCL4Hlh6VDqN6dhPUwIFWieTpwx6U89VkQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-watchdog": "46.1.1",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-watchdog": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-document-outline": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-document-outline/-/ckeditor5-document-outline-46.1.1.tgz",
-      "integrity": "sha512-1Ef+UDt/YRqHk7fC4okRGb3WmFEkpSjqHeJDaMap59PtYJ8zJaEBI9pxtrFW92kzbxN2gJVY+Vt9mfxCTMLUkA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-document-outline/-/ckeditor5-document-outline-46.1.0.tgz",
+      "integrity": "sha512-Z1APg7j+isSKygQalhdu3u0U43+n5BCK+Ao24lmr1nMTZg+er32kqMT6M8UOrf4696CGK+zr0O8R6ohpoc1j1A==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-heading": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-heading": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-easy-image": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-easy-image/-/ckeditor5-easy-image-46.1.1.tgz",
-      "integrity": "sha512-1UbSdmRuGoYhtAlYUeZlttLBblfYJbmIXE5iGVgi+2rGLEHucqQ0zBh84di+TCdqbjkp/S+T6G4sopQMM3xmbA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-easy-image/-/ckeditor5-easy-image-46.1.0.tgz",
+      "integrity": "sha512-lkRVhrBRgR6dCt5M31NrvQATy379WIzew9TiIAieQrIic5gORgBW0mIuWz+FHWArQG0AWpETCf9p/szy5OgnJw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-cloud-services": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-upload": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-cloud-services": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-upload": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-editor-balloon": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-editor-balloon/-/ckeditor5-editor-balloon-46.1.1.tgz",
-      "integrity": "sha512-RGqrEWy50j8TbQeE8dNg+EIuuX5lef2fciiUO7wNyKQO5HahQS5BVbVy8+Uo24p/VHishp2Dzf4tqX6ZtnzRdA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-editor-balloon/-/ckeditor5-editor-balloon-46.1.0.tgz",
+      "integrity": "sha512-JSstYrjfRv5FVLSA/FVCEL6wO1vV5Ctotr6vJp8j+S4TC6NSpTp6s9RAsrReJM7Xpw1W8V2EekxaoDyIn2EWMg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-editor-classic": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-editor-classic/-/ckeditor5-editor-classic-46.1.1.tgz",
-      "integrity": "sha512-5WrFP+YUTwjQN/0f1TfzDNqgd0tK50Gw1YNPXav1AQHYnQUaFUxJEZgesV2Z3w77LIYVguoOlCEMk2yDhA+7aw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-editor-classic/-/ckeditor5-editor-classic-46.1.0.tgz",
+      "integrity": "sha512-rG/pLoiYw8jYMs4tB9wYzu2458XAPVHSnG7iDHSJA660JQAsCRrft9ktQfUd5SHiFKnrF4kTuO58LdlLr3QnJQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-editor-decoupled": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-editor-decoupled/-/ckeditor5-editor-decoupled-46.1.1.tgz",
-      "integrity": "sha512-ony/8uvWj7zFCPQ9GdsntT247WQShcNdNsG+M7bmaVNh8VjMyUMPY8vGL42eqR72I95vzhcnO19yqqqoa4bT/A==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-editor-decoupled/-/ckeditor5-editor-decoupled-46.1.0.tgz",
+      "integrity": "sha512-gQBlUC8m15g7WC76jshf1n8QrA038jKt5C2gARAN/qSpa3RKlXjPP/0d/Y+3QX3Zu+l+j9/ADi87a/clvMUBAQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-editor-inline": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-editor-inline/-/ckeditor5-editor-inline-46.1.1.tgz",
-      "integrity": "sha512-/paul3r1JgKp588tswE0yBfjpUT8U1/VLLo9RweAzQmtV1/XvG/Ua3YtGAV9eyvLQ5R7PKBJ0+Wq4fjNE8yVgw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-editor-inline/-/ckeditor5-editor-inline-46.1.0.tgz",
+      "integrity": "sha512-ev7boO72zpDlUp8nNaeE7r6HABm0/ERVn3JozRryRXXBu7Yx/XawCifr7l57Otz1EmV2C4EB2Lnee1cB14rouA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-editor-multi-root": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-editor-multi-root/-/ckeditor5-editor-multi-root-46.1.1.tgz",
-      "integrity": "sha512-UBqQPDtWpoPd+LJ/45MW2DTykYMc6Qg3QcNto81cRBGj5pbhnCaCIkzCDpT9A7r9XS8+pmfFw9xEajFZiUkdTw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-editor-multi-root/-/ckeditor5-editor-multi-root-46.1.0.tgz",
+      "integrity": "sha512-TQR31fe86jfgFM4+MYBu9BPuKHCY7HwJGsCb/+9zENJ2pfWoAc1TncXyipfyklTtc3ug6dWJHXwDaxpaUib7SA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-email": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-email/-/ckeditor5-email-46.1.1.tgz",
-      "integrity": "sha512-6kYrcd4TGQjdBQTDrf3Lum4O3vQByB7XMb/rgVSTdf6A5xdCDPJM3paaZv6f9CXg8A6ucVeZHddLO4bAOUMHfw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-email/-/ckeditor5-email-46.1.0.tgz",
+      "integrity": "sha512-++TYm8b4MH+ufw9PoM/pC6D2mkvLASwNWsLokn9Kunc8AO9HOsF+GiL1X928aQ8DU2CX3UywQq+xexhbpSe+Jg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-export-inline-styles": "46.1.1",
-        "@ckeditor/ckeditor5-font": "46.1.1",
-        "@ckeditor/ckeditor5-html-support": "46.1.1",
-        "@ckeditor/ckeditor5-list": "46.1.1",
-        "@ckeditor/ckeditor5-table": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-export-inline-styles": "46.1.0",
+        "@ckeditor/ckeditor5-font": "46.1.0",
+        "@ckeditor/ckeditor5-html-support": "46.1.0",
+        "@ckeditor/ckeditor5-list": "46.1.0",
+        "@ckeditor/ckeditor5-table": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-emoji": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-emoji/-/ckeditor5-emoji-46.1.1.tgz",
-      "integrity": "sha512-RTyl0LdPBi7um6WjV0tbrVZ9sg/ZqDPTglMbWPmgnPaoZzGs+BJgv6B8cPi9RIl6klOfKWzupGSdHynjI680eg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-emoji/-/ckeditor5-emoji-46.1.0.tgz",
+      "integrity": "sha512-t/ybosbPaZdzfqV7LoLAcZJK0OBlSjP/QZAPNuHZm56gtsZLzp1UTpvaSBRGsHE0yEZe+UkkI8vBm81eXtPbYQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-mention": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-mention": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5",
         "fuzzysort": "3.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-engine": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-46.1.1.tgz",
-      "integrity": "sha512-5kKbVnsE1PC1T+4kXOlHa6u+shCFKVPLEDjo4gWOwxDr1qPVPVQ9ytvXenQtx/k/wtVNuy3s+uq/nbiMoUXSlA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-46.1.0.tgz",
+      "integrity": "sha512-KO2DkJ7jq6Hb4uZ8rUxPyyXSg+McDba+53psU1kj2QtyUTJ3scKxTjyFIS7Q4Ki23xAYC4u2Z3mIDuI2jWQurg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-utils": "46.1.1",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-enter": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-enter/-/ckeditor5-enter-46.1.1.tgz",
-      "integrity": "sha512-VqnHR5X2vGPcdpmWsyp9OW7O0kl+avFAjSICz1JJ6cPKW8yCHTCxSWxuVEq1bLqS8I2v4imQ+fqM20HYwii2vQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-enter/-/ckeditor5-enter-46.1.0.tgz",
+      "integrity": "sha512-h4AXZ4CmyNi4SXlV6UN542FE4focvGxfAMFt/Nkm1JVZ2b2xogQoxBWKMWqt9iVZvHPacgzQGl0udwZgY+MBSw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-essentials": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-essentials/-/ckeditor5-essentials-46.1.1.tgz",
-      "integrity": "sha512-QyX+DPFDdPgBGRU2LeeMYJUqJ9MGDeCnG19lw4kwfA6PwrIamErTMEI9bLAXr9ZD5SxOVr8U+A+1MtFdQzdBxQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-essentials/-/ckeditor5-essentials-46.1.0.tgz",
+      "integrity": "sha512-DnaoFFremPG0fLg0A5wBpYPLjhbCAHVVNEnEG9r/+z9Ta+Sxlb4UKlbO9PKJowaN4kPYlgeUcbslPWgwcOiecg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-enter": "46.1.1",
-        "@ckeditor/ckeditor5-select-all": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-undo": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-enter": "46.1.0",
+        "@ckeditor/ckeditor5-select-all": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-undo": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-export-inline-styles": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-export-inline-styles/-/ckeditor5-export-inline-styles-46.1.1.tgz",
-      "integrity": "sha512-BmQpvbwxOlB8CgTJOxf0hlx9hVwYtKOJy5EjkIMv1aPpxnzWy7n3vmTEjPIO6w38tDMXhzXHYDkWdBSq+1OV7Q==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-export-inline-styles/-/ckeditor5-export-inline-styles-46.1.0.tgz",
+      "integrity": "sha512-MOQl3WFIV0Bpr4QhAdh4//fpQfiDTaRAUSB9eXf/mgWuOHU8NgfyUR2u8mRjNofGoEYlE1whkMSqFdDkxvnqgw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "specificity": "0.4.1"
       }
     },
     "node_modules/@ckeditor/ckeditor5-export-pdf": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-export-pdf/-/ckeditor5-export-pdf-46.1.1.tgz",
-      "integrity": "sha512-vSJMRg5itLBkvpo8YFyN0IVU7TGpswI/yRSVUX+WHw5/o76DG83SJt+6rX6PgQzDsl7YKwMgSaBzZdzTTiiP7w==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-export-pdf/-/ckeditor5-export-pdf-46.1.0.tgz",
+      "integrity": "sha512-iwv86UAvjO5PDj1LiFKnKzNBiB7p78ZaZpF24ytYbn9pEg1KoK3k91/lOnBgocd4Jj9aJcsYYqVJ4hFPeKTkXQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-cloud-services": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-merge-fields": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-cloud-services": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-merge-fields": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-export-word": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-export-word/-/ckeditor5-export-word-46.1.1.tgz",
-      "integrity": "sha512-ycSD/q3dBOUzgypxnpclhvkf+m7TrSz2XrW3r8yyJ4ucOle0LhMFmrOZGFRus2d97lu/SPs7sseZYvu8B3v02Q==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-export-word/-/ckeditor5-export-word-46.1.0.tgz",
+      "integrity": "sha512-xuHzcnFlZfcwD13lPXXeOcJJi/c3hqqzSKUIszPqUA2zMUG7pvdyxqWWEbt+uUAMTt6Ilx4bVZGX/cBMI3qsEw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-cloud-services": "46.1.1",
-        "@ckeditor/ckeditor5-collaboration-core": "46.1.1",
-        "@ckeditor/ckeditor5-comments": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-merge-fields": "46.1.1",
-        "@ckeditor/ckeditor5-track-changes": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-cloud-services": "46.1.0",
+        "@ckeditor/ckeditor5-collaboration-core": "46.1.0",
+        "@ckeditor/ckeditor5-comments": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-merge-fields": "46.1.0",
+        "@ckeditor/ckeditor5-track-changes": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-find-and-replace": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-find-and-replace/-/ckeditor5-find-and-replace-46.1.1.tgz",
-      "integrity": "sha512-xQn3jt2BVw/NOY0QhfTnjKqiv40ahJ6VLGp8DPi/0bmHcgDRqD9QEKg5TFPY99Fi7Oh0OJL81UlQJnulc2hSlg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-find-and-replace/-/ckeditor5-find-and-replace-46.1.0.tgz",
+      "integrity": "sha512-qRFV9mlMNq2Dt66Lv2/JI8ce4T8vJXZLKjaWyMRVetw3UDbv0x6iNXIB7KwVecZ/7IV+Yb6lTKhx+VlhH9Qw5A==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-font": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-font/-/ckeditor5-font-46.1.1.tgz",
-      "integrity": "sha512-TqIoOUUChwN9cEKCIn30m9Y95VZU7PQyn20mIbG4/iQItI8IyzlToFAdb+xPaL2ozUcyzTFTGqx0nz9zqKNtWQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-font/-/ckeditor5-font-46.1.0.tgz",
+      "integrity": "sha512-IZyld/89/DSvmYX/AoR7E814JJStmcZfUD14AKMgGpXctvuCVy37IZhtxzy2RtSgNqX88VTdCC1jPREDHOM5ZQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-format-painter": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-format-painter/-/ckeditor5-format-painter-46.1.1.tgz",
-      "integrity": "sha512-Mg7BI2kD7rp4O1r1u1nZnOd5iw18neo9hcCZXUgZj3eDtkONZKHvw5nfnha46whCum9zFBmau3u5ruHdImHTLQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-format-painter/-/ckeditor5-format-painter-46.1.0.tgz",
+      "integrity": "sha512-vYdbkalkmK7JhOTC5KgMORdecz1h+2dRIuGE4YyyU4hRAXuBIBv3bvDuM+SRH8YUNDo9SwgonA7FU8YwWsDoFw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-fullscreen": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-fullscreen/-/ckeditor5-fullscreen-46.1.1.tgz",
-      "integrity": "sha512-lpIG6YIw5KjehuTTX3MiAPBULzei8Pw+wfkpaP/NgyHLaUkN0x2wsoDRf3NWsdg+BMMDbR0ejGRJ8q+sD8d6ZQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-fullscreen/-/ckeditor5-fullscreen-46.1.0.tgz",
+      "integrity": "sha512-/hwgtrL6zB4xHIFVIRsMpN1v54GHtNoGe/4nvrjScMCfh9RnL6erAMGqHqqlZ9CVMDJq3sx6r3KjI9gQyE6rdg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-editor-classic": "46.1.1",
-        "@ckeditor/ckeditor5-editor-decoupled": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-editor-classic": "46.1.0",
+        "@ckeditor/ckeditor5-editor-decoupled": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-heading": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-heading/-/ckeditor5-heading-46.1.1.tgz",
-      "integrity": "sha512-ACneDx+HP3Nm/f2zFrRkUzpbG0CNNMGI4FS242eu0AQqE/vwwLvSD7HmiEzN2Z0HRLVFoY5EWa6kSZpJx6z/WA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-heading/-/ckeditor5-heading-46.1.0.tgz",
+      "integrity": "sha512-ql1xZ+qKrmMYp2zyFuRirNb5ON4oo4c1DkxbfmVqnsopQg7dBWDtvpBqj18vUQ3+xTcazh9djvRMAnk8eePy/g==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-paragraph": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-paragraph": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-highlight": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-highlight/-/ckeditor5-highlight-46.1.1.tgz",
-      "integrity": "sha512-eNZ4BWF98mux26X/UOh+SyMTfMgvCOq4+T6lbqLB9TbN2i5/seKxIM9IV5ynag//bNd1ZwaqUczt05e3xFpYUg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-highlight/-/ckeditor5-highlight-46.1.0.tgz",
+      "integrity": "sha512-R0pFXtfXuKWkaUfmyI5IBRCJgh28/YfjComCxkkyeANWyy+yEPScRZvihhClxGwh7L43EnLb/l36jfSQPJN8pg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-horizontal-line": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-horizontal-line/-/ckeditor5-horizontal-line-46.1.1.tgz",
-      "integrity": "sha512-2PtEKoGQm6OYFDk1kjlIluCsuFVGPP7rU+KXOBBmOSku4rP1cIYyV+wFlerCGaH7hlzEyiuH1arR8va21IBprA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-horizontal-line/-/ckeditor5-horizontal-line-46.1.0.tgz",
+      "integrity": "sha512-IFbk+xBqo9zFG31zovWkruLekR/nzxeChmTjkDPCPF8TzyUjnhL9R6TXshYXIMaS69GDbnP7SmATgWa2BuBDtA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-html-embed": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-html-embed/-/ckeditor5-html-embed-46.1.1.tgz",
-      "integrity": "sha512-rD1AlVOAKeNH0wdBedJFOyWF8dIx5tOJFV+ao36hbtHvXlEDXyXpeal58pbd3Z1QVIdfQ65NF0yZL2leQqOQZA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-html-embed/-/ckeditor5-html-embed-46.1.0.tgz",
+      "integrity": "sha512-cx8fZLRi2G3ubd4oQuUHaB2M1QKRW5cWKaJM7e062wHvTMutfdDPRhO+NZPg/drwvUAXaa52FVEQQAxj4rHSrw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-html-support": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-html-support/-/ckeditor5-html-support-46.1.1.tgz",
-      "integrity": "sha512-wG3cYNhzc5MAaFVbE+xjMMDDMtXwMUYiZ1Tjwo4YkSdBGRrOYShbktal5H/Snvj+pIgAgc5tOetmk5+izRKVSw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-html-support/-/ckeditor5-html-support-46.1.0.tgz",
+      "integrity": "sha512-nhILiDnllN38KW4ANe5jONnMzZ0yZ8kpekU7BEbGP/Yxgua9VztHvTvWYGsM58OCltE6V9h1aua2+RC1z/+KUw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-enter": "46.1.1",
-        "@ckeditor/ckeditor5-heading": "46.1.1",
-        "@ckeditor/ckeditor5-image": "46.1.1",
-        "@ckeditor/ckeditor5-list": "46.1.1",
-        "@ckeditor/ckeditor5-remove-format": "46.1.1",
-        "@ckeditor/ckeditor5-table": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-enter": "46.1.0",
+        "@ckeditor/ckeditor5-heading": "46.1.0",
+        "@ckeditor/ckeditor5-image": "46.1.0",
+        "@ckeditor/ckeditor5-list": "46.1.0",
+        "@ckeditor/ckeditor5-remove-format": "46.1.0",
+        "@ckeditor/ckeditor5-table": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-icons": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-icons/-/ckeditor5-icons-46.1.1.tgz",
-      "integrity": "sha512-BeJaBmXxg/R2cvGpL0oeLToDX2zIjLm/UejK0qsiO/eYxTJmveCabUWhcigpk19ciAcSjUdiariZUxCvpTyL5g==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-icons/-/ckeditor5-icons-46.1.0.tgz",
+      "integrity": "sha512-CF1YCpK3Rw8ot8ymDnhSq10N3LmLWrJhkpU2qXTm7iFlqG5q0AfcUcQC2Z0p6OB2mkBxeet6zcYwWhh6pXPjBA==",
       "license": "SEE LICENSE IN LICENSE.md"
     },
     "node_modules/@ckeditor/ckeditor5-image": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-image/-/ckeditor5-image-46.1.1.tgz",
-      "integrity": "sha512-292BrygMMXAvrcCxXxRUHC7rfxYqG6Fjf+/QhPXybOb1MFIzGnCkBh7zckUH6oQ4GlQ8kE+mwIthgmc8xvVYGw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-image/-/ckeditor5-image-46.1.0.tgz",
+      "integrity": "sha512-izs86HyfK1DTwGSKxMyP6vufJy69rWwn8LCg9+Dp6e1WXCWOo1KeAIcG+qBa6G2NcedfdXoQmmoN4QIVGWka0w==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-undo": "46.1.1",
-        "@ckeditor/ckeditor5-upload": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-undo": "46.1.0",
+        "@ckeditor/ckeditor5-upload": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-import-word": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-import-word/-/ckeditor5-import-word-46.1.1.tgz",
-      "integrity": "sha512-g2hruGQxnrfqGFVLGln/Uh+aoXdK1oWMDRAe0H8qgAzMGfIVwSBOUT4RnGa0WCTJwvP5dZWYTQVddzboIfMTzQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-import-word/-/ckeditor5-import-word-46.1.0.tgz",
+      "integrity": "sha512-OjxxnHqqplnvFPs+zAir10GwUyPJ4dIkwIeuwsY1DJhS1yQzRAX/7DMVblgXQ35+0h/DyOBxncmOh7khaGIDkA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-cloud-services": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-merge-fields": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-cloud-services": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-merge-fields": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-indent": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-indent/-/ckeditor5-indent-46.1.1.tgz",
-      "integrity": "sha512-JKLcCcKo20scOvEuKu09d6og+ECia6QKGOOaTfmy2QJx6CqkbkgC3NQKVF+ixmeGYERfL6X14VZURD7APXVJTA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-indent/-/ckeditor5-indent-46.1.0.tgz",
+      "integrity": "sha512-/KgrDp1IQsfSuNPLxS34sBb97R7yla2v0icil40YO+ptqrubVM5MxzmBWUoy2KA1JGa9EwOtpl3+qC3P3apwuw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-heading": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-list": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-heading": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-list": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-integrations-common": {
@@ -3521,94 +3521,94 @@
       }
     },
     "node_modules/@ckeditor/ckeditor5-language": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-language/-/ckeditor5-language-46.1.1.tgz",
-      "integrity": "sha512-g8atx87RRSypjnnvthpMMSykLN6cgoNAQRvABdxYJTHARRrpjcIKNqWup9SW02QPUKRk/dmsnFEQVH6gkTTzTQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-language/-/ckeditor5-language-46.1.0.tgz",
+      "integrity": "sha512-Jv8Lh0mAQ0XyeThyEanzzc7dNEa2JUbblHqq3ejyTJ3tYO0dG/flZkpm7rYduE8K+62SeYv0zoOesqpiiJ1+zQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-line-height": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-line-height/-/ckeditor5-line-height-46.1.1.tgz",
-      "integrity": "sha512-+n0Y4JH0FFbf86Z4A1RRCnxIubcn3tEJxcdVek2xOuFJOo1I2rI3VVnCVci9k2rs1zn/R23gVq7LY9BDE9Q7oQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-line-height/-/ckeditor5-line-height-46.1.0.tgz",
+      "integrity": "sha512-11WD++Jp0QoK7Gxvw//jfyZE+5iYTwiOQFzJiefESg9mz0y7ZjlNjFif/56sSLP+jsMr9izzsyhm3/vmKvOvZA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-link": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-link/-/ckeditor5-link-46.1.1.tgz",
-      "integrity": "sha512-dXsLFdL9VvU8VB4EK4qZk7TVSHCOmaAPoxorGy053Wg29ngEhpMHYiYWZQcLZB5VZSNYlc/mW2Hdv1cr2VEwFQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-link/-/ckeditor5-link-46.1.0.tgz",
+      "integrity": "sha512-11tEAVe8InXd2rgp/Rq9+uTU+WCHOTlwJEnM1TvrtapPYcOdoZZP3DiDMJgOzjA5PPO0O15KcoNayIK/KOW1WQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-image": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-image": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-list": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-list/-/ckeditor5-list-46.1.1.tgz",
-      "integrity": "sha512-TlO8xiZHEoyy5nJSeBWSiu7oZjhBXFzm/3CT2jvBZPer/mWnPV0r6BTrw7GK+Pki0PtQCJUNhyxWafUN9rnKqQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-list/-/ckeditor5-list-46.1.0.tgz",
+      "integrity": "sha512-qF5DkFczY8nqQ0HJpEykIQqMa5MH43TDDEwi6scxv136KLhpPBdHlcb/YkMtGmx3HWpEudYSyf/IUyXHX/ngMg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-enter": "46.1.1",
-        "@ckeditor/ckeditor5-font": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-enter": "46.1.0",
+        "@ckeditor/ckeditor5-font": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-list-multi-level": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-list-multi-level/-/ckeditor5-list-multi-level-46.1.1.tgz",
-      "integrity": "sha512-Fu5/xTGOpBLAgFYVRPqdC7aYK4TZsoQzA3DlKwVCOjLKRF/GV7le/jt6s+oUWVSh85nbLkoGBUdnWFR+hqzUOQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-list-multi-level/-/ckeditor5-list-multi-level-46.1.0.tgz",
+      "integrity": "sha512-14rWeNik1+P80y5w0KUQntodcru3B4gQ1FcRi5IBrZlCFd9Oijohy8i/2aB3MkdduBZUy++XrmzbhZ6MCT4pJQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-list": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-list": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-markdown-gfm": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-markdown-gfm/-/ckeditor5-markdown-gfm-46.1.1.tgz",
-      "integrity": "sha512-nFPeW+EmkFuvAxp7wqJvXZlqUcVsoVH2s77785DR90iOzb2+zYHzanJ2bWkuC8b+7im7U6h2+6Ghahtz5Y/VVQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-markdown-gfm/-/ckeditor5-markdown-gfm-46.1.0.tgz",
+      "integrity": "sha512-cvWRc8drLI0kogh/BXdYOnIaHrveGvIhymonMlfTNqblL9j+EIi89JDSeQvX/V5p2usbpsJHTaz0MZVu8xamnQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
         "@types/hast": "3.0.4",
-        "ckeditor5": "46.1.1",
+        "ckeditor5": "46.1.0",
         "hast-util-from-dom": "5.0.1",
         "hast-util-to-html": "9.0.5",
         "hast-util-to-mdast": "10.1.2",
@@ -3626,144 +3626,144 @@
       }
     },
     "node_modules/@ckeditor/ckeditor5-media-embed": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-media-embed/-/ckeditor5-media-embed-46.1.1.tgz",
-      "integrity": "sha512-1gkrTOlXu0Ptag429I/+sNPeefuLm4ATa0jjaVqM4Mtu/3JRGndkYqVTzmQQeRRn6jEJljqgngNMnlccMRKEmw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-media-embed/-/ckeditor5-media-embed-46.1.0.tgz",
+      "integrity": "sha512-a01ececMjxNNPGj/31uiJI1Z8ogYxPep9438q0j7HmiEMxqQDpVsUUfyDIYNcKqzohlzEl4b+X08iTyJbX+DuA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-undo": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-undo": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-mention": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-mention/-/ckeditor5-mention-46.1.1.tgz",
-      "integrity": "sha512-NOyYUBW+bCrr5TSIHxTuoHe1H7YRjDChq396n+XAtreRICRKRloOWhzklI5RMJ5dfmQ7llS1eafi8uu7mzB2zQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-mention/-/ckeditor5-mention-46.1.0.tgz",
+      "integrity": "sha512-ItCdpKfhZJKJMl8sYmrgmJiFGgZHKJknw8WCrCzUqgjj4/n1UHOTTV0Mz9mpA9247ScZ8DXil1b0zgZnEM0pog==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-merge-fields": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-merge-fields/-/ckeditor5-merge-fields-46.1.1.tgz",
-      "integrity": "sha512-q11TWAq6hQ7WUh7jQC56fxuaB2V8nVn4mN5Z/ayDuW4LHBMEK9LH8QeGfkodVMURnW0j7gz+A5w6JofRAi9WbA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-merge-fields/-/ckeditor5-merge-fields-46.1.0.tgz",
+      "integrity": "sha512-7JvViNAWd6K/Xwc3cdvKkWv1Tm19vL7RVlSKR1dLVHercq5LAdYwewFDUbVwEhVWyHPYhgpZKvhsetuYwXLdEA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-image": "46.1.1",
-        "@ckeditor/ckeditor5-mention": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-image": "46.1.0",
+        "@ckeditor/ckeditor5-mention": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-minimap": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-minimap/-/ckeditor5-minimap-46.1.1.tgz",
-      "integrity": "sha512-6tj1PhzVSWbkJYI0+v5TQTKwWfUAeTyZsDXQgaMZeH3ZIZ40wzXRI+ly380msu9t3mBS/qgzuKnsZpc7qNpbaA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-minimap/-/ckeditor5-minimap-46.1.0.tgz",
+      "integrity": "sha512-Mtj179hE4kQ+uMjGheVp/eO5v2aj4FRUo1/Camcz1r5A4zBxe5QsUreudMHZ75PGejMMSJ9nFTE2BEyqxqHNdQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-operations-compressor": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-operations-compressor/-/ckeditor5-operations-compressor-46.1.1.tgz",
-      "integrity": "sha512-YIxktWjb7p3uq5G+KJc3kupvTqYB8C6j425biPuS6gRto/JLqeUa1qyH0iKiWOwy433sf9n7I62umv60rNlWuw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-operations-compressor/-/ckeditor5-operations-compressor-46.1.0.tgz",
+      "integrity": "sha512-uy4YtxdQt0O0R7MbKePMjqqRhGe4TWEMlVW1GB4WLcBSt2rUDRVUgYjSlBeTEIEghElfkgzfeh50EMQ8pG9EqQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5",
         "protobufjs": "7.5.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-page-break": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-page-break/-/ckeditor5-page-break-46.1.1.tgz",
-      "integrity": "sha512-c6TjuwTxeuYCloCdLLrjOURrhKyI3iLWuAZhoQ1XLxLpp0k/BIX9G7tRVEr7xzXzk2T8ibnZVHgegx/ImWkGLg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-page-break/-/ckeditor5-page-break-46.1.0.tgz",
+      "integrity": "sha512-gnkQydylSI5HOIh7bgqi/womcYVd3ByDePYa4oVPsXXThhy3DRNa0hEr37Xo9t3O3oNp4yr2IoGYp+Yck/Y4tQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-pagination": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-pagination/-/ckeditor5-pagination-46.1.1.tgz",
-      "integrity": "sha512-oMMvaQ8bsG6ll8OM7c/j/1bT+NQ3u49bu2gPv/rWA8xtzcaI9IyoEQ5gU2q2H+bS/nlv00ZQlsPxR15Z9/vkzw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-pagination/-/ckeditor5-pagination-46.1.0.tgz",
+      "integrity": "sha512-V6QiVjPjXIXXGcJ0I3WpfBLI3kVzMGtjrJu9/tMwgDc7c9YXlsjHjHIMvCtnAD1mCaYx7qePnmQzIoPYv/Wp7g==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-theme-lark": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-theme-lark": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-paragraph": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-paragraph/-/ckeditor5-paragraph-46.1.1.tgz",
-      "integrity": "sha512-7SC78DYDrFiBTOVHBajxzAUdSoTiM85I8M11QLCrKDoGR1zGgRGjQH8NUMMUOekAjh8SxRN25Alm2Gn27IgCUw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-paragraph/-/ckeditor5-paragraph-46.1.0.tgz",
+      "integrity": "sha512-x82mdpt6C/ytZJz/+Nk4plyjtHh78zrW/kD11chcshIh2clWjD+W5WYv1hPhGzClDlJbWkwfEac7K6ipEnrgkQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-paste-from-office": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-paste-from-office/-/ckeditor5-paste-from-office-46.1.1.tgz",
-      "integrity": "sha512-W7v4LAc3EJyXXmOCQtnCwjiK9ZhphhBIgLHz1jF/cE6WjS0nQDeXLxHqHnOaD8awR4oqcDyaUNvuBx4ipcUwzA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-paste-from-office/-/ckeditor5-paste-from-office-46.1.0.tgz",
+      "integrity": "sha512-aYAsD6t+w2fvNH8bbRZrfWUwc5ELrdgMKLiMFbD7e/0ruhtkQYnnb/1oIzmn6WrAFhaRLtvUvX+bPq5E3iyPNg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-paste-from-office-enhanced": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-paste-from-office-enhanced/-/ckeditor5-paste-from-office-enhanced-46.1.1.tgz",
-      "integrity": "sha512-DGnOuOnHo7bL60PVvl7K02pfUMUO6/2rvRjhlWiv60z7UcGHRhDO1G10B0S1gbPnohcz5lk/GRd2xAObtX7V3Q==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-paste-from-office-enhanced/-/ckeditor5-paste-from-office-enhanced-46.1.0.tgz",
+      "integrity": "sha512-gwJrA2MCygZdGssEnAQ9grLuTgGD8/wXYSQKSDTc9pvyV5pC382c7K5xguD6Hi0W2GBqpN6xOdmvjiYwlOjceA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-paste-from-office": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-paste-from-office": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-react": {
@@ -3780,145 +3780,144 @@
       }
     },
     "node_modules/@ckeditor/ckeditor5-real-time-collaboration": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-real-time-collaboration/-/ckeditor5-real-time-collaboration-46.1.1.tgz",
-      "integrity": "sha512-6TRJp+xrGIZVyHB7kY+pzvjprvIFtoDoXBCTMLnPnq6wzMLF2MXf9kiMWvOev2T6lIfHjD64qKEslMhMfVdytg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-real-time-collaboration/-/ckeditor5-real-time-collaboration-46.1.0.tgz",
+      "integrity": "sha512-L46PNaWMUFBsbCsv+I9qkab1IyMS09PlEc3zYEikw8xCWa/MkBmpPjh+4ie/Nb202joYNT/TjAEmYgZ/aSVFNw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
         "@ckeditor/ckeditor-cloud-services-collaboration": "53.0.1",
-        "@ckeditor/ckeditor5-cloud-services": "46.1.1",
-        "@ckeditor/ckeditor5-comments": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-editor-multi-root": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-operations-compressor": "46.1.1",
-        "@ckeditor/ckeditor5-revision-history": "46.1.1",
-        "@ckeditor/ckeditor5-theme-lark": "46.1.1",
-        "@ckeditor/ckeditor5-track-changes": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
-        "ckeditor5-collaboration": "46.1.1",
+        "@ckeditor/ckeditor5-cloud-services": "46.1.0",
+        "@ckeditor/ckeditor5-comments": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-editor-multi-root": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-operations-compressor": "46.1.0",
+        "@ckeditor/ckeditor5-revision-history": "46.1.0",
+        "@ckeditor/ckeditor5-theme-lark": "46.1.0",
+        "@ckeditor/ckeditor5-track-changes": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
+        "ckeditor5-collaboration": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-remove-format": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-remove-format/-/ckeditor5-remove-format-46.1.1.tgz",
-      "integrity": "sha512-WdFyMzIEHqIrGAhq0NPQhDuKbRvpIOgr87r9IjefRQC0a5mbEdGLNQSE7l0JF0mmNEKQbSi520yJLGZo4EJ7Sg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-remove-format/-/ckeditor5-remove-format-46.1.0.tgz",
+      "integrity": "sha512-N8Z7sA1HVj9Cb4GttvtFLr/rSlqJQXrZ0GyC0JMu8IGjbcmqfNokIVqpr5mNXi2OX30H8jZG8LRzgWVkqtYOiQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-restricted-editing": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-restricted-editing/-/ckeditor5-restricted-editing-46.1.1.tgz",
-      "integrity": "sha512-lODjvDEbTTG//EZQ2yqgmOL2NRzljpAULscanh2eY4km+AVNCPu7181txvnUMtEaWVwEG6Aja9ys3AJlcs3TsQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-restricted-editing/-/ckeditor5-restricted-editing-46.1.0.tgz",
+      "integrity": "sha512-4IbsEppuSICn134MaMHWjhbNLEmy5zbBfMDgsHNbUFqTwCIloruHDmQqUaPbeyt4l5Eb6hvGuF+xqairYAsjBQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-revision-history": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-revision-history/-/ckeditor5-revision-history-46.1.1.tgz",
-      "integrity": "sha512-raIFQsoj8rZlT6zhmXtgdejzrDhsTKXYz+lfQFc0Nym3xnyhuaqqhhCQa9vjTQsha8GqXpPsDPNdP5qa3yzu/A==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-revision-history/-/ckeditor5-revision-history-46.1.0.tgz",
+      "integrity": "sha512-z+mNIrpIMstBe0jSt0nqdV+dUABYmT2lbJT9Kq8dnc4VXnCMIv0IUYiZ+W+y7xiAovqnprF6kacPcZVLcjLmIQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-autosave": "46.1.1",
-        "@ckeditor/ckeditor5-collaboration-core": "46.1.1",
-        "@ckeditor/ckeditor5-comments": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-editor-classic": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
+        "@ckeditor/ckeditor5-autosave": "46.1.0",
+        "@ckeditor/ckeditor5-comments": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-editor-classic": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
         "@types/luxon": "3.6.2",
-        "ckeditor5": "46.1.1",
-        "ckeditor5-collaboration": "46.1.1",
+        "ckeditor5": "46.1.0",
+        "ckeditor5-collaboration": "46.1.0",
         "es-toolkit": "1.39.5",
         "luxon": "3.6.1"
       }
     },
     "node_modules/@ckeditor/ckeditor5-select-all": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-select-all/-/ckeditor5-select-all-46.1.1.tgz",
-      "integrity": "sha512-+h+28FPJKL59SESQzh4mvqEXkKrPyL3SnQI4wPC+ZMcBUqd3+0U0OCff0gClucNszgZcHbT83aODmKrQwUdQiw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-select-all/-/ckeditor5-select-all-46.1.0.tgz",
+      "integrity": "sha512-qevtb8JNZP/p+30htdjhswxnkIYeTwyApbXLm2jI63SkLYk9mm8IKVC/hzXRiE38WcxYz70rPd8qVaLSuS1qAw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-show-blocks": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-show-blocks/-/ckeditor5-show-blocks-46.1.1.tgz",
-      "integrity": "sha512-kiwceBqz5cMUrVp1iVJ+RoRhZRDGhhRHJo3pUeNG2+oYV+xxXvGdrMitDTXBbKnvoEHmI8xOWmh6E+wwHsIiNw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-show-blocks/-/ckeditor5-show-blocks-46.1.0.tgz",
+      "integrity": "sha512-rAy+D1A9pAmQaRNM+u84ve12l5xKh0iOY/UfI68SxvzXTHexitpvVTHJQuxI7xoMYujvEJ/fCXqpybiwcO+5rw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-slash-command": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-slash-command/-/ckeditor5-slash-command-46.1.1.tgz",
-      "integrity": "sha512-d9qtTtLQeSXZafbbNGbTC3i2Lhg+wCmAh9b1NcdcivdWrmh4VMgPoZCYnlG1X6Hvw+Iov4htP5pqJK6kCIL3uQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-slash-command/-/ckeditor5-slash-command-46.1.0.tgz",
+      "integrity": "sha512-DxmmvWQsCkSDbgCa1KUEF8CtMrgky/wrbrGJM8dZYrf1vwnvFMrdgNAPULZ2lK6meAs4JlVFS9LSDBj0FaW80w==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-heading": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-mention": "46.1.1",
-        "@ckeditor/ckeditor5-style": "46.1.1",
-        "@ckeditor/ckeditor5-template": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-heading": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-mention": "46.1.0",
+        "@ckeditor/ckeditor5-style": "46.1.0",
+        "@ckeditor/ckeditor5-template": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-source-editing": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-source-editing/-/ckeditor5-source-editing-46.1.1.tgz",
-      "integrity": "sha512-Z5Y/s49athQku0wBc6H8DOWAdCYfAOUJtjPaOjkmWuUF6b/WT5GJbEp2ZEGH1EXfZxIY98JEQypjH3fMNb6fAA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-source-editing/-/ckeditor5-source-editing-46.1.0.tgz",
+      "integrity": "sha512-iK94pTFUcgDJJEF71cxFuHYWGnt+dHrZ+2t/6lbI4G/aLZHMNp8WmlPKLKmo+vSXiOSHx92zn7FsWwUeYrlVUw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-theme-lark": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-theme-lark": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-source-editing-enhanced": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-source-editing-enhanced/-/ckeditor5-source-editing-enhanced-46.1.1.tgz",
-      "integrity": "sha512-yJzGki/kA5aO5d4jpGtuoQPX4Fmbkciq19sJC9GHxcEsgRO3a0BlhuyocNgntKFfM0tff3WciaeFsm7O1UC2Lw==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-source-editing-enhanced/-/ckeditor5-source-editing-enhanced-46.1.0.tgz",
+      "integrity": "sha512-sX8XOZLrCwa7NTdi08DS7nZ0aUA65HJdqQYafRyg8OlJs9LgSwAnNP9Z5VLRpZYVk4s/7oa9x6cvmmUagzl6YQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-theme-lark": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-theme-lark": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
         "@codemirror/autocomplete": "^6.7.1",
         "@codemirror/commands": "6.8.1",
         "@codemirror/lang-html": "^6.0.0",
@@ -3927,137 +3926,137 @@
         "@codemirror/state": "^6.5.0",
         "@codemirror/theme-one-dark": "^6.1.2",
         "@codemirror/view": "^6.35.0",
-        "ckeditor5": "46.1.1"
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-special-characters": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-special-characters/-/ckeditor5-special-characters-46.1.1.tgz",
-      "integrity": "sha512-6U99q15iGgb28hNTh7xYw8lbwtajyv/6Z9aVpnlkDXLHAdgkXyfo/5Z65hpPjlMoHwxnZd2xtzYaK1Aaz22MbQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-special-characters/-/ckeditor5-special-characters-46.1.0.tgz",
+      "integrity": "sha512-7QEN1bINGqJnPiCj0PylLI0OpckLiBo9XkeIy1c7ZanWnrzcusGzgCZm9V4HEcbOBD3DPjAADIGo7KLM7QX8Kw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-style": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-style/-/ckeditor5-style-46.1.1.tgz",
-      "integrity": "sha512-42ghJrxnRA32MMAtgdAxAI5NmMdpp8mVpOAs6SIfzfzPyJ7flNorNdjjeD8QIAGvaYz4Vj1G9Y0se2FKR9PCtA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-style/-/ckeditor5-style-46.1.0.tgz",
+      "integrity": "sha512-8alH99jzlwi1eVdBO5rEq32VFW/NgY5ENIaURBZ4qFtmPYIzsMJpYrHRQGCjnF0BIxqXfxYUsAGQtrNYpgiiTA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-html-support": "46.1.1",
-        "@ckeditor/ckeditor5-list": "46.1.1",
-        "@ckeditor/ckeditor5-table": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-html-support": "46.1.0",
+        "@ckeditor/ckeditor5-list": "46.1.0",
+        "@ckeditor/ckeditor5-table": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-table": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-table/-/ckeditor5-table-46.1.1.tgz",
-      "integrity": "sha512-tV2PBXvnw5znqF0riVjPwbstSU35oP/WPGEPzS6iHEWF21+efRgNKA05PSdQp9NQt58uMPOa3vz+1DSDozO5rQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-table/-/ckeditor5-table-46.1.0.tgz",
+      "integrity": "sha512-QZiV+mRExuEk3zj72XjROHIJOPowijNSJ4eBwEsBQKLzeRW6MtWWzqGcuE2XEOTu+8Y9izsgl4sA5C0ANGgZLg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-template": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-template/-/ckeditor5-template-46.1.1.tgz",
-      "integrity": "sha512-9SNhKoP+ATesD+w/gteZFTGRSf379yTTde7neCGhleTLw66RTrjQ3X/nD7IckYI3ouXjSMgQR8u8IBOd1pJVTA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-template/-/ckeditor5-template-46.1.0.tgz",
+      "integrity": "sha512-nP4XMsrTJx9FsyDugvjNB/V2c8s5WBM3kjCRZZS5lyr3n8JsLDCFIUSeJtJxZcKz7nJxs8PRJv1KvvLg1uQOVg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-theme-lark": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-theme-lark/-/ckeditor5-theme-lark-46.1.1.tgz",
-      "integrity": "sha512-W7U3a6JUGXbnd5kCBySrGei57Uh9Vs6FFlD0/nP7D9FdHKi5IRcnLOXQ2s/sAkztfmIXSKvvcGqGwnZVQCQxNQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-theme-lark/-/ckeditor5-theme-lark-46.1.0.tgz",
+      "integrity": "sha512-FxeGakkx47plAhkdV5VlmpdIOueXO3A73LQ91YNncqft86eVPRFbUyLtq95rP5/sQkddhlk7qoMvoqrToZosIw==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-ui": "46.1.1"
+        "@ckeditor/ckeditor5-ui": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-track-changes": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-track-changes/-/ckeditor5-track-changes-46.1.1.tgz",
-      "integrity": "sha512-s8W6oNmSF6cQTc3acUPnlOk0Q8jNR4DqjnnK1waQ7j4+i99HvsSLy9xuqIGvQPGEEKVNstUPxOQdqf7xShCe1g==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-track-changes/-/ckeditor5-track-changes-46.1.0.tgz",
+      "integrity": "sha512-0WbCEDcReWfJOgEaChosUr+X+Fb1ojZFqRizlWoVSC/mXuGE5ghckJsUVoaqwwV3D2OUT99SpDkW0y1UvkUamg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-code-block": "46.1.1",
-        "@ckeditor/ckeditor5-comments": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-editor-multi-root": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-enter": "46.1.1",
-        "@ckeditor/ckeditor5-find-and-replace": "46.1.1",
-        "@ckeditor/ckeditor5-font": "46.1.1",
-        "@ckeditor/ckeditor5-heading": "46.1.1",
-        "@ckeditor/ckeditor5-highlight": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-image": "46.1.1",
-        "@ckeditor/ckeditor5-link": "46.1.1",
-        "@ckeditor/ckeditor5-list": "46.1.1",
-        "@ckeditor/ckeditor5-media-embed": "46.1.1",
-        "@ckeditor/ckeditor5-merge-fields": "46.1.1",
-        "@ckeditor/ckeditor5-restricted-editing": "46.1.1",
-        "@ckeditor/ckeditor5-style": "46.1.1",
-        "@ckeditor/ckeditor5-table": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "ckeditor5": "46.1.1",
-        "ckeditor5-collaboration": "46.1.1",
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-code-block": "46.1.0",
+        "@ckeditor/ckeditor5-comments": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-editor-multi-root": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-enter": "46.1.0",
+        "@ckeditor/ckeditor5-find-and-replace": "46.1.0",
+        "@ckeditor/ckeditor5-font": "46.1.0",
+        "@ckeditor/ckeditor5-heading": "46.1.0",
+        "@ckeditor/ckeditor5-highlight": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-image": "46.1.0",
+        "@ckeditor/ckeditor5-link": "46.1.0",
+        "@ckeditor/ckeditor5-list": "46.1.0",
+        "@ckeditor/ckeditor5-media-embed": "46.1.0",
+        "@ckeditor/ckeditor5-merge-fields": "46.1.0",
+        "@ckeditor/ckeditor5-restricted-editing": "46.1.0",
+        "@ckeditor/ckeditor5-style": "46.1.0",
+        "@ckeditor/ckeditor5-table": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "ckeditor5": "46.1.0",
+        "ckeditor5-collaboration": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-typing": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-typing/-/ckeditor5-typing-46.1.1.tgz",
-      "integrity": "sha512-+lhzvyHj8Ao/qPHCuufiiBO68pCuynumI8oxfE/UBp9oPO25sqyW4FBgKeGZN6MR+4WKAMjI7tRtNrYEm0FM5Q==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-typing/-/ckeditor5-typing-46.1.0.tgz",
+      "integrity": "sha512-M5Z/bsaUfLlv4T7HVD6tgrvIkQwg2ng5M2OPt3QReKiSSFh2UueM/RFKudGjKmVGpaYfU2PQ2vZJyCRAIHKVdg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-ui": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-ui/-/ckeditor5-ui-46.1.1.tgz",
-      "integrity": "sha512-GWUH41WqzoS5OaXDLWtpr6SN8nQ9Iq4hvGXPp/ajWilyoX5Ar/1LA5v/sRIzlyekjVglzvOxrSZvRB5BQyz1Rg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-ui/-/ckeditor5-ui-46.1.0.tgz",
+      "integrity": "sha512-e4BhbroPi2MoRbmUa+ge68GFSLIKkjcnmpdfyZckEhWgP8h5ZDr5B0pZnrEMgCAAmjn4Iy2E30IM7XnR49B50g==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-editor-multi-root": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-editor-multi-root": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
         "@types/color-convert": "2.0.4",
         "color-convert": "3.1.0",
         "color-parse": "2.0.2",
@@ -4066,95 +4065,95 @@
       }
     },
     "node_modules/@ckeditor/ckeditor5-undo": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-undo/-/ckeditor5-undo-46.1.1.tgz",
-      "integrity": "sha512-xM1Zv4oBGP5UVeXeSEma+n3DBY86zqs+HpyqUaDGYu1ELo5IHc+/mX4vmF06cAOepgLYKgD/Cn+4/PYuxSplZQ==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-undo/-/ckeditor5-undo-46.1.0.tgz",
+      "integrity": "sha512-ZLY8FtWTk2j9m4i/Xs9qLf+cqZ9dtjRZB340haJVAusXpRsxi0P0Ahi5b7RHDq6DMlU4EqSB9+DoSRjmwh/Qqg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-upload": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-upload/-/ckeditor5-upload-46.1.1.tgz",
-      "integrity": "sha512-aP0p4nP5ttx8pLV0SEtg7zEfk2xxyvbUZGIHvRoCIFUOXEoWsBgeP+Q9RK3RrbkWZ8vh2YSI8CeePtzGfFTLTg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-upload/-/ckeditor5-upload-46.1.0.tgz",
+      "integrity": "sha512-D7pTsXeTmRsaofsLMmdJyB5TcqNAksRfdc8AXk6u6OKjd8qU5IowpSF4aWONWBsd2D0LPB3BdAHsUF0E3rWL8Q==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1"
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-uploadcare": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-uploadcare/-/ckeditor5-uploadcare-46.1.1.tgz",
-      "integrity": "sha512-a+zgBzQXLAx+GoMohGP2mr6RfE184XNI97rJN7MIme0QjHyU2MXzeikzH6I+3/ZvwrIuMfnV1MXgabq8H5CTGg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-uploadcare/-/ckeditor5-uploadcare-46.1.0.tgz",
+      "integrity": "sha512-JqrEK6NVzSxJoUjjw0T3/NQ5dAzPotgaSfwTM2QeAp4C3EfIOfN7vnCx5BEv4BkhT3R1gMzb6iucQnyFWnLoDQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-image": "46.1.1",
-        "@ckeditor/ckeditor5-theme-lark": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-upload": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-image": "46.1.0",
+        "@ckeditor/ckeditor5-theme-lark": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-upload": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
         "@uploadcare/file-uploader": "1.19.4",
         "@uploadcare/upload-client": "6.14.3",
-        "ckeditor5": "46.1.1"
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/@ckeditor/ckeditor5-utils": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-utils/-/ckeditor5-utils-46.1.1.tgz",
-      "integrity": "sha512-Be6IfHXQVEY0yQ42lnPAhNu805SaccmUSoOCFgcmZFtzqzhQN8OP50VDX7R40G3EMvhEdBKX5T7DASr10VPiJg==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-utils/-/ckeditor5-utils-46.1.0.tgz",
+      "integrity": "sha512-jvsjnC5goHzs5XeC16u7oyyM1fgMnnCN1udmFH1MUzlpy47yI/OxRovtikEoon7twaJk3l6wgvT1R/cVbDZJ5A==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-ui": "46.1.1",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-watchdog": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-watchdog/-/ckeditor5-watchdog-46.1.1.tgz",
-      "integrity": "sha512-kBUsBIJ8eBIfbpLRHG0UGUvzYVD2dYpwP3cHQaSbFvEc9dnq2EgJ+LTDlysNM+ci+Z3fAeMC1KYskOO6oGGMXA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-watchdog/-/ckeditor5-watchdog-46.1.0.tgz",
+      "integrity": "sha512-albIX/M0Tj/Nypti41tc3U4IwdzvepRd/C6E5xtckIcl0EMId1aj/g12ngLfScuzTuHvunXN3aGaWt6iJBCLmg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-editor-multi-root": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-editor-multi-root": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-widget": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-widget/-/ckeditor5-widget-46.1.1.tgz",
-      "integrity": "sha512-kBOVN1Iu9oTvk7bbgHXg70ZIVbsUm1U4XQF+knZ1bmI5M+wrOxh2HWSpigX/niOOcsIUo3TtYSPienEKxvxD6g==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-widget/-/ckeditor5-widget-46.1.0.tgz",
+      "integrity": "sha512-QI4I5fVFOhCIrOSBKA2TBAfBIoRsO+0/jbcbTQuuZI6GYUjbp9Lnt9tGwMopMmg/bn6GGObYz96sPUeyasfIYA==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-enter": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-enter": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
     "node_modules/@ckeditor/ckeditor5-word-count": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-word-count/-/ckeditor5-word-count-46.1.1.tgz",
-      "integrity": "sha512-F5+PEunszKRIHgXh1oOKpsQdUaCRSEXmkceAmKuAAE3a/7K5xbmno43N+36rVQApqE5oejLOYqd/hGg5d6Ei8g==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/@ckeditor/ckeditor5-word-count/-/ckeditor5-word-count-46.1.0.tgz",
+      "integrity": "sha512-dRaF3qs3HsLdJkCcASIK1VJL66vapg4Nl6FIOKLCrP6Ojv3jdoiOHS3n80FMPkxmpKiKByqD9WAIZ3PeN6kRpg==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "ckeditor5": "46.1.1",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "ckeditor5": "46.1.0",
         "es-toolkit": "1.39.5"
       }
     },
@@ -4913,9 +4912,9 @@
       }
     },
     "node_modules/@hookform/resolvers": {
-      "version": "5.2.2",
-      "resolved": "https://registry.npmjs.org/@hookform/resolvers/-/resolvers-5.2.2.tgz",
-      "integrity": "sha512-A/IxlMLShx3KjV/HeTcTfaMxdwy690+L/ZADoeaTltLx+CVuzkeVIPuybK3jrRfw7YZnmdKsVVHAlEPIAEUNlA==",
+      "version": "5.2.1",
+      "resolved": "https://registry.npmjs.org/@hookform/resolvers/-/resolvers-5.2.1.tgz",
+      "integrity": "sha512-u0+6X58gkjMcxur1wRWokA7XsiiBJ6aK17aPZxhkoYiK5J+HcTx0Vhu9ovXe6H+dVpO6cjrn2FkJTryXEMlryQ==",
       "license": "MIT",
       "dependencies": {
         "@standard-schema/utils": "^0.3.0"
@@ -6260,9 +6259,9 @@
       }
     },
     "node_modules/@lezer/javascript": {
-      "version": "1.5.4",
-      "resolved": "https://registry.npmjs.org/@lezer/javascript/-/javascript-1.5.4.tgz",
-      "integrity": "sha512-vvYx3MhWqeZtGPwDStM2dwgljd5smolYD2lR2UyFcHfxbBQebqx8yjmFmxtJ/E6nN6u1D9srOiVWm3Rb4tmcUA==",
+      "version": "1.5.3",
+      "resolved": "https://registry.npmjs.org/@lezer/javascript/-/javascript-1.5.3.tgz",
+      "integrity": "sha512-jexmlKq5NpGiB7t+0QkyhSXRgaiab5YisHIQW9C7EcU19KSUsDguZe9WY+rmRDg34nXoNH2LQ4SxpC+aJUchSQ==",
       "license": "MIT",
       "dependencies": {
         "@lezer/common": "^1.2.0",
@@ -6529,14 +6528,14 @@
       }
     },
     "node_modules/@mui/x-date-pickers": {
-      "version": "8.11.3",
-      "resolved": "https://registry.npmjs.org/@mui/x-date-pickers/-/x-date-pickers-8.11.3.tgz",
-      "integrity": "sha512-RCvaACeTvlT930jn4s4weD/3Ow30sy7A4dRK8vmA3Pc3RIBy/b2CC4nYdkMiOwI56cjOVF4WPLFp5hBcEeGSvQ==",
+      "version": "8.11.2",
+      "resolved": "https://registry.npmjs.org/@mui/x-date-pickers/-/x-date-pickers-8.11.2.tgz",
+      "integrity": "sha512-izosRFdlo0Aq4nrQ2klOQBLB+yCX3bIlErF/gxZfaXK/kb8NToweZjhHdiyy+hr+VrxK0A71AWI6LkPyfG2WCg==",
       "license": "MIT",
       "dependencies": {
         "@babel/runtime": "^7.28.2",
         "@mui/utils": "^7.3.2",
-        "@mui/x-internals": "8.11.3",
+        "@mui/x-internals": "8.11.2",
         "@types/react-transition-group": "^4.4.12",
         "clsx": "^2.1.1",
         "prop-types": "^15.8.1",
@@ -6595,9 +6594,9 @@
       }
     },
     "node_modules/@mui/x-internals": {
-      "version": "8.11.3",
-      "resolved": "https://registry.npmjs.org/@mui/x-internals/-/x-internals-8.11.3.tgz",
-      "integrity": "sha512-Fmp4Op+nNSqsWn2Jwv9yA8WXi3Wem9jmgdUplvMK6JZAt7iA0ZdzGltCcHrdxOcK1Nu/2F7H8KOZuBzpy1lspw==",
+      "version": "8.11.2",
+      "resolved": "https://registry.npmjs.org/@mui/x-internals/-/x-internals-8.11.2.tgz",
+      "integrity": "sha512-3BFZ0Njgih+eWQBzSsdKEkRMlHtKRGFWz+/CGUrSBb5IApO0apkUSvG4v5augNYASsjksqWOXVlds7Wwznd0Lg==",
       "license": "MIT",
       "dependencies": {
         "@babel/runtime": "^7.28.2",
@@ -8530,12 +8529,12 @@
       }
     },
     "node_modules/@smithy/config-resolver": {
-      "version": "4.2.2",
-      "resolved": "https://registry.npmjs.org/@smithy/config-resolver/-/config-resolver-4.2.2.tgz",
-      "integrity": "sha512-IT6MatgBWagLybZl1xQcURXRICvqz1z3APSCAI9IqdvfCkrA7RaQIEfgC6G/KvfxnDfQUDqFV+ZlixcuFznGBQ==",
+      "version": "4.2.1",
+      "resolved": "https://registry.npmjs.org/@smithy/config-resolver/-/config-resolver-4.2.1.tgz",
+      "integrity": "sha512-FXil8q4QN7mgKwU2hCLm0ltab8NyY/1RiqEf25Jnf6WLS3wmb11zGAoLETqg1nur2Aoibun4w4MjeN9CMJ4G6A==",
       "license": "Apache-2.0",
       "dependencies": {
-        "@smithy/node-config-provider": "^4.2.2",
+        "@smithy/node-config-provider": "^4.2.1",
         "@smithy/types": "^4.5.0",
         "@smithy/util-config-provider": "^4.1.0",
         "@smithy/util-middleware": "^4.1.1",
@@ -8546,9 +8545,9 @@
       }
     },
     "node_modules/@smithy/core": {
-      "version": "3.11.1",
-      "resolved": "https://registry.npmjs.org/@smithy/core/-/core-3.11.1.tgz",
-      "integrity": "sha512-REH7crwORgdjSpYs15JBiIWOYjj0hJNC3aCecpJvAlMMaaqL5i2CLb1i6Hc4yevToTKSqslLMI9FKjhugEwALA==",
+      "version": "3.11.0",
+      "resolved": "https://registry.npmjs.org/@smithy/core/-/core-3.11.0.tgz",
+      "integrity": "sha512-Abs5rdP1o8/OINtE49wwNeWuynCu0kme1r4RI3VXVrHr4odVDG7h7mTnw1WXXfN5Il+c25QOnrdL2y56USfxkA==",
       "license": "Apache-2.0",
       "dependencies": {
         "@smithy/middleware-serde": "^4.1.1",
@@ -8557,7 +8556,7 @@
         "@smithy/util-base64": "^4.1.0",
         "@smithy/util-body-length-browser": "^4.1.0",
         "@smithy/util-middleware": "^4.1.1",
-        "@smithy/util-stream": "^4.3.2",
+        "@smithy/util-stream": "^4.3.1",
         "@smithy/util-utf8": "^4.1.0",
         "@types/uuid": "^9.0.1",
         "tslib": "^2.6.2",
@@ -8568,12 +8567,12 @@
       }
     },
     "node_modules/@smithy/credential-provider-imds": {
-      "version": "4.1.2",
-      "resolved": "https://registry.npmjs.org/@smithy/credential-provider-imds/-/credential-provider-imds-4.1.2.tgz",
-      "integrity": "sha512-JlYNq8TShnqCLg0h+afqe2wLAwZpuoSgOyzhYvTgbiKBWRov+uUve+vrZEQO6lkdLOWPh7gK5dtb9dS+KGendg==",
+      "version": "4.1.1",
+      "resolved": "https://registry.npmjs.org/@smithy/credential-provider-imds/-/credential-provider-imds-4.1.1.tgz",
+      "integrity": "sha512-1WdBfM9DwA59pnpIizxnUvBf/de18p4GP+6zP2AqrlFzoW3ERpZaT4QueBR0nS9deDMaQRkBlngpVlnkuuTisQ==",
       "license": "Apache-2.0",
       "dependencies": {
-        "@smithy/node-config-provider": "^4.2.2",
+        "@smithy/node-config-provider": "^4.2.1",
         "@smithy/property-provider": "^4.1.1",
         "@smithy/types": "^4.5.0",
         "@smithy/url-parser": "^4.1.1",
@@ -8724,15 +8723,15 @@
       }
     },
     "node_modules/@smithy/middleware-endpoint": {
-      "version": "4.2.3",
-      "resolved": "https://registry.npmjs.org/@smithy/middleware-endpoint/-/middleware-endpoint-4.2.3.tgz",
-      "integrity": "sha512-+1H5A28DeffRVrqmVmtqtRraEjoaC6JVap3xEQdVoBh2EagCVY7noPmcBcG4y7mnr9AJitR1ZAse2l+tEtK5vg==",
+      "version": "4.2.1",
+      "resolved": "https://registry.npmjs.org/@smithy/middleware-endpoint/-/middleware-endpoint-4.2.1.tgz",
+      "integrity": "sha512-fUTMmQvQQZakXOuKizfu7fBLDpwvWZjfH6zUK2OLsoNZRZGbNUdNSdLJHpwk1vS208jtDjpUIskh+JoA8zMzZg==",
       "license": "Apache-2.0",
       "dependencies": {
-        "@smithy/core": "^3.11.1",
+        "@smithy/core": "^3.11.0",
         "@smithy/middleware-serde": "^4.1.1",
-        "@smithy/node-config-provider": "^4.2.2",
-        "@smithy/shared-ini-file-loader": "^4.2.0",
+        "@smithy/node-config-provider": "^4.2.1",
+        "@smithy/shared-ini-file-loader": "^4.1.1",
         "@smithy/types": "^4.5.0",
         "@smithy/url-parser": "^4.1.1",
         "@smithy/util-middleware": "^4.1.1",
@@ -8743,18 +8742,18 @@
       }
     },
     "node_modules/@smithy/middleware-retry": {
-      "version": "4.2.4",
-      "resolved": "https://registry.npmjs.org/@smithy/middleware-retry/-/middleware-retry-4.2.4.tgz",
-      "integrity": "sha512-amyqYQFewnAviX3yy/rI/n1HqAgfvUdkEhc04kDjxsngAUREKuOI24iwqQUirrj6GtodWmR4iO5Zeyl3/3BwWg==",
+      "version": "4.2.1",
+      "resolved": "https://registry.npmjs.org/@smithy/middleware-retry/-/middleware-retry-4.2.1.tgz",
+      "integrity": "sha512-JzfvjwSJXWRl7LkLgIRTUTd2Wj639yr3sQGpViGNEOjtb0AkAuYqRAHs+jSOI/LPC0ZTjmFVVtfrCICMuebexw==",
       "license": "Apache-2.0",
       "dependencies": {
-        "@smithy/node-config-provider": "^4.2.2",
+        "@smithy/node-config-provider": "^4.2.1",
         "@smithy/protocol-http": "^5.2.1",
-        "@smithy/service-error-classification": "^4.1.2",
-        "@smithy/smithy-client": "^4.6.3",
+        "@smithy/service-error-classification": "^4.1.1",
+        "@smithy/smithy-client": "^4.6.1",
         "@smithy/types": "^4.5.0",
         "@smithy/util-middleware": "^4.1.1",
-        "@smithy/util-retry": "^4.1.2",
+        "@smithy/util-retry": "^4.1.1",
         "@types/uuid": "^9.0.1",
         "tslib": "^2.6.2",
         "uuid": "^9.0.1"
@@ -8791,13 +8790,13 @@
       }
     },
     "node_modules/@smithy/node-config-provider": {
-      "version": "4.2.2",
-      "resolved": "https://registry.npmjs.org/@smithy/node-config-provider/-/node-config-provider-4.2.2.tgz",
-      "integrity": "sha512-SYGTKyPvyCfEzIN5rD8q/bYaOPZprYUPD2f5g9M7OjaYupWOoQFYJ5ho+0wvxIRf471i2SR4GoiZ2r94Jq9h6A==",
+      "version": "4.2.1",
+      "resolved": "https://registry.npmjs.org/@smithy/node-config-provider/-/node-config-provider-4.2.1.tgz",
+      "integrity": "sha512-AIA0BJZq2h295J5NeCTKhg1WwtdTA/GqBCaVjk30bDgMHwniUETyh5cP9IiE9VrId7Kt8hS7zvREVMTv1VfA6g==",
       "license": "Apache-2.0",
       "dependencies": {
         "@smithy/property-provider": "^4.1.1",
-        "@smithy/shared-ini-file-loader": "^4.2.0",
+        "@smithy/shared-ini-file-loader": "^4.1.1",
         "@smithy/types": "^4.5.0",
         "tslib": "^2.6.2"
       },
@@ -8875,9 +8874,9 @@
       }
     },
     "node_modules/@smithy/service-error-classification": {
-      "version": "4.1.2",
-      "resolved": "https://registry.npmjs.org/@smithy/service-error-classification/-/service-error-classification-4.1.2.tgz",
-      "integrity": "sha512-Kqd8wyfmBWHZNppZSMfrQFpc3M9Y/kjyN8n8P4DqJJtuwgK1H914R471HTw7+RL+T7+kI1f1gOnL7Vb5z9+NgQ==",
+      "version": "4.1.1",
+      "resolved": "https://registry.npmjs.org/@smithy/service-error-classification/-/service-error-classification-4.1.1.tgz",
+      "integrity": "sha512-Iam75b/JNXyDE41UvrlM6n8DNOa/r1ylFyvgruTUx7h2Uk7vDNV9AAwP1vfL1fOL8ls0xArwEGVcGZVd7IO/Cw==",
       "license": "Apache-2.0",
       "dependencies": {
         "@smithy/types": "^4.5.0"
@@ -8887,9 +8886,9 @@
       }
     },
     "node_modules/@smithy/shared-ini-file-loader": {
-      "version": "4.2.0",
-      "resolved": "https://registry.npmjs.org/@smithy/shared-ini-file-loader/-/shared-ini-file-loader-4.2.0.tgz",
-      "integrity": "sha512-OQTfmIEp2LLuWdxa8nEEPhZmiOREO6bcB6pjs0AySf4yiZhl6kMOfqmcwcY8BaBPX+0Tb+tG7/Ia/6mwpoZ7Pw==",
+      "version": "4.1.1",
+      "resolved": "https://registry.npmjs.org/@smithy/shared-ini-file-loader/-/shared-ini-file-loader-4.1.1.tgz",
+      "integrity": "sha512-YkpikhIqGc4sfXeIbzSj10t2bJI/sSoP5qxLue6zG+tEE3ngOBSm8sO3+djacYvS/R5DfpxN/L9CyZsvwjWOAQ==",
       "license": "Apache-2.0",
       "dependencies": {
         "@smithy/types": "^4.5.0",
@@ -8919,17 +8918,17 @@
       }
     },
     "node_modules/@smithy/smithy-client": {
-      "version": "4.6.3",
-      "resolved": "https://registry.npmjs.org/@smithy/smithy-client/-/smithy-client-4.6.3.tgz",
-      "integrity": "sha512-K27LqywsaqKz4jusdUQYJh/YP2VbnbdskZ42zG8xfV+eovbTtMc2/ZatLWCfSkW0PDsTUXlpvlaMyu8925HsOw==",
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@smithy/smithy-client/-/smithy-client-4.6.1.tgz",
+      "integrity": "sha512-WolVLDb9UTPMEPPOncrCt6JmAMCSC/V2y5gst2STWJ5r7+8iNac+EFYQnmvDCYMfOLcilOSEpm5yXZXwbLak1Q==",
       "license": "Apache-2.0",
       "dependencies": {
-        "@smithy/core": "^3.11.1",
-        "@smithy/middleware-endpoint": "^4.2.3",
+        "@smithy/core": "^3.11.0",
+        "@smithy/middleware-endpoint": "^4.2.1",
         "@smithy/middleware-stack": "^4.1.1",
         "@smithy/protocol-http": "^5.2.1",
         "@smithy/types": "^4.5.0",
-        "@smithy/util-stream": "^4.3.2",
+        "@smithy/util-stream": "^4.3.1",
         "tslib": "^2.6.2"
       },
       "engines": {
@@ -9026,13 +9025,13 @@
       }
     },
     "node_modules/@smithy/util-defaults-mode-browser": {
-      "version": "4.1.3",
-      "resolved": "https://registry.npmjs.org/@smithy/util-defaults-mode-browser/-/util-defaults-mode-browser-4.1.3.tgz",
-      "integrity": "sha512-5fm3i2laE95uhY6n6O6uGFxI5SVbqo3/RWEuS3YsT0LVmSZk+0eUqPhKd4qk0KxBRPaT5VNT/WEBUqdMyYoRgg==",
+      "version": "4.1.1",
+      "resolved": "https://registry.npmjs.org/@smithy/util-defaults-mode-browser/-/util-defaults-mode-browser-4.1.1.tgz",
+      "integrity": "sha512-hA1AKIHFUMa9Tl6q6y8p0pJ9aWHCCG8s57flmIyLE0W7HcJeYrYtnqXDcGnftvXEhdQnSexyegXnzzTGk8bKLA==",
       "license": "Apache-2.0",
       "dependencies": {
         "@smithy/property-provider": "^4.1.1",
-        "@smithy/smithy-client": "^4.6.3",
+        "@smithy/smithy-client": "^4.6.1",
         "@smithy/types": "^4.5.0",
         "bowser": "^2.11.0",
         "tslib": "^2.6.2"
@@ -9042,16 +9041,16 @@
       }
     },
     "node_modules/@smithy/util-defaults-mode-node": {
-      "version": "4.1.3",
-      "resolved": "https://registry.npmjs.org/@smithy/util-defaults-mode-node/-/util-defaults-mode-node-4.1.3.tgz",
-      "integrity": "sha512-lwnMzlMslZ9GJNt+/wVjz6+fe9Wp5tqR1xAyQn+iywmP+Ymj0F6NhU/KfHM5jhGPQchRSCcau5weKhFdLIM4cA==",
+      "version": "4.1.1",
+      "resolved": "https://registry.npmjs.org/@smithy/util-defaults-mode-node/-/util-defaults-mode-node-4.1.1.tgz",
+      "integrity": "sha512-RGSpmoBrA+5D2WjwtK7tto6Pc2wO9KSXKLpLONhFZ8VyuCbqlLdiDAfuDTNY9AJe4JoE+Cx806cpTQQoQ71zPQ==",
       "license": "Apache-2.0",
       "dependencies": {
-        "@smithy/config-resolver": "^4.2.2",
-        "@smithy/credential-provider-imds": "^4.1.2",
-        "@smithy/node-config-provider": "^4.2.2",
+        "@smithy/config-resolver": "^4.2.1",
+        "@smithy/credential-provider-imds": "^4.1.1",
+        "@smithy/node-config-provider": "^4.2.1",
         "@smithy/property-provider": "^4.1.1",
-        "@smithy/smithy-client": "^4.6.3",
+        "@smithy/smithy-client": "^4.6.1",
         "@smithy/types": "^4.5.0",
         "tslib": "^2.6.2"
       },
@@ -9060,12 +9059,12 @@
       }
     },
     "node_modules/@smithy/util-endpoints": {
-      "version": "3.1.2",
-      "resolved": "https://registry.npmjs.org/@smithy/util-endpoints/-/util-endpoints-3.1.2.tgz",
-      "integrity": "sha512-+AJsaaEGb5ySvf1SKMRrPZdYHRYSzMkCoK16jWnIMpREAnflVspMIDeCVSZJuj+5muZfgGpNpijE3mUNtjv01Q==",
+      "version": "3.1.1",
+      "resolved": "https://registry.npmjs.org/@smithy/util-endpoints/-/util-endpoints-3.1.1.tgz",
+      "integrity": "sha512-qB4R9kO0SetA11Rzu6MVGFIaGYX3p6SGGGfWwsKnC6nXIf0n/0AKVwRTsYsz9ToN8CeNNtNgQRwKFBndGJZdyw==",
       "license": "Apache-2.0",
       "dependencies": {
-        "@smithy/node-config-provider": "^4.2.2",
+        "@smithy/node-config-provider": "^4.2.1",
         "@smithy/types": "^4.5.0",
         "tslib": "^2.6.2"
       },
@@ -9099,12 +9098,12 @@
       }
     },
     "node_modules/@smithy/util-retry": {
-      "version": "4.1.2",
-      "resolved": "https://registry.npmjs.org/@smithy/util-retry/-/util-retry-4.1.2.tgz",
-      "integrity": "sha512-NCgr1d0/EdeP6U5PSZ9Uv5SMR5XRRYoVr1kRVtKZxWL3tixEL3UatrPIMFZSKwHlCcp2zPLDvMubVDULRqeunA==",
+      "version": "4.1.1",
+      "resolved": "https://registry.npmjs.org/@smithy/util-retry/-/util-retry-4.1.1.tgz",
+      "integrity": "sha512-jGeybqEZ/LIordPLMh5bnmnoIgsqnp4IEimmUp5c5voZ8yx+5kAlN5+juyr7p+f7AtZTgvhmInQk4Q0UVbrZ0Q==",
       "license": "Apache-2.0",
       "dependencies": {
-        "@smithy/service-error-classification": "^4.1.2",
+        "@smithy/service-error-classification": "^4.1.1",
         "@smithy/types": "^4.5.0",
         "tslib": "^2.6.2"
       },
@@ -9113,9 +9112,9 @@
       }
     },
     "node_modules/@smithy/util-stream": {
-      "version": "4.3.2",
-      "resolved": "https://registry.npmjs.org/@smithy/util-stream/-/util-stream-4.3.2.tgz",
-      "integrity": "sha512-Ka+FA2UCC/Q1dEqUanCdpqwxOFdf5Dg2VXtPtB1qxLcSGh5C1HdzklIt18xL504Wiy9nNUKwDMRTVCbKGoK69g==",
+      "version": "4.3.1",
+      "resolved": "https://registry.npmjs.org/@smithy/util-stream/-/util-stream-4.3.1.tgz",
+      "integrity": "sha512-khKkW/Jqkgh6caxMWbMuox9+YfGlsk9OnHOYCGVEdYQb/XVzcORXHLYUubHmmda0pubEDncofUrPNniS9d+uAA==",
       "license": "Apache-2.0",
       "dependencies": {
         "@smithy/fetch-http-handler": "^5.2.1",
@@ -9498,9 +9497,9 @@
       }
     },
     "node_modules/@tanstack/query-core": {
-      "version": "5.89.0",
-      "resolved": "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.89.0.tgz",
-      "integrity": "sha512-joFV1MuPhSLsKfTzwjmPDrp8ENfZ9N23ymFu07nLfn3JCkSHy0CFgsyhHTJOmWaumC/WiNIKM0EJyduCF/Ih/Q==",
+      "version": "5.87.4",
+      "resolved": "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.87.4.tgz",
+      "integrity": "sha512-uNsg6zMxraEPDVO2Bn+F3/ctHi+Zsk+MMpcN8h6P7ozqD088F6mFY5TfGM7zuyIrL7HKpDyu6QHfLWiDxh3cuw==",
       "license": "MIT",
       "funding": {
         "type": "github",
@@ -9508,12 +9507,12 @@
       }
     },
     "node_modules/@tanstack/react-query": {
-      "version": "5.89.0",
-      "resolved": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.89.0.tgz",
-      "integrity": "sha512-SXbtWSTSRXyBOe80mszPxpEbaN4XPRUp/i0EfQK1uyj3KCk/c8FuPJNIRwzOVe/OU3rzxrYtiNabsAmk1l714A==",
+      "version": "5.87.4",
+      "resolved": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.87.4.tgz",
+      "integrity": "sha512-T5GT/1ZaNsUXf5I3RhcYuT17I4CPlbZgyLxc/ZGv7ciS6esytlbjb3DgUFO6c8JWYMDpdjSWInyGZUErgzqhcA==",
       "license": "MIT",
       "dependencies": {
-        "@tanstack/query-core": "5.89.0"
+        "@tanstack/query-core": "5.87.4"
       },
       "funding": {
         "type": "github",
@@ -10028,12 +10027,12 @@
       "license": "MIT"
     },
     "node_modules/@types/node": {
-      "version": "24.5.2",
-      "resolved": "https://registry.npmjs.org/@types/node/-/node-24.5.2.tgz",
-      "integrity": "sha512-FYxk1I7wPv3K2XBaoyH2cTnocQEu8AOZ60hPbsyukMPLv5/5qr7V1i8PLHdl6Zf87I+xZXFvPCXYjiTFq+YSDQ==",
+      "version": "24.3.1",
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-24.3.1.tgz",
+      "integrity": "sha512-3vXmQDXy+woz+gnrTvuvNrPzekOi+Ds0ReMxw0LzBiK3a+1k0kQn9f2NWk+lgD4rJehFUmYy2gMhJ2ZI+7YP9g==",
       "license": "MIT",
       "dependencies": {
-        "undici-types": "~7.12.0"
+        "undici-types": "~7.10.0"
       }
     },
     "node_modules/@types/node-forge": {
@@ -11473,9 +11472,9 @@
       }
     },
     "node_modules/axios": {
-      "version": "1.12.2",
-      "resolved": "https://registry.npmjs.org/axios/-/axios-1.12.2.tgz",
-      "integrity": "sha512-vMJzPewAlRyOgxV2dU0Cuz2O8zzzx9VYtbJOaBgXFeLc4IV/Eg50n4LowmehOOR61S8ZMpc2K5Sa7g6A4jfkUw==",
+      "version": "1.12.0",
+      "resolved": "https://registry.npmjs.org/axios/-/axios-1.12.0.tgz",
+      "integrity": "sha512-oXTDccv8PcfjZmPGlWsPSwtOJCZ/b6W5jAMCNcfwJbCzDckwG0jrYJFaWH1yvivfCXjVzV/SPDEhMB3Q+DSurg==",
       "license": "MIT",
       "dependencies": {
         "follow-redirects": "^1.15.6",
@@ -11823,15 +11822,6 @@
       ],
       "license": "MIT"
     },
-    "node_modules/baseline-browser-mapping": {
-      "version": "2.8.6",
-      "resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.8.6.tgz",
-      "integrity": "sha512-wrH5NNqren/QMtKUEEJf7z86YjfqW/2uw3IL3/xpqZUC95SSVIFXYQeeGjL6FT/X68IROu6RMehZQS5foy2BXw==",
-      "license": "Apache-2.0",
-      "bin": {
-        "baseline-browser-mapping": "dist/cli.js"
-      }
-    },
     "node_modules/batch": {
       "version": "0.6.1",
       "resolved": "https://registry.npmjs.org/batch/-/batch-0.6.1.tgz",
@@ -12166,9 +12156,9 @@
       }
     },
     "node_modules/browserslist": {
-      "version": "4.26.2",
-      "resolved": "https://registry.npmjs.org/browserslist/-/browserslist-4.26.2.tgz",
-      "integrity": "sha512-ECFzp6uFOSB+dcZ5BK/IBaGWssbSYBHvuMeMt3MMFyhI0Z8SqGgEkBLARgpRH3hutIgPVsALcMwbDrJqPxQ65A==",
+      "version": "4.25.4",
+      "resolved": "https://registry.npmjs.org/browserslist/-/browserslist-4.25.4.tgz",
+      "integrity": "sha512-4jYpcjabC606xJ3kw2QwGEZKX0Aw7sgQdZCvIK9dhVSPh76BKo+C+btT1RRofH7B+8iNpEbgGNVWiLki5q93yg==",
       "funding": [
         {
           "type": "opencollective",
@@ -12185,10 +12175,9 @@
       ],
       "license": "MIT",
       "dependencies": {
-        "baseline-browser-mapping": "^2.8.3",
-        "caniuse-lite": "^1.0.30001741",
-        "electron-to-chromium": "^1.5.218",
-        "node-releases": "^2.0.21",
+        "caniuse-lite": "^1.0.30001737",
+        "electron-to-chromium": "^1.5.211",
+        "node-releases": "^2.0.19",
         "update-browserslist-db": "^1.1.3"
       },
       "bin": {
@@ -12399,9 +12388,9 @@
       }
     },
     "node_modules/caniuse-lite": {
-      "version": "1.0.30001743",
-      "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001743.tgz",
-      "integrity": "sha512-e6Ojr7RV14Un7dz6ASD0aZDmQPT/A+eZU+nuTNfjqmRrmkmQlnTNWH0SKmqagx9PeW87UVqapSurtAXifmtdmw==",
+      "version": "1.0.30001741",
+      "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001741.tgz",
+      "integrity": "sha512-QGUGitqsc8ARjLdgAfxETDhRbJ0REsP6O3I96TAth/mVjh2cYzN2u+3AzPP3aVSm2FehEItaJw1xd+IGBXWeSw==",
       "funding": [
         {
           "type": "opencollective",
@@ -12619,116 +12608,116 @@
       "license": "MIT"
     },
     "node_modules/ckeditor5": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/ckeditor5/-/ckeditor5-46.1.1.tgz",
-      "integrity": "sha512-6EdHMjm3I+23rVmkOMY5nvS+DpiKbAbbZjY7NIvtCwsDa0333/852raCXbLCUyKL6FRHiYowbjY+8LUvVBuZ8w==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/ckeditor5/-/ckeditor5-46.1.0.tgz",
+      "integrity": "sha512-4doYzbG7vcbQAhRm/m+8gnd5+toysvVAoh7qKnn8SwRZYAK7cdiPPsWLDzpyGuBZxNLMPhRlX2fQBx5tgGpm6Q==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-adapter-ckfinder": "46.1.1",
-        "@ckeditor/ckeditor5-alignment": "46.1.1",
-        "@ckeditor/ckeditor5-autoformat": "46.1.1",
-        "@ckeditor/ckeditor5-autosave": "46.1.1",
-        "@ckeditor/ckeditor5-basic-styles": "46.1.1",
-        "@ckeditor/ckeditor5-block-quote": "46.1.1",
-        "@ckeditor/ckeditor5-bookmark": "46.1.1",
-        "@ckeditor/ckeditor5-ckbox": "46.1.1",
-        "@ckeditor/ckeditor5-ckfinder": "46.1.1",
-        "@ckeditor/ckeditor5-clipboard": "46.1.1",
-        "@ckeditor/ckeditor5-cloud-services": "46.1.1",
-        "@ckeditor/ckeditor5-code-block": "46.1.1",
-        "@ckeditor/ckeditor5-core": "46.1.1",
-        "@ckeditor/ckeditor5-easy-image": "46.1.1",
-        "@ckeditor/ckeditor5-editor-balloon": "46.1.1",
-        "@ckeditor/ckeditor5-editor-classic": "46.1.1",
-        "@ckeditor/ckeditor5-editor-decoupled": "46.1.1",
-        "@ckeditor/ckeditor5-editor-inline": "46.1.1",
-        "@ckeditor/ckeditor5-editor-multi-root": "46.1.1",
-        "@ckeditor/ckeditor5-emoji": "46.1.1",
-        "@ckeditor/ckeditor5-engine": "46.1.1",
-        "@ckeditor/ckeditor5-enter": "46.1.1",
-        "@ckeditor/ckeditor5-essentials": "46.1.1",
-        "@ckeditor/ckeditor5-find-and-replace": "46.1.1",
-        "@ckeditor/ckeditor5-font": "46.1.1",
-        "@ckeditor/ckeditor5-fullscreen": "46.1.1",
-        "@ckeditor/ckeditor5-heading": "46.1.1",
-        "@ckeditor/ckeditor5-highlight": "46.1.1",
-        "@ckeditor/ckeditor5-horizontal-line": "46.1.1",
-        "@ckeditor/ckeditor5-html-embed": "46.1.1",
-        "@ckeditor/ckeditor5-html-support": "46.1.1",
-        "@ckeditor/ckeditor5-icons": "46.1.1",
-        "@ckeditor/ckeditor5-image": "46.1.1",
-        "@ckeditor/ckeditor5-indent": "46.1.1",
-        "@ckeditor/ckeditor5-language": "46.1.1",
-        "@ckeditor/ckeditor5-link": "46.1.1",
-        "@ckeditor/ckeditor5-list": "46.1.1",
-        "@ckeditor/ckeditor5-markdown-gfm": "46.1.1",
-        "@ckeditor/ckeditor5-media-embed": "46.1.1",
-        "@ckeditor/ckeditor5-mention": "46.1.1",
-        "@ckeditor/ckeditor5-minimap": "46.1.1",
-        "@ckeditor/ckeditor5-page-break": "46.1.1",
-        "@ckeditor/ckeditor5-paragraph": "46.1.1",
-        "@ckeditor/ckeditor5-paste-from-office": "46.1.1",
-        "@ckeditor/ckeditor5-remove-format": "46.1.1",
-        "@ckeditor/ckeditor5-restricted-editing": "46.1.1",
-        "@ckeditor/ckeditor5-select-all": "46.1.1",
-        "@ckeditor/ckeditor5-show-blocks": "46.1.1",
-        "@ckeditor/ckeditor5-source-editing": "46.1.1",
-        "@ckeditor/ckeditor5-special-characters": "46.1.1",
-        "@ckeditor/ckeditor5-style": "46.1.1",
-        "@ckeditor/ckeditor5-table": "46.1.1",
-        "@ckeditor/ckeditor5-theme-lark": "46.1.1",
-        "@ckeditor/ckeditor5-typing": "46.1.1",
-        "@ckeditor/ckeditor5-ui": "46.1.1",
-        "@ckeditor/ckeditor5-undo": "46.1.1",
-        "@ckeditor/ckeditor5-upload": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1",
-        "@ckeditor/ckeditor5-watchdog": "46.1.1",
-        "@ckeditor/ckeditor5-widget": "46.1.1",
-        "@ckeditor/ckeditor5-word-count": "46.1.1"
+        "@ckeditor/ckeditor5-adapter-ckfinder": "46.1.0",
+        "@ckeditor/ckeditor5-alignment": "46.1.0",
+        "@ckeditor/ckeditor5-autoformat": "46.1.0",
+        "@ckeditor/ckeditor5-autosave": "46.1.0",
+        "@ckeditor/ckeditor5-basic-styles": "46.1.0",
+        "@ckeditor/ckeditor5-block-quote": "46.1.0",
+        "@ckeditor/ckeditor5-bookmark": "46.1.0",
+        "@ckeditor/ckeditor5-ckbox": "46.1.0",
+        "@ckeditor/ckeditor5-ckfinder": "46.1.0",
+        "@ckeditor/ckeditor5-clipboard": "46.1.0",
+        "@ckeditor/ckeditor5-cloud-services": "46.1.0",
+        "@ckeditor/ckeditor5-code-block": "46.1.0",
+        "@ckeditor/ckeditor5-core": "46.1.0",
+        "@ckeditor/ckeditor5-easy-image": "46.1.0",
+        "@ckeditor/ckeditor5-editor-balloon": "46.1.0",
+        "@ckeditor/ckeditor5-editor-classic": "46.1.0",
+        "@ckeditor/ckeditor5-editor-decoupled": "46.1.0",
+        "@ckeditor/ckeditor5-editor-inline": "46.1.0",
+        "@ckeditor/ckeditor5-editor-multi-root": "46.1.0",
+        "@ckeditor/ckeditor5-emoji": "46.1.0",
+        "@ckeditor/ckeditor5-engine": "46.1.0",
+        "@ckeditor/ckeditor5-enter": "46.1.0",
+        "@ckeditor/ckeditor5-essentials": "46.1.0",
+        "@ckeditor/ckeditor5-find-and-replace": "46.1.0",
+        "@ckeditor/ckeditor5-font": "46.1.0",
+        "@ckeditor/ckeditor5-fullscreen": "46.1.0",
+        "@ckeditor/ckeditor5-heading": "46.1.0",
+        "@ckeditor/ckeditor5-highlight": "46.1.0",
+        "@ckeditor/ckeditor5-horizontal-line": "46.1.0",
+        "@ckeditor/ckeditor5-html-embed": "46.1.0",
+        "@ckeditor/ckeditor5-html-support": "46.1.0",
+        "@ckeditor/ckeditor5-icons": "46.1.0",
+        "@ckeditor/ckeditor5-image": "46.1.0",
+        "@ckeditor/ckeditor5-indent": "46.1.0",
+        "@ckeditor/ckeditor5-language": "46.1.0",
+        "@ckeditor/ckeditor5-link": "46.1.0",
+        "@ckeditor/ckeditor5-list": "46.1.0",
+        "@ckeditor/ckeditor5-markdown-gfm": "46.1.0",
+        "@ckeditor/ckeditor5-media-embed": "46.1.0",
+        "@ckeditor/ckeditor5-mention": "46.1.0",
+        "@ckeditor/ckeditor5-minimap": "46.1.0",
+        "@ckeditor/ckeditor5-page-break": "46.1.0",
+        "@ckeditor/ckeditor5-paragraph": "46.1.0",
+        "@ckeditor/ckeditor5-paste-from-office": "46.1.0",
+        "@ckeditor/ckeditor5-remove-format": "46.1.0",
+        "@ckeditor/ckeditor5-restricted-editing": "46.1.0",
+        "@ckeditor/ckeditor5-select-all": "46.1.0",
+        "@ckeditor/ckeditor5-show-blocks": "46.1.0",
+        "@ckeditor/ckeditor5-source-editing": "46.1.0",
+        "@ckeditor/ckeditor5-special-characters": "46.1.0",
+        "@ckeditor/ckeditor5-style": "46.1.0",
+        "@ckeditor/ckeditor5-table": "46.1.0",
+        "@ckeditor/ckeditor5-theme-lark": "46.1.0",
+        "@ckeditor/ckeditor5-typing": "46.1.0",
+        "@ckeditor/ckeditor5-ui": "46.1.0",
+        "@ckeditor/ckeditor5-undo": "46.1.0",
+        "@ckeditor/ckeditor5-upload": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0",
+        "@ckeditor/ckeditor5-watchdog": "46.1.0",
+        "@ckeditor/ckeditor5-widget": "46.1.0",
+        "@ckeditor/ckeditor5-word-count": "46.1.0"
       }
     },
     "node_modules/ckeditor5-collaboration": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/ckeditor5-collaboration/-/ckeditor5-collaboration-46.1.1.tgz",
-      "integrity": "sha512-BR4KOP7MvqxkhFKPpIoqgHY3a4XAjFVaDVnFcLxY+Olb7BanszmHUL81S26ev4GSfIUk8GgUqiOr5wsT6bhRzA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/ckeditor5-collaboration/-/ckeditor5-collaboration-46.1.0.tgz",
+      "integrity": "sha512-GhZvSfFz8i0NewxJ+8ZAff6uioCqNCdzSx27DnkTQTokKemwy0cgCu83YUgyMkcFCg+to1/33dwLZbftWd5w6w==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-collaboration-core": "46.1.1"
+        "@ckeditor/ckeditor5-collaboration-core": "46.1.0"
       }
     },
     "node_modules/ckeditor5-premium-features": {
-      "version": "46.1.1",
-      "resolved": "https://registry.npmjs.org/ckeditor5-premium-features/-/ckeditor5-premium-features-46.1.1.tgz",
-      "integrity": "sha512-PoPYCktKaREA4T70xBgu6wobJlSFtHOXRrGHJgfHlxgz7Mzm0tcmboCzJ9epo6D0haNUKmSCwAQwQOvj0mgVaA==",
+      "version": "46.1.0",
+      "resolved": "https://registry.npmjs.org/ckeditor5-premium-features/-/ckeditor5-premium-features-46.1.0.tgz",
+      "integrity": "sha512-+4Ac+D3CvoI9jje8RWS+3zCGHLwGRHl7cSB+ekM2D4wNPbx6WkE1enBNbaPyZkwJcqwEs81KwlbNkTST9V1ndQ==",
       "license": "SEE LICENSE IN LICENSE.md",
       "dependencies": {
-        "@ckeditor/ckeditor5-ai": "46.1.1",
-        "@ckeditor/ckeditor5-case-change": "46.1.1",
-        "@ckeditor/ckeditor5-collaboration-core": "46.1.1",
-        "@ckeditor/ckeditor5-comments": "46.1.1",
-        "@ckeditor/ckeditor5-document-outline": "46.1.1",
-        "@ckeditor/ckeditor5-email": "46.1.1",
-        "@ckeditor/ckeditor5-export-inline-styles": "46.1.1",
-        "@ckeditor/ckeditor5-export-pdf": "46.1.1",
-        "@ckeditor/ckeditor5-export-word": "46.1.1",
-        "@ckeditor/ckeditor5-format-painter": "46.1.1",
-        "@ckeditor/ckeditor5-import-word": "46.1.1",
-        "@ckeditor/ckeditor5-line-height": "46.1.1",
-        "@ckeditor/ckeditor5-list-multi-level": "46.1.1",
-        "@ckeditor/ckeditor5-merge-fields": "46.1.1",
-        "@ckeditor/ckeditor5-pagination": "46.1.1",
-        "@ckeditor/ckeditor5-paste-from-office-enhanced": "46.1.1",
-        "@ckeditor/ckeditor5-real-time-collaboration": "46.1.1",
-        "@ckeditor/ckeditor5-revision-history": "46.1.1",
-        "@ckeditor/ckeditor5-slash-command": "46.1.1",
-        "@ckeditor/ckeditor5-source-editing-enhanced": "46.1.1",
-        "@ckeditor/ckeditor5-template": "46.1.1",
-        "@ckeditor/ckeditor5-track-changes": "46.1.1",
-        "@ckeditor/ckeditor5-uploadcare": "46.1.1",
-        "@ckeditor/ckeditor5-utils": "46.1.1"
+        "@ckeditor/ckeditor5-ai": "46.1.0",
+        "@ckeditor/ckeditor5-case-change": "46.1.0",
+        "@ckeditor/ckeditor5-collaboration-core": "46.1.0",
+        "@ckeditor/ckeditor5-comments": "46.1.0",
+        "@ckeditor/ckeditor5-document-outline": "46.1.0",
+        "@ckeditor/ckeditor5-email": "46.1.0",
+        "@ckeditor/ckeditor5-export-inline-styles": "46.1.0",
+        "@ckeditor/ckeditor5-export-pdf": "46.1.0",
+        "@ckeditor/ckeditor5-export-word": "46.1.0",
+        "@ckeditor/ckeditor5-format-painter": "46.1.0",
+        "@ckeditor/ckeditor5-import-word": "46.1.0",
+        "@ckeditor/ckeditor5-line-height": "46.1.0",
+        "@ckeditor/ckeditor5-list-multi-level": "46.1.0",
+        "@ckeditor/ckeditor5-merge-fields": "46.1.0",
+        "@ckeditor/ckeditor5-pagination": "46.1.0",
+        "@ckeditor/ckeditor5-paste-from-office-enhanced": "46.1.0",
+        "@ckeditor/ckeditor5-real-time-collaboration": "46.1.0",
+        "@ckeditor/ckeditor5-revision-history": "46.1.0",
+        "@ckeditor/ckeditor5-slash-command": "46.1.0",
+        "@ckeditor/ckeditor5-source-editing-enhanced": "46.1.0",
+        "@ckeditor/ckeditor5-template": "46.1.0",
+        "@ckeditor/ckeditor5-track-changes": "46.1.0",
+        "@ckeditor/ckeditor5-uploadcare": "46.1.0",
+        "@ckeditor/ckeditor5-utils": "46.1.0"
       },
       "peerDependencies": {
-        "ckeditor5": "46.1.1"
+        "ckeditor5": "46.1.0"
       }
     },
     "node_modules/class-variance-authority": {
@@ -12913,9 +12902,9 @@
       }
     },
     "node_modules/color-name": {
-      "version": "2.0.2",
-      "resolved": "https://registry.npmjs.org/color-name/-/color-name-2.0.2.tgz",
-      "integrity": "sha512-9vEt7gE16EW7Eu7pvZnR0abW9z6ufzhXxGXZEVU9IqPdlsUiMwJeJfRtq0zePUmnbHGT9zajca7mX8zgoayo4A==",
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/color-name/-/color-name-2.0.0.tgz",
+      "integrity": "sha512-SbtvAMWvASO5TE2QP07jHBMXKafgdZz8Vrsrn96fiL+O92/FN/PLARzUW5sKt013fjAprK2d2iCn2hk2Xb5oow==",
       "license": "MIT",
       "engines": {
         "node": ">=12.20"
@@ -13872,9 +13861,9 @@
       "license": "MIT"
     },
     "node_modules/debug": {
-      "version": "4.4.3",
-      "resolved": "https://registry.npmjs.org/debug/-/debug-4.4.3.tgz",
-      "integrity": "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==",
+      "version": "4.4.1",
+      "resolved": "https://registry.npmjs.org/debug/-/debug-4.4.1.tgz",
+      "integrity": "sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==",
       "license": "MIT",
       "dependencies": {
         "ms": "^2.1.3"
@@ -14413,9 +14402,9 @@
       }
     },
     "node_modules/electron-to-chromium": {
-      "version": "1.5.222",
-      "resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.222.tgz",
-      "integrity": "sha512-gA7psSwSwQRE60CEoLz6JBCQPIxNeuzB2nL8vE03GK/OHxlvykbLyeiumQy1iH5C2f3YbRAZpGCMT12a/9ih9w==",
+      "version": "1.5.218",
+      "resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.218.tgz",
+      "integrity": "sha512-uwwdN0TUHs8u6iRgN8vKeWZMRll4gBkz+QMqdS7DDe49uiK68/UX92lFb61oiFPrpYZNeZIqa4bA7O6Aiasnzg==",
       "license": "ISC"
     },
     "node_modules/elliptic": {
@@ -14569,9 +14558,9 @@
       }
     },
     "node_modules/error-ex": {
-      "version": "1.3.4",
-      "resolved": "https://registry.npmjs.org/error-ex/-/error-ex-1.3.4.tgz",
-      "integrity": "sha512-sqQamAnR14VgCr1A618A3sGrygcpK+HEbenA/HiEAkkUwcZIIB/tgWqHFxWgOyDh4nB4JCRimh79dR5Ywc9MDQ==",
+      "version": "1.3.2",
+      "resolved": "https://registry.npmjs.org/error-ex/-/error-ex-1.3.2.tgz",
+      "integrity": "sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==",
       "license": "MIT",
       "dependencies": {
         "is-arrayish": "^0.2.1"
@@ -22803,9 +22792,9 @@
       "license": "MIT"
     },
     "node_modules/node-releases": {
-      "version": "2.0.21",
-      "resolved": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.21.tgz",
-      "integrity": "sha512-5b0pgg78U3hwXkCM8Z9b2FJdPZlr9Psr9V2gQPESdGHqbntyFJKFW4r5TeWGFzafGY3hzs1JC62VEQMbl1JFkw==",
+      "version": "2.0.20",
+      "resolved": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.20.tgz",
+      "integrity": "sha512-7gK6zSXEH6neM212JgfYFXe+GmZQM+fia5SsusuBIUgnPheLFBmIPhtFoAQRj8/7wASYQnbDlHPVwY0BefoFgA==",
       "license": "MIT"
     },
     "node_modules/normalize-path": {
@@ -23991,25 +23980,19 @@
       }
     },
     "node_modules/postcss-js": {
-      "version": "4.1.0",
-      "resolved": "https://registry.npmjs.org/postcss-js/-/postcss-js-4.1.0.tgz",
-      "integrity": "sha512-oIAOTqgIo7q2EOwbhb8UalYePMvYoIeRY2YKntdpFQXNosSu3vLrniGgmH9OKs/qAkfoj5oB3le/7mINW1LCfw==",
-      "funding": [
-        {
-          "type": "opencollective",
-          "url": "https://opencollective.com/postcss/"
-        },
-        {
-          "type": "github",
-          "url": "https://github.com/sponsors/ai"
-        }
-      ],
+      "version": "4.0.1",
+      "resolved": "https://registry.npmjs.org/postcss-js/-/postcss-js-4.0.1.tgz",
+      "integrity": "sha512-dDLF8pEO191hJMtlHFPRa8xsizHaM82MLfNkUHdUtVEV3tgTp5oj+8qbEqYM57SLfc74KSbw//4SeJma2LRVIw==",
       "license": "MIT",
       "dependencies": {
         "camelcase-css": "^2.0.1"
       },
       "engines": {
         "node": "^12 || ^14 || >= 16"
+      },
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/postcss/"
       },
       "peerDependencies": {
         "postcss": "^8.4.21"
@@ -29170,9 +29153,9 @@
       "license": "MIT"
     },
     "node_modules/undici-types": {
-      "version": "7.12.0",
-      "resolved": "https://registry.npmjs.org/undici-types/-/undici-types-7.12.0.tgz",
-      "integrity": "sha512-goOacqME2GYyOZZfb5Lgtu+1IDmAlAEu5xnD3+xTzS10hT0vzpf0SPjkXwAw9Jm+4n/mQGDP3LO8CPbYROeBfQ==",
+      "version": "7.10.0",
+      "resolved": "https://registry.npmjs.org/undici-types/-/undici-types-7.10.0.tgz",
+      "integrity": "sha512-t5Fy/nfn+14LuOc2KNYg75vZqClpAiqscVvMygNnlsHBFpSXdJaYtXMcdNLpl/Qvc3P2cB3s6lOV51nqsFq4ag==",
       "license": "MIT"
     },
     "node_modules/unicode-canonical-property-names-ecmascript": {
@@ -29207,9 +29190,9 @@
       }
     },
     "node_modules/unicode-property-aliases-ecmascript": {
-      "version": "2.2.0",
-      "resolved": "https://registry.npmjs.org/unicode-property-aliases-ecmascript/-/unicode-property-aliases-ecmascript-2.2.0.tgz",
-      "integrity": "sha512-hpbDzxUY9BFwX+UeBnxv3Sh1q7HFxj48DTmXchNgRa46lO8uj3/1iEn3MiNUYTg1g9ctIqXCCERn8gYZhHC5lQ==",
+      "version": "2.1.0",
+      "resolved": "https://registry.npmjs.org/unicode-property-aliases-ecmascript/-/unicode-property-aliases-ecmascript-2.1.0.tgz",
+      "integrity": "sha512-6t3foTQI9qne+OZoVQB/8x8rk2k1eVy1gRXhV3oFQ5T6R1dqQ1xtin3XqSlx3+ATBkliTaR/hHyJBm+LVPNM8w==",
       "license": "MIT",
       "engines": {
         "node": ">=4"
@@ -30729,9 +30712,9 @@
       }
     },
     "node_modules/zod": {
-      "version": "4.1.9",
-      "resolved": "https://registry.npmjs.org/zod/-/zod-4.1.9.tgz",
-      "integrity": "sha512-HI32jTq0AUAC125z30E8bQNz0RQ+9Uc+4J7V97gLYjZVKRjeydPgGt6dvQzFrav7MYOUGFqqOGiHpA/fdbd0cQ==",
+      "version": "4.1.8",
+      "resolved": "https://registry.npmjs.org/zod/-/zod-4.1.8.tgz",
+      "integrity": "sha512-5R1P+WwQqmmMIEACyzSvo4JXHY5WiAFHRMg+zBZKgKS+Q1viRa0C1hmUKtHltoIFKtIdki3pRxkmpP74jnNYHQ==",
       "license": "MIT",
       "funding": {
         "url": "https://github.com/sponsors/colinhacks"

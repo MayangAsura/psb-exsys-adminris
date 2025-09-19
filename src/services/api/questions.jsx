@@ -4,12 +4,12 @@ import supabase from '../database-server'
 export const addQuestion = async (props) => {
     // name, description, started_at, ended_at, scheme, type, location, room, is_random_question, is_random_answer, max_participants 
     // name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: ""
-    console.log(props) 
+    console.log('props', props) 
     const response = {error: true, message: 'Gagal menambahkan data Pertanyaan', data: null }
     const { data: exam_test_contents, error } = await supabase
                             .from('exam_test_contents')
                                 .insert([
-                                    props.question
+                                    props.questions
                                 ])
                                 .select()
         console.log(exam_test_contents)
@@ -86,7 +86,7 @@ export const addQuestion = async (props) => {
         //     }
         //   }
         }                              
-        if(!exam_test_contents) {
+        if(error || !exam_test_contents || exam_test_contents.length ==0) {
             // {error: true, message: 'Gagal menambahkan data Ujian', data: null }
             response.error= true
             response.message= 'Gagal menambahkan data Pertanyaan'
@@ -96,6 +96,7 @@ export const addQuestion = async (props) => {
         }else{
             console.log(exam_test_contents)
             const options = {...props.options, exam_test_content_id : exam_test_contents[0].id}
+            // options.m
             const { data: exam_test_content_options, error } = await supabase
                             .from('exam_test_content_options')
                                 .insert([
@@ -104,8 +105,19 @@ export const addQuestion = async (props) => {
                                 // .eq('id', props.id)
                                 .select()
 
+                                if(exam_test_content_options || exam_test_content_options.length>0 || Object.values(exam_test_content_options).filter(value => value == props.questions.answer)[0] ){
+                                    const option_id = Object.values(exam_test_content_options).filter(value => value == props.questions.answer)[0]
+                                    console.log('option_id', option_id)
+                                    const { data: exam_test_contents, error } = await supabase
+                            .from('exam_test_contents')
+                                .update([
+                                    {exam_test_content_option_id: option_id}
+                                ])
+                                .eq('id', exam_test_contents[0].id)
+                                .select()
+                                }
 
-            if(props.options.is_image){
+            if(props.options?.is_image){
                 // const upload = async (props.question.file, name ) => {
                 const filepath = `${exam_test_content_options[0].id.subtring(0,5)}-${Date.now()}`
                 // const pid = participant.id?participant.id:participant_id
@@ -140,52 +152,7 @@ export const addQuestion = async (props) => {
                 }
           
             }
-            
-            // setBerkasUrl(data.publicUrl)
-            // setBerkasUrl((data.publicUrl).toString())
-            // if(name == "Bird-Certificate"){
-            //   berkasUrl.a = data.publicUrl.toString()
-            // }
-            // if(name == "KK"){
-            //   berkasUrl.b = data.publicUrl.toString()
-            // }
-            // if(name == "Parent-KTP"){
-            //   berkasUrl.c = data.publicUrl.toString()
-            // }
-            // if(name == "Pas-Photo"){
-            //   berkasUrl.d = data.publicUrl.toString()
-            // }
-            // if(name == "Surat-Kesanggupan"){
-            //   berkasUrl.e = data.publicUrl.toString()
-            // }
-            // if(name == "Syahadah"){
-            //   berkasUrl.f = data.publicUrl.toString()
-            // }
-            // if(name == "Photo-Sampul-Ijazah"){
-            //   berkasUrl.g = data.publicUrl.toString()
-            // }
-            // berkasUrl.a = data.publicUrl.toString()
-            // console.log(berkasUrl)
-        //     return data.publicUrl
-        //     // const { data, error } = await supabase.storage.from('participant-documents').createSignedUrl(participant_id+ "/" +filepath, 3600)
-
-        //     const path = {
-        //       signedUrl: data.signedUrl.toString()?? ""
-        //     } 
-
-        //     if (data) {
-        //       console.log('signedUrl > ', data.signedUrl)
-        //       console.log('data_ > ', data_)
-        //       return path
-        //     }
-        //   }
-         
-            // const { school, e } = await supabase
-            // .from('exam_schedule_schools')
-            // .insert([
-            //     { exam_schedule_id: schedule[0].id, school_id: props.school_id },
-            // ])
-            // .select()
+           
 
             if(error){
                 return response

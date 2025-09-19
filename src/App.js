@@ -51,10 +51,11 @@ function App() {
   useEffect(() => {
     // 👆 daisy UI themes initialization
     themeChange(false) 
+    const token =  checkAuth()
     // console.log(token_user)
     // load tabHeaderHandler
     // tabHeaderHandlerActiveTab()
-    console.log('token', token)
+    console.log('token', token, user)
   }, [])
 
 
@@ -63,7 +64,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
-          {/* <Route path="/ad/*" element={<Navigate to={user || token? "/ad/dashboard" : "/ad/login"} replace />}/> */}
           {/* <Route path="*" element={<Navigate to={token? "/ad/dashboard": "/ad/register" } replace />}/> */}
           {/* <Route path="*" element={<Navigate to={token_user? "/landing" : ()} replace />}/> */}
           {/* <Route path="*" element={<Navigate to={token? "/ad/welcome" : (token_user? "/landing": (!token_user? "/login": !token? "/ad/login": "")} replace />}/> */}
@@ -74,12 +74,13 @@ function App() {
           <Route path="/ad/documentation" element={<Documentation />} />
           
           {/* Place new routes user over this */}
-          <Route element={<ProtectedRoute/>}>
+          {/* <Route element={<ProtectedRoute/>}> */}
             {/* Place new routes admin over this*/}
             <Route path="/ad/*" element={<Layout />}  />
             {/* <Route path="/landing" element={<Landing />} />
             <Route path="/u/exam/:id/show" element={<LandingExam />} /> */}
-          </Route>
+          {/* </Route> */}
+          <Route path="/ad/*" element={<Navigate to={user || token? "/ad/dashboard" : "/ad/login"} replace />}/>
           {/* <Route path="/register" element={<LandingRegister />} /> */}
           
           {/* <Route path="/u/exam/:id/start" element={<StartExam />} /> */}

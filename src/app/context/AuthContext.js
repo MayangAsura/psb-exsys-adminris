@@ -60,16 +60,23 @@ import { useNavigate } from 'react-router-dom';
     //         })
 
     useEffect(() => {
+        getActiveUser()
+        if(user){
+            console.log('user', user)
+        }
+    },[])
 
-        const { data: activeSession } = supabase.auth.getSession()
+    const getActiveUser = async () => {
+        const { data: activeSession } = await supabase.auth.getSession()
         if(activeSession){
-            const { data: user } = supabase.auth.getUser()
+            const { data: user } = await supabase.auth.getUser()
+            console.log('activeSession', activeSession, user)
             if(user){
                 setUser(user)
                 setLoading(false)
             }
         }
-    },[])
+    }
     //   useEffect(() => {
     //     // Check for existing token in localStorage/sessionStorage on mount
     //     const token = localStorage.getItem('token');

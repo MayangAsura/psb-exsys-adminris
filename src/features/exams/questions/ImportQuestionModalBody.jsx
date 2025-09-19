@@ -27,7 +27,8 @@ function ImportQuestionModalBody({closeModal, extraObject}){
     const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
-    const [quetionObj, setquetionObj] = useState({})
+    // const [question, setquestion] = useState({})
+    const [options, setOptions] = useState([])
     const [schedule, setSchedule] = useState({})
     const { type, index, sid } = extraObject
     const queryClient = useQueryClient();
@@ -38,7 +39,7 @@ function ImportQuestionModalBody({closeModal, extraObject}){
       const [error, setError] = useState("")
       const [dataImport, setDataImport] = useState([])
       const [i, setIndex] = useState(0)
-      let lengthPart = quetionObj.length
+      let lengthPart = questions.length
 
     //   let i
     //   let dataImport
@@ -87,35 +88,40 @@ function ImportQuestionModalBody({closeModal, extraObject}){
 
 const { data: questionsI, isLoading } = useQuery({
                             queryKey: ["questions", { search, questions, lengthPart, i }],
-                            queryFn: () => addQuestion({search, questions: quetionObj, lengthPart: questions.length , i: i}),
+                            queryFn: () => addQuestion({search, questions: questions, options: options, lengthPart: questions.length , i: i}),
                             staleTime: Infinity,
                             cacheTime: 0,
                         });
-                        //   : quetionObj, lengthPart: questions.length, i: index
+                        //   : question, lengthPart: questions.length, i: index
 
                         const { mutateAsync: addTodoMutation } = useMutation({
                             mutationFn: addQuestion,
                             onSuccess: () => {
-                            queryClient.invalidateQueries({ queryKey: ["questions", { search, questions, lengthPart, i }] });
+                            queryClient.invalidateQueries({ queryKey: ["questions", { search, questions, options,lengthPart, i }] });
                             },
                         });
-    const saveImport = () => {
-        console.log('in save')
+    const saveImport = (data) => {
+        console.log('in save', data)
         // setData(questions)
+
         // const saveNewquestions = async (questions) => {
             // const max_questions = 
-            if(!dataImport || dataImport.length == 0){
-                dispatch(showNotification({message : "Gagal Import Data Peserta. Data tidak valid.", status : 0}))
-                closeModal()
-            }
-            // setQuestions(dataImport)
-
-            const newDataImport = removeDuplicates(dataImport)
-            setQuestions(newDataImport)
+            // if(!dataImport || dataImport.length == 0){
+            //     dispatch(showNotification({message : "Gagal Import Data Peserta. Data tidak valid.", status : 0}))
+            //     closeModal()
+            // }
+            setTimeout(() => {
+              setQuestions(data)
+              
+            }, 500);
+            // const newDataImport = removeDuplicates(dataImport)
+            // setQuestions(newDataImport)
             
             console.log('questions', questions, dataImport)
-            if(questions.length > schedule.max_questions){
-                dispatch(showNotification({message : "Jumlah peserta melebihi batas maksimal. Mohon periksa batas maksimal peserta pada jadwal ini.", status : 0}))
+            if(data.length == 0){
+                // dispatch(showNotification({message : "Jumlah peserta melebihi batas maksimal. Mohon periksa batas maksimal peserta pada jadwal ini.", status : 0}))
+                // closeModal()
+                dispatch(showNotification({message : "Gagal Import Data Pertanyaan. Data tidak valid.", status : 0}))
                 closeModal()
                 setError(true)
             }else{
@@ -124,39 +130,91 @@ const { data: questionsI, isLoading } = useQuery({
                         let final_res = {}
                         let invalidData = []
                         let importedData = []
+                        let options_ = []
                           if(!error){
                               setTimeout(() => {
-                                questions.forEach((quetionObj, index) => {
-                                    setquetionObj(quetionObj)
+                                data.forEach((question, index) => {
+                                    // setQuestions(question)
                                     setIndex(index)
-                      // if(quetionObj.questions.trim() === "")return '' 
+                                    // question.OPTION_`${index+1}` 
+                                    // Object.entries(([key, value]) => ())
+                                      // const newQuestion =  Array.prototype.map(question => {return {exam_test_id: index, question: question.QUESTION, answer: question.ANSWER, score: question.SCORE, bank_core: question.BANK_CODE, type: question.TYPE }})
+                                      const {OPTION_1, OPTION_2, OPTION_3, OPTION_4, OPTION_5, OPTION_ANSWER, ...newData} = question
+                                      const newQuestion = Object.fromEntries(Object.entries(newData).map(([key, value]) => {
+                                        // if (key === "") {
+                                          //   return ["newKey1", value]; // Rename oldKey1 to newKey1
+                                          // }
+                                          return [key.toLowerCase(), value]; // Keep other keys as they are
+                                        }))
+                                        if(OPTION_ANSWER ==1){
+                                          OPTION_ANSWER = OPTION_1
+                                        }
+                                        if(OPTION_ANSWER ==2){
+                                          OPTION_ANSWER = OPTION_2
+                                        }
+                                        if(OPTION_ANSWER ==3){
+                                          OPTION_ANSWER = OPTION_3
+                                        }
+                                        if(OPTION_ANSWER ==4){
+                                          OPTION_ANSWER = OPTION_4
+                                        }
+                                        if(OPTION_ANSWER ==5){
+                                          OPTION_ANSWER = OPTION_5
+                                        }
+                                      // const newQuestion = newData.
+                                        setQuestions({...newQuestion, answer: OPTION_ANSWER, exam_test_id: index})
+                                        // for (let index = 0; index < array.length; index++) {
+                                          //   const element = array[index];
+                                          // question.
+                                          // }
+                                          
+                                          // question.forEach(e => {
+                                            
+                                            options.push(OPTION_1)
+                                            options.push(OPTION_2)
+                                            options.push(OPTION_3)
+                                            options.push(OPTION_4)
+                                            options.push(OPTION_5)
+                                            // });
+                                            
+                                            
+                                            const newOptions = options.map(e => {
+                                              return {
+                                                // exam_test_content_id: 
+                                                option: e,
+                                                type: 'MC'
+                                              }
+                                            })
+                                            setOptions(newOptions)
+                                            // if(question.questions.trim() === "")return '' 
+                                            console.log('question', question, questions, options)
                     //   props.setErrorMessage("Pertanyaan is required!")
-                    //   else if(quetionObj.answer.trim() === "")return setErrorMessage("Jawaban id is required!")
-                    //   else if(quetionObj.score.trim() === "")return setErrorMessage("Email id is required!")
-                    //   else if(quetionObj.bank_code.trim() === "")return setErrorMessage("Email id is required!")
-                      // else if(quetionObj.email.trim() === "")return setErrorMessage("Email id is required!")
-                      // else if(quetionObj.email.trim() === "")return setErrorMessage("Email id is required!")
+                    //   else if(question.answer.trim() === "")return setErrorMessage("Jawaban id is required!")
+                    //   else if(question.score.trim() === "")return setErrorMessage("Email id is required!")
+                    //   else if(question.bank_code.trim() === "")return setErrorMessage("Email id is required!")
+                      // else if(question.email.trim() === "")return setErrorMessage("Email id is required!")
+                      // else if(question.email.trim() === "")return setErrorMessage("Email id is required!")
                       // else{
-                          // let newquetionObj = {
+                          // let newquestion = {
                           //     "id": 7,
-                          //     "email": quetionObj.email,
-                          //     "first_name": quetionObj.first_name,
-                          //     "last_name": quetionObj.last_name,
+                          //     "email": question.email,
+                          //     "first_name": question.first_name,
+                          //     "last_name": question.last_name,
                           //     "avatar": "https://reqres.in/img/faces/1-image.jpg"
                           // }
-                              console.log(quetionObj)
-                              // const options = quetionObj.option+ '_'+ index
-                              const {NO_WA, NO_REGISTRASI, NAMA, JENJANG} = quetionObj
-                              // const newquetionObj = {
+                              // console.log(question)
+                              // const options = question.option+ '_'+ index
+                              // const {NO_WA, NO_REGISTRASI, NAMA, JENJANG} = question
+                              // const newquestion = {
                               //   phone_number: NO_WA,
                                 
                               // }
             
-                            //   const response = addquestions({questions: quetionObj, lengthPart: questions.length, i: index})
+                            //   const response = addquestions({questions: question, lengthPart: questions.length, i: index})
                             // onClick={async () => {
                             
                 try {
-                addTodoMutation({ questions: quetionObj, lengthPart: questions.length, i: index});
+                addTodoMutation({ questions: questions, options: options, lengthPart: questions.length, i: index});
                   setDataImport("");
                   console.log('questionsI', questionsI)
                   if(questionsI.error!==true){
@@ -176,7 +234,7 @@ const { data: questionsI, isLoading } = useQuery({
                                       // const {error, message, data} = await addExam({exam})
                             //   console.log('response', questionsI)
                               
-                              // dispatch(addNewLead({newquetionObj}))
+                              // dispatch(addNewLead({newquestion}))
                               // dispatch(showNotification({message : "New Lead Added!", status : 1}))
                             // }
                             
@@ -206,7 +264,7 @@ const { data: questionsI, isLoading } = useQuery({
                                 }
                                     setStatus(false)
                                     setQuestions([])
-                                    setquetionObj([])
+                                    setQuestions([])
                               }, 3000);
                           }else if(questionsI.error === false) {
                               console.log("masuk")
@@ -217,7 +275,7 @@ const { data: questionsI, isLoading } = useQuery({
                                 }))
                               setStatus(true)
                               setQuestions([])
-                              setquetionObj([])
+                              setQuestions([])
                             //   closeModal()
                           }else{
                             console.log(questionsI)
@@ -229,7 +287,7 @@ const { data: questionsI, isLoading } = useQuery({
         
             // getMax
             // const data = questions
-            console.log('max participant', schedule.max_questions)
+            // console.log('max participant', schedule.max_questions)
         //     if(questions.length == 1){
         //       dispatch(openModal({title : "Import Gagal", bodyType : MODAL_BODY_TYPES.MODAL_SUCCESS, size: 'sm',
         //     extraObject : {message : "Jumlah peserta melebihi batas maksimal. Mohon periksa batas maksimal peserta pada jadwal ini.", type: CONFIRMATION_MODAL_CLOSE_TYPES.PARTIC_ADD_SUCCESS}
@@ -257,21 +315,21 @@ const { data: questionsI, isLoading } = useQuery({
             // }
           
             //   }
-        // if(quetionObj.question.trim() === "")return setErrorMessage("Pertanyaan is required!")
-        // else if(quetionObj.answer.trim() === "")return setErrorMessage("Jawaban id is required!")
-        // else if(quetionObj.score.trim() === "")return setErrorMessage("Email id is required!")
-        // else if(quetionObj.bank_code.trim() === "")return setErrorMessage("Email id is required!")
-        // // else if(quetionObj.email.trim() === "")return setErrorMessage("Email id is required!")
-        // // else if(quetionObj.email.trim() === "")return setErrorMessage("Email id is required!")
+        // if(question.question.trim() === "")return setErrorMessage("Pertanyaan is required!")
+        // else if(question.answer.trim() === "")return setErrorMessage("Jawaban id is required!")
+        // else if(question.score.trim() === "")return setErrorMessage("Email id is required!")
+        // else if(question.bank_code.trim() === "")return setErrorMessage("Email id is required!")
+        // // else if(question.email.trim() === "")return setErrorMessage("Email id is required!")
+        // // else if(question.email.trim() === "")return setErrorMessage("Email id is required!")
         // else{
-        //     // let newquetionObj = {
+        //     // let newquestion = {
         //     //     "id": 7,
-        //     //     "email": quetionObj.email,
-        //     //     "first_name": quetionObj.first_name,
-        //     //     "last_name": quetionObj.last_name,
+        //     //     "email": question.email,
+        //     //     "first_name": question.first_name,
+        //     //     "last_name": question.last_name,
         //     //     "avatar": "https://reqres.in/img/faces/1-image.jpg"
         //     // }
-        //     quetionObj.forEach((question, index) => {
+        //     question.forEach((question, index) => {
         //         console.log(question)
         //         const options = question.option+ '_'+ index
         //         const {option_1, option_2, option_3, option_4, option_5, ...newQuestion} = question
@@ -289,7 +347,7 @@ const { data: questionsI, isLoading } = useQuery({
         //             dispatch(showNotification({message : "Gagal Menambahkan Pertanyaan", status : 0}))
         //         }
         //     });
-        //     // dispatch(addNewLead({newquetionObj}))
+        //     // dispatch(addNewLead({newquestion}))
         //     // dispatch(showNotification({message : "New Lead Added!", status : 1}))
         // }
     }
@@ -369,7 +427,7 @@ const { data: questionsI, isLoading } = useQuery({
 
             <div className="flex flex-col justify-center items-center p-2 mt-5">
 {/* save={handleImport} */}
-                <FileUploads save={handleImport} id={index} ></FileUploads>
+                <FileUploads save={saveImport} id={index} ></FileUploads>
             </div>
 {/* 
             <InputText type="text" defaultValue={leadObj.first_name} updateType="first_name" containerStyle="mt-4" labelTitle="First Name" updateFormValue={updateFormValue}/>
@@ -414,27 +472,27 @@ export default ImportQuestionModalBody
 //     const dispatch = useDispatch()
 //     const [loading, setLoading] = useState(false)
 //     const [errorMessage, setErrorMessage] = useState("")
-//     const [quetionObj, setquetionObj] = useState(INITIAL_QUESTION_OBJ)
+//     const [question, setquestion] = useState(INITIAL_QUESTION_OBJ)
 //     const { type, index } = extraObject
 
 
 //     const saveNewQuestion = async () => {
 
-//         if(quetionObj.question.trim() === "")return setErrorMessage("Pertanyaan is required!")
-//         else if(quetionObj.answer.trim() === "")return setErrorMessage("Jawaban id is required!")
-//         else if(quetionObj.score.trim() === "")return setErrorMessage("Email id is required!")
-//         else if(quetionObj.bank_code.trim() === "")return setErrorMessage("Email id is required!")
-//         // else if(quetionObj.email.trim() === "")return setErrorMessage("Email id is required!")
-//         // else if(quetionObj.email.trim() === "")return setErrorMessage("Email id is required!")
+//         if(question.question.trim() === "")return setErrorMessage("Pertanyaan is required!")
+//         else if(question.answer.trim() === "")return setErrorMessage("Jawaban id is required!")
+//         else if(question.score.trim() === "")return setErrorMessage("Email id is required!")
+//         else if(question.bank_code.trim() === "")return setErrorMessage("Email id is required!")
+//         // else if(question.email.trim() === "")return setErrorMessage("Email id is required!")
+//         // else if(question.email.trim() === "")return setErrorMessage("Email id is required!")
 //         else{
-//             // let newquetionObj = {
+//             // let newquestion = {
 //             //     "id": 7,
-//             //     "email": quetionObj.email,
-//             //     "first_name": quetionObj.first_name,
-//             //     "last_name": quetionObj.last_name,
+//             //     "email": question.email,
+//             //     "first_name": question.first_name,
+//             //     "last_name": question.last_name,
 //             //     "avatar": "https://reqres.in/img/faces/1-image.jpg"
 //             // }
-//             quetionObj.forEach((question, index) => {
+//             question.forEach((question, index) => {
 //                 console.log(question)
 //                 const options = question.option+ '_'+ index
 //                 const {option_1, option_2, option_3, option_4, option_5, ...newQuestion} = question
@@ -452,7 +510,7 @@ export default ImportQuestionModalBody
 //                     dispatch(showNotification({message : "Gagal Menambahkan Pertanyaan", status : 0}))
 //                 }
 //             });
-//             // dispatch(addNewLead({newquetionObj}))
+//             // dispatch(addNewLead({newquestion}))
 //             // dispatch(showNotification({message : "New Lead Added!", status : 1}))
 //         }
 //     }

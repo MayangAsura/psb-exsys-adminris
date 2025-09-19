@@ -1452,13 +1452,13 @@ function UniformModelCreate() {
                 <div className="mt-16 flex justify-end gap-4">
                     <button 
                         type="button" 
-                        className="btn btn-secondary"
+                        className="btn  bg-orange-400"
                         onClick={() => navigate(-1)}
                     >
                         Batal
                     </button>
                     <button 
-                        className="btn btn-primary" 
+                        className="btn  bg-green-700" 
                         type="submit"
                         disabled={loading}
                     >
