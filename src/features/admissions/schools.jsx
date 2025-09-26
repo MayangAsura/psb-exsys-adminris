@@ -223,7 +223,7 @@ let { data: exam_schedule_tests, error } = await supabase
             
     }
 
-    const getRemindQuota = async (quota, sch_id, ad_id) => {
+    const getRemindTarget = async (quota, sch_id, ad_id) => {
         
         const curParts =  await getCurNewStudents(sch_id, ad_id)
         console.log('curParts', curParts, quota, quota - curParts)
@@ -285,6 +285,10 @@ let { data: exam_schedule_tests, error } = await supabase
     // const indonesianFormat = `${dayName}, ${day} ${monthName} ${year} ${hour}:${minute} WIB`;
     return dateFormat
   }
+
+  const getRemindTarget_ = (target) => {
+
+  } 
   const addAdmissionSchool = () => {
         
         dispatch(openModal({title : "Tambah Jenjang", bodyType : MODAL_BODY_TYPES.ADMISSION_SCHOOLS_CREATE,
@@ -384,8 +388,8 @@ let { data: exam_schedule_tests, error } = await supabase
                         <th>Tanggal Selesai</th>
                         <th>Status</th>
                         <th>Biaya Masuk</th>
-                        <th>Kuota</th>
-                        <th>Sisa Kuota</th>
+                        <th>Target</th>
+                        {/* <th>Sisa Kuota</th> */}
                         {/* <th>Skor</th>
                         <th>Tanggal Submit</th> */}
                         {/* <th>Lokasi</th>
@@ -414,9 +418,9 @@ let { data: exam_schedule_tests, error } = await supabase
                                     <td><div className="font-bold">{formatDateNew(l.ended_at) }</div></td>
                                     <td><div className="font-bold">{l.status??'-'}</div></td>
                                     <td><div className="font-bold">{l.admission_fee??'-'}</div></td>
-                                    <td><div className="font-bold">{l.quota}</div></td>
-                                    <td><div className="font-bold">{l.quota}</div></td>
-                                    {/* <td><div className="font-bold">{getRemindQuota(l.quota, l.schools?.school_id, l.admission_ays_id)}</div></td> */}
+                                    <td><div className="font-bold">{l.target}</div></td>
+                                    {/* <td><div className="font-bold">{getRemindTarget(l.target)}</div></td> */}
+                                    {/* <td><div className="font-bold">{getRemindTarget(l.quota, l.schools?.school_id, l.admission_ays_id)}</div></td> */}
                                     {/* <td><div className="font-bold">{l.exam_schedule_tests[0].exam_schedule_schools[0].schools.school_name}</div></td> */}
                                     {/* <td><div className="font-bold">{formatDateNew(l.submit_at) }</div></td> */}
                                     {/* <td><div className="badge-primary font-semibold rounded-2xl w-16 py-1 px-2">{l.test_scheme}</div> </td> */}

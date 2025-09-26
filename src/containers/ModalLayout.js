@@ -6,9 +6,11 @@ import AddLeadModalBody from '../features/leads/components/AddLeadModalBody'
 import AddUniformModelsModalBody from '../features/uniform_models/components/AddUniformModelsModalBody'
 import EditUniformModelsModalBody from '../features/uniform_models/components/EditUniformModelsModalBody'
 import AddAdmissionSchoolModalBody from '../features/admissions/schools/components/AddAdmissionSchoolModalBody'
+import AddAcademicYearModalBody from '../features/admissions/components/AddAcademicYearModalBody'
 import EditAdmissionSchoolModalBody from '../features/admissions/schools/components/EditAdmissionSchoolModalBody'
 import EditAdmissionSchoolApplicantModalBody from '../features/admissions/schools/components/EditAdmissionSchoolApplicantModalBody'
 import EditAdmissionSchoolParticipantModalBody from '../features/admissions/schools/components/EditAdmissionSchoolParticipantModalBody'
+import DetailExamResponseModalBody from '../features/exams/responses/components/DetailExamResponseModalBody'
 import ImportQuestionModalBody from '../features/exams/questions/ImportQuestionModalBody'
 import ImportParticipantModalBody from '../features/exams/participants/ImportParticipantModalBody'
 import ImportParticipantStatusModalBody from '../features/admissions/schools/components/ImportParticipantStatusModalBody.jsx'
@@ -46,6 +48,7 @@ function ModalLayout(){
                 {
                     {
                              [MODAL_BODY_TYPES.LEAD_ADD_NEW] : <AddLeadModalBody closeModal={close} extraObject={extraObject}/>,
+                             [MODAL_BODY_TYPES.ACADEMIC_YEAR_CREATE] : <AddAcademicYearModalBody closeModal={close} extraObject={extraObject}/>,
                              [MODAL_BODY_TYPES.QUESTION_ADD_IMPORT] : <ImportQuestionModalBody closeModal={close} extraObject={extraObject}/>,
                              [MODAL_BODY_TYPES.ADMISSION_SCHOOLS_CREATE] : <AddAdmissionSchoolModalBody closeModal={close} extraObject={extraObject}/>,
                              [MODAL_BODY_TYPES.ADMISSION_SCHOOLS_EDIT] : <EditAdmissionSchoolModalBody closeModal={close} extraObject={extraObject}/>,
@@ -53,6 +56,7 @@ function ModalLayout(){
                              [MODAL_BODY_TYPES.ADMISSION_SCHOOLS_PARTICIPANT_EDIT] : <EditAdmissionSchoolParticipantModalBody closeModal={close} extraObject={extraObject}/>,
                              [MODAL_BODY_TYPES.ADMISSION_SCHOOLS_PARTICIPANT_STATUS_IMPORT] : <ImportParticipantStatusModalBody closeModal={close} extraObject={extraObject}/>,
                              [MODAL_BODY_TYPES.EXAM_PARTIC_IMPORT] : <ImportParticipantModalBody closeModal={close} extraObject={extraObject}/>,
+                             [MODAL_BODY_TYPES.EXAM_RESPONSE_DETAIL] : <DetailExamResponseModalBody closeModal={close} extraObject={extraObject}/>,
                              [MODAL_BODY_TYPES.QUESTION_ADD_MANUAL] : <ManualQuestionModalBody closeModal={close} extraObject={extraObject}/>,
                              [MODAL_BODY_TYPES.MODAL_SUCCESS] : <SuccessModal closeModal={close} extraObject={extraObject}/>,
                              [MODAL_BODY_TYPES.MODAL_ERROR] : <ErrorModal closeModal={close} extraObject={extraObject}/>,

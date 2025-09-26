@@ -433,7 +433,7 @@ const columns = [
                     <DataTable
                         columns={columns}
                         data={serelizedData ?? []}
-                        filterBy="full_name"
+                        filterBy="Nama"
                     />
                     </div>
                 )}

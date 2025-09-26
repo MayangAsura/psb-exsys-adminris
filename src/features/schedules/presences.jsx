@@ -23,15 +23,15 @@ function SchedulePresences(){
         {tab: 'Presensi', selected: true }
     ]
     useEffect(() => {
-        // getExamPresences(id)
+        getExamPresences(id)
         console.log(ExamPresences)
-    },[id])
+    },[])
 
     const getExamPresences = async(id) => {
     
         let { data: exam_responses, error } = await supabase
             .from('exam_presences')
-            .select('*, exam_schedules(id,exam_schedule_schools(schools(school_name))), exam_profiles(full_name, regist_number, completion_status)')
+            .select('*, exam_schedules(id,exam_schedule_schools(schools(school_name))), exam_profiles(full_name, regist_number, phone_number, completion_status)')
             // exam_tests(name, exam_schedule_tests(exam_schedules(exam_schedule_schools(schools(school_name))))), 
             .eq('exam_schedules.id', id)
 
@@ -90,7 +90,6 @@ function SchedulePresences(){
                         <th>No. Registrasi</th>
                         <th>Nama</th>
                         <th>No. Wa</th>
-                        <th>Jenjang</th>
                         <th>Tanggal Presensi</th>
                         <th>Status Seleksi</th>
                         {/* <th>Lokasi</th>
@@ -115,8 +114,8 @@ function SchedulePresences(){
                                             </div>
                                         </div>
                                     </td>
-                                    <div className="">{l.exam_profiles.phone_number?? '-'}</div>
-                                    <td><div className="">{l.exam_schedules.exam_schedule_schools[0].schools.school_name}</div></td>
+                                    <div className="">{l.exam_profiles.phone_number??'-'}</div>
+                                    {/* <td><div className="">{l.exam_schedules.exam_schedule_schools[0].schools.school_name}</div></td> */}
                                     {/* <td><div className="font-bold">{l.score}</div></td>*/}
                                     <td><div className="">{formatDateNew(l.presence_at) }</div></td> 
                                     {/* <td><div className="badge-primary font-semibold rounded-2xl w-16 py-1 px-2">{l.test_scheme}</div> </td> */}

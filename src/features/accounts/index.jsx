@@ -57,7 +57,12 @@ function Account(){
             getaccount(id)
         // console.log(id)
         console.log(id)
+        getAccount()
     },[id])
+
+    const getAccount = async () => {
+        const { data, error } = await supabase.auth.admin.getUserById()
+    }
 
     // Call API to update profile settings changes
     const saveAccounts = async (e) => {
@@ -120,13 +125,13 @@ function Account(){
 
     const getaccount = async (id) => {
         let { data: exam_account, error } = await supabase
-            .from('exam_accounts')
+            .from('exam_users')
             .select('*')
             .eq('id', id)
             console.log(exam_account[0])
             if(!error){
                 // name: "", subtitle: "", icon: "", started_at: "", ended_at: "", scheme: "", question_type: "", location: "", room: "" 
-                setAccount((prev) => ({...prev, name: exam_account[0].name, subtitle: exam_account[0].subtitle, icon: exam_account[0].icon, started_at: exam_account[0].started_at, ended_at: exam_account[0].ended_at, scheme: exam_account[0].scheme, question_type: exam_account[0].question_type, location: exam_account[0].location, room: exam_account[0].room}))
+                setAccount((prev) => ({...prev, name: exam_account[0].name, phone_number: exam_account[0].phone_number, email: exam_account[0].email, last_login: exam_account[0].last_login}))
                 console.log('account', account)
             }
     } 
@@ -196,11 +201,12 @@ function Account(){
             <TitleCard title="Profile Settings" topMargin="mt-2">
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <InputText labelTitle="Name" defaultValue="Alex" updateFormValue={updateFormValue}/>
-                    <InputText labelTitle="Email Id" defaultValue="alex@dashwind.com" updateFormValue={updateFormValue}/>
-                    <InputText labelTitle="Title" defaultValue="UI/UX Designer" updateFormValue={updateFormValue}/>
-                    <InputText labelTitle="Place" defaultValue="California" updateFormValue={updateFormValue}/>
-                    <TextAreaInput labelTitle="About" defaultValue="Doing what I love, part time traveller" updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Nama" defaultValue={account.name} updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="No. Telepon" defaultValue={account.phone_number} updateFormValue={updateFormValue}/>
+                    <InputText labelTitle="Email" defaultValue={account.email} updateFormValue={updateFormValue}/>
+                    {/* <InputText labelTitle="Lok" defaultValue={account.last_login} updateFormValue={updateFormValue}/> */}
+                    {/* <InputText labelTitle="Place" defaultValue="California" updateFormValue={updateFormValue}/>
+                    <TextAreaInput labelTitle="About" defaultValue="Doing what I love, part time traveller" updateFormValue={updateFormValue}/> */}
                 </div>
                 <div className="divider" ></div>
 

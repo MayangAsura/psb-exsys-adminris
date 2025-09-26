@@ -39,9 +39,14 @@ function FileUploads({save, setStatus, id, sid}) {
       const sheet = workbook.Sheets[sheetName];
       const sheetData = XLSX.utils.sheet_to_json(sheet);
       console.log('sheetData', sheetData)
-      console.log(save(sheetData))
+      
+      setTimeout(() => {
+        
+        save(sheetData)
+      }, 1000);
       
       setData(sheetData)
+      // console.log(save(sheetData))
       // if(sheetData){
       //   save(sheetData)
 
@@ -163,12 +168,12 @@ function FileUploads({save, setStatus, id, sid}) {
       </div>
       
         
-      {data && (
+      {/* {data && (
         <div>
           <h2>Imported Data:</h2>
           <pre>{JSON.stringify(data, null, 2)}</pre>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

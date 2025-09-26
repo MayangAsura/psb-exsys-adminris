@@ -50,7 +50,7 @@ function Dashboard(){
                 .select('*')
                 // .gt('created_at', )
 
-                setStats((prev) => [...prev, {title : 'Ujian Aktif', value : exam_tests.length, icon : <BiTask className='w-8 h-8'/>, description: "", colorIndex: "green-600"}])
+                setStats((prev) => [...prev, {title : 'Ujian Aktif', value : exam_tests?.length, icon : <BiTask className='w-8 h-8'/>, description: "", colorIndex: "green-600"}])
                 // <UserGroupIcon className='w-8 h-8'/>
 
         // statsData.push({title : 'Ujian Aktif', value : exam_tests.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
@@ -58,21 +58,21 @@ function Dashboard(){
         let { data: exam_test_contents, error2 } = await supabase
                 .from('exam_test_contents')
                 .select('*')
-                setStats((prev) => [...prev, {title : 'Soal Aktif', value : exam_test_contents.length, icon : <MdOutlineAddTask className='w-8 h-8'/>, description: ""}])
+                setStats((prev) => [...prev, {title : 'Soal Aktif', value : exam_test_contents?.length, icon : <MdOutlineAddTask className='w-8 h-8'/>, description: ""}])
                 // <UserGroupIcon className='w-8 h-8'/>
         // statsData.push({title : 'Bank Soal', value : exam_test_contents.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
 
         let { data: exam_test_responses, error3 } = await supabase
                 .from('exam_test_responses')
                 .select('*')
-                setStats((prev) => [...prev, {title : 'Responden', value : exam_test_responses.length, icon : <RiUserFollowLine className='w-8 h-8'/>, description: ""}])
+                setStats((prev) => [...prev, {title : 'Responden', value : exam_test_responses?.length, icon : <RiUserFollowLine className='w-8 h-8'/>, description: ""}])
                 // <UserGroupIcon className='w-8 h-8'/>
         // statsData.push({title : 'Responden', value : exam_test_responses.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
 
         let { data: exam_profiles, error4 } = await supabase
                 .from('exam_profiles')
                 .select('*')
-                setStats((prev) => [...prev, {title : 'Pengguna Aktif', value : exam_profiles.length, icon : <UserGroupIcon className='w-8 h-8'/>, description: ""}])
+                setStats((prev) => [...prev, {title : 'Pengguna Aktif', value : exam_profiles?.length, icon : <UserGroupIcon className='w-8 h-8'/>, description: ""}])
         }
 
         else if(range){
@@ -84,7 +84,7 @@ function Dashboard(){
                 .gte('created_at', range.startDate.toISOString())
                 .lte('created_at', range.endDate.toISOString())
 
-                setStats((prev) => [...prev, {title : 'Ujian Aktif', value : exam_tests.length, icon : <BiTask className='w-8 h-8'/>, description: "", colorIndex: "green-600"}])
+                setStats((prev) => [...prev, {title : 'Ujian Aktif', value : exam_tests?.length, icon : <BiTask className='w-8 h-8'/>, description: "", colorIndex: "green-600"}])
                 // <UserGroupIcon className='w-8 h-8'/>
 
         // statsData.push({title : 'Ujian Aktif', value : exam_tests.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
@@ -94,7 +94,7 @@ function Dashboard(){
                 .select('*')
                 .gte('created_at', range.startDate.toISOString())
                 .lte('created_at', range.endDate.toISOString())
-                setStats((prev) => [...prev, {title : 'Soal Aktif', value : exam_test_contents.length, icon : <MdOutlineAddTask className='w-8 h-8'/>, description: ""}])
+                setStats((prev) => [...prev, {title : 'Soal Aktif', value : exam_test_contents?.length, icon : <MdOutlineAddTask className='w-8 h-8'/>, description: ""}])
                 // <UserGroupIcon className='w-8 h-8'/>
         // statsData.push({title : 'Bank Soal', value : exam_test_contents.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
 
@@ -103,7 +103,7 @@ function Dashboard(){
                 .select('*')
                 .gte('created_at', range.startDate.toISOString())
                 .lte('created_at', range.endDate.toISOString())
-                setStats((prev) => [...prev, {title : 'Responden', value : exam_test_responses.length, icon : <RiUserFollowLine className='w-8 h-8'/>, description: ""}])
+                setStats((prev) => [...prev, {title : 'Responden', value : exam_test_responses?.length, icon : <RiUserFollowLine className='w-8 h-8'/>, description: ""}])
                 // <UserGroupIcon className='w-8 h-8'/>
         // statsData.push({title : 'Responden', value : exam_test_responses.length(), icon : <UserGroupIcon className='w-8 h-8'/>})
 
@@ -112,7 +112,7 @@ function Dashboard(){
                 .select('*')
                 .gte('created_at', range.startDate.toISOString())
                 .lte('created_at', range.endDate.toISOString())
-                setStats((prev) => [...prev, {title : 'Pengguna Aktif', value : exam_profiles.length, icon : <UserGroupIcon className='w-8 h-8'/>, description: ""}])
+                setStats((prev) => [...prev, {title : 'Pengguna Aktif', value : exam_profiles?.length, icon : <UserGroupIcon className='w-8 h-8'/>, description: ""}])
         }
         
                 // <UserGroupIcon className='w-8 h-8'/>

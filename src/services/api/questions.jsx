@@ -95,12 +95,15 @@ export const addQuestion = async (props) => {
             // response.map(response => {...response, error: false, message: 'Berhasil menambahkan data Jadwal', data: exam_schedules}) 
         }else{
             console.log(exam_test_contents)
-            const options = {...props.options, exam_test_content_id : exam_test_contents[0].id}
+            // const options = {...props.options, exam_test_content_id : exam_test_contents[0].id}
+            const options_ = props.options.map((value) => ({...value, exam_test_content_id : exam_test_contents[0].id}))
+            const newOptions = props.options.map((value) => {return {option: value, exam_test_content_id : exam_test_contents[0].id, type: 'MC'}})
             // options.m
+            console.log('options',options_ , newOptions)
             const { data: exam_test_content_options, error } = await supabase
                             .from('exam_test_content_options')
                                 .insert([
-                                    options
+                                    newOptions[0]
                                 ])
                                 // .eq('id', props.id)
                                 .select()

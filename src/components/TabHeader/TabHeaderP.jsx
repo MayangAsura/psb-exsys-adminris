@@ -54,7 +54,7 @@ function TabHeaderP({styleClass, options, id, activeKey}) {
     if(key==2)
         navigate('/ad/exams/'+id+ '/participants')
     if(key==3)
-        navigate('/ad/exams/'+id+ '/response')
+        navigate('/ad/exams/'+id+ '/responses')
         // const option = optionValues.find(opt => opt.id === key);
         // if(option){
         //     option.

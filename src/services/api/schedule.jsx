@@ -9,7 +9,7 @@ export const addSchedule = async (props) => {
     const { data: schedule, error } = await supabase
                             .from('exam_schedules')
                                 .insert([
-                                    {...props.newSchedule, school_id: props.school_id}
+                                    {...props.newSchedule}
                                 ])
                                 .select()
     if(error) {
@@ -45,7 +45,7 @@ export const updateSchedule = async (props) => {
     const { data: exam, error } = await supabase
                             .from('exam_schedules')
                                 .update([
-                                    {...props.newSchedule, school_id: props.school_id}
+                                    {...props.newSchedule}
                                 ])
                                 .eq('id', props.id)
                                 .select()

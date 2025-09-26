@@ -64,11 +64,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
-          {/* <Route path="*" element={<Navigate to={token? "/ad/dashboard": "/ad/register" } replace />}/> */}
+          {/* <Route path="*" element={<Navigate to={token || user? "/ad/dashboard": "/ad/register" } replace />}/> */}
           {/* <Route path="*" element={<Navigate to={token_user? "/landing" : ()} replace />}/> */}
           {/* <Route path="*" element={<Navigate to={token? "/ad/welcome" : (token_user? "/landing": (!token_user? "/login": !token? "/ad/login": "")} replace />}/> */}
           {/* <Route path="/login" element={<LandingLogin />} /> */}
-          <Route path="/ad/login" element={user || token? <Navigate to="/ad/dashboard" replace/>: <Login />}  />
+          <Route path="/ad/login" element={user!==null || token!== undefined? <Navigate to="/ad/dashboard" replace/>: <Login />}  />
           <Route path="/ad/forgot-password" element={<ForgotPassword />} />
           <Route path="/ad/register" element={token? <Navigate to="/ad/dashboard" replace/>: <Register />}  />
           <Route path="/ad/documentation" element={<Documentation />} />

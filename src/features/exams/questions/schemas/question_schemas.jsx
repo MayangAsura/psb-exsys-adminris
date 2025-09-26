@@ -10,8 +10,9 @@ const answerSchema = z.object({
 
 export const questionSchema = z.object({
   questionType: z.string().min(1, "Tipe pertanyaan wajib diisi."),
-  questionText: z.string().min(1, "Question text is required"),
-  questionImage: z.string().optional(),
+  questionText: z.string().min(5, "Pertanyaan wajid diisi"),
+  // questionImage: z.string().optional(),
   answers: z.array(answerSchema).length(4, "Exactly 4 answers required"),
-  explanation: z.string().optional()
+  score: z.number.mint(1, "Skor tidak valid"),
+  // explanation: z.string().optional()
 });

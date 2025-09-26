@@ -5,7 +5,7 @@ export const addAdmissionAys = async (props) => {
     // name, description, started_at, ended_at, scheme, type, location, room, is_random_question, is_random_answer, max_participants 
     // name: "", description: "", started_at: "", ended_at: "", scheme: "", type: "", location: "", room: "", is_random_question: "", is_random_answer: "", max_participants: ""
     console.log(props)
-    const response = {error: true, message: 'Gagal menambahkan data Jadwal', data: null }
+    const response = {error: true, message: 'Gagal menambahkan data Tahun Ajaran', data: null }
     const { data: admissions, error } = await supabase
                             .from('admissions')
                                 .insert([
@@ -296,7 +296,7 @@ export const deleteAdmission = async (props) => {
     const newData = {id: props.id, deleted_at: new Date().toISOString()}
     const response = {error: true, message: 'Gagal menghapus data Seleksi', data: null }
     const { data: exam, error } = await supabase
-                            .from('admissions')
+                            .from('admissions_ays')
                                 .update([
                                     newData
                                 ])

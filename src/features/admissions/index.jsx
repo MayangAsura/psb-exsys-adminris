@@ -23,7 +23,12 @@ const TopSideButtons = () => {
     //     dispatch(showNotification({message : "Add New Member clicked", status : 1}))
     // }
     const addNewAdmission = () => {
-        navigate('/ad/admissions/create')
+        // navigate('/ad/admissions/create')
+        dispatch(openModal({title : "Tambah TA.", bodyType : MODAL_BODY_TYPES.ACADEMIC_YEAR_CREATE,
+            extraObject : {message : "", type: CONFIRMATION_MODAL_CLOSE_TYPES.ACADEMIC_YEAR_CREATE_SAVE}
+        },
+            
+        ))
         // dispatch(showNotification({message : "Add New Member clicked", status : 1}))
     }
 
@@ -123,7 +128,12 @@ function Admissions(){
     }
 
     const editCurrentAdmission = (index) => {
-        navigate(`/ad/academic-years/edit/${index}`)
+        // navigate(`/ad/academic-years/edit/${index}`)
+         dispatch(openModal({title : "Edit TA.", bodyType : MODAL_BODY_TYPES.ACADEMIC_YEAR_EDIT,
+            extraObject : {message : "", type: CONFIRMATION_MODAL_CLOSE_TYPES.ACADEMIC_YEAR_EDIT_SAVE, index: index}
+        },
+            
+        ))
         // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.SCHEDULE_EDIT}))
         // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
         // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))

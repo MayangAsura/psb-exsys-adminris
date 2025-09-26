@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { questionSchema } from './schemas/question_schemas';
 import TextEditor from './components/TextEditor';
-import { FaPlus, FaTrash, FaSave } from 'react-icons/fa';
-// import TextEditor from './components/TextEditor';
-
+import { FaPlus, FaTrash, FaSave, FaUpload, FaImage } from 'react-icons/fa';
 import supabase from '../../../services/database-server';
+import { addQuestion } from '../../../services/api/questions';
 
 function QuestionAdd() {
   const [uploading, setUploading] = useState(false);
+  const [uploadingIndex, setUploadingIndex] = useState(null);
   const [questionType, setQuestionType] = useState('');
   
   const {
@@ -22,17 +23,19 @@ function QuestionAdd() {
   } = useForm({
     resolver: zodResolver(questionSchema),
     defaultValues: {
-      questionType: '',
-      questionText: '',
+      question_type: '',
+      question: '',
       questionImage: '',
       answers: [
         {
-          text: '',
+          order: 1,
+          option: '',
           score: 0,
-          isCorrect: false,
-          image: ''
+          image: '',
+          isCorrect: true // First answer is correct by default
         }
       ],
+      correctAnswer: 0,
       explanation: ''
     }
   });
@@ -44,10 +47,11 @@ function QuestionAdd() {
 
   const addAnswerOption = () => {
     append({
-      text: '',
+      order: fields.length + 1,
+      option: '',
       score: 0,
-      isCorrect: false,
-      image: ''
+      image: '',
+      isCorrect: false
     });
   };
 
@@ -58,27 +62,38 @@ function QuestionAdd() {
   };
 
   const handleImageUpload = async (file, type, index = null) => {
-    if (!file) return;
+    if (!file) return null;
     
     setUploading(true);
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Math.random()}.${fileExt}`;
-    const filePath = `${fileName}`;
+    if (index !== null) setUploadingIndex(index);
 
     try {
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      if (!validTypes.includes(file.type)) {
+        throw new Error('Format file tidak didukung. Gunakan JPEG, PNG, GIF, atau WebP.');
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error('Ukuran file terlalu besar. Maksimal 5MB.');
+      }
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `questions/${fileName}`;
+
       const { error: uploadError } = await supabase.storage
-        .from('exams/uploads/questions')
+        .from('exams')
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage
-        .from('exams/uploads/questions')
+        .from('exams')
         .getPublicUrl(filePath);
 
       if (type === 'question') {
         setValue('questionImage', publicUrl);
-      } else {
+      } else if (index !== null) {
         setValue(`answers.${index}.image`, publicUrl);
       }
 
@@ -88,164 +103,266 @@ function QuestionAdd() {
       throw error;
     } finally {
       setUploading(false);
+      setUploadingIndex(null);
     }
   };
 
-  const onSubmit = (data) => {
-    console.log('Form data:', data);
-    // Submit to your API here
+  const handleQuestionImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      await handleImageUpload(file, 'question');
+    } catch (error) {
+      alert(`Gagal mengupload gambar: ${error.message}`);
+    }
   };
 
-  return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Buat Pertanyaan Baru</h1>
+  const handleAnswerImageUpload = async (event, index) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      await handleImageUpload(file, 'answer', index);
+    } catch (error) {
+      alert(`Gagal mengupload gambar: ${error.message}`);
+    }
+  };
+
+  const removeImage = (type, index = null) => {
+    if (type === 'question') {
+      setValue('questionImage', '');
+    } else if (index !== null) {
+      setValue(`answers.${index}.image`, '');
+    }
+  };
+
+  const { mutate: onSave, isPending } = useMutation({
+    mutationFn: async (formData) => {
+      const questionData = {
+        question: formData.question,
+        question_type: formData.question_type,
+        question_image: formData.questionImage || null,
+        answers: formData.answers.map((answer, index) => ({
+          order: answer.order,
+          option: answer.option,
+          score: answer.score,
+          image: answer.image || null,
+          isCorrect: index === formData.correctAnswer
+        })),
+        explanation: formData.explanation || null
+      };
       
+      return await addQuestion(questionData);
+    },
+    onSuccess: (data) => {
+      console.log('Question saved successfully:', data);
+      alert('Pertanyaan berhasil disimpan!');
+    },
+    onError: (error) => {
+      console.error('Error saving question:', error);
+      alert(`Gagal menyimpan pertanyaan: ${error.message}`);
+    },
+  });
+
+  const onSubmit = (data) => {
+    console.log('Form data:', data);
+    onSave(data);
+  };
+
+  const questionImage = watch('questionImage');
+  const answers = watch('answers');
+
+  return (
+    <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">Buat Pertanyaan Baru</h1>
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Question Type Selection */}
         <div>
           <label htmlFor="question_type" className="block text-sm font-medium text-gray-700 mb-2">
-            Tipe Pertanyaan *
+            Tipe Soal *
           </label>
           <select 
             id="question_type" 
+            {...register('question_type')}
             value={questionType} 
             onChange={(e) => setQuestionType(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           >
             <option value="">-Pilih Tipe-</option>
             <option value="text">Teks</option>
-            <option value="upload">Upload Gambar</option>
+            <option value="image">Gambar</option>
+            <option value="text_image">Teks dan Gambar</option>
             <option value="mc">Pilihan Ganda</option>
           </select>
+          {errors.question_type && (
+            <p className="mt-1 text-sm text-red-600">{errors.question_type.message}</p>
+          )}
         </div>
 
-        {/* Question Text/Content */}
-        {questionType && (
+        {/* Question Content */}
+        {(questionType === 'text' || questionType === 'text_image' || questionType === 'mc') && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Pertanyaan *
             </label>
             <TextEditor
-              value={watch('questionText') || ''}
-              onChange={(content) => setValue('questionText', content)}
-              placeholder="Tulis pertanyaan di sini..."
+              value={watch('question') || ''}
+              onChange={(content) => setValue('question', content)}
+              placeholder="Ketik pertanyaan di sini..."
               height={200}
             />
-            {errors.questionText && (
-              <p className="mt-1 text-sm text-red-600">{errors.questionText.message}</p>
+            {errors.question && (
+              <p className="mt-1 text-sm text-red-600">{errors.question.message}</p>
             )}
+          </div>
+        )}
+
+        {/* Question Image Upload */}
+        {(questionType === 'image' || questionType === 'text_image') && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Gambar Pertanyaan {questionType === 'image' ? '*' : '(Opsional)'}
+            </label>
+            <div className="space-y-4">
+              {questionImage ? (
+                <div className="relative inline-block">
+                  <img 
+                    src={questionImage} 
+                    alt="Question" 
+                    className="max-w-full h-64 object-contain border rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeImage('question')}
+                    className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                  >
+                    <FaTrash className="w-3 h-3" />
+                  </button>
+                </div>
+              ) : (
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                  <FaImage className="mx-auto text-gray-400 text-3xl mb-2" />
+                  <p className="text-gray-500 mb-3">Upload gambar pertanyaan</p>
+                  <label className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">
+                    <FaUpload className="inline mr-2" />
+                    Pilih Gambar
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleQuestionImageUpload}
+                      className="hidden"
+                      disabled={uploading}
+                    />
+                  </label>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
         {/* Multiple Choice Options */}
         {questionType === 'mc' && (
-          <div className="space-y-4">
+          <>
             <div className="flex justify-between items-center">
-              <h2 className="text-lg font-medium text-gray-800">Pilihan Jawaban</h2>
+              <h2 className="text-lg font-medium text-gray-800">Pilihan Jawaban *</h2>
               <button
                 type="button"
                 onClick={addAnswerOption}
-                className="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100 transition-colors duration-200"
+                className="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100"
               >
                 <FaPlus className="mr-2" /> Tambah Opsi
               </button>
             </div>
             
-            {fields.map((field, index) => (
-              <div key={field.id} className="p-4 border border-gray-200 rounded-lg relative bg-gray-50">
-                <button
-                  type="button"
-                  onClick={() => removeAnswerOption(index)}
-                  className="absolute top-3 right-3 text-red-500 hover:text-red-700 transition-colors duration-200"
-                  disabled={fields.length <= 1}
-                >
-                  <FaTrash />
-                </button>
+            <div className="space-y-4">
+              {fields.map((field, index) => (
+                <div key={field.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Teks Jawaban {index + 1} *
+                      </label>
+                      <input 
+                        {...register(`answers.${index}.option`)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder={`Masukkan jawaban ${index + 1}`}
+                      />
+                      {errors.answers?.[index]?.option && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {errors.answers[index].option.message}
+                        </p>
+                      )}
+                    </div>
 
-                <div className="flex items-center mb-4">
-                  <input
-                    type="radio"
-                    {...register(`answers.${index}.isCorrect`)}
-                    onChange={() => {
-                      fields.forEach((_, i) => {
-                        setValue(`answers.${i}.isCorrect`, i === index);
-                      });
-                    }}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                  />
-                  <label className="ml-2 block text-sm font-medium text-gray-700">
-                    Jawaban Benar
-                  </label>
-                </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Poin
+                      </label>
+                      <input
+                        type="number"
+                        {...register(`answers.${index}.score`, { valueAsNumber: true })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        min="0"
+                        step="0.5"
+                        placeholder="0"
+                      />
+                      {errors.answers?.[index]?.score && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {errors.answers[index].score.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
 
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Teks Jawaban *
-                  </label>
-                  <TextEditor
-                    value={watch(`answers.${index}.text`) || ''}
-                    onChange={(content) => setValue(`answers.${index}.text`, content)}
-                    placeholder="Tulis jawaban di sini..."
-                    compact={true}
-                    height={120}
-                    className="bg-white"
-                  />
-                  {errors.answers?.[index]?.text && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.answers[index].text.message}
-                    </p>
-                  )}
+                  {/* Remove Button */}
+                  <div className="flex justify-between items-center mt-3">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        {...register('correctAnswer')}
+                        value={index}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className="ml-2 text-sm font-medium text-gray-700">
+                        Jawaban Benar
+                      </span>
+                    </label>
+                    
+                    {fields.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeAnswerOption(index)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <FaTrash className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
-
-                <div className="mb-3">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Score *
-                  </label>
-                  <input
-                    type="number"
-                    {...register(`answers.${index}.score`, { valueAsNumber: true })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-                    min="0"
-                    step="0.5"
-                  />
-                  {errors.answers?.[index]?.score && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.answers[index].score.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
 
             {errors.answers && (
               <p className="mt-1 text-sm text-red-600">{errors.answers.message}</p>
             )}
-          </div>
+            {errors.correctAnswer && (
+              <p className="mt-1 text-sm text-red-600">{errors.correctAnswer.message}</p>
+            )}
+          </>
         )}
 
-        {/* Explanation */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Penjelasan (Opsional)
-          </label>
-          <TextEditor
-            value={watch('explanation') || ''}
-            onChange={(content) => setValue('explanation', content)}
-            placeholder="Tambahkan penjelasan jawaban di sini..."
-            height={150}
-          />
-        </div>
-
         {/* Submit Button */}
-        <div className="flex justify-end pt-4">
+        <div className="flex justify-end pt-4 border-t">
           <button
             type="submit"
-            disabled={uploading}
-            className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            disabled={uploading || isPending}
+            className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <FaSave className="mr-2" />
-            {uploading ? 'Menyimpan...' : 'Simpan Pertanyaan'}
+            {uploading || isPending ? 'Menyimpan...' : 'Simpan Pertanyaan'}
           </button>
         </div>
       </form>
@@ -254,6 +371,990 @@ function QuestionAdd() {
 }
 
 export default QuestionAdd;
+// import { useState } from 'react';
+// import { useForm, useFieldArray } from 'react-hook-form';
+// // import { useMutation } from '@tanstack/react-query'; // Added missing import
+// import { useMutation } from '@tanstack/react-query';
+// import { zodResolver } from '@hookform/resolvers/zod';
+// import { questionSchema } from './schemas/question_schemas';
+// import TextEditor from './components/TextEditor';
+// import { FaPlus, FaTrash, FaSave } from 'react-icons/fa';
+// import supabase from '../../../services/database-server';
+// import { addQuestion } from '../../../services/api/questions';
+
+// function QuestionAdd() {
+//   const [uploading, setUploading] = useState(false);
+//   const [questionType, setQuestionType] = useState('');
+  
+//   const {
+//     register,
+//     control,
+//     handleSubmit,
+//     setValue,
+//     watch,
+//     formState: { errors },
+//   } = useForm({
+//     resolver: zodResolver(questionSchema),
+//     defaultValues: {
+//       question_type: '',
+//       question: '',
+//       answers: [
+//         {
+//           order: '',
+//           option: '',
+//           point: 0,
+//         }
+//       ],
+//     }
+//   });
+
+//   const { fields, append, remove } = useFieldArray({
+//     control,
+//     name: "answers"
+//   });
+
+//   const addAnswerOption = () => {
+//     append({
+//       order: '',
+//       option: '',
+//       score: 0
+//     });
+//   };
+
+//   const removeAnswerOption = (index) => {
+//     if (fields.length > 1) {
+//       remove(index);
+//     }
+//   };
+
+//   const handleImageUpload = async (file, type, index = null) => {
+//     if (!file) return;
+    
+//     setUploading(true);
+//     const fileExt = file.name.split('.').pop();
+//     const fileName = `${Math.random()}.${fileExt}`;
+//     const filePath = `${fileName}`;
+
+//     try {
+//       const { error: uploadError } = await supabase.storage
+//         .from('exams/uploads/questions')
+//         .upload(filePath, file);
+
+//       if (uploadError) throw uploadError;
+
+//       const { data: { publicUrl } } = supabase.storage
+//         .from('exams/uploads/questions')
+//         .getPublicUrl(filePath);
+
+//       if (type === 'question') {
+//         setValue('questionImage', publicUrl);
+//       } else {
+//         setValue(`answers.${index}.image`, publicUrl);
+//       }
+
+//       return publicUrl;
+//     } catch (error) {
+//       console.error('Error uploading image:', error);
+//       throw error;
+//     } finally {
+//       setUploading(false);
+//     }
+//   };
+
+//   // Fixed mutation function
+//   const { mutate: onSave, isPending } = useMutation({
+//     mutationFn: async (data) => {
+//       // Transform the data to match your API expectations
+//       const questionData = {
+//         question: data.question,
+//         question_type: data.question_type,
+//         answers: data.answers.map((answer, index) => ({
+//           order: answer.order || index + 1,
+//           option: answer.option,
+//           score: answer.score || answer.point || 0,
+//           isCorrect: answer.isCorrect || false
+//         }))
+//       };
+      
+//       return await addQuestion(questionData);
+//     },
+//     onSuccess: (data) => {
+//       console.log('Question saved successfully:', data);
+//       // Add success notification or redirect here
+//     },
+//     onError: (error) => {
+//       console.error('Error saving question:', error);
+//       // Add error notification here
+//     },
+//   });
+
+//   const onSubmit = (data) => {
+//     onSave(data);
+//   };
+
+//   return (
+//     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+//       <h1 className="text-2xl font-bold text-gray-800 mb-6">Buat Pertanyaan Baru</h1>
+
+//       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+//         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+//           {/* Question Type Selection */}
+//           <div>
+//             <label htmlFor="question_type" className="block text-sm font-medium text-gray-700 mb-2">
+//               Tipe Soal
+//             </label>
+//             <select 
+//               id="question_type" 
+//               {...register('question_type')}
+//               value={questionType} 
+//               onChange={(e) => setQuestionType(e.target.value)}
+//               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+//               required
+//             >
+//               <option value="">-Pilih Tipe-</option>
+//               <option value="text">Teks</option>
+//               <option value="upload">Upload Gambar</option>
+//               <option value="mc">Pilihan Ganda</option>
+//             </select>
+//           </div>
+
+//           {/* Question Text/Content */}
+//           {questionType && (
+//             <div>
+//               <label className="block text-sm font-medium text-gray-700 mb-2">
+//                 Pertanyaan *
+//               </label>
+//               <TextEditor
+//                 value={watch('question') || ''}
+//                 onChange={(content) => setValue('question', content)}
+//                 placeholder=""
+//                 height={200}
+//               />
+//               {errors.question && (
+//                 <p className="mt-1 text-sm text-red-600">{errors.question.message}</p>
+//               )}
+//             </div>
+//           )}
+
+//           {/* Multiple Choice Options */}
+//           {questionType === 'mc' && (
+//             <>
+//               <div className="flex justify-between items-center">
+//                 <h2 className="text-lg font-medium text-gray-800">Pilihan Jawaban</h2>
+//                 <button
+//                   type="button"
+//                   onClick={addAnswerOption}
+//                   className="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100 transition-colors duration-200"
+//                 >
+//                   <FaPlus className="mr-2" /> Tambah Opsi
+//                 </button>
+//               </div>
+              
+//               <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+//                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+//                   <tr>
+//                     <th scope="col" className="px-6 py-3">No.</th>
+//                     <th scope="col" className="px-6 py-3">Pertanyaan</th>
+//                     <th scope="col" className="px-6 py-3">Pilihan</th>
+//                     <th scope="col" className="px-6 py-3">Poin</th>
+//                     <th scope="col" className="px-6 py-3">Aksi</th>
+//                   </tr>
+//                 </thead>
+//                 <tbody>
+//                   {fields.map((field, index) => (
+//                     <tr key={field.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+//                       <td className="px-6 py-4">
+//                         <input 
+//                           {...register(`answers.${index}.order`)}
+//                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                           type="text" 
+//                           placeholder="1"
+//                           required
+//                         />
+//                       </td>
+//                       <td className="px-6 py-4">
+//                         <TextEditor
+//                           value={watch(`answers.${index}.questionText`) || ''}
+//                           onChange={(content) => setValue(`answers.${index}.questionText`, content)}
+//                           placeholder=""
+//                           height={100}
+//                           compact={true}
+//                         />
+//                       </td>
+//                       <td className="px-6 py-4">
+//                         <div className="space-y-2">
+//                           <input 
+//                             {...register(`answers.${index}.option_order`)}
+//                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                             type="text" 
+//                             placeholder="A."
+//                             required
+//                           />
+//                           <input 
+//                             {...register(`answers.${index}.option`)}
+//                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                             type="text" 
+//                             placeholder="Teks jawaban"
+//                             required
+//                           />
+//                         </div>
+//                       </td>
+//                       <td className="px-6 py-4">
+//                         <input
+//                           type="number"
+//                           {...register(`answers.${index}.score`, { valueAsNumber: true })}
+//                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+//                           min="0"
+//                           step="0.5"
+//                         />
+//                         {errors.answers?.[index]?.score && (
+//                           <p className="mt-1 text-sm text-red-600">
+//                             {errors.answers[index].score.message}
+//                           </p>
+//                         )}
+//                       </td>
+//                       <td className="px-6 py-4">
+//                         <button
+//                           type="button"
+//                           onClick={() => removeAnswerOption(index)}
+//                           className="text-red-500 hover:text-red-700 transition-colors duration-200"
+//                           disabled={fields.length <= 1}
+//                         >
+//                           <FaTrash />
+//                         </button>
+//                       </td>
+//                     </tr>
+//                   ))}
+//                 </tbody>
+//               </table>
+
+//               {/* Correct Answer Selection */}
+//               <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+//                 <label className="block text-sm font-medium text-gray-700 mb-2">
+//                   Pilih Jawaban yang Benar:
+//                 </label>
+//                 <div className="flex flex-wrap gap-4">
+//                   {fields.map((field, index) => (
+//                     <div key={field.id} className="flex items-center">
+//                       <input
+//                         type="radio"
+//                         {...register('correctAnswer')}
+//                         value={index}
+//                         className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+//                       />
+//                       <label className="ml-2 block text-sm font-medium text-gray-700">
+//                         Jawaban {index + 1}
+//                       </label>
+//                     </div>
+//                   ))}
+//                 </div>
+//               </div>
+//             </>
+//           )}
+
+//           {/* Explanation */}
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700 mb-2">
+//               Penjelasan (Opsional)
+//             </label>
+//             <TextEditor
+//               value={watch('explanation') || ''}
+//               onChange={(content) => setValue('explanation', content)}
+//               placeholder="Tambahkan penjelasan jawaban di sini..."
+//               height={150}
+//             />
+//           </div>
+
+//           {/* Submit Button */}
+//           <div className="flex justify-end pt-4">
+//             <button
+//               type="submit"
+//               disabled={uploading || isPending}
+//               className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+//             >
+//               <FaSave className="mr-2" />
+//               {uploading || isPending ? 'Menyimpan...' : 'Simpan Pertanyaan'}
+//             </button>
+//           </div>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default QuestionAdd;
+// import { useState } from 'react';
+// import { useForm, useFieldArray } from 'react-hook-form';
+// import { zodResolver } from '@hookform/resolvers/zod';
+// import { questionSchema } from './schemas/question_schemas';
+// import TextEditor from './components/TextEditor';
+// import { FaPlus, FaTrash, FaSave } from 'react-icons/fa';
+// // import TextEditor from './components/TextEditor';
+
+// import supabase from '../../../services/database-server';
+// import { addQuestion } from '@/services/api/questions';
+
+// function QuestionAdd() {
+//   const [uploading, setUploading] = useState(false);
+//   const [questionType, setQuestionType] = useState('');
+  
+//   const {
+//     register,
+//     control,
+//     handleSubmit,
+//     setValue,
+//     watch,
+//     formState: { errors },
+//   } = useForm({
+//     resolver: zodResolver(questionSchema),
+//     defaultValues: {
+//       question_type: '',
+//       question: '',
+//       // questionImage: '',
+//       answers: [
+//         {
+//           order: '',
+//           option: '',
+//           point: 0,
+//           // isCorrect: false,
+//           // image: ''
+//         }
+//       ],
+//       // explanation: ''
+//     }
+//   });
+
+//   const { fields, append, remove } = useFieldArray({
+//     control,
+//     name: "answers"
+//   });
+
+//   const addAnswerOption = () => {
+//     append({
+//       order: '',
+//       option: '',
+//       score: 0
+//       // // isCorrect: false,
+//       // image: ''
+//     });
+//   };
+
+//   const removeAnswerOption = (index) => {
+//     if (fields.length > 1) {
+//       remove(index);
+//     }
+//   };
+
+//   const handleImageUpload = async (file, type, index = null) => {
+//     if (!file) return;
+    
+//     setUploading(true);
+//     const fileExt = file.name.split('.').pop();
+//     const fileName = `${Math.random()}.${fileExt}`;
+//     const filePath = `${fileName}`;
+
+//     try {
+//       const { error: uploadError } = await supabase.storage
+//         .from('exams/uploads/questions')
+//         .upload(filePath, file);
+
+//       if (uploadError) throw uploadError;
+
+//       const { data: { publicUrl } } = supabase.storage
+//         .from('exams/uploads/questions')
+//         .getPublicUrl(filePath);
+
+//       if (type === 'question') {
+//         setValue('questionImage', publicUrl);
+//       } else {
+//         setValue(`answers.${index}.image`, publicUrl);
+//       }
+
+//       return publicUrl;
+//     } catch (error) {
+//       console.error('Error uploading image:', error);
+//       throw error;
+//     } finally {
+//       setUploading(false);
+//     }
+//   };
+
+//   const { mutate: onSave, isPending } = useMutation({
+//       mutationFn: async (data) => {
+//         // questions.forEach(key in question){
+
+//         // }
+//         for (let index = 0; index < questions.length; index++) {
+//           const question = questions[index].question;
+//           const options = 
+          
+//           const response = await addQuestion({question, options})
+//         }
+//         // setRequestData(prev => ({...prev, phone_number: data.phone_number, full_name: data.full_name}))
+//         // console.log('data>', data, requestData.phone_number, requestData)
+
+//         // const { data: data_appl, error } = await supabase.rpc("edit_applicant", {
+//         //       _full_name : data.full_name,
+//         //       _gender : data.gender,
+//         //       _phone_number : data.phone_number,
+//         //       _email : data.email,
+//         //       _password : data.password,
+//         //       _media : data.media,
+//         //       _school_id : parseInt(data.school_id),
+//         //       _subschool : data.subschool,
+//         //       _dob : data.dob
+//         //     });
+//         //   return data_appl
+//         // return register(
+//         //       data.email,
+//         //       data.full_name,
+//         //       data.gender,
+//         //       data.media,
+//         //       data.password,
+//         //       data.phone_number,
+//         //       data.school_id,
+//         //       data.subschool
+//         //     );
+//       },
+//       onSuccess: (data) => {
+//         if(data){
+//           setResults(data)
+
+//           if(data.f1 !== '01'){
+//             sendNotif(data)
+//           }
+//         }
+//         // sonner.success("Register berhasil!");
+
+//         // Redirect to dashboard
+//         // if()
+//         // navigate("/login");
+//       },
+//       onError: (error) => {
+//         setError(error)
+//         console.log('pendaftaran error ', error)
+//         // sonner.error((error).message || "Register gagal. Silakan coba lagi.");
+//       },
+//     });
+
+//   const onSubmit = (data) => {
+//     // console.log('Form data:', data);
+//     // Submit to your API here
+//     onSave(data)
+
+    
+//   };
+
+
+
+//   return (
+//     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+//       <h1 className="text-2xl font-bold text-gray-800 mb-6">Buat Pertanyaan Baru</h1>
+
+
+//         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+//           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+//             <div>
+//           <label htmlFor="question_type" className="block text-sm font-medium text-gray-700 mb-2">
+//             Tipe Soal
+//           </label>
+//             <select 
+//               id="question_type" 
+//               value={questionType} 
+//               onChange={(e) => setQuestionType(e.target.value)}
+//               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+//               required
+//             >
+//               <option value="">-Pilih Tipe-</option>
+//               <option value="text">Teks</option>
+//               <option value="upload">Upload Gambar</option>
+//               <option value="mc">Pilihan Ganda</option>
+//             </select>
+//           </div>
+
+//           {questionType && (
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700 mb-2">
+//               Pertanyaan *
+//             </label>
+//             <TextEditor
+//               value={watch('questionText') || ''}
+//               onChange={(content) => setValue('questionText', content)}
+//               placeholder=""
+//               height={200}
+//             />
+//             {errors.questionText && (
+//               <p className="mt-1 text-sm text-red-600">{errors.questionText.message}</p>
+//             )}
+//           </div>
+//         )}
+
+//           {questionType === 'mc' && (
+//             <>
+//               <div className="flex justify-between items-center">
+//                   <h2 className="text-lg font-medium text-gray-800">Pilihan Jawaban</h2>
+//                   <button
+//                     type="button"
+//                     onClick={addAnswerOption}
+//                     className="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100 transition-colors duration-200"
+//                   >
+//                     <FaPlus className="mr-2" /> Tambah Opsi
+//                   </button>
+//                 </div>
+//                 <table class="w-full text-sm text-left md:grid-cols-2 sm:grid-cols-1 rtl:text-right text-gray-500 dark:text-gray-400">
+//                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+//                     <tr>
+//                         <th scope="col" class="px-6 py-3">
+//                             No.
+//                         </th>
+//                         <th scope="col" class="px-6 py-3">
+//                             <div class="flex items-center">
+//                                 Pertanyaan
+//                                 <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+//             <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>
+//           </svg></a>
+//                             </div>
+//                         </th>
+//                         <th scope="col" class="px-6 py-3">
+//                             <div class="flex items-center">
+//                                 Pilihan
+//                                 <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+//             <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>
+//           </svg></a>
+//                             </div>
+//                         </th>
+//                         <th scope="col" class="px-6 py-3">
+//                             <div class="flex items-center">
+//                                 Poin
+//                                 <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+//             <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>
+//           </svg></a>
+//                             </div>
+//                         </th>
+//                         {/* <th scope="col" class="px-6 py-3">
+//                             <span class="sr-only">Edit</span>
+//                         </th> */}
+//                     </tr>
+//                 </thead>
+//                 <tbody>
+//                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+//                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions[0].order}
+//                               onChange={(e) => handleInputChange('order[0]', e.target.value)}
+//                               required
+//                             />
+//                         </th>
+//                         <td class="px-6 py-4">
+//                             <TextEditor
+//                               value={watch('question') || ''}
+//                               onChange={(content) => setValue('question[0]', content[0])}
+//                               placeholder=""
+//                               height={200}
+//                             />
+//                             {errors.question && (
+//                               <p className="mt-1 text-sm text-red-600">{errors.question.message}</p>
+//                             )}
+//                         </td>
+//                         <td class="px-6 py-4">
+//                           <div className="grid-col-2">
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions[0].option_order}
+//                               placeholder='A.'
+//                               onChange={(e) => handleInputChange('option_order[0]', e.target.value)}
+//                               required
+//                             />
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions[0].option}
+//                               placeholder=''
+//                               onChange={(e) => handleInputChange('option[0]', e.target.value)}
+//                               required
+//                             />
+
+//                           </div>
+//                         </td>
+//                         <td class="px-6 py-4">
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions[0].poin}
+//                               placeholder='A.'
+//                               onChange={(e) => handleInputChange('poin[0]', e.target.value)}
+//                               required
+//                             />
+                            
+//                         </td>
+//                         {/* <td class="px-6 py-4 text-right">
+//                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+//                         </td> */}
+//                     </tr>
+//                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+//                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions[1].order}
+//                               onChange={(e) => handleInputChange('order[1]', e.target.value)}
+//                               required
+//                             />
+
+//                         </th>
+//                         <td class="px-6 py-4">
+//                             <TextEditor
+//                               value={watch('question') || ''}
+//                               onChange={(content) => setValue('question[1]', content[1])}
+//                               placeholder=""
+//                               height={200}
+//                             />
+//                             {errors.question && (
+//                               <p className="mt-1 text-sm text-red-600">{errors.question.message}</p>
+//                             )}
+//                         </td>
+//                         <td class="px-6 py-4">
+//                           <div className="grid-col-2">
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions[1].option_order}
+//                               placeholder='A.'
+//                               onChange={(e) => handleInputChange('option_order[1]', e.target.value)}
+//                               required
+//                             />
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions[1].option}
+//                               placeholder=''
+//                               onChange={(e) => handleInputChange('option[1]', e.target.value)}
+//                               required
+//                             />
+
+//                           </div>
+//                         </td>
+//                         <td class="px-6 py-4">
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions[1].poin}
+//                               placeholder='A.'
+//                               onChange={(e) => handleInputChange('poin[1]', e.target.value)}
+//                               required
+//                             />
+                            
+//                         </td>
+//                         {/* <td class="px-6 py-4 text-right">
+//                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+//                         </td> */}
+//                     </tr>
+//                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+//                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions[2].order}
+//                               onChange={(e) => handleInputChange('order[2]', e.target.value)}
+//                               required
+//                             />
+//                         </th>
+//                         <td class="px-6 py-4">
+//                             <TextEditor
+//                               value={watch('question') || ''}
+//                               onChange={(content) => setValue('question[2]', content[2])}
+//                               placeholder=""
+//                               height={200}
+//                             />
+//                             {errors.question && (
+//                               <p className="mt-1 text-sm text-red-600">{errors.question.message}</p>
+//                             )}
+//                         </td>
+//                         <td class="px-6 py-4">
+//                           <div className="grid-col-2">
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions[2].option_order}
+//                               placeholder='A.'
+//                               onChange={(e) => handleInputChange('option_order[2]', e.target.value)}
+//                               required
+//                             />
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions[2].option}
+//                               placeholder=''
+//                               onChange={(e) => handleInputChange('option[2]', e.target.value)}
+//                               required
+//                             />
+
+//                           </div>
+//                         </td>
+//                         <td class="px-6 py-4">
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions[2].poin}
+//                               placeholder='A.'
+//                               onChange={(e) => handleInputChange('poin[2] ', e.target.value)}
+//                               required
+//                             />
+                            
+//                         </td>
+//                         {/* <td class="px-6 py-4 text-right">
+//                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+//                         </td> */}
+//                     </tr>
+//                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+//                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions.order}
+//                               onChange={(e) => handleInputChange('order', e.target.value)}
+//                               required
+//                             />
+//                         </th>
+//                         <td class="px-6 py-4">
+//                             <TextEditor
+//                               value={watch('question') || ''}
+//                               onChange={(content) => setValue('question', content)}
+//                               placeholder=""
+//                               height={200}
+//                             />
+//                             {errors.question && (
+//                               <p className="mt-1 text-sm text-red-600">{errors.question.message}</p>
+//                             )}
+//                         </td>
+//                         <td class="px-6 py-4">
+//                           <div className="grid-col-2">
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               // value={questions.option_order}
+//                               {...register(`answers.2.isCorrect`)}
+//                                 onChange={() => {
+//                                   // fields.forEach((_, i) => {
+//                                     setValue(`answers.2.isCorrect`, i === index);
+//                                   // });
+//                                 }}
+//                               placeholder='A.'
+                              
+//                               // onChange={(e) => handleInputChange('option_order', e.target.value)}
+//                               required
+//                             />
+//                             <input 
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                               type="text" 
+//                               value={questions.option}
+//                               placeholder=''
+//                               onChange={(e) => handleInputChange('option', e.target.value)}
+//                               required
+//                             />
+
+//                           </div>
+//                         </td>
+//                         <td class="px-6 py-4">
+//                             <input
+//                               type="number"
+//                               {...register(`answers.1.score`, { valueAsNumber: true })}
+//                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+//                               min="0"
+//                               step="0.5"
+//                             />
+//                             {errors.answers?.[2]?.score && (
+//                               <p className="mt-1 text-sm text-red-600">
+//                                 {errors.answers[2].score.message}
+//                               </p>
+//                             )}
+                            
+//                         </td>
+//                         {/* <td class="px-6 py-4 text-right">
+//                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+//                         </td> */}
+//                     </tr>
+                    
+                    
+//                     {/* <tr class="bg-white dark:bg-gray-800">
+//                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+//                             Magic Mouse 2
+//                         </th>
+//                         <td class="px-6 py-4">
+//                             Black
+//                         </td>
+//                         <td class="px-6 py-4">
+//                             Accessories
+//                         </td>
+//                         <td class="px-6 py-4">
+//                             $99
+//                         </td>
+//                         <td class="px-6 py-4 text-right">
+//                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+//                         </td>
+//                     </tr> */}
+//                 </tbody>
+//             </table>
+
+
+//             </>
+//           )}
+//           <div className="flex justify-end pt-4">
+//             <button
+//               type="submit"
+//               disabled={uploading}
+//               className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+//             >
+//               <FaSave className="mr-2" />
+//               {uploading ? 'Menyimpan...' : 'Simpan Pertanyaan'}
+//             </button>
+//           </div>
+//             </form>
+//         </div>
+
+      
+//       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+//         {/* Question Type Selection */}
+//         <div>
+//           <label htmlFor="question_type" className="block text-sm font-medium text-gray-700 mb-2">
+//             Tipe Pertanyaan *
+//           </label>
+//           <select 
+//             id="question_type" 
+//             value={questionType} 
+//             onChange={(e) => setQuestionType(e.target.value)}
+//             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+//             required
+//           >
+//             <option value="">-Pilih Tipe-</option>
+//             <option value="text">Teks</option>
+//             <option value="upload">Upload Gambar</option>
+//             <option value="mc">Pilihan Ganda</option>
+//           </select>
+//         </div>
+
+//         {/* Question Text/Content */}
+        
+
+//         {/* Multiple Choice Options */}
+//         {questionType === 'mc' && (
+//           <div className="space-y-4">
+//             <div className="flex justify-between items-center">
+//               <h2 className="text-lg font-medium text-gray-800">Pilihan Jawaban</h2>
+//               <button
+//                 type="button"
+//                 onClick={addAnswerOption}
+//                 className="flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100 transition-colors duration-200"
+//               >
+//                 <FaPlus className="mr-2" /> Tambah Opsi
+//               </button>
+//             </div>
+            
+//             {fields.map((field, index) => (
+//               <div key={field.id} className="p-4 border border-gray-200 rounded-lg relative bg-gray-50">
+//                 <button
+//                   type="button"
+//                   onClick={() => removeAnswerOption(index)}
+//                   className="absolute top-3 right-3 text-red-500 hover:text-red-700 transition-colors duration-200"
+//                   disabled={fields.length <= 1}
+//                 >
+//                   <FaTrash />
+//                 </button>
+
+//                 <div className="flex items-center mb-4">
+//                   <input
+//                     type="radio"
+//                     {...register(`answers.${index}.isCorrect`)}
+//                     onChange={() => {
+//                       fields.forEach((_, i) => {
+//                         setValue(`answers.${i}.isCorrect`, i === index);
+//                       });
+//                     }}
+//                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+//                   />
+//                   <label className="ml-2 block text-sm font-medium text-gray-700">
+//                     Jawaban Benar
+//                   </label>
+//                 </div>
+
+//                 <div className="mb-4">
+//                   <label className="block text-sm font-medium text-gray-700 mb-2">
+//                     Teks Jawaban *
+//                   </label>
+//                   <TextEditor
+//                     value={watch(`answers.${index}.text`) || ''}
+//                     onChange={(content) => setValue(`answers.${index}.text`, content)}
+//                     placeholder="Tulis jawaban di sini..."
+//                     compact={true}
+//                     height={120}
+//                     className="bg-white"
+//                   />
+//                   {errors.answers?.[index]?.text && (
+//                     <p className="mt-1 text-sm text-red-600">
+//                       {errors.answers[index].text.message}
+//                     </p>
+//                   )}
+//                 </div>
+
+//                 <div className="mb-3">
+//                   <label className="block text-sm font-medium text-gray-700 mb-2">
+//                     Score *
+//                   </label>
+//                   <input
+//                     type="number"
+//                     {...register(`answers.${index}.score`, { valueAsNumber: true })}
+//                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+//                     min="0"
+//                     step="0.5"
+//                   />
+//                   {errors.answers?.[index]?.score && (
+//                     <p className="mt-1 text-sm text-red-600">
+//                       {errors.answers[index].score.message}
+//                     </p>
+//                   )}
+//                 </div>
+//               </div>
+//             ))}
+
+//             {errors.answers && (
+//               <p className="mt-1 text-sm text-red-600">{errors.answers.message}</p>
+//             )}
+//           </div>
+//         )}
+
+//         {/* Explanation */}
+//         {/* <div>
+//           <label className="block text-sm font-medium text-gray-700 mb-2">
+//             Penjelasan (Opsional)
+//           </label>
+//           <TextEditor
+//             value={watch('explanation') || ''}
+//             onChange={(content) => setValue('explanation', content)}
+//             placeholder="Tambahkan penjelasan jawaban di sini..."
+//             height={150}
+//           />
+//         </div> */}
+
+//         {/* Submit Button */}
+//         <div className="flex justify-end pt-4">
+//           <button
+//             type="submit"
+//             disabled={uploading}
+//             className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+//           >
+//             <FaSave className="mr-2" />
+//             {uploading ? 'Menyimpan...' : 'Simpan Pertanyaan'}
+//           </button>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// }
+
+// export default QuestionAdd;
 
 // import { useState } from 'react';
 // import { useForm, useFieldArray } from 'react-hook-form';

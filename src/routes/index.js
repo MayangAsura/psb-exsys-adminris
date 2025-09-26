@@ -16,6 +16,7 @@ const ExamCreate = lazy(() => import('../pages/protected/ExamCreate'))
 const ExamEdit = lazy(() => import('../pages/protected/ExamEdit'))
 const ExamParticipant = lazy(() => import('../pages/protected/ExamParticipant'))
 const ExamResponses = lazy(() => import('../pages/protected/ExamResponses'))
+// const ExamResponseDetail = lazy(() => import('../pages/protected/ExamResponseDetail.jsx'))
 const ExamQuestions = lazy(() => import('../pages/protected/ExamQuestions'))
 const ExamQuestionsAdd = lazy(() => import('../pages/protected/ExamQuestionsAdd'))
 const Schedule = lazy(() => import('../pages/protected/Schedules'))
@@ -187,7 +188,7 @@ const routes = [
   },
   {
     path: '/admissions', // the url
-    component: Admissions, // view rendered
+    component: GenAdmissions, // view rendered
   },
   {
     path: '/academic-years', // the url

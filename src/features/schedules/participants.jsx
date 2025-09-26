@@ -31,7 +31,7 @@ function ScheduleParticipants(){
     
         let { data: exam_responses, error } = await supabase
             .from('exam_test_participants')
-            .select('*, exam_tests(name, exam_schedule_tests(exam_schedule_id)), exam_profiles(full_name, father_name, mother_name, last_login, regist_number, phone_number, created_at, completion_status))')
+            .select('*, exam_tests!inner(name, exam_schedule_tests!inner(exam_schedule_id)), exam_profiles!inner(full_name, father_name, mother_name, last_login, regist_number, phone_number, created_at, completion_status))')
             .eq('exam_tests.exam_schedule_tests.exam_schedule_id', id)
             .is('deleted_at', null)
 

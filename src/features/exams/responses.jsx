@@ -3,10 +3,17 @@ import { useDispatch } from 'react-redux'
 import { setPageTitle } from '../common/headerSlice'
 import TitleCard from '../../components/Cards/TitleCard'
 import supabase from "../../services/database-server"
+import { openModal } from "../common/modalSlice"
+import TrashIcon from '@heroicons/react/24/outline/TrashIcon'
+import PencilIcon from '@heroicons/react/24/outline/PencilIcon'
+import EyeIcon from "@heroicons/react/24/outline/EyeIcon"
+import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../utils/globalConstantUtil'
+// import { useNavigate } from "react-router-dom"
+import { useSelector } from 'react-redux'
 
 import DocumentIcon  from '@heroicons/react/24/solid/DocumentIcon'
 
-import TabHeaderSR from '../../components/TabHeader/TabHeaderSR'
+import TabHeaderP from '../../components/TabHeader/TabHeaderP'
 import { useParams } from 'react-router-dom'
 
 function ExamResponses(){
@@ -14,6 +21,14 @@ function ExamResponses(){
 
     const [trans, setTrans] = useState("")
     const [ExamParticipants, setExamParticipants] = useState([])
+    const { newNotificationStatus } = useSelector((state) => state.modal)
+    const dispatch = useDispatch()
+    const options = [
+        {tab: 'Detail', selected: false },
+        {tab: 'Pertanyaan', selected: false },
+        {tab: 'Peserta', selected: false },
+        {tab: 'Jawaban Peserta', selected: true }
+    ]
 
     const id = useParams().exam_id
     useEffect(() => {
@@ -25,8 +40,8 @@ function ExamResponses(){
     
         let { data: exam_responses, error } = await supabase
             .from('exam_test_responses')
-            .select('*, exam_tests(name), exam_profiles(full_name, regist_number), exam_schedule_tests(exam_schedule_schools(schools(school_name)))')
-            .eq('id', id)
+            .select('*, exam_tests(name), exam_profiles(full_name, regist_number)')
+            .eq('exam_test_id', id)
 
         if(!error){
         setExamParticipants(exam_responses)
@@ -46,6 +61,35 @@ function ExamResponses(){
     const applySearch = (value) => {
         let filteredTransactions = "".filter((t) => {return t.email.toLowerCase().includes(value.toLowerCase()) ||  t.email.toLowerCase().includes(value.toLowerCase())})
         setTrans(filteredTransactions)
+    }
+
+    const deleteCurrentResponse = async (index) => {
+            console.log(index)
+            dispatch(openModal({title : "Konfirmasi", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+            extraObject : { message : `Apakah Anda yakin menghapus response ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.RESPONSE_DELETE, index}}))
+
+            if(newNotificationStatus==1){
+                getExamParticipants(index)
+            }
+            // const {schedule_id, ...newExam} = exam
+    }
+    
+    // const editCurrentResponse = (index) => {
+    //     navigate(`/ad/exams/edit/${index}`)
+    //     // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_EDIT}))
+    //     // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+    //     // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
+
+    // }
+    const detailCurrentResponse = (index) => {
+        console.log(index)
+            dispatch(openModal({title : "Detail Jawaban", bodyType : MODAL_BODY_TYPES.EXAM_RESPONSE_DETAIL, 
+            extraObject : { message : ``, type : CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_RESPONSE_DETAIL, id, index}}))
+        // navigate(`/ad/exams/${id}/responses/detail${index}`)
+        // dispatch(openModal({title : "Pertanyaan", bodyType : MODAL_BODY_TYPES.EXAM_DETAIL}))
+        // dispatch(openModal({title : "Confirmation", bodyType : MODAL_BODY_TYPES.CONFIRMATION, 
+        // extraObject : { message : `Apakah Anda yakin menghapus pertanyaan ini?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.QUESTION_DELETE, index}}))
+
     }
 
     const formatDateNew = (date) => {
@@ -70,10 +114,10 @@ function ExamResponses(){
     return(
         <>
             
-            <TitleCard title="Peserta" topMargin="mt-2" >
+                <TabHeaderP id={id}  options={options} activeKey='Jawaban Peserta'  />
+            <TitleCard title="Jawaban Peserta" topMargin="mt-2" >
             {/* UJIAN */}
                 {/* Team Member list in table format loaded constant */}
-                <TabHeaderSR></TabHeaderSR>
             <div className="overflow-x-auto w-full">
                 <table className="table w-full">
                     <thead>
@@ -84,6 +128,7 @@ function ExamResponses(){
                         <th>Jenjang</th>
                         <th>Skor</th>
                         <th>Tanggal Submit</th>
+                        <th></th>
                         {/* <th>Lokasi</th>
                         <th>Update Terakhir</th> */}
                     </tr>
@@ -93,7 +138,7 @@ function ExamResponses(){
                             ExamParticipants.map((l, k) => {
                                 return(
                                     <tr key={k}>
-                                    <td><div className="font-bold">{l.exam_profiles.regist_number }</div></td>
+                                    <td><div className="font-bold">{l.exam_profiles?.regist_number??"-" }</div></td>
                                     <td>
                                         <div className="flex items-center space-x-3">
                                             <div className="avatar">
@@ -102,13 +147,13 @@ function ExamResponses(){
                                                 </div>
                                             </div>
                                             <div>
-                                                <div className="font-bold">{l.exam_profiles.full_name}</div>
+                                                <div className="font-bold">{l.exam_profiles?.full_name??"-"}</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td><div className="font-bold">{l.exam_schedule_tests[0].exam_schedule_schools[0].schools.school_name}</div></td>
-                                    <td><div className="font-bold">{l.score}</div></td>
-                                    <td><div className="font-bold">{formatDateNew(l.submit_at) }</div></td>
+                                    <td><div className="font-bold">{l.exam_schedule_tests[0].exam_schedule_schools[0].schools.school_name??"-"}</div></td>
+                                    <td><div className="font-bold">{l.score??"0"}</div></td>
+                                    <td><div className="font-bold">{l.submit_at?formatDateNew(l.submit_at):"-" }</div></td>
                                     {/* <td><div className="badge-primary font-semibold rounded-2xl w-16 py-1 px-2">{l.test_scheme}</div> </td> */}
                                     {/* <td>{l.test_schedule}</td> */}
                                     {/* <td>Ujian Seleksi Jenjang SDIT</td> */}
@@ -116,6 +161,11 @@ function ExamResponses(){
                                     <td>{l.score}</td>
                                     {/* <td>{l.updated_at}</td> */}
                                     {/* <td>{moment(l.date).format("D MMM")}</td> */}
+                                    <td>
+                                        <button className="btn btn-square btn-ghost" onClick={() => detailCurrentResponse(l.id)}><EyeIcon className="w-5"/></button>
+                                        {/* <button className="btn btn-square btn-ghost" onClick={() => editCurrentResponse(l.id)}><PencilIcon className="w-5"/></button> */}
+                                        <button className="btn btn-square btn-ghost" onClick={() => deleteCurrentResponse(l.id)}><TrashIcon className="w-5"/></button>
+                                    </td>
                                     </tr>
                                 )
                             })

@@ -357,10 +357,10 @@ function AdmissionParticipants(){
             phone_number: item?.applicants.phone_number,
             regist_number: item?.applicants.regist_number,
             created_at: formatDateNew(item?.created_at),
-            status: <div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${item.submission_status==true? 'bg-green-400': 'bg-red-400'}`}>{item.submission_status==='accepted'?'Lulus':item.submission_status==='initial_submission'?'Pendaftaran/Pemberkasan':'Tidak Lulus'}</div>,
-            is_settlement: <div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${item.is_settlement==true? 'bg-green-400': 'bg-red-400'}`}>{item.is_settlement==='true'?'Sudah Bayar':'Belum Bayar'}</div>,
-            is_draft: <div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${item.is_draft==true? 'bg-green-400': 'bg-red-400'}`}>{item.is_draft==='true'?'Lengkap':'Belum Lengkap'}</div>,
-            is_uniform_sizing: <div className={`rounded-2xl w-32 py-2 px-2 text-gray-100 badge ${item.is_uniform_sizing==true? 'bg-green-400': 'bg-red-400'}`}>{item.is_uniform_sizing==='true'?'Selesai':'Belum Lengkap'}</div>,
+            status: <div className={`rounded-2xl w-32 py-5 px-12 text-gray-100 badge ${item.submission_status=='accepted'? 'bg-green-400': (item.submission_status=='initial_submission'? 'bg-orange-400':'bg-red-400')}`}>{item.submission_status==='accepted'?'Lulus':item.submission_status==='initial_submission'?'Pengisian Formulir':'Tidak Lulus'}</div>,
+            is_settlement: <div className={`rounded-2xl w-32 py-5 px-12 text-gray-100 badge ${item.is_settlement==true? 'bg-green-400': 'bg-red-400'}`}>{item.is_settlement===true?'Sudah Bayar':'Belum Bayar'}</div>,
+            is_draft: <div className={`rounded-2xl w-32 py-5 px-12 text-gray-100 badge ${item.is_draft==true? 'bg-green-400': 'bg-red-400'}`}>{item.is_draft===true?'Lengkap':'Belum Lengkap'}</div>,
+            is_uniform_sizing: <div className={`rounded-2xl w-32 py-5 px-12 text-gray-100 badge ${item.is_uniform_sizing==true? 'bg-green-400': 'bg-red-400'}`}>{item.is_uniform_sizing==='true'?'Selesai':'Belum Lengkap'}</div>,
             action: [
                 {
                 label: "Detail",

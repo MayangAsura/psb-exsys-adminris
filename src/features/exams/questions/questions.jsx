@@ -25,6 +25,9 @@ const TopSideButtons = ({id, removeFilter, applyFilter, applySearch}) => {
     const navigate = useNavigate()
     const locationFilters = ["Paris", "London", "Canada", "Peru", "Tokyo"]
     
+    useEffect(() => {
+        console.log('id', id)
+    }, [id])
 
     const showFiltersAndApply = (params) => {
         applyFilter(params)

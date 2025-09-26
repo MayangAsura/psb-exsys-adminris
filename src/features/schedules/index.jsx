@@ -85,7 +85,7 @@ function Schedules(){
         getSchedulesData()
         // console.log(schedules)
         // getNumPresences(schedules)
-    },[schedules])
+    },[])
 
     const getSchedulesData = async () => {
         let { data: schedules, error } = await supabase

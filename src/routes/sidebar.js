@@ -104,6 +104,11 @@ const routes = [
         name: 'Pendaftar',
       },
       {
+        path: '/ad/academic-years',
+        icon: <FaTasks className={submenuIconClasses}/>,
+        name: 'Tahun Ajaran',
+      },
+      {
         path: '/ad/admissions',
         icon: <FaTasks className={submenuIconClasses}/>,
         name: 'PSB',

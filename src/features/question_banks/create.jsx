@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import supabase from '../../services/database-server';
 
 const QuestionForm = ({ 
   initialData = null, 
-  questionsBank = [], 
-  categories = [], 
+  // questionsBank = [], 
+  // categories = [], 
   onSubmit, 
   onCancel 
 }) => {
@@ -22,9 +23,11 @@ const QuestionForm = ({
 
   const [errors, setErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+  const [categories, setCategories] = useState([])
+  const [questionBanks, setQuestionBanks] = useState([])
 
   // Filter out current question from parent options
-  const parentOptions = questionsBank.filter(question => 
+  const parentOptions = questionBanks.filter(question => 
     question.uuid !== formData.uuid
   );
 
@@ -38,7 +41,37 @@ const QuestionForm = ({
       setFormData(dataWithOptions);
       setIsEditing(true);
     }
+    getCategories()
+    getQuestionBanks()
   }, [initialData]);
+
+  const getCategories = async () => {
+    let { data: question_bank_categories, error } = await supabase
+  .from('question_bank_categories')
+  .select('*')
+  .is('deleted_at',null)
+  if(question_bank_categories && question_bank_categories.length >0){
+    setCategories(question_bank_categories.map(value => {return {
+      value: value.id,
+      name: value.name,
+    }}))
+  }
+
+  }
+  const getQuestionBanks = async () => {
+    let { data: question_banks, error } = await supabase
+  .from('exam_question_banks')
+  .select('*')
+  .is('deleted_at',null)
+  if(question_banks && question_banks.length >0){
+    setQuestionBanks(question_banks.map(value => {return {
+      value: value.id,
+      name: value.bank_code,
+    }}))
+  }
+
+  }
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -299,7 +332,7 @@ const QuestionForm = ({
             >
               <option value="">Pilih Kategori</option>
               {categories.map(category => (
-                <option key={category.uuid} value={category.uuid}>
+                <option key={category.value} value={category.value}>
                   {category.name}
                 </option>
               ))}
@@ -320,13 +353,14 @@ const QuestionForm = ({
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Tidak ada induk</option>
-              {parentOptions.map(question => (
-                <option key={question.uuid} value={question.uuid}>
-                  {question.bank_code} - {question.question.substring(0, 50)}...
+              {questionBanks.map(question => (
+                <option key={question.value} value={question.value}>
+                  {question.name} 
                 </option>
               ))}
+              {/* - {question.name.substring(0, 50)}... */}
             </select>
-            <p className="mt-1 text-xs text-gray-500">Pilih soal yang menjadi induk (exclude diri sendiri)</p>
+            {/* <p className="mt-1 text-xs text-gray-500">Pilih soal yang menjadi induk (exclude diri sendiri)</p> */}
           </div>
 
           {/* Options for Multiple Choice */}
