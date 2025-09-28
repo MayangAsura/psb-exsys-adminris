@@ -143,22 +143,22 @@ function ExamQuestions(){
     }
 
     const formatDateNew = (date) => {
-    const dayNames = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-    const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        const dayNames = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
-    date = new Date(date);
-    const dayName = dayNames[date.getDay()];
-    const day = date.getDate();
-    const month = date.getMonth();
-    const monthName = monthNames[date.getMonth()];
-    const year = date.getFullYear();
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-    const second = date.getSeconds();
+        date = new Date(date);
+        const dayName = dayNames[date.getDay()];
+        const day = date.getDate();
+        const month = date.getMonth();
+        const monthName = monthNames[date.getMonth()];
+        const year = date.getFullYear();
+        const hour = date.getHours();
+        const minute = date.getMinutes();
+        const second = date.getSeconds();
 
-    const dateFormat = `${day}-${month}-${year} ${hour}:${minute} WIB`;
-    // const indonesianFormat = `${dayName}, ${day} ${monthName} ${year} ${hour}:${minute} WIB`;
-    return dateFormat
+        const dateFormat = `${day}-${month}-${year} ${hour}:${minute} WIB`;
+        // const indonesianFormat = `${dayName}, ${day} ${monthName} ${year} ${hour}:${minute} WIB`;
+        return dateFormat
     }
 
     const deleteCurrentQuestion = (index) => {

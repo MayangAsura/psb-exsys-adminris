@@ -60,7 +60,7 @@ function Account(){
         getAccount()
     },[id])
 
-    const getAccount = async () => {
+    const getAccount = async (id) => {
         const { data, error } = await supabase.auth.admin.getUserById()
     }
 

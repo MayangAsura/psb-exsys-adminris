@@ -3,6 +3,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import supabase from "../../../services/database-server";
 import TitleCard from "../../../components/Cards/TitleCard";
+import CustomUploadAdapterPlugin from "./CustomUpload";
 
 const QuestionForm = ({ admissionId, onSave }) => {
     const [questions, setQuestions] = useState([
@@ -57,7 +58,7 @@ const QuestionForm = ({ admissionId, onSave }) => {
         
         // Reset options when changing question type
         if (field === 'question_type') {
-            if (value === 'multiple_choice') {
+            if (value === 'MC') {
                 newQuestions[index].options = ["", "", "", ""];
             } else if (value === 'true_false') {
                 newQuestions[index].options = ["True", "False"];
@@ -141,7 +142,7 @@ const QuestionForm = ({ admissionId, onSave }) => {
             const filePath = `${fileName}`;
 
             const { error: uploadError } = await supabase.storage
-                .from('question-files')
+                .from('exams/')
                 .upload(filePath, file);
 
             if (uploadError) {
@@ -210,7 +211,7 @@ const QuestionForm = ({ admissionId, onSave }) => {
     };
 
     return (
-      <TitleCard title="Tambah Ujian" topMargin="mt-2">
+      <TitleCard title="Tambah Soal Ujian" topMargin="mt-2">
         {/* <div className="max-w-4xl mx-auto p-6 rounded-lg shadow-lg"> */}
             {/* <h2 className="text-2xl font-bold mb-6 text-gray-800">Questions Form</h2> */}
             
@@ -220,7 +221,7 @@ const QuestionForm = ({ admissionId, onSave }) => {
                         {/* Question Header */}
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-semibold text-gray-700">
-                                Question {questionIndex + 1}
+                                Soal {questionIndex + 1}
                             </h3>
                             {questions.length > 1 && (
                                 <button
@@ -228,7 +229,7 @@ const QuestionForm = ({ admissionId, onSave }) => {
                                     onClick={() => removeQuestion(questionIndex)}
                                     className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
                                 >
-                                    Remove
+                                    Hapus
                                 </button>
                             )}
                         </div>
@@ -236,7 +237,7 @@ const QuestionForm = ({ admissionId, onSave }) => {
                         {/* Question Type */}
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Question Type *
+                                Tipe Soal *
                             </label>
                             <select
                                 value={question.question_type}
@@ -254,7 +255,7 @@ const QuestionForm = ({ admissionId, onSave }) => {
                         {/* Score */}
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Score *
+                                Skor *
                             </label>
                             <input
                                 type="number"
@@ -269,7 +270,7 @@ const QuestionForm = ({ admissionId, onSave }) => {
                         {/* Question Text with CKEditor */}
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Question Text *
+                              Pertanyaan *
                             </label>
                             <CKEditor
                                 editor={ClassicEditor}
@@ -279,14 +280,15 @@ const QuestionForm = ({ admissionId, onSave }) => {
                                     updateQuestion(questionIndex, 'question', data);
                                 }}
                                 config={{
+                                    extraPlugins: [CustomUploadAdapterPlugin],
                                     toolbar: [
                                         'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 
                                         'numberedList', 'blockQuote', 'imageUpload', 'insertTable',
                                         'mediaEmbed', 'undo', 'redo'
-                                    ],
-                                    ckfinder: {
-                                        uploadUrl: '/api/upload', // You might need to set up an upload endpoint
-                                    }
+                                    ]
+                                    // ckfinder: {
+                                    //     uploadUrl: '/api/upload', 
+                                    // }
                                 }}
                                 onReady={editor => {
                                     // You can store the editor instance and use it later.
@@ -298,6 +300,10 @@ const QuestionForm = ({ admissionId, onSave }) => {
                                 onFocus={(event, editor) => {
                                     console.log('Focus.', editor);
                                 }}
+                                // onChange={(event, editor) => {
+                                //   const data = editor.getData();
+                                //   console.log({ event, editor, data });
+                                // }}
                             />
                         </div>
 

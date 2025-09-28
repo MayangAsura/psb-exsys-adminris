@@ -217,79 +217,79 @@ export const addQuestion_ = async (props) => {
                                 ])
                                 .select()
         console.log(exam_test_contents)
-        if(props.is_image){
-            // const upload = async (props.question.file, name ) => {
-            const filepath = `${exam_test_contents[0].id.subtring(0,5)}-${Date.now()}`
-            // const pid = participant.id?participant.id:participant_id
-            const { data_, error_ } = await supabase
-                .storage
-                .from('exams/uploads/questions')
-                .upload("/" + filepath, props.question.file,
-                {cacheControl: '3600', upsert: true}
-                )
-            if (error_) {
-            console.error("Gagal Upload Gambar", error_.message)
-            return null
-            }
-            const { data } = await supabase.storage.from("exams/uploads/questions").getPublicUrl("/" +filepath)
-            const data_url = {
-            path: data.publicUrl
-            }
-            console.log(data.publicUrl)
-
-            const { files, error } = await supabase
-            .from('exam_test_content_files')
-            .insert([
-                { exam_test_id: exam_test_contents[0].exam_test_id, exam_test_content_id: exam_test_contents[0].exam_test_content_id, file_url: data.publicUrl, file_type: props.question.file_type, is_question: false },
-            ])
-            .select()
-
-            if(error ){
-                response.error= true
-            response.message= 'Gagal menambahkan data Pertanyaan. Upload gambar gagal.'
-            response.data= null
-            return response
-            }
-          
-            // setBerkasUrl(data.publicUrl)
-            // setBerkasUrl((data.publicUrl).toString())
-            // if(name == "Bird-Certificate"){
-            //   berkasUrl.a = data.publicUrl.toString()
-            // }
-            // if(name == "KK"){
-            //   berkasUrl.b = data.publicUrl.toString()
-            // }
-            // if(name == "Parent-KTP"){
-            //   berkasUrl.c = data.publicUrl.toString()
-            // }
-            // if(name == "Pas-Photo"){
-            //   berkasUrl.d = data.publicUrl.toString()
-            // }
-            // if(name == "Surat-Kesanggupan"){
-            //   berkasUrl.e = data.publicUrl.toString()
-            // }
-            // if(name == "Syahadah"){
-            //   berkasUrl.f = data.publicUrl.toString()
-            // }
-            // if(name == "Photo-Sampul-Ijazah"){
-            //   berkasUrl.g = data.publicUrl.toString()
-            // }
-            // berkasUrl.a = data.publicUrl.toString()
-            // console.log(berkasUrl)
-        //     return data.publicUrl
-        //     // const { data, error } = await supabase.storage.from('participant-documents').createSignedUrl(participant_id+ "/" +filepath, 3600)
-
-        //     const path = {
-        //       signedUrl: data.signedUrl.toString()?? ""
-        //     } 
-
-        //     if (data) {
-        //       console.log('signedUrl > ', data.signedUrl)
-        //       console.log('data_ > ', data_)
-        //       return path
+        // if(props.is_image){
+        //     // const upload = async (props.question.file, name ) => {
+        //     const filepath = `${exam_test_contents[0].id.subtring(0,5)}-${Date.now()}`
+        //     // const pid = participant.id?participant.id:participant_id
+        //     const { data_, error_ } = await supabase
+        //         .storage
+        //         .from('exams/uploads/questions')
+        //         .upload("/" + filepath, props.question.file,
+        //         {cacheControl: '3600', upsert: true}
+        //         )
+        //     if (error_) {
+        //     console.error("Gagal Upload Gambar", error_.message)
+        //     return null
         //     }
-        //   }
-        }                              
+        //     const { data } = await supabase.storage.from("exams/uploads/questions").getPublicUrl("/" +filepath)
+        //     const data_url = {
+        //     path: data.publicUrl
+        //     }
+        //     console.log(data.publicUrl)
+
+        //     const { files, error } = await supabase
+        //     .from('exam_test_content_files')
+        //     .insert([
+        //         { exam_test_id: exam_test_contents[0].exam_test_id, exam_test_content_id: exam_test_contents[0].exam_test_content_id, file_url: data.publicUrl, file_type: props.question.file_type, is_question: false },
+        //     ])
+        //     .select()
+
+        //     if(error ){
+        //         response.error= true
+        //     response.message= 'Gagal menambahkan data Pertanyaan. Upload gambar gagal.'
+        //     response.data= null
+        //     return response
+        //     }
+          
+        //     // setBerkasUrl(data.publicUrl)
+        //     // setBerkasUrl((data.publicUrl).toString())
+        //     // if(name == "Bird-Certificate"){
+        //     //   berkasUrl.a = data.publicUrl.toString()
+        //     // }
+        //     // if(name == "KK"){
+        //     //   berkasUrl.b = data.publicUrl.toString()
+        //     // }
+        //     // if(name == "Parent-KTP"){
+        //     //   berkasUrl.c = data.publicUrl.toString()
+        //     // }
+        //     // if(name == "Pas-Photo"){
+        //     //   berkasUrl.d = data.publicUrl.toString()
+        //     // }
+        //     // if(name == "Surat-Kesanggupan"){
+        //     //   berkasUrl.e = data.publicUrl.toString()
+        //     // }
+        //     // if(name == "Syahadah"){
+        //     //   berkasUrl.f = data.publicUrl.toString()
+        //     // }
+        //     // if(name == "Photo-Sampul-Ijazah"){
+        //     //   berkasUrl.g = data.publicUrl.toString()
+        //     // }
+        //     // berkasUrl.a = data.publicUrl.toString()
+        //     // console.log(berkasUrl)
+        // //     return data.publicUrl
+        // //     // const { data, error } = await supabase.storage.from('participant-documents').createSignedUrl(participant_id+ "/" +filepath, 3600)
+
+        // //     const path = {
+        // //       signedUrl: data.signedUrl.toString()?? ""
+        // //     } 
+
+        // //     if (data) {
+        // //       console.log('signedUrl > ', data.signedUrl)
+        // //       console.log('data_ > ', data_)
+        // //       return path
+        // //     }
+        // //   }
+        // }                              
         if(error || !exam_test_contents || exam_test_contents.length ==0) {
             // {error: true, message: 'Gagal menambahkan data Ujian', data: null }
             response.error= true
@@ -324,41 +324,41 @@ export const addQuestion_ = async (props) => {
                                 .select()
                                 }
 
-            if(props.options?.is_image){
-                // const upload = async (props.question.file, name ) => {
-                const filepath = `${exam_test_content_options[0].id.subtring(0,5)}-${Date.now()}`
-                // const pid = participant.id?participant.id:participant_id
-                const { data_, error_ } = await supabase
-                    .storage
-                    .from('exams/uploads/questions')
-                    .upload("/" + filepath, props.question.file,
-                    {cacheControl: '3600', upsert: true}
-                    )
-                if (error_) {
-                console.error("Gagal Upload Gambar", error_.message)
-                return null
-                }
-                const { data } = await supabase.storage.from("exams/uploads/questions").getPublicUrl("/" +filepath)
-                // const data_url = {
-                // path: data.publicUrl
-                // }
-                console.log(data.publicUrl)
+            // if(props.options?.is_image){
+            //     // const upload = async (props.question.file, name ) => {
+            //     const filepath = `${exam_test_content_options[0].id.subtring(0,5)}-${Date.now()}`
+            //     // const pid = participant.id?participant.id:participant_id
+            //     const { data_, error_ } = await supabase
+            //         .storage
+            //         .from('exams/uploads/questions')
+            //         .upload("/" + filepath, props.question.file,
+            //         {cacheControl: '3600', upsert: true}
+            //         )
+            //     if (error_) {
+            //     console.error("Gagal Upload Gambar", error_.message)
+            //     return null
+            //     }
+            //     const { data } = await supabase.storage.from("exams/uploads/questions").getPublicUrl("/" +filepath)
+            //     // const data_url = {
+            //     // path: data.publicUrl
+            //     // }
+            //     console.log(data.publicUrl)
 
-                const { files, error } = await supabase
-                .from('exam_test_content_files')
-                .insert([
-                    { exam_test_id: exam_test_contents[0].exam_test_id, exam_test_content_id: exam_test_contents[0].id, exam_test_content_option_id: exam_test_content_options[0].id, file_url: data.publicUrl, file_type: props.question.file_type, is_question: false},
-                ])
-                .select()
+            //     const { files, error } = await supabase
+            //     .from('exam_test_content_files')
+            //     .insert([
+            //         { exam_test_id: exam_test_contents[0].exam_test_id, exam_test_content_id: exam_test_contents[0].id, exam_test_content_option_id: exam_test_content_options[0].id, file_url: data.publicUrl, file_type: props.question.file_type, is_question: false},
+            //     ])
+            //     .select()
 
-                if(error ){
-                    response.error= true
-                response.message= 'Gagal menambahkan data Pertanyaan. Upload gambar gagal.'
-                response.data= null
-                return response
-                }
+            //     if(error ){
+            //         response.error= true
+            //     response.message= 'Gagal menambahkan data Pertanyaan. Upload gambar gagal.'
+            //     response.data= null
+            //     return response
+            //     }
           
-            }
+            // }
            
 
             if(error){
@@ -435,7 +435,7 @@ export const deleteQuestion = async (props) => {
     const { data: exam, error } = await supabase
                             .from('exam_test_contents')
                                 .update([
-                                    props.question
+                                    {deleted_at : new Date().toISOString()}
                                 ])
                                 .eq('id', props.id)
                                 .select()
