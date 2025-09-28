@@ -91,7 +91,7 @@ export const updateApplicant = async (props) => {
             _media : props.applicant.media,
             _password : props.applicant.password==""?"":props.applicant.password,
             _phone_number : props.applicant.phone_number,
-            _regist_number : props.applicant.regist_number,
+            _regist_number : "",
             _school_id : parseInt(props.applicant.school_id),
             _subschool : props.applicant.subschool,
             // _dob : props.applicant.dob || ""

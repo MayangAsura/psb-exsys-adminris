@@ -21,6 +21,7 @@ import DocumentDuplicateIcon from '@heroicons/react/24/outline/DocumentDuplicate
 
 import { MdOutlineTask, MdOutlineDateRange, MdOutlineSchool, MdOutlineAddTask, MdAppRegistration} from "react-icons/md";
 import { TbUserSquareRounded } from "react-icons/tb";
+import { HiOutlineAcademicCap } from 'react-icons/hi2'
 import { BiTask} from "react-icons/bi";
 import { RiUserFollowLine, RiUserReceivedLine, RiTShirt2Line} from "react-icons/ri";
 import { FaFileAlt, FaTasks} from "react-icons/fa";
@@ -105,7 +106,7 @@ const routes = [
       },
       {
         path: '/ad/academic-years',
-        icon: <FaTasks className={submenuIconClasses}/>,
+        icon: <HiOutlineAcademicCap className={submenuIconClasses}/>,
         name: 'Tahun Ajaran',
       },
       {

@@ -46,8 +46,9 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
         const processedData = []
         const invalidEntries = []
     
-        console.log(rawData)
+        console.log('rawData', rawData)
         rawData.forEach((item, idx) => {
+            console.log('item', item)
             // Validate required fields
             if (!item.QUESTION || !item.OPTION_ANSWER || !item.SCORE || !item.BANK_CODE || !item.TYPE) {
                 invalidEntries.push({
@@ -67,10 +68,10 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
                     options.push({
                         option: item[optionKey],
                         type: 'MC',
-                        is_correct: parseInt(item.OPTION_ANSWER) === i
-                    }, 
-                    parseInt(item.OPTION_ANSWER) === i?
-                    answer = item[optionKey]:"")
+                        // is_correct: parseInt(item.OPTION_ANSWER) === i, 
+                        exam_test_id: index
+                    })
+                    answer = parseInt(item.OPTION_ANSWER) === i?item[optionKey]:""
                 }
             }
 
@@ -83,6 +84,7 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
                 })
                 return
             }
+            
 
             processedData.push({
                 question: item.QUESTION,
@@ -135,14 +137,14 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
         try {
             // Process and validate all data first
             const { processedData, invalidEntries } = processImportedData(dataImport)
-            
+            console.log('processedData', processedData)
             if (invalidEntries.length > 0) {
                 setInvalidData(invalidEntries)
             }
 
             if (processedData.length === 0) {
                 dispatch(showNotification({ 
-                    message: "Tidak ada data yang valid untuk diimport", 
+                    message: "Tidak ada data yang valid untuk diimport >", 
                     status: 0 
                 }))
                 setIsLoading(false)
@@ -152,10 +154,10 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
             // Process each question sequentially
             for (let i = 0; i < processedData.length; i++) {
                 setProcessingIndex(i)
-                const questionData = processedData[i]
+                const questionsData = processedData[i]
                 
                 try {
-                    await addQuestionMutation(questionData)
+                    await addQuestionMutation({questions: questionsData})
                 } catch (error) {
                     console.error("Error importing question:", error)
                 }
@@ -200,7 +202,7 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
                     bodyType: MODAL_BODY_TYPES.MODAL_ERROR,
                     size: 'sm',
                     extraObject: {
-                        message: "Tidak ada data yang berhasil diimport",
+                        message: "Tidak ada data yang berhasil diimport >>",
                         type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_ERROR,
                         index: index
                     }

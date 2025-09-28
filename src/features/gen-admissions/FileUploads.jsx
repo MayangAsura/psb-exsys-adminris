@@ -34,7 +34,7 @@ function FileUploads({save, setStatus, id, sid}) {
       const sheet = workbook.Sheets[sheetName];
       const sheetData = XLSX.utils.sheet_to_json(sheet);
       console.log('sheetData', sheetData)
-      console.log(save(sheetData))
+      console.log(save(sheetData, ''))
       
       setData(sheetData)
       // if(sheetData){

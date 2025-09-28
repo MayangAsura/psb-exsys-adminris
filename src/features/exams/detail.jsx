@@ -78,7 +78,7 @@ function InternalPage(){
     return(
         <div className="bg-base-200">
             <TabHeaderP id = {id} sid={examSch} options={options} activeKey='Peserta'  />
-            <TitleCard title="Informasi Detail" topMargin="mt-2">
+            <TitleCard title="Informasi Detail Ujian" topMargin="mt-2">
                 <div className="overflow-x-auto w-full ">
                     <div className='flex flex-col justify-between items-start'>
                         {/* <p className='flex '>Informasi Detail</p> */}
