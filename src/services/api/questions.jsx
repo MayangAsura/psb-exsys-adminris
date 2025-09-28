@@ -11,7 +11,37 @@ export const addQuestion = async (props) => {
         data: null 
     };
 
+    // Input validation
+    const validateInput = (questions, options) => {
+        const errors = [];
+        
+        if (!questions.question || questions.question.trim() === '') {
+            errors.push('Question text is required');
+        }
+        
+        if (!questions.bank_code || questions.bank_code.trim() === '') {
+            errors.push('Bank code is required');
+        }
+        
+        if (!questions.score || questions.score < 0) {
+            errors.push('Valid score is required');
+        }
+        
+        if (questions.question_type === 'MC' && (!options || options.length === 0)) {
+            errors.push('Multiple choice questions require options');
+        }
+        
+        return errors;
+    };
+
     try {
+        // Validate input
+        const validationErrors = validateInput(questions, options);
+        if (validationErrors.length > 0) {
+            response.message = 'Data tidak valid: ' + validationErrors.join(', ');
+            return response;
+        }
+
         // Step 1: Insert the main question
         const { data: exam_test_contents, error: questionError } = await supabase
             .from('exam_test_contents')
@@ -30,63 +60,15 @@ export const addQuestion = async (props) => {
         const questionId = exam_test_contents[0].id;
         const examTestId = exam_test_contents[0].exam_test_id;
 
-        // Step 2: Handle question image if exists
-        // if (props.is_image && props.question?.file) {
-        //     try {
-        //         const fileExtension = props.question.file.name.split('.').pop();
-        //         const filepath = `${questionId.substring(0, 5)}-${Date.now()}.${fileExtension}`;
-                
-        //         const { error: uploadError } = await supabase.storage
-        //             .from('exams/uploads/questions')
-        //             .upload(filepath, props.question.file, {
-        //                 cacheControl: '3600', 
-        //                 upsert: false
-        //             });
-
-        //         if (uploadError) {
-        //             console.error("Gagal Upload Gambar", uploadError.message);
-        //             response.error = true;
-        //             response.message = 'Gagal menambahkan data Pertanyaan. Upload gambar gagal.';
-        //             response.data = null;
-        //             return response;
-        //         }
-
-        //         const { data: urlData } = await supabase.storage
-        //             .from("exams/uploads/questions")
-        //             .getPublicUrl(filepath);
-
-        //         console.log('Uploaded image URL:', urlData.publicUrl);
-
-        //         const { error: fileError } = await supabase
-        //             .from('exam_test_content_files')
-        //             .insert([{
-        //                 exam_test_id: examTestId,
-        //                 exam_test_content_id: questionId,
-        //                 file_url: urlData.publicUrl,
-        //                 file_type: props.question.file_type || 'image',
-        //                 is_question: true // This should be true for question images
-        //             }]);
-
-        //         if (fileError) {
-        //             console.error("Gagal menyimpan data file:", fileError);
-        //             // Continue with question creation even if file save fails
-        //         }
-        //     } catch (fileUploadError) {
-        //         console.error("Error in file upload process:", fileUploadError);
-        //         // Continue with question creation even if file upload fails
-        //     }
-        // }
-
-        // Step 3: Insert options
+        // Step 2: Insert options
         if (options && options.length > 0) {
             // Transform options to include question ID
             const optionsToInsert = options.map((option, index) => ({
-                exam_test_id : option.exam_test_id,
+                exam_test_id: examTestId,
                 option: option.option || option, // Handle both object and string formats
                 type: option.type || 'MC',
                 exam_test_content_id: questionId,
                 order: index + 1 // Add order for proper sequencing
-                // is_correct: option.is_correct || false
             }));
 
             console.log('Options to insert:', optionsToInsert);
@@ -106,19 +88,26 @@ export const addQuestion = async (props) => {
 
             console.log('Inserted options:', exam_test_content_options);
 
-            // Step 4: Find and set the correct answer
+            // Step 3: Find and set the correct answer - IMPROVED VERSION
             if (props.questions.answer) {
                 try {
-                    // Find the option that matches the answer
-                    const correctOption = exam_test_content_options.find(option => 
-                        option.option === props.questions.answer || 
-                        option.id === props.questions.answer
-                    );
+                    // More robust answer matching
+                    const correctOption = exam_test_content_options.find(option => {
+                        // Exact match for option text
+                        if (option.option.trim().toLowerCase() === props.questions.answer.toString().trim().toLowerCase()) {
+                            return true;
+                        }
+                        // Match by order/index (if OPTION_ANSWER was 1-5)
+                        const optionIndex = exam_test_content_options.indexOf(option);
+                        if (optionIndex + 1 === parseInt(props.questions.answer)) {
+                            return true;
+                        }
+                        return false;
+                    });
 
                     if (correctOption) {
                         console.log('Found correct option:', correctOption);
                         
-                        // Update the question with the correct option ID
                         const { error: updateError } = await supabase
                             .from('exam_test_contents')
                             .update({ 
@@ -128,65 +117,19 @@ export const addQuestion = async (props) => {
 
                         if (updateError) {
                             console.error("Error setting correct answer:", updateError);
+                            // Don't fail the entire operation if setting answer fails
                         } else {
                             console.log('Successfully set correct answer');
                         }
                     } else {
-                        console.warn('Correct answer not found in options');
+                        console.warn('Correct answer not found in options. Answer:', props.questions.answer);
+                        console.warn('Available options:', exam_test_content_options.map(opt => opt.option));
                     }
                 } catch (answerError) {
                     console.error("Error setting correct answer:", answerError);
+                    // Continue even if answer setting fails
                 }
             }
-
-            // Step 5: Handle option images if any
-            // if (props.options?.is_image) {
-            //     for (let i = 0; i < options.length; i++) {
-            //         const option = options[i];
-            //         if (option.file) {
-            //             try {
-            //                 const optionId = exam_test_content_options[i]?.id;
-            //                 if (!optionId) continue;
-
-            //                 const fileExtension = option.file.name.split('.').pop();
-            //                 const filepath = `${optionId.substring(0, 5)}-${Date.now()}.${fileExtension}`;
-
-            //                 const { error: optionUploadError } = await supabase.storage
-            //                     .from('exams/uploads/questions')
-            //                     .upload(filepath, option.file, {
-            //                         cacheControl: '3600',
-            //                         upsert: false
-            //                     });
-
-            //                 if (optionUploadError) {
-            //                     console.error("Gagal Upload Gambar Opsi", optionUploadError.message);
-            //                     continue; // Continue with other options
-            //                 }
-
-            //                 const { data: optionUrlData } = await supabase.storage
-            //                     .from("exams/uploads/questions")
-            //                     .getPublicUrl(filepath);
-
-            //                 const { error: optionFileError } = await supabase
-            //                     .from('exam_test_content_files')
-            //                     .insert([{
-            //                         exam_test_id: examTestId,
-            //                         exam_test_content_id: questionId,
-            //                         exam_test_content_option_id: optionId,
-            //                         file_url: optionUrlData.publicUrl,
-            //                         file_type: option.file_type || 'image',
-            //                         is_question: false // This is for option images
-            //                     }]);
-
-            //                 if (optionFileError) {
-            //                     console.error("Gagal menyimpan data file opsi:", optionFileError);
-            //                 }
-            //             } catch (optionFileError) {
-            //                 console.error("Error in option file upload:", optionFileError);
-            //             }
-            //         }
-            //     }
-            // }
         }
 
         // Success response
@@ -203,6 +146,208 @@ export const addQuestion = async (props) => {
         return response;
     }
 };
+// export const addQuestion = async (props) => {
+//     console.log('props', props) 
+    
+//     const { options, ...questions } = props.questions;
+//     const response = { 
+//         error: true, 
+//         message: 'Gagal menambahkan data Pertanyaan', 
+//         data: null 
+//     };
+
+//     try {
+//         // Step 1: Insert the main question
+//         const { data: exam_test_contents, error: questionError } = await supabase
+//             .from('exam_test_contents')
+//             .insert([questions])
+//             .select();
+
+//         console.log('Exam test contents:', exam_test_contents);
+
+//         if (questionError || !exam_test_contents || exam_test_contents.length === 0) {
+//             response.error = true;
+//             response.message = 'Gagal menambahkan data Pertanyaan: ' + (questionError?.message || 'Unknown error');
+//             response.data = null;
+//             return response;
+//         }
+
+//         const questionId = exam_test_contents[0].id;
+//         const examTestId = exam_test_contents[0].exam_test_id;
+
+//         // Step 2: Handle question image if exists
+//         // if (props.is_image && props.question?.file) {
+//         //     try {
+//         //         const fileExtension = props.question.file.name.split('.').pop();
+//         //         const filepath = `${questionId.substring(0, 5)}-${Date.now()}.${fileExtension}`;
+                
+//         //         const { error: uploadError } = await supabase.storage
+//         //             .from('exams/uploads/questions')
+//         //             .upload(filepath, props.question.file, {
+//         //                 cacheControl: '3600', 
+//         //                 upsert: false
+//         //             });
+
+//         //         if (uploadError) {
+//         //             console.error("Gagal Upload Gambar", uploadError.message);
+//         //             response.error = true;
+//         //             response.message = 'Gagal menambahkan data Pertanyaan. Upload gambar gagal.';
+//         //             response.data = null;
+//         //             return response;
+//         //         }
+
+//         //         const { data: urlData } = await supabase.storage
+//         //             .from("exams/uploads/questions")
+//         //             .getPublicUrl(filepath);
+
+//         //         console.log('Uploaded image URL:', urlData.publicUrl);
+
+//         //         const { error: fileError } = await supabase
+//         //             .from('exam_test_content_files')
+//         //             .insert([{
+//         //                 exam_test_id: examTestId,
+//         //                 exam_test_content_id: questionId,
+//         //                 file_url: urlData.publicUrl,
+//         //                 file_type: props.question.file_type || 'image',
+//         //                 is_question: true // This should be true for question images
+//         //             }]);
+
+//         //         if (fileError) {
+//         //             console.error("Gagal menyimpan data file:", fileError);
+//         //             // Continue with question creation even if file save fails
+//         //         }
+//         //     } catch (fileUploadError) {
+//         //         console.error("Error in file upload process:", fileUploadError);
+//         //         // Continue with question creation even if file upload fails
+//         //     }
+//         // }
+
+//         // Step 3: Insert options
+//         if (options && options.length > 0) {
+//             // Transform options to include question ID
+//             const optionsToInsert = options.map((option, index) => ({
+//                 exam_test_id : option.exam_test_id,
+//                 option: option.option || option, // Handle both object and string formats
+//                 type: option.type || 'MC',
+//                 exam_test_content_id: questionId,
+//                 order: index + 1 // Add order for proper sequencing
+//                 // is_correct: option.is_correct || false
+//             }));
+
+//             console.log('Options to insert:', optionsToInsert);
+
+//             const { data: exam_test_content_options, error: optionsError } = await supabase
+//                 .from('exam_test_content_options')
+//                 .insert(optionsToInsert)
+//                 .select();
+
+//             if (optionsError) {
+//                 console.error("Error inserting options:", optionsError);
+//                 response.error = true;
+//                 response.message = 'Gagal menambahkan opsi pertanyaan: ' + optionsError.message;
+//                 response.data = null;
+//                 return response;
+//             }
+
+//             console.log('Inserted options:', exam_test_content_options);
+
+//             // Step 4: Find and set the correct answer
+//             if (props.questions.answer) {
+//                 try {
+//                     // Find the option that matches the answer
+//                     const correctOption = exam_test_content_options.find(option => 
+//                         option.option === props.questions.answer || 
+//                         option.id === props.questions.answer
+//                     );
+
+//                     if (correctOption) {
+//                         console.log('Found correct option:', correctOption);
+                        
+//                         // Update the question with the correct option ID
+//                         const { error: updateError } = await supabase
+//                             .from('exam_test_contents')
+//                             .update({ 
+//                                 exam_content_option_id: correctOption.id 
+//                             })
+//                             .eq('id', questionId);
+
+//                         if (updateError) {
+//                             console.error("Error setting correct answer:", updateError);
+//                         } else {
+//                             console.log('Successfully set correct answer');
+//                         }
+//                     } else {
+//                         console.warn('Correct answer not found in options');
+//                     }
+//                 } catch (answerError) {
+//                     console.error("Error setting correct answer:", answerError);
+//                 }
+//             }
+
+//             // Step 5: Handle option images if any
+//             // if (props.options?.is_image) {
+//             //     for (let i = 0; i < options.length; i++) {
+//             //         const option = options[i];
+//             //         if (option.file) {
+//             //             try {
+//             //                 const optionId = exam_test_content_options[i]?.id;
+//             //                 if (!optionId) continue;
+
+//             //                 const fileExtension = option.file.name.split('.').pop();
+//             //                 const filepath = `${optionId.substring(0, 5)}-${Date.now()}.${fileExtension}`;
+
+//             //                 const { error: optionUploadError } = await supabase.storage
+//             //                     .from('exams/uploads/questions')
+//             //                     .upload(filepath, option.file, {
+//             //                         cacheControl: '3600',
+//             //                         upsert: false
+//             //                     });
+
+//             //                 if (optionUploadError) {
+//             //                     console.error("Gagal Upload Gambar Opsi", optionUploadError.message);
+//             //                     continue; // Continue with other options
+//             //                 }
+
+//             //                 const { data: optionUrlData } = await supabase.storage
+//             //                     .from("exams/uploads/questions")
+//             //                     .getPublicUrl(filepath);
+
+//             //                 const { error: optionFileError } = await supabase
+//             //                     .from('exam_test_content_files')
+//             //                     .insert([{
+//             //                         exam_test_id: examTestId,
+//             //                         exam_test_content_id: questionId,
+//             //                         exam_test_content_option_id: optionId,
+//             //                         file_url: optionUrlData.publicUrl,
+//             //                         file_type: option.file_type || 'image',
+//             //                         is_question: false // This is for option images
+//             //                     }]);
+
+//             //                 if (optionFileError) {
+//             //                     console.error("Gagal menyimpan data file opsi:", optionFileError);
+//             //                 }
+//             //             } catch (optionFileError) {
+//             //                 console.error("Error in option file upload:", optionFileError);
+//             //             }
+//             //         }
+//             //     }
+//             // }
+//         }
+
+//         // Success response
+//         response.error = false;
+//         response.message = 'Berhasil menambahkan data Pertanyaan';
+//         response.data = questionId;
+//         return response;
+
+//     } catch (error) {
+//         console.error("Unexpected error in addQuestion:", error);
+//         response.error = true;
+//         response.message = 'Terjadi kesalahan tak terduga: ' + error.message;
+//         response.data = null;
+//         return response;
+//     }
+// };
 
 export const addQuestion_ = async (props) => {
     // name, description, started_at, ended_at, scheme, type, location, room, is_random_question, is_random_answer, max_participants 

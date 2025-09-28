@@ -14,7 +14,12 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
     const [isLoading, setIsLoading] = useState(false)
     const [success, setSuccess] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
-    const [totalImported, setTotalImported] = useState(0)
+    const [importSummary, setImportSummary] = useState({
+        total: 0,
+        valid: 0,
+        imported: 0,
+        failed: 0
+    })
     const [invalidData, setInvalidData] = useState([])
     const [importedData, setImportedData] = useState([])
     const [dataImport, setDataImport] = useState([])
@@ -29,10 +34,10 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
     }, [sid])
 
     const getScheduleMax = async (sid) => {
-        const { data: sch, err } = await supabase.from('exam_schedules')
+        const { data: sch, error } = await supabase.from('exam_schedules')
             .select('*')
             .eq('id', sid)
-        if (!err && sch.length > 0) {
+        if (!error && sch && sch.length > 0) {
             setSchedule(sch[0])
         }
     }
@@ -41,7 +46,7 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
     const processImportedData = (rawData) => {
         const processedData = []
         const invalidEntries = []
-    
+
         console.log('Raw data received:', rawData)
 
         if (!Array.isArray(rawData) || rawData.length === 0) {
@@ -64,7 +69,9 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
 
             // Validate required fields
             const requiredFields = ['QUESTION', 'OPTION_ANSWER', 'SCORE', 'BANK_CODE', 'TYPE']
-            const missingFields = requiredFields.filter(field => !item[field] && item[field] !== 0)
+            const missingFields = requiredFields.filter(field => 
+                item[field] === undefined || item[field] === null || item[field] === ''
+            )
             
             if (missingFields.length > 0) {
                 invalidEntries.push({
@@ -75,7 +82,7 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
                 return
             }
 
-            // Validate OPTION_ANSWER is a number
+            // Validate OPTION_ANSWER is a number between 1-5
             const optionAnswer = parseInt(item.OPTION_ANSWER)
             if (isNaN(optionAnswer) || optionAnswer < 1 || optionAnswer > 5) {
                 invalidEntries.push({
@@ -89,24 +96,28 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
             // Process options
             const options = []
             let answer = ""
+            let hasOptions = false
             
             for (let i = 1; i <= 5; i++) {
                 const optionKey = `OPTION_${i}`
-                if (item[optionKey] && item[optionKey].toString().trim() !== "") {
+                if (item[optionKey] !== undefined && item[optionKey] !== null && item[optionKey].toString().trim() !== "") {
+                    hasOptions = true
+                    const optionText = item[optionKey].toString().trim()
                     options.push({
-                        option: item[optionKey].toString().trim(),
+                        option: optionText,
                         type: 'MC',
+                        exam_test_id: index, // Add exam_test_id to options
                         is_correct: optionAnswer === i
                     })
                     
                     if (optionAnswer === i) {
-                        answer = item[optionKey].toString().trim()
+                        answer = optionText
                     }
                 }
             }
 
             // Validate that we have options if it's a multiple choice question
-            if (item.TYPE === 'MC' && options.length === 0) {
+            if (item.TYPE === 'MC' && !hasOptions) {
                 invalidEntries.push({
                     index: idx,
                     data: item,
@@ -158,13 +169,20 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
         onSuccess: (data, variables) => {
             console.log('Mutation success:', data)
             if (data && data.error === false) {
-                setTotalImported(prev => prev + 1)
+                setImportSummary(prev => ({
+                    ...prev,
+                    imported: prev.imported + 1
+                }))
                 setImportedData(prev => [...prev, variables])
             } else {
                 setInvalidData(prev => [...prev, {
                     data: variables,
                     reason: data?.message || "Unknown error"
                 }])
+                setImportSummary(prev => ({
+                    ...prev,
+                    failed: prev.failed + 1
+                }))
             }
         },
         onError: (error, variables) => {
@@ -173,6 +191,10 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
                 data: variables,
                 reason: error.message || "Network error"
             }])
+            setImportSummary(prev => ({
+                ...prev,
+                failed: prev.failed + 1
+            }))
         }
     });
 
@@ -188,7 +210,12 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
         }
 
         setIsLoading(true)
-        setTotalImported(0)
+        setImportSummary({
+            total: importedData.length,
+            valid: 0,
+            imported: 0,
+            failed: 0
+        })
         setInvalidData([])
         setImportedData([])
         setSuccess(false)
@@ -198,9 +225,12 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
             const { processedData, invalidEntries } = processImportedData(importedData)
             console.log('Validation results:', { processedData, invalidEntries })
             
-            if (invalidEntries.length > 0) {
-                setInvalidData(invalidEntries)
-            }
+            setInvalidData(invalidEntries)
+            setImportSummary(prev => ({
+                ...prev,
+                valid: processedData.length,
+                failed: invalidEntries.length
+            }))
 
             if (processedData.length === 0) {
                 dispatch(showNotification({ 
@@ -227,34 +257,34 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
                 }
                 
                 // Small delay to prevent overwhelming the server
-                await new Promise(resolve => setTimeout(resolve, 500))
+                await new Promise(resolve => setTimeout(resolve, 100))
             }
 
-            console.log('Import completed:', { totalImported, invalidData: invalidData.length })
+            console.log('Import completed:', importSummary)
 
             // Show results
-            if (invalidData.length === 0 && totalImported > 0) {
+            if (invalidData.length === 0 && importSummary.imported > 0) {
                 setSuccess(true)
                 dispatch(openModal({
                     title: "Berhasil",
-                    bodyType: MODAL_BODY_TYPES.MODAL_SUCCESS,
+                    bodyType: MODAL_BODY_TYPES.CONFIRMATION_MODAL,
                     size: 'sm',
                     extraObject: {
-                        message: `${totalImported} pertanyaan berhasil diimport`,
+                        message: `${importSummary.imported} pertanyaan berhasil diimport`,
                         type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_SUCCESS,
                         index: index
                     }
                 }))
-            } else if (totalImported > 0) {
+            } else if (importSummary.imported > 0) {
                 setSuccess(true)
                 dispatch(openModal({
                     title: "Hasil Import",
-                    bodyType: MODAL_BODY_TYPES.MODAL_SUCCESS,
+                    bodyType: MODAL_BODY_TYPES.CONFIRMATION_MODAL,
                     size: 'lg',
                     extraObject: {
                         message: `
-                            ${totalImported} pertanyaan berhasil diimport.
-                            ${invalidData.length} data tidak valid.
+                            ${importSummary.imported} pertanyaan berhasil diimport.
+                            ${importSummary.failed} data gagal diimport.
                         `,
                         type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_SUCCESS,
                         index: index,
@@ -265,7 +295,7 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
                 setSuccess(false)
                 dispatch(openModal({
                     title: "Gagal",
-                    bodyType: MODAL_BODY_TYPES.MODAL_ERROR,
+                    bodyType: MODAL_BODY_TYPES.CONFIRMATION_MODAL,
                     size: 'sm',
                     extraObject: {
                         message: "Tidak ada data yang berhasil diimport",
@@ -292,6 +322,10 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
         
         if (data && Array.isArray(data) && data.length > 0) {
             setDataImport(data)
+            setImportSummary(prev => ({
+                ...prev,
+                total: data.length
+            }))
             console.log(`Set ${data.length} items for import`)
         } else {
             console.warn("Invalid data received in handleImport:", data)
@@ -322,15 +356,21 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
             {dataImport.length > 0 && (
                 <div className="mt-4 p-4 bg-gray-100 rounded">
                     <p className="font-semibold">Data yang akan diimport:</p>
-                    <p>{dataImport.length} pertanyaan ditemukan</p>
-                    {invalidData.length > 0 && (
+                    <p>Total: {importSummary.total} pertanyaan</p>
+                    <p>Valid: {importSummary.valid} pertanyaan</p>
+                    {importSummary.failed > 0 && (
                         <p className="text-red-600 mt-2">
-                            {invalidData.length} data tidak valid
+                            Gagal: {importSummary.failed} data
                         </p>
                     )}
                     {isLoading && (
                         <p className="text-blue-600 mt-2">
-                            Memproses {processingIndex + 1} dari {dataImport.length}...
+                            Memproses {processingIndex + 1} dari {importSummary.valid}...
+                        </p>
+                    )}
+                    {importSummary.imported > 0 && (
+                        <p className="text-green-600 mt-2">
+                            Berhasil: {importSummary.imported} pertanyaan
                         </p>
                     )}
                 </div>
@@ -358,7 +398,7 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
                     disabled={isLoading || dataImport.length === 0}
                 >
                     {isLoading 
-                        ? `Mengimport... (${processingIndex + 1}/${dataImport.length})` 
+                        ? `Mengimport... (${processingIndex + 1}/${importSummary.valid})` 
                         : success 
                         ? "Selesai" 
                         : "Import Data"}
