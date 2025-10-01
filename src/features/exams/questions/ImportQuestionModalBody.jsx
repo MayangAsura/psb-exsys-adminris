@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux"
 import ErrorText from '../../../components/Typography/ErrorText'
 import { showNotification } from "../../common/headerSlice"
 import { addQuestion } from "../../../services/api/questions"
-import { openModal } from "../../common/modalSlice"
+import { doAction, openModal } from "../../common/modalSlice"
 import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../../utils/globalConstantUtil'
 import { useMutation } from "@tanstack/react-query";
 import FileUploads from "./FileUploads"
@@ -42,7 +42,7 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
         }
     }
 
-    // Process and validate imported data
+    // Process and valifaadatadate imported data
     const processImportedData = (rawData) => {
         const processedData = []
         const invalidEntries = []
@@ -234,7 +234,7 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
 
             if (processedData.length === 0) {
                 dispatch(showNotification({ 
-                    message: "Tidak ada data yang valid untuk diimport", 
+                    message: "Tidak ada data yang valid.", 
                     status: 0 
                 }))
                 setIsLoading(false)
@@ -260,30 +260,32 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
                 await new Promise(resolve => setTimeout(resolve, 100))
             }
 
-            console.log('Import completed:', importSummary)
+            console.log('Import completed:', importSummary, invalidData)
 
             // Show results
-            if (invalidData.length === 0 && importSummary.imported > 0) {
+            if (invalidData.length === 0 && importSummary.total > 0) {
                 setSuccess(true)
                 dispatch(openModal({
                     title: "Berhasil",
-                    bodyType: MODAL_BODY_TYPES.CONFIRMATION_MODAL,
+                    bodyType: MODAL_BODY_TYPES.CONFIRMATION,
                     size: 'sm',
                     extraObject: {
-                        message: `${importSummary.imported} pertanyaan berhasil diimport`,
+                        message: `${importSummary.total} pertanyaan berhasil diimport`,
                         type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_SUCCESS,
                         index: index
                     }
                 }))
-            } else if (importSummary.imported > 0) {
+                dispatch(doAction({is_success : true}))
+                
+            } else if (importSummary.total > 0) {
                 setSuccess(true)
                 dispatch(openModal({
                     title: "Hasil Import",
-                    bodyType: MODAL_BODY_TYPES.CONFIRMATION_MODAL,
+                    bodyType: MODAL_BODY_TYPES.CONFIRMATION,
                     size: 'lg',
                     extraObject: {
                         message: `
-                            ${importSummary.imported} pertanyaan berhasil diimport.
+                            ${importSummary.total} pertanyaan berhasil diimport.
                             ${importSummary.failed} data gagal diimport.
                         `,
                         type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_PARTIC_IMPORT_SUCCESS,
@@ -295,7 +297,7 @@ function ImportQuestionModalBody({ closeModal, extraObject }) {
                 setSuccess(false)
                 dispatch(openModal({
                     title: "Gagal",
-                    bodyType: MODAL_BODY_TYPES.CONFIRMATION_MODAL,
+                    bodyType: MODAL_BODY_TYPES.CONFIRMATION,
                     size: 'sm',
                     extraObject: {
                         message: "Tidak ada data yang berhasil diimport",

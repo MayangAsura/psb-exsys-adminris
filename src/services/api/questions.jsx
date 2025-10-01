@@ -16,12 +16,12 @@ export const addQuestion = async (props) => {
         const errors = [];
         
         if (!questions.question || questions.question.trim() === '') {
-            errors.push('Question text is required');
+            errors.push('Pertanyaan wajib diisi');
         }
         
-        if (!questions.bank_code || questions.bank_code.trim() === '') {
-            errors.push('Bank code is required');
-        }
+        // if (!questions.bank_code || questions.bank_code.trim() === '') {
+        //     errors.push('Bank code is required');
+        // }
         
         if (!questions.score || questions.score < 0) {
             errors.push('Valid score is required');

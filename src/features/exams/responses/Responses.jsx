@@ -35,7 +35,7 @@ function ExamResponses(){
     
         let { data: exam_responses, error } = await supabase
             .from('exam_test_responses')
-            .select('*, exam_tests!inner(name), exam_profiles!inner(full_name, regist_number), exam_schedule_tests!inner(exam_schedule_schools!inner(schools(school_name)))')
+            .select('*, exam_tests(name, exam_schedule_tests(exam_schedules(schools(school_name) ) )), exam_profiles(full_name, regist_number), exam_schedule_tests(exam_schedule_schools(schools(school_name)))')
             .eq('exam_test_id', id)
 
         if(!error){

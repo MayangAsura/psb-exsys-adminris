@@ -4,41 +4,53 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import supabase from "../../../services/database-server";
 import TitleCard from "../../../components/Cards/TitleCard";
 import CustomUploadAdapterPlugin from "./CustomUpload";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addQuestion } from "../../../services/api/questions";
+import { doAction, openModal } from "../../common/modalSlice"
+import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../../utils/globalConstantUtil'
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+
 
 const QuestionForm = ({ admissionId, onSave }) => {
     const [questions, setQuestions] = useState([
         {
-            id: 1,
+            // id: 1,
             question: "",
-            question_type: "multiple_choice",
+            question_type: "MC",
             score: 1,
             options: ["", "", "", ""],
-            correct_answer: "",
-            explanation: "",
-            attachments: []
+            answer: "",
+            // explanation: "",
+            // attachments: []
         }
     ]);
     const [uploading, setUploading] = useState(false);
+    const [importSummary, setImportSummary] = useState({imported: 0, failed: 0})
+    const [invalidData, setInvalidData] = useState({data: "", message: ""})
+    const [success, setSuccess] = useState(false)
+    const dispatch = useDispatch()
+    const id = useParams().exam_id
 
     // Question types
     const questionTypes = [
-        { value: "multiple_choice", label: "Multiple Choice" },
-        { value: "true_false", label: "True/False" },
-        { value: "short_answer", label: "Short Answer" },
-        { value: "file_upload", label: "File Upload" }
+        { value: "MC", label: "Multiple Choice" },
+        { value: "BS", label: "True/False" },
+        { value: "SE", label: "Short Answer" },
+        { value: "FILE", label: "File Upload" }
     ];
 
     // Add new question
-    const addQuestion = () => {
+    const addQuestionForm = () => {
         const newQuestion = {
-            id: questions.length + 1,
+            // id: questions.length + 1,
             question: "",
-            question_type: "multiple_choice",
+            question_type: "MC",
             score: 1,
             options: ["", "", "", ""],
-            correct_answer: "",
+            answer: "",
             // explanation: "",
-            attachments: []
+            // attachments: []
         };
         setQuestions([...questions, newQuestion]);
     };
@@ -133,39 +145,39 @@ const QuestionForm = ({ admissionId, onSave }) => {
     };
 
     // Handle file upload for file_upload type questions
-    const handleFileUpload = async (file, questionIndex) => {
-        try {
-            setUploading(true);
+    // const handleFileUpload = async (file, questionIndex) => {
+    //     try {
+    //         setUploading(true);
             
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${admissionId}/submissions/question_${questionIndex + 1}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-            const filePath = `${fileName}`;
+    //         const fileExt = file.name.split('.').pop();
+    //         const fileName = `${admissionId}/submissions/question_${questionIndex + 1}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+    //         const filePath = `${fileName}`;
 
-            const { error: uploadError } = await supabase.storage
-                .from('exams/')
-                .upload(filePath, file);
+    //         const { error: uploadError } = await supabase.storage
+    //             .from('exams/')
+    //             .upload(filePath, file);
 
-            if (uploadError) {
-                throw uploadError;
-            }
+    //         if (uploadError) {
+    //             throw uploadError;
+    //         }
 
-            const { data: { publicUrl } } = supabase.storage
-                .from('question-files')
-                .getPublicUrl(filePath);
+    //         const { data: { publicUrl } } = supabase.storage
+    //             .from('question-files')
+    //             .getPublicUrl(filePath);
 
-            // Update correct answer with file URL for file_upload type
-            const newQuestions = [...questions];
-            newQuestions[questionIndex].correct_answer = publicUrl;
-            setQuestions(newQuestions);
+    //         // Update correct answer with file URL for file_upload type
+    //         const newQuestions = [...questions];
+    //         newQuestions[questionIndex].answer = publicUrl;
+    //         setQuestions(newQuestions);
 
-            return publicUrl;
-        } catch (error) {
-            console.error('Error uploading file:', error);
-            return null;
-        } finally {
-            setUploading(false);
-        }
-    };
+    //         return publicUrl;
+    //     } catch (error) {
+    //         console.error('Error uploading file:', error);
+    //         return null;
+    //     } finally {
+    //         setUploading(false);
+    //     }
+    // };
 
     // Validate form
     const validateForm = () => {
@@ -178,13 +190,13 @@ const QuestionForm = ({ admissionId, onSave }) => {
             }
             
             if (q.question_type === 'MC') {
-                if (!q.options.some(opt => opt.trim()) || !q.correct_answer) {
+                if (!q.options.some(opt => opt.trim()) || !q.answer) {
                     alert(`Semua pilihan jawaban wajib diisi dan pilih satu jawaban benar untuk soal ${i + 1}`);
                     return false;
                 }
             }
             
-            if (q.question_type === 'BS' && !q.correct_answer) {
+            if (q.question_type === 'BS' && !q.answer) {
                 alert(`pilih satu jawaban benar untuk soal ${i + 1}`);
                 return false;
             }
@@ -197,6 +209,41 @@ const QuestionForm = ({ admissionId, onSave }) => {
         return true;
     };
 
+    const { mutateAsync: addQuestionMutation } = useMutation({
+            mutationFn: addQuestion,
+            onSuccess: (data, variables) => {
+                console.log('Mutation success:', data)
+                if (data && data.error === false) {
+                  
+                    setImportSummary(prev => ({
+                        ...prev,
+                        imported: prev.imported + 1
+                    }))
+                    // setImportedData(prev => [...prev, variables])
+                } else {
+                    setInvalidData(prev => [...prev, {
+                        data: variables,
+                        reason: data?.message || "Unknown error"
+                    }])
+                    setImportSummary(prev => ({
+                        ...prev,
+                        failed: prev.failed + 1
+                    }))
+                }
+            },
+            onError: (error, variables) => {
+                console.error('Mutation error:', error)
+                setInvalidData(prev => [...prev, {
+                    data: variables,
+                    reason: error.message || "Network error"
+                }])
+                setImportSummary(prev => ({
+                    ...prev,
+                    failed: prev.failed + 1
+                }))
+            }
+        });
+
     // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -204,10 +251,68 @@ const QuestionForm = ({ admissionId, onSave }) => {
         if (!validateForm()) {
             return;
         }
+        console.log('questions', questions)
 
-        if (onSave) {
-            onSave(questions);
+
+        questions.map(async (question) => {
+
+          try {
+                await addQuestionMutation({
+                  questions: question
+                });
+  
+            } catch (e) {
+              console.log(e);
+            }
+
+        })
+
         }
+
+        // Show results
+          if (invalidData.length === 0 && importSummary.imported > 0) {
+              setSuccess(true)
+              dispatch(openModal({
+                  title: "Berhasil",
+                  bodyType: MODAL_BODY_TYPES.CONFIRMATION,
+                  size: 'sm',
+                  extraObject: {
+                      message: `${importSummary.imported} pertanyaan berhasil disimpan`,
+                      type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_QUESTION_ADD_SUCCESS,
+                      index: id
+                  }
+              }))
+              dispatch(doAction({is_success : true}))
+              
+          } else if (importSummary.total > 0) {
+              setSuccess(true)
+              dispatch(openModal({
+                  title: "Hasil Import",
+                  bodyType: MODAL_BODY_TYPES.CONFIRMATION,
+                  size: 'lg',
+                  extraObject: {
+                      message: `
+                          ${importSummary.imported} pertanyaan berhasil disimpan.
+                          ${importSummary.failed} data gagal disimpan.
+                      `,
+                      type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_QUESTION_ADD_SUCCESS,
+                      index: id,
+                      invalidData: invalidData
+                  }
+              }))
+          } else {
+              setSuccess(false)
+              dispatch(openModal({
+                  title: "Gagal",
+                  bodyType: MODAL_BODY_TYPES.CONFIRMATION,
+                  size: 'sm',
+                  extraObject: {
+                      message: "Tidak ada data yang berhasil disimpan",
+                      type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_QUESTION_ADD_ERROR,
+                      index: id
+                  }
+              }))
+        // }
     };
 
     return (
@@ -308,7 +413,7 @@ const QuestionForm = ({ admissionId, onSave }) => {
                         </div>
 
                         {/* Attachments */}
-                        {question.attachments.length > 0 && (
+                        {/* {question.attachments.length > 0 && (
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Attachments
@@ -329,10 +434,10 @@ const QuestionForm = ({ admissionId, onSave }) => {
                                     ))}
                                 </div>
                             </div>
-                        )}
+                        )} */}
 
                         {/* Options for Multiple Choice */}
-                        {question.question_type === 'multiple_choice' && (
+                        {question.question_type === 'MC' && (
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Options *
@@ -342,10 +447,10 @@ const QuestionForm = ({ admissionId, onSave }) => {
                                         <div key={optionIndex} className="flex items-center gap-2">
                                             <input
                                                 type="radio"
-                                                name={`correct_answer_${questionIndex}`}
+                                                name={`answer${questionIndex}`}
                                                 value={option}
-                                                checked={question.correct_answer === option}
-                                                onChange={(e) => updateQuestion(questionIndex, 'correct_answer', e.target.value)}
+                                                checked={question.answer === option}
+                                                onChange={(e) => updateQuestion(questionIndex, 'answer', e.target.value)}
                                                 className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
                                             />
                                             <input
@@ -418,7 +523,7 @@ const QuestionForm = ({ admissionId, onSave }) => {
                         )}
 
                         {/* File Upload for File Upload Type */}
-                        {question.question_type === 'file_upload' && (
+                        {/* {question.question_type === 'file_upload' && (
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Expected File (for reference)
@@ -443,7 +548,7 @@ const QuestionForm = ({ admissionId, onSave }) => {
                                     </p>
                                 )}
                             </div>
-                        )}
+                        )} */}
 
                         {/* Explanation */}
                         {/* <div className="mb-4">
@@ -465,8 +570,8 @@ const QuestionForm = ({ admissionId, onSave }) => {
                 <div className="mb-6">
                     <button
                         type="button"
-                        onClick={addQuestion}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                        onClick={addQuestionForm}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-orange-600 transition-colors"
                     >
                         + Add Another Question
                     </button>
@@ -476,13 +581,13 @@ const QuestionForm = ({ admissionId, onSave }) => {
                 <div className="flex justify-end space-x-4">
                     <button
                         type="button"
-                        className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                        className="px-6 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
                     >
                         Cancel
                     </button>
                     <button
                         type="submit"
-                        className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                        className="px-6 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
                     >
                         Save Questions
                     </button>
@@ -523,7 +628,7 @@ export default QuestionForm;
 //     ];
 
 //     // Add new question
-//     const addQuestion = () => {
+//     const addQuestionForm = () => {
 //         const newQuestion = {
 //             id: questions.length + 1,
 //             question: "",
@@ -953,7 +1058,7 @@ export default QuestionForm;
 //                 <div className="mb-6">
 //                     <button
 //                         type="button"
-//                         onClick={addQuestion}
+//                         onClick={addQuestionForm}
 //                         className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
 //                     >
 //                         + Add Another Question
@@ -989,7 +1094,7 @@ export default QuestionForm;
 // // import TextEditor from './components/TextEditor';
 // // import { FaPlus, FaTrash, FaSave, FaUpload, FaImage } from 'react-icons/fa';
 // // import supabase from '../../../services/database-server';
-// // import { addQuestion } from '../../../services/api/questions';
+// // import { addQuestionForm } from '../../../services/api/questions';
 
 // // function QuestionAdd() {
 // //   const [uploading, setUploading] = useState(false);
@@ -1136,7 +1241,7 @@ export default QuestionForm;
 // //         explanation: formData.explanation || null
 // //       };
       
-// //       return await addQuestion(questionData);
+// //       return await addQuestionForm(questionData);
 // //     },
 // //     onSuccess: (data) => {
 // //       console.log('Question saved successfully:', data);
@@ -1363,7 +1468,7 @@ export default QuestionForm;
 // // // import TextEditor from './components/TextEditor';
 // // // import { FaPlus, FaTrash, FaSave } from 'react-icons/fa';
 // // // import supabase from '../../../services/database-server';
-// // // import { addQuestion } from '../../../services/api/questions';
+// // // import { addQuestionForm } from '../../../services/api/questions';
 
 // // // function QuestionAdd() {
 // // //   const [uploading, setUploading] = useState(false);
@@ -1459,7 +1564,7 @@ export default QuestionForm;
 // // //         }))
 // // //       };
       
-// // //       return await addQuestion(questionData);
+// // //       return await addQuestionForm(questionData);
 // // //     },
 // // //     onSuccess: (data) => {
 // // //       console.log('Question saved successfully:', data);
@@ -1675,7 +1780,7 @@ export default QuestionForm;
 // // // // import TextEditor from './components/TextEditor';
 
 // // // import supabase from '../../../services/database-server';
-// // // import { addQuestion } from '@/services/api/questions';
+// // // import { addQuestionForm } from '@/services/api/questions';
 
 // // // function QuestionAdd() {
 // // //   const [uploading, setUploading] = useState(false);
@@ -1771,7 +1876,7 @@ export default QuestionForm;
 // // //           const question = questions[index].question;
 // // //           const options = 
           
-// // //           const response = await addQuestion({question, options})
+// // //           const response = await addQuestionForm({question, options})
 // // //         }
 // // //         // setRequestData(prev => ({...prev, phone_number: data.phone_number, full_name: data.full_name}))
 // // //         // console.log('data>', data, requestData.phone_number, requestData)

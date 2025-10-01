@@ -8,8 +8,14 @@ export const modalSlice = createSlice({
         bodyType : "",   // modal content management
         size : "",   // modal content management
         extraObject : {},   
+        is_success : false
     },
     reducers: {
+
+        doAction: (state, action) => {
+            const {is_success} = action.payload
+            state.is_success = is_success
+        },
 
         openModal: (state, action) => {
             const {title, bodyType, extraObject, size} = action.payload
@@ -30,6 +36,6 @@ export const modalSlice = createSlice({
     }
 })
 
-export const { openModal, closeModal } = modalSlice.actions
+export const { openModal, closeModal, doAction} = modalSlice.actions
 
 export default modalSlice.reducer

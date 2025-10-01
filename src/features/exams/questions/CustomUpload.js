@@ -1,32 +1,55 @@
+import supabase from "../../../services/database-server";    
+    
     // CustomUploadAdapter.js
     class CustomUploadAdapter {
       constructor(loader) {
         this.loader = loader;
       }
 
-      upload() {
-        return this.loader.file.then(file => new Promise((resolve, reject) => {
-          // Implement your image upload logic here.
-          // Example using fetch:
-          const formData = new FormData();
-          formData.append('upload', file);
-// eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3ODUxOTY3OTksImp0aSI6IjJkOGU3OTM0LTUyYmUtNGNjMS04OWRjLTBiMTA1MDU5YzVhMCIsImxpY2Vuc2VkSG9zdHMiOlsiMTI3LjAuMC4xIiwibG9jYWxob3N0IiwiMTkyLjE2OC4qLioiLCIxMC4qLiouKiIsIjE3Mi4qLiouKiIsIioudGVzdCIsIioubG9jYWxob3N0IiwiKi5sb2NhbCJdLCJ1c2FnZUVuZHBvaW50IjoiaHR0cHM6Ly9wcm94eS1ldmVudC5ja2VkaXRvci5jb20iLCJkaXN0cmlidXRpb25DaGFubmVsIjpbImNsb3VkIiwiZHJ1cGFsIl0sImxpY2Vuc2VUeXBlIjoiZGV2ZWxvcG1lbnQiLCJmZWF0dXJlcyI6WyJEUlVQIiwiRTJQIiwiRTJXIl0sInZjIjoiNjY1ZjM5YjIifQ.Lql0QXsyfZgFz6rEuEoar-fEHpUe0QZm8KhoTanzauPbmAienX-hIhiVJYs_OBPEM3eoBMHyzhob3iy13DMA_Q
-          fetch('', {
-            method: 'POST',
-            body: formData,
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.url) {
-              resolve({ default: data.url });
-            } else {
-              reject('Upload failed');
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
-        }));
+      async upload() {
+//         return this.loader.file.then(file => new Promise((resolve, reject) => {
+//           // Implement your image upload logic here.
+//           // Example using fetch:
+//           const formData = new FormData();
+//           formData.append('upload', file);
+// // eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3ODUxOTY3OTksImp0aSI6IjJkOGU3OTM0LTUyYmUtNGNjMS04OWRjLTBiMTA1MDU5YzVhMCIsImxpY2Vuc2VkSG9zdHMiOlsiMTI3LjAuMC4xIiwibG9jYWxob3N0IiwiMTkyLjE2OC4qLioiLCIxMC4qLiouKiIsIjE3Mi4qLiouKiIsIioudGVzdCIsIioubG9jYWxob3N0IiwiKi5sb2NhbCJdLCJ1c2FnZUVuZHBvaW50IjoiaHR0cHM6Ly9wcm94eS1ldmVudC5ja2VkaXRvci5jb20iLCJkaXN0cmlidXRpb25DaGFubmVsIjpbImNsb3VkIiwiZHJ1cGFsIl0sImxpY2Vuc2VUeXBlIjoiZGV2ZWxvcG1lbnQiLCJmZWF0dXJlcyI6WyJEUlVQIiwiRTJQIiwiRTJXIl0sInZjIjoiNjY1ZjM5YjIifQ.Lql0QXsyfZgFz6rEuEoar-fEHpUe0QZm8KhoTanzauPbmAienX-hIhiVJYs_OBPEM3eoBMHyzhob3iy13DMA_Q
+//           fetch('', {
+//             method: 'POST',
+//             body: formData,
+//           })
+//           .then(response => response.json())
+//           .then(data => {
+//             if (data.url) {
+//               resolve({ default: data.url });
+//             } else {
+//               reject('Upload failed');
+//             }
+//           })
+//           .catch(error => {
+//             reject(error);
+//           });
+//         }));
+const file = await this.loader.file;
+    const filePath = `images/${Date.now()}-${file.name}`;
+
+    const { data, error } = await supabase.storage
+      .from('exams/uploads/questions') 
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false,
+      });
+
+    if (error) {
+      throw new Error(`Supabase upload failed: ${error.message}`);
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('images')
+      .getPublicUrl(data.path);
+
+    return {
+      default: publicUrl
+    };
       }
 
       abort() {
