@@ -61,15 +61,23 @@ function Account(){
     },[id])
 
     const getAccount = async (id) => {
-        const { data, error } = await supabase.auth.admin.getUserById()
+        const { data, errorU } = await supabase.auth.admin.getUserById()
+        console.log('data', data)
+
+        let { data: exam_users, error } = await supabase
+        .from('exam_users')
+        .select('*')
+        .eq('user_id', )
+        
+        
     }
 
     // Call API to update profile settings changes
     const saveAccounts = async (e) => {
         e.preventDefault()
         console.log(account)
-        const {school_id, ...newaccount} = account
-        const response = await updateSchedule({newaccount, id})
+        const { ...newaccount} = account
+        const response = await updateAccount({newaccount})
         // const {error, message, data} = await addaccount({account})
         console.log('response', response)
         // console.log('message', message)
@@ -82,6 +90,24 @@ function Account(){
             dispatch(showNotification({message : "Gagal Memperbarui Jadwal", status : 0}))
         }
     }
+
+    const updateAccount = async ({newaccount, id}) => {
+        
+        
+            const { data, error } = await supabase
+            .from('exam_users')
+            .upsert({ some_column: 'someValue' })
+            .select()
+          
+
+            if(data && data.length>0){
+
+            }
+  
+        
+    }
+
+    
 
     // const updateaccounts = async (e) => {
     

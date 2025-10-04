@@ -78,7 +78,7 @@ function Register(){
                 }else{
                     console.log(exam_users)
                     const { data: user_roles, error } = await supabase
-                    .from('user_roles')
+                    .from('exam_user_roles')
                     .insert([
                         {   user_id: data.user.id,
                             role: 'admin',
