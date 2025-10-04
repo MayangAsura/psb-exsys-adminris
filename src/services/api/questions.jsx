@@ -24,11 +24,11 @@ export const addQuestion = async (props) => {
         // }
         
         if (!questions.score || questions.score < 0) {
-            errors.push('Valid score is required');
+            errors.push('Skor wajib diisi');
         }
         
         if (questions.question_type === 'MC' && (!options || options.length === 0)) {
-            errors.push('Multiple choice questions require options');
+            errors.push('Pilihan ganda wajib mengisi pilihan jawaban');
         }
         
         return errors;
@@ -64,7 +64,7 @@ export const addQuestion = async (props) => {
         if (options && options.length > 0) {
             // Transform options to include question ID
             const optionsToInsert = options.map((option, index) => ({
-                exam_test_id: examTestId,
+                exam_test_id: props.exam_test_id,
                 option: option.option || option, // Handle both object and string formats
                 type: option.type || 'MC',
                 exam_test_content_id: questionId,

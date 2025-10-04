@@ -1,419 +1,458 @@
 import { useEffect, useState } from "react";
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import supabase from "../../../services/database-server";
 import TitleCard from "../../../components/Cards/TitleCard";
 import CustomUploadAdapterPlugin from "./CustomUpload";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addQuestion } from "../../../services/api/questions";
-import { doAction, openModal } from "../../common/modalSlice"
-import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../../utils/globalConstantUtil'
+import { doAction, openModal } from "../../common/modalSlice";
+import {
+  CONFIRMATION_MODAL_CLOSE_TYPES,
+  MODAL_BODY_TYPES,
+} from "../../../utils/globalConstantUtil";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 
-
 const QuestionForm = ({ admissionId, onSave }) => {
-    const [questions, setQuestions] = useState([
-        {
-            // id: 1,
-            question: "",
-            question_type: "MC",
-            score: 1,
-            options: ["", "", "", ""],
-            answer: "",
-            // explanation: "",
-            // attachments: []
-        }
-    ]);
-    const [uploading, setUploading] = useState(false);
-    const [importSummary, setImportSummary] = useState({imported: 0, failed: 0})
-    const [invalidData, setInvalidData] = useState({data: "", message: ""})
-    const [success, setSuccess] = useState(false)
-    const dispatch = useDispatch()
-    const id = useParams().exam_id
+  const [questions, setQuestions] = useState([
+    {
+      // id: 1,
+      question: "",
+      question_type: "MC",
+      score: 1,
+      options: ["", "", "", ""],
+      answer: "",
+      // explanation: "",
+      // attachments: []
+    },
+  ]);
+  const [uploading, setUploading] = useState(false);
+  const [importSummary, setImportSummary] = useState({
+    imported: 0,
+    failed: 0,
+  });
+  const [invalidData, setInvalidData] = useState({ data: "", message: "" });
+  const [success, setSuccess] = useState(false);
+  const dispatch = useDispatch();
+  const id = useParams().exam_id;
 
-    // Question types
-    const questionTypes = [
-        { value: "MC", label: "Multiple Choice" },
-        { value: "BS", label: "True/False" },
-        { value: "SE", label: "Short Answer" },
-        { value: "FILE", label: "File Upload" }
-    ];
+  // Question types
+  const questionTypes = [
+    { value: "MC", label: "Multiple Choice" },
+    { value: "BS", label: "True/False" },
+    { value: "SE", label: "Short Answer" },
+    { value: "FILE", label: "File Upload" },
+  ];
 
-    // Add new question
-    const addQuestionForm = () => {
-        const newQuestion = {
-            // id: questions.length + 1,
-            question: "",
-            question_type: "MC",
-            score: 1,
-            options: ["", "", "", ""],
-            answer: "",
-            // explanation: "",
-            // attachments: []
-        };
-        setQuestions([...questions, newQuestion]);
+  // Add new question
+  const addQuestionForm = () => {
+    const newQuestion = {
+      // id: questions.length + 1,
+      exam_test_id: id,
+      question: "",
+      question_type: "MC",
+      score: 1,
+      options: ["", "", "", ""],
+      answer: "",
+      // explanation: "",
+      // attachments: []
     };
+    setQuestions([...questions, newQuestion]);
+  };
 
-    // Remove question
-    const removeQuestion = (index) => {
-        if (questions.length > 1) {
-            const newQuestions = questions.filter((_, i) => i !== index);
-            setQuestions(newQuestions);
+  // Remove question
+  const removeQuestion = (index) => {
+    if (questions.length > 1) {
+      const newQuestions = questions.filter((_, i) => i !== index);
+      setQuestions(newQuestions);
+    }
+  };
+
+  // Update question field
+  const updateQuestion = (index, field, value) => {
+    const newQuestions = [...questions];
+    newQuestions[index][field] = value;
+
+    // Reset options when changing question type
+    if (field === "question_type") {
+      if (value === "MC") {
+        newQuestions[index].options = ["", "", "", ""];
+      } else if (value === "BS") {
+        newQuestions[index].options = ["True", "False"];
+      } else {
+        newQuestions[index].options = [];
+      }
+    }
+
+    setQuestions(newQuestions);
+  };
+
+  // Update option for multiple choice
+  const updateOption = (questionIndex, optionIndex, value) => {
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].options[optionIndex] = value;
+    setQuestions(newQuestions);
+  };
+
+  // Add option to multiple choice
+  const addOption = (questionIndex) => {
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].options.push("");
+    setQuestions(newQuestions);
+  };
+
+  // Remove option from multiple choice
+  const removeOption = (questionIndex, optionIndex) => {
+    const newQuestions = [...questions];
+    if (newQuestions[questionIndex].options.length > 2) {
+      newQuestions[questionIndex].options.splice(optionIndex, 1);
+      setQuestions(newQuestions);
+    }
+  };
+
+  // Upload image to Supabase
+  const uploadImage = async (file, questionIndex) => {
+    try {
+      setUploading(true);
+
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${admissionId}/question_${
+        questionIndex + 1
+      }_${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("question-images")
+        .upload(filePath, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("question-images").getPublicUrl(filePath);
+
+      // Add attachment to question
+      const newQuestions = [...questions];
+      newQuestions[questionIndex].attachments.push({
+        url: publicUrl,
+        filename: file.name,
+        type: file.type,
+      });
+      setQuestions(newQuestions);
+
+      return { default: publicUrl };
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Handle file upload for file_upload type questions
+  // const handleFileUpload = async (file, questionIndex) => {
+  //     try {
+  //         setUploading(true);
+
+  //         const fileExt = file.name.split('.').pop();
+  //         const fileName = `${admissionId}/submissions/question_${questionIndex + 1}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+  //         const filePath = `${fileName}`;
+
+  //         const { error: uploadError } = await supabase.storage
+  //             .from('exams/')
+  //             .upload(filePath, file);
+
+  //         if (uploadError) {
+  //             throw uploadError;
+  //         }
+
+  //         const { data: { publicUrl } } = supabase.storage
+  //             .from('question-files')
+  //             .getPublicUrl(filePath);
+
+  //         // Update correct answer with file URL for file_upload type
+  //         const newQuestions = [...questions];
+  //         newQuestions[questionIndex].answer = publicUrl;
+  //         setQuestions(newQuestions);
+
+  //         return publicUrl;
+  //     } catch (error) {
+  //         console.error('Error uploading file:', error);
+  //         return null;
+  //     } finally {
+  //         setUploading(false);
+  //     }
+  // };
+
+  // Validate form
+  const validateForm = () => {
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i];
+
+      if (!q.question.trim()) {
+        alert(`Soal ${i + 1} wajid diisi`);
+        return false;
+      }
+
+      if (q.question_type === "MC") {
+        if (!q.options.some((opt) => opt.trim()) || !q.answer) {
+          alert(
+            `Semua pilihan jawaban wajib diisi dan pilih satu jawaban benar untuk soal ${
+              i + 1
+            }`
+          );
+          return false;
         }
-    };
+      }
 
-    // Update question field
-    const updateQuestion = (index, field, value) => {
-        const newQuestions = [...questions];
-        newQuestions[index][field] = value;
-        
-        // Reset options when changing question type
-        if (field === 'question_type') {
-            if (value === 'MC') {
-                newQuestions[index].options = ["", "", "", ""];
-            } else if (value === 'true_false') {
-                newQuestions[index].options = ["True", "False"];
-            } else {
-                newQuestions[index].options = [];
-            }
-        }
-        
-        setQuestions(newQuestions);
-    };
+      if (q.question_type === "BS" && !q.answer) {
+        alert(`pilih satu jawaban benar untuk soal ${i + 1}`);
+        return false;
+      }
 
-    // Update option for multiple choice
-    const updateOption = (questionIndex, optionIndex, value) => {
-        const newQuestions = [...questions];
-        newQuestions[questionIndex].options[optionIndex] = value;
-        setQuestions(newQuestions);
-    };
+      if (q.score <= 0) {
+        alert(`Skor harus lebih dari 0 untuk soal${i + 1}`);
+        return false;
+      }
+    }
+    return true;
+  };
 
-    // Add option to multiple choice
-    const addOption = (questionIndex) => {
-        const newQuestions = [...questions];
-        newQuestions[questionIndex].options.push("");
-        setQuestions(newQuestions);
-    };
-
-    // Remove option from multiple choice
-    const removeOption = (questionIndex, optionIndex) => {
-        const newQuestions = [...questions];
-        if (newQuestions[questionIndex].options.length > 2) {
-            newQuestions[questionIndex].options.splice(optionIndex, 1);
-            setQuestions(newQuestions);
-        }
-    };
-
-    // Upload image to Supabase
-    const uploadImage = async (file, questionIndex) => {
-        try {
-            setUploading(true);
-            
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${admissionId}/question_${questionIndex + 1}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-            const filePath = `${fileName}`;
-
-            const { error: uploadError } = await supabase.storage
-                .from('question-images')
-                .upload(filePath, file);
-
-            if (uploadError) {
-                throw uploadError;
-            }
-
-            const { data: { publicUrl } } = supabase.storage
-                .from('question-images')
-                .getPublicUrl(filePath);
-
-            // Add attachment to question
-            const newQuestions = [...questions];
-            newQuestions[questionIndex].attachments.push({
-                url: publicUrl,
-                filename: file.name,
-                type: file.type
-            });
-            setQuestions(newQuestions);
-
-            return { default: publicUrl };
-        } catch (error) {
-            console.error('Error uploading image:', error);
-            return null;
-        } finally {
-            setUploading(false);
-        }
-    };
-
-    // Handle file upload for file_upload type questions
-    // const handleFileUpload = async (file, questionIndex) => {
-    //     try {
-    //         setUploading(true);
-            
-    //         const fileExt = file.name.split('.').pop();
-    //         const fileName = `${admissionId}/submissions/question_${questionIndex + 1}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-    //         const filePath = `${fileName}`;
-
-    //         const { error: uploadError } = await supabase.storage
-    //             .from('exams/')
-    //             .upload(filePath, file);
-
-    //         if (uploadError) {
-    //             throw uploadError;
-    //         }
-
-    //         const { data: { publicUrl } } = supabase.storage
-    //             .from('question-files')
-    //             .getPublicUrl(filePath);
-
-    //         // Update correct answer with file URL for file_upload type
-    //         const newQuestions = [...questions];
-    //         newQuestions[questionIndex].answer = publicUrl;
-    //         setQuestions(newQuestions);
-
-    //         return publicUrl;
-    //     } catch (error) {
-    //         console.error('Error uploading file:', error);
-    //         return null;
-    //     } finally {
-    //         setUploading(false);
-    //     }
-    // };
-
-    // Validate form
-    const validateForm = () => {
-        for (let i = 0; i < questions.length; i++) {
-            const q = questions[i];
-            
-            if (!q.question.trim()) {
-                alert(`Soal ${i + 1} wajid diisi`);
-                return false;
-            }
-            
-            if (q.question_type === 'MC') {
-                if (!q.options.some(opt => opt.trim()) || !q.answer) {
-                    alert(`Semua pilihan jawaban wajib diisi dan pilih satu jawaban benar untuk soal ${i + 1}`);
-                    return false;
-                }
-            }
-            
-            if (q.question_type === 'BS' && !q.answer) {
-                alert(`pilih satu jawaban benar untuk soal ${i + 1}`);
-                return false;
-            }
-            
-            if (q.score <= 0) {
-                alert(`Skor harus lebih dari 0 untuk soal${i + 1}`);
-                return false;
-            }
-        }
-        return true;
-    };
-
-    const { mutateAsync: addQuestionMutation } = useMutation({
-            mutationFn: addQuestion,
-            onSuccess: (data, variables) => {
-                console.log('Mutation success:', data)
-                if (data && data.error === false) {
-                  
-                    setImportSummary(prev => ({
-                        ...prev,
-                        imported: prev.imported + 1
-                    }))
-                    // setImportedData(prev => [...prev, variables])
-                } else {
-                    setInvalidData(prev => [...prev, {
-                        data: variables,
-                        reason: data?.message || "Unknown error"
-                    }])
-                    setImportSummary(prev => ({
-                        ...prev,
-                        failed: prev.failed + 1
-                    }))
-                }
-            },
-            onError: (error, variables) => {
-                console.error('Mutation error:', error)
-                setInvalidData(prev => [...prev, {
-                    data: variables,
-                    reason: error.message || "Network error"
-                }])
-                setImportSummary(prev => ({
-                    ...prev,
-                    failed: prev.failed + 1
-                }))
-            }
-        });
-
-    // Handle form submission
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
-        if (!validateForm()) {
-            return;
-        }
-        console.log('questions', questions)
-
-
-        questions.map(async (question) => {
-
-          try {
-                await addQuestionMutation({
-                  questions: question
-                });
-  
-            } catch (e) {
-              console.log(e);
-            }
-
-        })
-
-        }
+  const { mutateAsync: addQuestionMutation } = useMutation({
+    mutationFn: addQuestion,
+    onSuccess: (data, variables) => {
+      console.log("Mutation success:", data);
+      if (data && data.error === false) {
+        setImportSummary((prev) => ({
+          ...prev,
+          imported: prev.imported + 1,
+        }));
 
         // Show results
-          if (invalidData.length === 0 && importSummary.imported > 0) {
-              setSuccess(true)
-              dispatch(openModal({
-                  title: "Berhasil",
-                  bodyType: MODAL_BODY_TYPES.CONFIRMATION,
-                  size: 'sm',
-                  extraObject: {
-                      message: `${importSummary.imported} pertanyaan berhasil disimpan`,
-                      type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_QUESTION_ADD_SUCCESS,
-                      index: id
-                  }
-              }))
-              dispatch(doAction({is_success : true}))
-              
-          } else if (importSummary.total > 0) {
-              setSuccess(true)
-              dispatch(openModal({
-                  title: "Hasil Import",
-                  bodyType: MODAL_BODY_TYPES.CONFIRMATION,
-                  size: 'lg',
-                  extraObject: {
-                      message: `
+        if (invalidData.length === 0 && importSummary.imported > 0) {
+          //   setSuccess(true)
+          dispatch(doAction({ is_success: true }));
+          dispatch(
+            openModal({
+              title: "Berhasil",
+              bodyType: MODAL_BODY_TYPES.CONFIRMATION,
+              size: "sm",
+              extraObject: {
+                message: `${importSummary.imported} pertanyaan berhasil disimpan`,
+                type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_QUESTION_ADD_SUCCESS,
+                index: id,
+              },
+            })
+          );
+        } else if (importSummary.imported > 0) {
+          //   setSuccess(true)
+          dispatch(
+            openModal({
+              title: "Hasil Import",
+              bodyType: MODAL_BODY_TYPES.CONFIRMATION,
+              size: "lg",
+              extraObject: {
+                message: `
                           ${importSummary.imported} pertanyaan berhasil disimpan.
                           ${importSummary.failed} data gagal disimpan.
                       `,
-                      type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_QUESTION_ADD_SUCCESS,
-                      index: id,
-                      invalidData: invalidData
-                  }
-              }))
-          } else {
-              setSuccess(false)
-              dispatch(openModal({
-                  title: "Gagal",
-                  bodyType: MODAL_BODY_TYPES.CONFIRMATION,
-                  size: 'sm',
-                  extraObject: {
-                      message: "Tidak ada data yang berhasil disimpan",
-                      type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_QUESTION_ADD_ERROR,
-                      index: id
-                  }
-              }))
-        // }
-    };
+                type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_QUESTION_ADD_SUCCESS,
+                index: id,
+                invalidData: invalidData,
+              },
+            })
+          );
+        }
+        // setImportedData(prev => [...prev, variables])
+      } else {
+        setInvalidData((prev) => [
+          ...prev,
+          {
+            data: variables,
+            reason: data?.message || "Unknown error",
+          },
+        ]);
+        setImportSummary((prev) => ({
+          ...prev,
+          failed: prev.failed + 1,
+        }));
 
-    return (
-      <TitleCard title="Tambah Soal Ujian" topMargin="mt-2">
-        {/* <div className="max-w-4xl mx-auto p-6 rounded-lg shadow-lg"> */}
-            {/* <h2 className="text-2xl font-bold mb-6 text-gray-800">Questions Form</h2> */}
-            
-            <form onSubmit={handleSubmit}>
-                {questions.map((question, questionIndex) => (
-                    <div key={question.id} className="mb-8 p-6 border-2 border-gray-200 rounded-lg bg-gray-50">
-                        {/* Question Header */}
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-semibold text-gray-700">
-                                Soal {questionIndex + 1}
-                            </h3>
-                            {questions.length > 1 && (
-                                <button
-                                    type="button"
-                                    onClick={() => removeQuestion(questionIndex)}
-                                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
-                                >
-                                    Hapus
-                                </button>
-                            )}
-                        </div>
+        dispatch(
+          openModal({
+            title: "Gagal",
+            bodyType: MODAL_BODY_TYPES.CONFIRMATION,
+            size: "sm",
+            extraObject: {
+              message: "Tidak ada data yang berhasil disimpan",
+              type: CONFIRMATION_MODAL_CLOSE_TYPES.EXAM_QUESTION_ADD_ERROR,
+              index: id,
+            },
+          })
+        );
+      }
+    },
+    onError: (error, variables) => {
+      console.error("Mutation error:", error);
+      setInvalidData((prev) => [
+        ...prev,
+        {
+          data: variables,
+          reason: error.message || "Network error",
+        },
+      ]);
+      setImportSummary((prev) => ({
+        ...prev,
+        failed: prev.failed + 1,
+      }));
+    },
+  });
 
-                        {/* Question Type */}
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Tipe Soal *
-                            </label>
-                            <select
-                                value={question.question_type}
-                                onChange={(e) => updateQuestion(questionIndex, 'question_type', e.target.value)}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            >
-                                {questionTypes.map(type => (
-                                    <option key={type.value} value={type.value}>
-                                        {type.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-                        {/* Score */}
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Skor *
-                            </label>
-                            <input
-                                type="number"
-                                min="1"
-                                value={question.score}
-                                onChange={(e) => updateQuestion(questionIndex, 'score', parseInt(e.target.value) || 1)}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                required
-                            />
-                        </div>
+    if (!validateForm()) {
+      return;
+    }
+    console.log("questions", questions);
 
-                        {/* Question Text with CKEditor */}
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              Pertanyaan *
-                            </label>
-                            <CKEditor
-                                editor={ClassicEditor}
-                                data={question.question}
-                                onChange={(event, editor) => {
-                                    const data = editor.getData();
-                                    updateQuestion(questionIndex, 'question', data);
-                                }}
-                                config={{
-                                    extraPlugins: [CustomUploadAdapterPlugin],
-                                    toolbar: [
-                                        'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 
-                                        'numberedList', 'blockQuote', 'imageUpload', 'insertTable',
-                                        'mediaEmbed', 'undo', 'redo'
-                                    ]
-                                    // ckfinder: {
-                                    //     uploadUrl: '/api/upload', 
-                                    // }
-                                }}
-                                onReady={editor => {
-                                    // You can store the editor instance and use it later.
-                                    console.log('Editor is ready to use!', editor);
-                                }}
-                                onBlur={(event, editor) => {
-                                    console.log('Blur.', editor);
-                                }}
-                                onFocus={(event, editor) => {
-                                    console.log('Focus.', editor);
-                                }}
-                                // onChange={(event, editor) => {
-                                //   const data = editor.getData();
-                                //   console.log({ event, editor, data });
-                                // }}
-                            />
-                        </div>
+    questions.map(async (question) => {
+      try {
+        await addQuestionMutation({
+          questions: question,
+          exam_test_id: id,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    });
 
-                        {/* Attachments */}
-                        {/* {question.attachments.length > 0 && (
+    // }
+  };
+
+  return (
+    <TitleCard title="Tambah Soal Ujian" topMargin="mt-2">
+      {/* <div className="max-w-4xl mx-auto p-6 rounded-lg shadow-lg"> */}
+      {/* <h2 className="text-2xl font-bold mb-6 text-gray-800">Questions Form</h2> */}
+
+      <form onSubmit={(e) => handleSubmit(e)}>
+        {questions.map((question, questionIndex) => (
+          <div
+            key={question.id}
+            className="mb-8 p-6 border-2 border-gray-200 rounded-lg bg-gray-50"
+          >
+            {/* Question Header */}
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-700">
+                Soal {questionIndex + 1}
+              </h3>
+              {questions.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeQuestion(questionIndex)}
+                  className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                >
+                  Hapus
+                </button>
+              )}
+            </div>
+
+            {/* Question Type */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Tipe Soal *
+              </label>
+              <select
+                value={question.question_type}
+                onChange={(e) =>
+                  updateQuestion(questionIndex, "question_type", e.target.value)
+                }
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                {questionTypes.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Score */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Skor *
+              </label>
+              <input
+                type="number"
+                min="1"
+                value={question.score}
+                onChange={(e) =>
+                  updateQuestion(
+                    questionIndex,
+                    "score",
+                    parseInt(e.target.value) || 1
+                  )
+                }
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+
+            {/* Question Text with CKEditor */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Pertanyaan *
+              </label>
+              <CKEditor
+                editor={ClassicEditor}
+                data={question.question}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  updateQuestion(questionIndex, "question", data);
+                }}
+                config={{
+                  extraPlugins: [CustomUploadAdapterPlugin],
+                  toolbar: [
+                    "heading",
+                    "|",
+                    "bold",
+                    "italic",
+                    "link",
+                    "bulletedList",
+                    "numberedList",
+                    "blockQuote",
+                    "imageUpload",
+                    "insertTable",
+                    "mediaEmbed",
+                    "undo",
+                    "redo",
+                  ],
+                  // ckfinder: {
+                  //     uploadUrl: '/api/upload',
+                  // }
+                }}
+                onReady={(editor) => {
+                  // You can store the editor instance and use it later.
+                  console.log("Editor is ready to use!", editor);
+                }}
+                onBlur={(event, editor) => {
+                  console.log("Blur.", editor);
+                }}
+                onFocus={(event, editor) => {
+                  console.log("Focus.", editor);
+                }}
+                // onChange={(event, editor) => {
+                //   const data = editor.getData();
+                //   console.log({ event, editor, data });
+                // }}
+              />
+            </div>
+
+            {/* Attachments */}
+            {/* {question.attachments.length > 0 && (
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Attachments
@@ -436,94 +475,116 @@ const QuestionForm = ({ admissionId, onSave }) => {
                             </div>
                         )} */}
 
-                        {/* Options for Multiple Choice */}
-                        {question.question_type === 'MC' && (
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Options *
-                                </label>
-                                <div className="space-y-2">
-                                    {question.options.map((option, optionIndex) => (
-                                        <div key={optionIndex} className="flex items-center gap-2">
-                                            <input
-                                                type="radio"
-                                                name={`answer${questionIndex}`}
-                                                value={option}
-                                                checked={question.answer === option}
-                                                onChange={(e) => updateQuestion(questionIndex, 'answer', e.target.value)}
-                                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
-                                            />
-                                            <input
-                                                type="text"
-                                                value={option}
-                                                onChange={(e) => updateOption(questionIndex, optionIndex, e.target.value)}
-                                                placeholder={`Option ${optionIndex + 1}`}
-                                                className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                            />
-                                            {question.options.length > 2 && (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeOption(questionIndex, optionIndex)}
-                                                    className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
-                                                >
-                                                    Remove
-                                                </button>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                                <button
-                                    type="button"
-                                    onClick={() => addOption(questionIndex)}
-                                    className="mt-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
-                                >
-                                    Add Option
-                                </button>
-                            </div>
-                        )}
+            {/* Options for Multiple Choice */}
+            {question.question_type === "MC" && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Options *
+                </label>
+                <div className="space-y-2">
+                  {question.options.map((option, optionIndex) => (
+                    <div key={optionIndex} className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name={`answer${questionIndex}`}
+                        value={option}
+                        checked={question.answer === option}
+                        onChange={(e) =>
+                          updateQuestion(
+                            questionIndex,
+                            "answer",
+                            e.target.value
+                          )
+                        }
+                        className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
+                      />
+                      <input
+                        type="text"
+                        value={option}
+                        onChange={(e) =>
+                          updateOption(
+                            questionIndex,
+                            optionIndex,
+                            e.target.value
+                          )
+                        }
+                        // placeholder={`o ${optionIndex + 1}`}
+                        className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                      {question.options.length > 2 && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            removeOption(questionIndex, optionIndex)
+                          }
+                          className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => addOption(questionIndex)}
+                  className="mt-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
+                >
+                  Add Option
+                </button>
+              </div>
+            )}
 
-                        {/* Options for True/False */}
-                        {question.question_type === 'true_false' && (
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Correct Answer *
-                                </label>
-                                <div className="space-y-2">
-                                    {question.options.map((option, optionIndex) => (
-                                        <div key={optionIndex} className="flex items-center gap-2">
-                                            <input
-                                                type="radio"
-                                                name={`correct_answer_${questionIndex}`}
-                                                value={option}
-                                                checked={question.correct_answer === option}
-                                                onChange={(e) => updateQuestion(questionIndex, 'correct_answer', e.target.value)}
-                                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
-                                            />
-                                            <span className="text-gray-700">{option}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+            {/* Options for True/False */}
+            {question.question_type === "BS" && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Jawaban
+                </label>
+                <div className="space-y-2">
+                  {question.options.map((option, optionIndex) => (
+                    <div key={optionIndex} className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name={`answer_${questionIndex}`}
+                        value={option}
+                        checked={question.answer === option}
+                        onChange={(e) =>
+                          updateQuestion(
+                            questionIndex,
+                            "answer",
+                            e.target.value
+                          )
+                        }
+                        className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
+                      />
+                      <span className="text-gray-700">{option}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
-                        {/* Correct Answer for Short Answer */}
-                        {question.question_type === 'short_answer' && (
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Expected Answer *
-                                </label>
-                                <textarea
-                                    value={question.correct_answer}
-                                    onChange={(e) => updateQuestion(questionIndex, 'correct_answer', e.target.value)}
-                                    placeholder="Enter the expected answer"
-                                    rows="3"
-                                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                />
-                            </div>
-                        )}
+            {/* Correct Answer for Short Answer */}
+            {question.question_type === "SE" && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Jawaban
+                </label>
+                <textarea
+                  value={question.answer}
+                  onChange={(e) =>
+                    updateQuestion(questionIndex, "answer", e.target.value)
+                  }
+                  placeholder="Masukkan jawaban"
+                  rows="3"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            )}
 
-                        {/* File Upload for File Upload Type */}
-                        {/* {question.question_type === 'file_upload' && (
+            {/* File Upload for File Upload Type */}
+            {/* {question.question_type === 'file_upload' && (
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Expected File (for reference)
@@ -550,8 +611,8 @@ const QuestionForm = ({ admissionId, onSave }) => {
                             </div>
                         )} */}
 
-                        {/* Explanation */}
-                        {/* <div className="mb-4">
+            {/* Explanation */}
+            {/* <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Explanation (Optional)
                             </label>
@@ -563,39 +624,39 @@ const QuestionForm = ({ admissionId, onSave }) => {
                                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             />
                         </div> */}
-                    </div>
-                ))}
+          </div>
+        ))}
 
-                {/* Add Question Button */}
-                <div className="mb-6">
-                    <button
-                        type="button"
-                        onClick={addQuestionForm}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-orange-600 transition-colors"
-                    >
-                        + Add Another Question
-                    </button>
-                </div>
+        {/* Add Question Button */}
+        <div className="mb-6">
+          <button
+            type="button"
+            onClick={addQuestionForm}
+            className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-orange-600 transition-colors"
+          >
+            + Tambah Pertanyaan
+          </button>
+        </div>
 
-                {/* Submit Button */}
-                <div className="flex justify-end space-x-4">
-                    <button
-                        type="button"
-                        className="px-6 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        className="px-6 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
-                    >
-                        Save Questions
-                    </button>
-                </div>
-            </form>
-        {/* </div> */}
-      </TitleCard>
-    );
+        {/* Submit Button */}
+        <div className="flex justify-end space-x-4">
+          <button
+            type="button"
+            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-6 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
+          >
+            Simpan
+          </button>
+        </div>
+      </form>
+      {/* </div> */}
+    </TitleCard>
+  );
 };
 
 export default QuestionForm;
@@ -654,7 +715,7 @@ export default QuestionForm;
 //     const updateQuestion = (index, field, value) => {
 //         const newQuestions = [...questions];
 //         newQuestions[index][field] = value;
-        
+
 //         // Reset options when changing question type
 //         if (field === 'question_type') {
 //             if (value === 'multiple_choice') {
@@ -665,7 +726,7 @@ export default QuestionForm;
 //                 newQuestions[index].options = [];
 //             }
 //         }
-        
+
 //         setQuestions(newQuestions);
 //     };
 
@@ -696,7 +757,7 @@ export default QuestionForm;
 //     const uploadImage = async (file, questionIndex) => {
 //         try {
 //             setUploading(true);
-            
+
 //             const fileExt = file.name.split('.').pop();
 //             const fileName = `${admissionId}/question_${questionIndex + 1}_${Math.random().toString(36).substring(2)}.${fileExt}`;
 //             const filePath = `${fileName}`;
@@ -735,7 +796,7 @@ export default QuestionForm;
 //     const handleFileUpload = async (file, questionIndex) => {
 //         try {
 //             setUploading(true);
-            
+
 //             const fileExt = file.name.split('.').pop();
 //             const fileName = `${admissionId}/submissions/question_${questionIndex + 1}_${Math.random().toString(36).substring(2)}.${fileExt}`;
 //             const filePath = `${fileName}`;
@@ -770,24 +831,24 @@ export default QuestionForm;
 //     const validateForm = () => {
 //         for (let i = 0; i < questions.length; i++) {
 //             const q = questions[i];
-            
+
 //             if (!q.question.trim()) {
 //                 alert(`Question ${i + 1} is required`);
 //                 return false;
 //             }
-            
+
 //             if (q.question_type === 'multiple_choice') {
 //                 if (!q.options.some(opt => opt.trim()) || !q.correct_answer) {
 //                     alert(`Please fill all options and select correct answer for question ${i + 1}`);
 //                     return false;
 //                 }
 //             }
-            
+
 //             if (q.question_type === 'true_false' && !q.correct_answer) {
 //                 alert(`Please select correct answer for question ${i + 1}`);
 //                 return false;
 //             }
-            
+
 //             if (q.score <= 0) {
 //                 alert(`Score must be greater than 0 for question ${i + 1}`);
 //                 return false;
@@ -799,7 +860,7 @@ export default QuestionForm;
 //     // Handle form submission
 //     const handleSubmit = (e) => {
 //         e.preventDefault();
-        
+
 //         if (!validateForm()) {
 //             return;
 //         }
@@ -812,7 +873,7 @@ export default QuestionForm;
 //     return (
 //         <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
 //             <h2 className="text-2xl font-bold mb-6 text-gray-800">Questions Form</h2>
-            
+
 //             <form onSubmit={handleSubmit}>
 //                 {questions.map((question, questionIndex) => (
 //                     <div key={question.id} className="mb-8 p-6 border-2 border-gray-200 rounded-lg bg-gray-50">
@@ -879,7 +940,7 @@ export default QuestionForm;
 //                                 }}
 //                                 config={{
 //                                     toolbar: [
-//                                         'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 
+//                                         'heading', '|', 'bold', 'italic', 'link', 'bulletedList',
 //                                         'numberedList', 'blockQuote', 'imageUpload', 'insertTable',
 //                                         'mediaEmbed', 'undo', 'redo'
 //                                     ],
@@ -910,9 +971,9 @@ export default QuestionForm;
 //                                     {question.attachments.map((attachment, attIndex) => (
 //                                         <div key={attIndex} className="flex items-center justify-between p-2 bg-white border rounded">
 //                                             <span className="text-sm text-gray-600">{attachment.filename}</span>
-//                                             <a 
-//                                                 href={attachment.url} 
-//                                                 target="_blank" 
+//                                             <a
+//                                                 href={attachment.url}
+//                                                 target="_blank"
 //                                                 rel="noopener noreferrer"
 //                                                 className="text-blue-500 hover:text-blue-700 text-sm"
 //                                             >
@@ -1100,7 +1161,7 @@ export default QuestionForm;
 // //   const [uploading, setUploading] = useState(false);
 // //   const [uploadingIndex, setUploadingIndex] = useState(null);
 // //   const [questionType, setQuestionType] = useState('');
-  
+
 // //   const {
 // //     register,
 // //     control,
@@ -1151,7 +1212,7 @@ export default QuestionForm;
 
 // //   const handleImageUpload = async (file, type, index = null) => {
 // //     if (!file) return null;
-    
+
 // //     setUploading(true);
 // //     if (index !== null) setUploadingIndex(index);
 
@@ -1240,7 +1301,7 @@ export default QuestionForm;
 // //         })),
 // //         explanation: formData.explanation || null
 // //       };
-      
+
 // //       return await addQuestionForm(questionData);
 // //     },
 // //     onSuccess: (data) => {
@@ -1271,10 +1332,10 @@ export default QuestionForm;
 // //           <label htmlFor="question_type" className="block text-sm font-medium text-gray-700 mb-2">
 // //             Tipe Soal *
 // //           </label>
-// //           <select 
-// //             id="question_type" 
+// //           <select
+// //             id="question_type"
 // //             {...register('question_type')}
-// //             value={questionType} 
+// //             value={questionType}
 // //             onChange={(e) => setQuestionType(e.target.value)}
 // //             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 // //             required
@@ -1317,9 +1378,9 @@ export default QuestionForm;
 // //             <div className="space-y-4">
 // //               {questionImage ? (
 // //                 <div className="relative inline-block">
-// //                   <img 
-// //                     src={questionImage} 
-// //                     alt="Question" 
+// //                   <img
+// //                     src={questionImage}
+// //                     alt="Question"
 // //                     className="max-w-full h-64 object-contain border rounded-lg"
 // //                   />
 // //                   <button
@@ -1364,7 +1425,7 @@ export default QuestionForm;
 // //                 <FaPlus className="mr-2" /> Tambah Opsi
 // //               </button>
 // //             </div>
-            
+
 // //             <div className="space-y-4">
 // //               {fields.map((field, index) => (
 // //                 <div key={field.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
@@ -1373,7 +1434,7 @@ export default QuestionForm;
 // //                       <label className="block text-sm font-medium text-gray-700 mb-1">
 // //                         Teks Jawaban {index + 1} *
 // //                       </label>
-// //                       <input 
+// //                       <input
 // //                         {...register(`answers.${index}.option`)}
 // //                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
 // //                         placeholder={`Masukkan jawaban ${index + 1}`}
@@ -1418,7 +1479,7 @@ export default QuestionForm;
 // //                         Jawaban Benar
 // //                       </span>
 // //                     </label>
-                    
+
 // //                     {fields.length > 1 && (
 // //                       <button
 // //                         type="button"
@@ -1473,7 +1534,7 @@ export default QuestionForm;
 // // // function QuestionAdd() {
 // // //   const [uploading, setUploading] = useState(false);
 // // //   const [questionType, setQuestionType] = useState('');
-  
+
 // // //   const {
 // // //     register,
 // // //     control,
@@ -1517,7 +1578,7 @@ export default QuestionForm;
 
 // // //   const handleImageUpload = async (file, type, index = null) => {
 // // //     if (!file) return;
-    
+
 // // //     setUploading(true);
 // // //     const fileExt = file.name.split('.').pop();
 // // //     const fileName = `${Math.random()}.${fileExt}`;
@@ -1563,7 +1624,7 @@ export default QuestionForm;
 // // //           isCorrect: answer.isCorrect || false
 // // //         }))
 // // //       };
-      
+
 // // //       return await addQuestionForm(questionData);
 // // //     },
 // // //     onSuccess: (data) => {
@@ -1591,10 +1652,10 @@ export default QuestionForm;
 // // //             <label htmlFor="question_type" className="block text-sm font-medium text-gray-700 mb-2">
 // // //               Tipe Soal
 // // //             </label>
-// // //             <select 
-// // //               id="question_type" 
+// // //             <select
+// // //               id="question_type"
 // // //               {...register('question_type')}
-// // //               value={questionType} 
+// // //               value={questionType}
 // // //               onChange={(e) => setQuestionType(e.target.value)}
 // // //               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
 // // //               required
@@ -1637,7 +1698,7 @@ export default QuestionForm;
 // // //                   <FaPlus className="mr-2" /> Tambah Opsi
 // // //                 </button>
 // // //               </div>
-              
+
 // // //               <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
 // // //                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 // // //                   <tr>
@@ -1652,10 +1713,10 @@ export default QuestionForm;
 // // //                   {fields.map((field, index) => (
 // // //                     <tr key={field.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
 // // //                       <td className="px-6 py-4">
-// // //                         <input 
+// // //                         <input
 // // //                           {...register(`answers.${index}.order`)}
 // // //                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                           type="text" 
+// // //                           type="text"
 // // //                           placeholder="1"
 // // //                           required
 // // //                         />
@@ -1671,17 +1732,17 @@ export default QuestionForm;
 // // //                       </td>
 // // //                       <td className="px-6 py-4">
 // // //                         <div className="space-y-2">
-// // //                           <input 
+// // //                           <input
 // // //                             {...register(`answers.${index}.option_order`)}
 // // //                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                             type="text" 
+// // //                             type="text"
 // // //                             placeholder="A."
 // // //                             required
 // // //                           />
-// // //                           <input 
+// // //                           <input
 // // //                             {...register(`answers.${index}.option`)}
 // // //                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                             type="text" 
+// // //                             type="text"
 // // //                             placeholder="Teks jawaban"
 // // //                             required
 // // //                           />
@@ -1785,7 +1846,7 @@ export default QuestionForm;
 // // // function QuestionAdd() {
 // // //   const [uploading, setUploading] = useState(false);
 // // //   const [questionType, setQuestionType] = useState('');
-  
+
 // // //   const {
 // // //     register,
 // // //     control,
@@ -1835,7 +1896,7 @@ export default QuestionForm;
 
 // // //   const handleImageUpload = async (file, type, index = null) => {
 // // //     if (!file) return;
-    
+
 // // //     setUploading(true);
 // // //     const fileExt = file.name.split('.').pop();
 // // //     const fileName = `${Math.random()}.${fileExt}`;
@@ -1874,8 +1935,8 @@ export default QuestionForm;
 // // //         // }
 // // //         for (let index = 0; index < questions.length; index++) {
 // // //           const question = questions[index].question;
-// // //           const options = 
-          
+// // //           const options =
+
 // // //           const response = await addQuestionForm({question, options})
 // // //         }
 // // //         // setRequestData(prev => ({...prev, phone_number: data.phone_number, full_name: data.full_name}))
@@ -1930,15 +1991,11 @@ export default QuestionForm;
 // // //     // Submit to your API here
 // // //     onSave(data)
 
-    
 // // //   };
-
-
 
 // // //   return (
 // // //     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
 // // //       <h1 className="text-2xl font-bold text-gray-800 mb-6">Buat Pertanyaan Baru</h1>
-
 
 // // //         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 // // //           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -1946,9 +2003,9 @@ export default QuestionForm;
 // // //           <label htmlFor="question_type" className="block text-sm font-medium text-gray-700 mb-2">
 // // //             Tipe Soal
 // // //           </label>
-// // //             <select 
-// // //               id="question_type" 
-// // //               value={questionType} 
+// // //             <select
+// // //               id="question_type"
+// // //               value={questionType}
 // // //               onChange={(e) => setQuestionType(e.target.value)}
 // // //               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
 // // //               required
@@ -2027,9 +2084,9 @@ export default QuestionForm;
 // // //                 <tbody>
 // // //                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
 // // //                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions[0].order}
 // // //                               onChange={(e) => handleInputChange('order[0]', e.target.value)}
 // // //                               required
@@ -2048,17 +2105,17 @@ export default QuestionForm;
 // // //                         </td>
 // // //                         <td class="px-6 py-4">
 // // //                           <div className="grid-col-2">
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions[0].option_order}
 // // //                               placeholder='A.'
 // // //                               onChange={(e) => handleInputChange('option_order[0]', e.target.value)}
 // // //                               required
 // // //                             />
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions[0].option}
 // // //                               placeholder=''
 // // //                               onChange={(e) => handleInputChange('option[0]', e.target.value)}
@@ -2068,15 +2125,15 @@ export default QuestionForm;
 // // //                           </div>
 // // //                         </td>
 // // //                         <td class="px-6 py-4">
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions[0].poin}
 // // //                               placeholder='A.'
 // // //                               onChange={(e) => handleInputChange('poin[0]', e.target.value)}
 // // //                               required
 // // //                             />
-                            
+
 // // //                         </td>
 // // //                         {/* <td class="px-6 py-4 text-right">
 // // //                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
@@ -2084,9 +2141,9 @@ export default QuestionForm;
 // // //                     </tr>
 // // //                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
 // // //                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions[1].order}
 // // //                               onChange={(e) => handleInputChange('order[1]', e.target.value)}
 // // //                               required
@@ -2106,17 +2163,17 @@ export default QuestionForm;
 // // //                         </td>
 // // //                         <td class="px-6 py-4">
 // // //                           <div className="grid-col-2">
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions[1].option_order}
 // // //                               placeholder='A.'
 // // //                               onChange={(e) => handleInputChange('option_order[1]', e.target.value)}
 // // //                               required
 // // //                             />
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions[1].option}
 // // //                               placeholder=''
 // // //                               onChange={(e) => handleInputChange('option[1]', e.target.value)}
@@ -2126,15 +2183,15 @@ export default QuestionForm;
 // // //                           </div>
 // // //                         </td>
 // // //                         <td class="px-6 py-4">
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions[1].poin}
 // // //                               placeholder='A.'
 // // //                               onChange={(e) => handleInputChange('poin[1]', e.target.value)}
 // // //                               required
 // // //                             />
-                            
+
 // // //                         </td>
 // // //                         {/* <td class="px-6 py-4 text-right">
 // // //                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
@@ -2142,9 +2199,9 @@ export default QuestionForm;
 // // //                     </tr>
 // // //                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
 // // //                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions[2].order}
 // // //                               onChange={(e) => handleInputChange('order[2]', e.target.value)}
 // // //                               required
@@ -2163,17 +2220,17 @@ export default QuestionForm;
 // // //                         </td>
 // // //                         <td class="px-6 py-4">
 // // //                           <div className="grid-col-2">
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions[2].option_order}
 // // //                               placeholder='A.'
 // // //                               onChange={(e) => handleInputChange('option_order[2]', e.target.value)}
 // // //                               required
 // // //                             />
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions[2].option}
 // // //                               placeholder=''
 // // //                               onChange={(e) => handleInputChange('option[2]', e.target.value)}
@@ -2183,15 +2240,15 @@ export default QuestionForm;
 // // //                           </div>
 // // //                         </td>
 // // //                         <td class="px-6 py-4">
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions[2].poin}
 // // //                               placeholder='A.'
 // // //                               onChange={(e) => handleInputChange('poin[2] ', e.target.value)}
 // // //                               required
 // // //                             />
-                            
+
 // // //                         </td>
 // // //                         {/* <td class="px-6 py-4 text-right">
 // // //                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
@@ -2199,9 +2256,9 @@ export default QuestionForm;
 // // //                     </tr>
 // // //                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
 // // //                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions.order}
 // // //                               onChange={(e) => handleInputChange('order', e.target.value)}
 // // //                               required
@@ -2220,9 +2277,9 @@ export default QuestionForm;
 // // //                         </td>
 // // //                         <td class="px-6 py-4">
 // // //                           <div className="grid-col-2">
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               // value={questions.option_order}
 // // //                               {...register(`answers.2.isCorrect`)}
 // // //                                 onChange={() => {
@@ -2231,13 +2288,13 @@ export default QuestionForm;
 // // //                                   // });
 // // //                                 }}
 // // //                               placeholder='A.'
-                              
+
 // // //                               // onChange={(e) => handleInputChange('option_order', e.target.value)}
 // // //                               required
 // // //                             />
-// // //                             <input 
+// // //                             <input
 // // //                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-// // //                               type="text" 
+// // //                               type="text"
 // // //                               value={questions.option}
 // // //                               placeholder=''
 // // //                               onChange={(e) => handleInputChange('option', e.target.value)}
@@ -2259,14 +2316,13 @@ export default QuestionForm;
 // // //                                 {errors.answers[2].score.message}
 // // //                               </p>
 // // //                             )}
-                            
+
 // // //                         </td>
 // // //                         {/* <td class="px-6 py-4 text-right">
 // // //                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
 // // //                         </td> */}
 // // //                     </tr>
-                    
-                    
+
 // // //                     {/* <tr class="bg-white dark:bg-gray-800">
 // // //                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
 // // //                             Magic Mouse 2
@@ -2287,7 +2343,6 @@ export default QuestionForm;
 // // //                 </tbody>
 // // //             </table>
 
-
 // // //             </>
 // // //           )}
 // // //           <div className="flex justify-end pt-4">
@@ -2303,16 +2358,15 @@ export default QuestionForm;
 // // //             </form>
 // // //         </div>
 
-      
 // // //       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 // // //         {/* Question Type Selection */}
 // // //         <div>
 // // //           <label htmlFor="question_type" className="block text-sm font-medium text-gray-700 mb-2">
 // // //             Tipe Pertanyaan *
 // // //           </label>
-// // //           <select 
-// // //             id="question_type" 
-// // //             value={questionType} 
+// // //           <select
+// // //             id="question_type"
+// // //             value={questionType}
 // // //             onChange={(e) => setQuestionType(e.target.value)}
 // // //             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
 // // //             required
@@ -2325,7 +2379,6 @@ export default QuestionForm;
 // // //         </div>
 
 // // //         {/* Question Text/Content */}
-        
 
 // // //         {/* Multiple Choice Options */}
 // // //         {questionType === 'mc' && (
@@ -2340,7 +2393,7 @@ export default QuestionForm;
 // // //                 <FaPlus className="mr-2" /> Tambah Opsi
 // // //               </button>
 // // //             </div>
-            
+
 // // //             {fields.map((field, index) => (
 // // //               <div key={field.id} className="p-4 border border-gray-200 rounded-lg relative bg-gray-50">
 // // //                 <button
@@ -2491,7 +2544,7 @@ export default QuestionForm;
 
 // // //   const handleImageUpload = async (file, type, index = null) => {
 // // //     if (!file) return;
-    
+
 // // //     setUploading(true);
 // // //     const fileExt = file.name.split('.').pop();
 // // //     const fileName = `${Math.random()}.${fileExt}`;
@@ -2534,15 +2587,15 @@ export default QuestionForm;
 // // //   return (
 // // //     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
 // // //       <h1 className="text-2xl font-bold mb-6">Create New Question</h1>
-      
+
 // // //       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 // // //         {/* Question Text */}
 // // //         <div className="mt-4">
 // // //                     <label htmlFor="media" className="block text-sm font-medium text-gray-900">Media</label>
-// // //                     <select 
-// // //                         id="question_type" 
-// // //                         name="question_type" 
-// // //                         value={questionType} 
+// // //                     <select
+// // //                         id="question_type"
+// // //                         name="question_type"
+// // //                         value={questionType}
 // // //                         onChange={(e) => setQuestionType(e.target.value)}
 // // //                         className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
 // // //                         required
@@ -2552,12 +2605,12 @@ export default QuestionForm;
 // // //                         <option value="upload">Upload</option>
 // // //                         <option value="mc">Pilihan Ganda</option>
 // // //                     </select>
-                    
+
 // // //                 </div>
 // // //           {questionType == 'upload' && (
 // // //             <>
 // // //               <div>
-                  
+
 // // //                 <label className="block text-sm font-medium text-gray-700 mb-1">
 // // //                   Pertanyaan
 // // //                 </label>
@@ -2576,7 +2629,7 @@ export default QuestionForm;
 // // //             </>
 
 // // //           )}
-// // //           {questionType == 'mc' && ( 
+// // //           {questionType == 'mc' && (
 // // //             <>
 // // //               <div>
 // // //               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -2634,9 +2687,9 @@ export default QuestionForm;
 // // //               />
 // // //               {previewUrls.question && (
 // // //                 <div className="mt-2">
-// // //                   <img 
-// // //                     src={previewUrls.question} 
-// // //                     alt="Question preview" 
+// // //                   <img
+// // //                     src={previewUrls.question}
+// // //                     alt="Question preview"
 // // //                     className="h-32 object-contain"
 // // //                   />
 // // //                 </div>
@@ -2646,7 +2699,7 @@ export default QuestionForm;
 // // //             {/* Answers */}
 // // //             <div className="space-y-4">
 // // //               <h2 className="text-lg font-medium text-gray-900">Pilihan Jawaban (Pilih satu jawaban benar)</h2>
-              
+
 // // //               {fields.map((field, index) => (
 // // //                 <div key={field.id} className="p-4 border border-gray-200 rounded-md">
 // // //                   <div className="flex items-center mb-2">
@@ -2712,9 +2765,9 @@ export default QuestionForm;
 // // //                     />
 // // //                     {previewUrls.answers[index] && (
 // // //                       <div className="mt-2">
-// // //                         <img 
-// // //                           src={previewUrls.answers[index]} 
-// // //                           alt={`Answer ${index + 1} preview`} 
+// // //                         <img
+// // //                           src={previewUrls.answers[index]}
+// // //                           alt={`Answer ${index + 1} preview`}
 // // //                           className="h-32 object-contain"
 // // //                         />
 // // //                       </div>
@@ -2728,7 +2781,7 @@ export default QuestionForm;
 // // //               )} */}
 // // //             </div>
 // // //             </>
-        
+
 // // //         )}
 // // //         {/* Explanation */}
 // // //         {/* // <div>
@@ -2806,7 +2859,7 @@ export default QuestionForm;
 
 // // // //   const handleImageUpload = async (file, type, index = null) => {
 // // // //     if (!file) return;
-    
+
 // // // //     setUploading(true);
 // // // //     const fileExt = file.name.split('.').pop();
 // // // //     const fileName = `${Math.random()}.${fileExt}`;
@@ -2849,7 +2902,7 @@ export default QuestionForm;
 // // // //   return (
 // // // //     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
 // // // //       <h1 className="text-2xl font-bold mb-6">Create New Question</h1>
-      
+
 // // // //       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 // // // //         {/* Question Text */}
 // // // //         <div>
@@ -2885,9 +2938,9 @@ export default QuestionForm;
 // // // //           />
 // // // //           {previewUrls.question && (
 // // // //             <div className="mt-2">
-// // // //               <img 
-// // // //                 src={previewUrls.question} 
-// // // //                 alt="Question preview" 
+// // // //               <img
+// // // //                 src={previewUrls.question}
+// // // //                 alt="Question preview"
 // // // //                 className="h-32 object-contain"
 // // // //               />
 // // // //             </div>
@@ -2897,7 +2950,7 @@ export default QuestionForm;
 // // // //         {/* Answers */}
 // // // //         <div className="space-y-4">
 // // // //           <h2 className="text-lg font-medium text-gray-900">Answers (Select one correct answer)</h2>
-          
+
 // // // //           {fields.map((field, index) => (
 // // // //             <div key={field.id} className="p-4 border border-gray-200 rounded-md">
 // // // //               <div className="flex items-center mb-2">
@@ -2966,9 +3019,9 @@ export default QuestionForm;
 // // // //                 />
 // // // //                 {previewUrls.answers[index] && (
 // // // //                   <div className="mt-2">
-// // // //                     <img 
-// // // //                       src={previewUrls.answers[index]} 
-// // // //                       alt={`Answer ${index + 1} preview`} 
+// // // //                     <img
+// // // //                       src={previewUrls.answers[index]}
+// // // //                       alt={`Answer ${index + 1} preview`}
 // // // //                       className="h-32 object-contain"
 // // // //                     />
 // // // //                   </div>
